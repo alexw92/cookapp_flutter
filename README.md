@@ -1,19 +1,74 @@
 # cookable_flutter
 # Owner : Awesome CEO Alex
 
-## UI Ideas
+# UI Ideas
+Most notes are written directly in the image
+## The current login page
+This page is currently displayed on app start when no user is logged in.
+If a user is logged in it is displayed as long as it takes to load the data (recipes and so on) from the backend
+We plan to spare users from registration but we still need a page which displays during app start for loading.
+I'd suggest a screen showing the app logo and a progress bar and if the backend says there are promotions, a promotion card
+which we could display here
 
 ![loginpage](./todo/android_ref_images/current_loginpage.jpg)
+## Use inventory screen/ fridge
+This is the first screen displayed when loading has completed
+Added some notes in the image. We should also consider using a better background (white is a bit boring). A customizable theme would be cool!
+Later we could group this view into groups like meat, veggie, spices...
+
 ![userinventory](./todo/android_ref_images/grocery_user_inventory.jpg)
+## Grocery Details screen
+This screen is displayed when clicking on a grocery icon in the fridge/inventory screen
+
 ![grocery_details](./todo/android_ref_images/grocery_details_view.jpg)
+## Add Grovery screen
+This screen is displayed when clicking on the "plus" in the fridge/inventory screen.
+It is really ugly. The barcode icon can be left out completely.
+What I have in mind for this is a filterable list which requests the api on each input.
+Then if the user has found what he wants he should be able to click on it and specify the desired amount he currently has.
+Would be cool to display this and the grocery details screen on top of the inventory.
+
 ![addgrocery](./todo/android_ref_images/add_grocery_view.jpg)
+
+## Current Behavior of "add grocery" screen
+
 ![addgrocery_combo](./todo/android_ref_images/add_food_combobox.jpg)
+
+## Recipe view
+
+Added some notes in the image. We should also consider using a better background (white is a bit boring). A customizable theme would be cool
+The recipe view should apply a clear highlighting of cookable and now or weak highlighting of uncookable recipes.
+Since this feature is the core of this app. We should think about a more stylish way than just applying a stronger color.
+I could also imagine displaying recipes which only lack one single grocery differently. Also we should think about how to display
+recipes with ingredients the user has in his inventory but in too low amounts.
+
 ![recipes_list](./todo/android_ref_images/cookable_uncookable_recipes_list.jpg)
+## Recipe details screen
+
+The next two images show the recipe details screen. We should use a cool light background here.
+
 ![recipe_details_unsuff](./todo/android_ref_images/recipe_details_insufficient.jpg)
 ![recipe_details_ok](./todo/android_ref_images/recipe_details_sufficient.jpg)
+## Cook recipe stepper
+
+This shows the instructions using a material stepper component. I can imagine a lot adjustments to what is displayed
+in here. So we should keep it customizable
+
 ![instructions_stepper](./todo/android_ref_images/recipe_instructions_stepper.jpg)
 
-A new Flutter project.
+## Technical issues
+* All images should be cached which an appropriate framework
+* We need to be able to handle errors from the backend at all time and should use material snackbars to display it (we can beautify later)
+* Since we dont use registration we should define the point when registration is mandatory
+  + As long as the user is unverified we need some identifier for him to apply a preregistration
+  + From the point when it we want to register we can do Firebase auth to do a full registration
+  + We might also need to include a data usage agreement
+* The number of recipes, instructions could potentially very large - We should not load everything at the beginning, especially images need huge bandwith
+* We need a good library for proper scaling of images
+* We should add a settings page offering config options for
+  + UI - Theme
+  + Checkbox - No image load on wifi
+
 
 ## Getting Started
 
