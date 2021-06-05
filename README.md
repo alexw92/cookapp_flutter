@@ -56,6 +56,13 @@ in here. So we should keep it customizable
 
 ![instructions_stepper](./todo/android_ref_images/recipe_instructions_stepper.jpg)
 
+## Uncovered Features
+
+* **MISSING INGREDIENT:** Very often a user won't find a grocery he has! We need to offer our users a way (e.g. once filtering for groceries delivers no results) to just apply  for a grocery to be added to the db. Nethertheless the preprovided db should cover most cases
+* **MISSING RECIPE/ADD RECIPE:** Registered users should be able to add their own recipes including intructions and images. We will probably need a sophisticated stepper component. Recipes who are uploaded by a user should also by editable by him.
+* **RATE RECIPE:** Very important feature that should be implemented. Registered users should be able to rate a recipe once.
+* **NUTRITON:** A super important issue for everyone I want to target with this app. Values should be calculated by the backend using the sum of of the ingredient nutritions
+
 ## Technical issues
 * All images should be cached which an appropriate framework
 * We need to be able to handle errors from the backend at all time and should use material snackbars to display it (we can beautify later)
