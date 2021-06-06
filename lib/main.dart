@@ -24,7 +24,7 @@ class _CookableFlutterState extends State<CookableFlutter> {
       initialTheme: _theme,
       materialAppBuilder: (context, theme) {
         return MaterialApp(
-          title: 'Addigo Flutter TUD',
+          title: 'Cookable',
           theme: theme,
           supportedLocales: [const Locale('de'), const Locale('en')],
           routes: <String, WidgetBuilder>{
