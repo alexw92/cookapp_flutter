@@ -32,7 +32,6 @@ class _AppBarComponentState extends State<AppBarComponent> {
         child: Align(
           alignment: Alignment.centerLeft,
           child: Container(
-            margin: EdgeInsets.fromLTRB(20, 30, 0, 0),
             child: Center(
               child: Text(
                 title,

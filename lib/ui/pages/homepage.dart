@@ -1,4 +1,5 @@
 import 'package:cookable_flutter/ui/components/app-bar.component.dart';
+import 'package:cookable_flutter/ui/styles/cookable-theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -12,12 +13,49 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBarComponent(
-        title: "Cookable",
-      ),
-      body: Container(
-        color: Colors.white,
+    return MaterialApp(
+      home: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.green,
+            bottom: TabBar(
+              tabs: [
+                Tab(
+                  child: Text(
+                    'Fridge',
+                    style: CookableTheme.noramlWhiteFont,
+                  ),
+                ),
+                Tab(
+                  child: Text('Recipes', style: CookableTheme.noramlWhiteFont),
+                ),
+              ],
+            ),
+            title: Container(
+              child: Center(
+                child: Text(
+                  'Cookable',
+                  style: CookableTheme.largeBoldFont,
+                ),
+              ),
+            ),
+          ),
+          body: TabBarView(
+            children: [
+              Container(
+                child: Center(
+                  child: Text('My Ingredients'),
+                ),
+              ),
+              Container(
+                child: Center(
+                  child: Text('Favourite Cookable Recipes'),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
