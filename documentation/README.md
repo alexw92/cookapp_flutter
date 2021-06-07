@@ -10,17 +10,17 @@ We plan to spare users from registration but we still need a page which displays
 I'd suggest a screen showing the app logo and a progress bar and if the backend says there are promotions, a promotion card
 which we could display here
 
-![loginpage](./todo/android_ref_images/current_loginpage.jpg)
+![loginpage](./current_loginpage.jpg)
 ## Use inventory screen/ fridge
 This is the first screen displayed when loading has completed
 Added some notes in the image. We should also consider using a better background (white is a bit boring). A customizable theme would be cool!
 Later we could group this view into groups like meat, veggie, spices...
 
-![userinventory](./todo/android_ref_images/grocery_user_inventory.jpg)
+![userinventory](./grocery_user_inventory.jpg)
 ## Grocery Details screen
 This screen is displayed when clicking on a grocery icon in the fridge/inventory screen
 
-![grocery_details](./todo/android_ref_images/grocery_details_view.jpg)
+![grocery_details](./grocery_details_view.jpg)
 ## Add Grovery screen
 This screen is displayed when clicking on the "plus" in the fridge/inventory screen.
 It is really ugly. The barcode icon can be left out completely.
@@ -28,11 +28,11 @@ What I have in mind for this is a filterable list which requests the api on each
 Then if the user has found what he wants he should be able to click on it and specify the desired amount he currently has.
 Would be cool to display this and the grocery details screen on top of the inventory.
 
-![addgrocery](./todo/android_ref_images/add_grocery_view.jpg)
+![addgrocery](./add_grocery_view.jpg)
 
 ## Current Behavior of "add grocery" screen
 
-![addgrocery_combo](./todo/android_ref_images/add_food_combobox.jpg)
+![addgrocery_combo](./add_food_combobox.jpg)
 
 ## Recipe view
 
@@ -42,19 +42,19 @@ Since this feature is the core of this app. We should think about a more stylish
 I could also imagine displaying recipes which only lack one single grocery differently. Also we should think about how to display
 recipes with ingredients the user has in his inventory but in too low amounts.
 
-![recipes_list](./todo/android_ref_images/cookable_uncookable_recipes_list.jpg)
+![recipes_list](./cookable_uncookable_recipes_list.jpg)
 ## Recipe details screen
 
 The next two images show the recipe details screen. We should use a cool light background here.
 
-![recipe_details_unsuff](./todo/android_ref_images/recipe_details_insufficient.jpg)
-![recipe_details_ok](./todo/android_ref_images/recipe_details_sufficient.jpg)
+![recipe_details_unsuff](./recipe_details_insufficient.jpg)
+![recipe_details_ok](./recipe_details_sufficient.jpg)
 ## Cook recipe stepper
 
 This shows the instructions using a material stepper component. I can imagine a lot adjustments to what is displayed
 in here. So we should keep it customizable
 
-![instructions_stepper](./todo/android_ref_images/recipe_instructions_stepper.jpg)
+![instructions_stepper](./recipe_instructions_stepper.jpg)
 
 ## Uncovered Features
 
