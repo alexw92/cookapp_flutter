@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class Recipe {
   final int id;
   final String imgSrc;
@@ -69,4 +71,60 @@ class Ingredient {
         recipeId: json['recipeId'],
         foodProductId: json['foodProductId']);
   }
+}
+
+class FoodProduct {
+  final int id;
+  final String name;
+  final String description;
+  final QuantityType quantityType;
+  final int foodCategoryId;
+  final String imgSrc;
+
+  FoodProduct(
+      {this.id,
+      this.name,
+      this.description,
+      this.quantityType,
+      this.foodCategoryId,
+      this.imgSrc});
+
+  factory FoodProduct.fromJson(Map<String, dynamic> json) {
+    return FoodProduct(
+        id: json['id'],
+        name: json['name'],
+        description: json['description'],
+        quantityType: QuantityType.fromInt(json['quantityType']),
+        foodCategoryId: json['foodCategoryId'],
+        imgSrc: json['img_src']);
+  }
+}
+
+class QuantityType {
+  static const MILLILITER = 1;
+  static const GRAM = 2;
+  static const PICES = 3;
+
+  static get values => [MILLILITER, GRAM, PICES];
+  final int value;
+
+  factory QuantityType.fromInt(int quantityType) {
+    var result;
+    switch (quantityType) {
+      case MILLILITER:
+        result = QuantityType.MILLILITER;
+        break;
+      case GRAM:
+        result = QuantityType.GRAM;
+        break;
+      case PICES:
+        result = QuantityType.PICES;
+        break;
+      default:
+        result = null;
+    }
+    return result;
+  }
+
+  const QuantityType(this.value);
 }

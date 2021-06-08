@@ -15,6 +15,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     RecipeController.getRecipes().then((result) => "null");
+    FoodProductController.getFoodProducts().then((value) => "null");
     return MaterialApp(
       home: DefaultTabController(
         length: 2,
