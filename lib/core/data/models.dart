@@ -1,8 +1,6 @@
-import 'dart:convert';
-
 class Recipe {
   final int id;
-  final String img_src;
+  final String imgSrc;
   final String name;
   final String uploadedBy;
   final List<RecipeInstruction> instructions;
@@ -10,7 +8,7 @@ class Recipe {
 
   Recipe(
       {this.id,
-      this.img_src,
+      this.imgSrc,
       this.name,
       this.uploadedBy,
       this.instructions,
@@ -19,7 +17,7 @@ class Recipe {
   factory Recipe.fromJson(Map<String, dynamic> recipeJson) {
     return Recipe(
         id: recipeJson['id'],
-        img_src: recipeJson['img_src'],
+        imgSrc: recipeJson['img_src'],
         name: recipeJson['name'],
         uploadedBy: recipeJson['uploadedBy'],
         instructions: (recipeJson['instructions'] as List)
