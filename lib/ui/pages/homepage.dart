@@ -12,10 +12,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  get error => null;
+
   @override
   Widget build(BuildContext context) {
-    RecipeController.getRecipes().then((result) => "null");
-    FoodProductController.getFoodProducts().then((value) => "null");
+    RecipeController.getRecipes().then(
+        (result) => print("List contains ${result.length} foodProducts."),
+        onError: (error) => print("error requesting recipes"));
+    FoodProductController.getFoodProducts().then(
+        (result) => print("List contains ${result.length} recipes."),
+        onError: (error) => print("error requesting food products"));
     return MaterialApp(
       home: DefaultTabController(
         length: 2,

@@ -15,7 +15,6 @@ class RecipeController {
 
     var list = json.decode(response.body) as List;
     List<Recipe> recipes = list.map((it) => Recipe.fromJson(it)).toList();
-    print("List contains ${list.length} recipes.");
     return recipes;
   }
 }
@@ -33,7 +32,6 @@ class FoodProductController {
     var list = json.decode(response.body) as List;
     List<FoodProduct> foodProducts =
         list.map((it) => FoodProduct.fromJson(it)).toList();
-    print("List contains ${list.length} foodProducts.");
     return foodProducts;
   }
 }
