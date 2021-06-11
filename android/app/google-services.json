@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "639711322532",
+    "project_id": "cookable-flutter",
+    "storage_bucket": "cookable-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:639711322532:android:157c20d24c0c37d6b4e131",
+        "android_client_info": {
+          "package_name": "com.example.cookable_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "639711322532-39p5o62vs32v85aaoecuk34ilbl4ra8i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXFPRW96jhOdcRsOfyq1JngFGo8pgGiqk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "639711322532-39p5o62vs32v85aaoecuk34ilbl4ra8i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
