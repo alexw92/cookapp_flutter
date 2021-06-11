@@ -1,4 +1,6 @@
 import 'package:cookable_flutter/ui/components/app-bar.component.dart';
+import 'package:cookable_flutter/ui/components/fridge.component.dart';
+import 'package:cookable_flutter/ui/components/recepies.component.dart';
 import 'package:cookable_flutter/ui/styles/cookable-theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -43,16 +45,8 @@ class _HomePageState extends State<HomePage> {
           ),
           body: TabBarView(
             children: [
-              Container(
-                child: Center(
-                  child: Text('My Ingredients'),
-                ),
-              ),
-              Container(
-                child: Center(
-                  child: Text('Favourite Cookable Recipes'),
-                ),
-              ),
+              FridgeComponent(),
+              RecepiesComponent(),
             ],
           ),
         ),
