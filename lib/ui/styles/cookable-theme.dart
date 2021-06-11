@@ -25,10 +25,14 @@ class CookableTheme {
 
   // static const darkBlue = Color(0xFF000033);
   // static const cornflowerBlue = Color(0xFF4881ea);
+  static const darkGrey = Color(0xFF36454F);
+
   static const largeBoldFont = TextStyle(
       fontSize: 30.0, fontWeight: FontWeight.bold, color: Colors.white);
   static const noramlWhiteFont = TextStyle(
       fontSize: 16.0, fontWeight: FontWeight.normal, color: Colors.white);
   static const noramlBlackFont = TextStyle(
       fontSize: 16.0, fontWeight: FontWeight.normal, color: Colors.black);
+  static const smallWhiteFont = TextStyle(
+      fontSize: 14.0, fontWeight: FontWeight.normal, color: Colors.white);
 }
