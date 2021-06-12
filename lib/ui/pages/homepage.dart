@@ -1,8 +1,8 @@
-import 'package:cookable_flutter/ui/components/app-bar.component.dart';
-import 'package:cookable_flutter/ui/styles/cookable-theme.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
+import 'package:cookable_flutter/ui/styles/cookable-theme.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -22,6 +22,9 @@ class _HomePageState extends State<HomePage> {
     FoodProductController.getFoodProducts().then(
         (result) => print("List contains ${result.length} recipes."),
         onError: (error) => print("error requesting food products"));
+    FirebaseAuth.instance.signInAnonymously().then((UserCredential user) => {
+      print(user)
+    });
     return MaterialApp(
       home: DefaultTabController(
         length: 2,
