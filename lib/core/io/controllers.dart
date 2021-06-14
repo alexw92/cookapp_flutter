@@ -23,7 +23,7 @@ class RecipeController {
     var response = await http
         .get(Uri.parse("http://192.168.2.102:8080/recipes"), headers: {
       "Authorization": "Bearer $storedToken"
-    }).timeout(Duration(seconds: 3));
+    }).timeout(IOConfig.timeoutDuration);
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
@@ -50,7 +50,7 @@ class FoodProductController {
     var response = await http
         .get(Uri.parse("http://192.168.2.102:8080/foodProducts"), headers: {
       "Authorization": "Bearer $storedToken"
-    }).timeout(Duration(seconds: 3));
+    }).timeout(IOConfig.timeoutDuration);
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
