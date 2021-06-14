@@ -2,27 +2,29 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cookable_flutter/core/data/models.dart';
-import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
+
+import 'io-config.dart';
 
 // todo: logic to get fresh fb token should be part of token store
 
 class RecipeController {
-  static final tokenStore = TokenStore();
+
 
   static Future<List<Recipe>> getRecipes() async {
     // get token from firebase
 
     var user = FirebaseAuth.instance.currentUser;
     String token = await user.getIdToken();
+    var tokenStore = IOConfig.tokenStore;
     // save token in token store
     tokenStore.putToken(user.uid, token);
     // get token from token store
     String storedToken = await tokenStore.getToken(user.uid);
     var response = await http.get(
         Uri.parse("http://192.168.2.102:8080/recipes"),
-        headers: {"Authorization": "Bearer $storedToken"});
+        headers: {"Authorization": "Bearer $storedToken"}).timeout(Duration(seconds: 3));
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
@@ -32,23 +34,23 @@ class RecipeController {
     }
 
     throw Exception(
-        "Error retrieving recipes, Code: ${response.statusCode} Message: ${response.body} ");
+        "Error requesting recipes, Code: ${response.statusCode} Message: ${response.body} ");
   }
 }
 
 class FoodProductController {
-  static final tokenStore = TokenStore();
 
   static Future<List<FoodProduct>> getFoodProducts() async {
     var user = FirebaseAuth.instance.currentUser;
     String token = await user.getIdToken();
+    var tokenStore = IOConfig.tokenStore;
     // save token in token store
     tokenStore.putToken(user.uid, token);
     // get token from token store
     String storedToken = await tokenStore.getToken(user.uid);
 
     var response =
-        await http.get(Uri.parse("http://192.168.2.102:8080/foodProducts"));
+        await http.get(Uri.parse("http://192.168.2.102:8080/foodProducts")).timeout(Duration(seconds: 3));
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
@@ -59,6 +61,6 @@ class FoodProductController {
     }
 
     throw Exception(
-        "Error retrieving foodProducts, Code: ${response.statusCode} Message: ${response.body} ");
+        "Error requesting food products, Code: ${response.statusCode} Message: ${response.body} ");
   }
 }
