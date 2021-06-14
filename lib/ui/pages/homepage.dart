@@ -16,15 +16,15 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    RecipeController.getRecipes().then(
-        (result) => print("List contains ${result.length} foodProducts."),
-        onError: (error) => print("error requesting recipes"));
-    FoodProductController.getFoodProducts().then(
-        (result) => print("List contains ${result.length} recipes."),
-        onError: (error) => print("error requesting food products"));
     FirebaseAuth.instance.signInAnonymously().then((UserCredential user) => {
-      print(user)
-    });
+          RecipeController.getRecipes().then(
+              (result) => print("List contains ${result.length} recipes."),
+              onError: (error) => print("error requesting recipes: $error")),
+          FoodProductController.getFoodProducts().then(
+              (result) => print("List contains ${result.length} food products."),
+              onError: (error) => print("error requesting food products: $error"))
+        });
+
     return MaterialApp(
       home: DefaultTabController(
         length: 2,

@@ -1,12 +1,27 @@
-import 'dart:io';
 import 'dart:convert';
+import 'dart:io';
+
 import 'package:cookable_flutter/core/data/models.dart';
+import 'package:cookable_flutter/core/io/token-store.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
+//Todo check status code and show error if not 200
+
 class RecipeController {
+
   static Future<List<Recipe>> getRecipes() async {
+    // todo this is just for testing, needs to be refactored
+    // get token from firebase
+    final tokenStore = TokenStore();
+    var user = FirebaseAuth.instance.currentUser;
+    String token = await user.getIdToken();
+    // save token in token store
+    tokenStore.putToken(user.uid, token);
+    // get token from token store
+    String storedToken = await tokenStore.getToken(user.uid);
     var response =
-        await http.get(Uri.parse("http://192.168.2.102:8080/recipes"));
+        await http.get(Uri.parse("http://192.168.2.102:8080/recipes"),headers: {"Authorization": "Bearer $storedToken"});
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
