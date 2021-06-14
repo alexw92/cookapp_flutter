@@ -6,8 +6,6 @@ import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
-//Todo check status code and show error if not 200
-
 class RecipeController {
 
   static Future<List<Recipe>> getRecipes() async {
@@ -25,12 +23,12 @@ class RecipeController {
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
-      //  print(response);
+      var list = json.decode(response.body) as List;
+      List<Recipe> recipes = list.map((it) => Recipe.fromJson(it)).toList();
+      return recipes;
     }
 
-    var list = json.decode(response.body) as List;
-    List<Recipe> recipes = list.map((it) => Recipe.fromJson(it)).toList();
-    return recipes;
+    throw Exception("Error retrieving recipes, Code: ${response.statusCode} Message: ${response.body} ");
   }
 }
 
@@ -41,12 +39,12 @@ class FoodProductController {
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
-      //  print(response);
+      var list = json.decode(response.body) as List;
+      List<FoodProduct> foodProducts =
+      list.map((it) => FoodProduct.fromJson(it)).toList();
+      return foodProducts;
     }
 
-    var list = json.decode(response.body) as List;
-    List<FoodProduct> foodProducts =
-        list.map((it) => FoodProduct.fromJson(it)).toList();
-    return foodProducts;
+    throw Exception("Error retrieving foodProducts, Code: ${response.statusCode} Message: ${response.body} ");
   }
 }
