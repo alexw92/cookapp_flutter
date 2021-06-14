@@ -10,8 +10,6 @@ import 'io-config.dart';
 // todo: logic to get fresh fb token should be part of token store
 
 class RecipeController {
-
-
   static Future<List<Recipe>> getRecipes() async {
     // get token from firebase
 
@@ -22,9 +20,10 @@ class RecipeController {
     tokenStore.putToken(user.uid, token);
     // get token from token store
     String storedToken = await tokenStore.getToken(user.uid);
-    var response = await http.get(
-        Uri.parse("http://192.168.2.102:8080/recipes"),
-        headers: {"Authorization": "Bearer $storedToken"}).timeout(Duration(seconds: 3));
+    var response = await http
+        .get(Uri.parse("http://192.168.2.102:8080/recipes"), headers: {
+      "Authorization": "Bearer $storedToken"
+    }).timeout(Duration(seconds: 3));
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
@@ -39,7 +38,6 @@ class RecipeController {
 }
 
 class FoodProductController {
-
   static Future<List<FoodProduct>> getFoodProducts() async {
     var user = FirebaseAuth.instance.currentUser;
     String token = await user.getIdToken();
@@ -49,8 +47,10 @@ class FoodProductController {
     // get token from token store
     String storedToken = await tokenStore.getToken(user.uid);
 
-    var response =
-        await http.get(Uri.parse("http://192.168.2.102:8080/foodProducts")).timeout(Duration(seconds: 3));
+    var response = await http
+        .get(Uri.parse("http://192.168.2.102:8080/foodProducts"), headers: {
+      "Authorization": "Bearer $storedToken"
+    }).timeout(Duration(seconds: 3));
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
