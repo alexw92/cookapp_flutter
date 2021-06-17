@@ -1,10 +1,11 @@
+import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/ui/components/app-bar.component.dart';
 import 'package:cookable_flutter/ui/components/fridge.component.dart';
 import 'package:cookable_flutter/ui/components/recepies.component.dart';
 import 'package:cookable_flutter/ui/styles/cookable-theme.dart';
-import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:cookable_flutter/core/io/controllers.dart';
+import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -14,10 +15,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  get error => null;
+
   @override
   Widget build(BuildContext context) {
-    RecipeController.getRecipes().then((result) => "null");
-    FoodProductController.getFoodProducts().then((value) => "null");
+    FirebaseAuth.instance.signInAnonymously().then((UserCredential user) => {
+          RecipeController.getRecipes().then(
+              (result) => print("List contains ${result.length} recipes."),
+              onError: (error) => print("error requesting recipes: $error")),
+          FoodProductController.getFoodProducts().then(
+              (result) => print("List contains ${result.length} food products."),
+              onError: (error) => print("error requesting food products: $error"))
+        });
+
     return MaterialApp(
       home: DefaultTabController(
         length: 2,

@@ -1,10 +1,12 @@
 import 'package:cookable_flutter/core/providers/theme.provider.dart';
 import 'package:cookable_flutter/ui/pages/homepage.dart';
 import 'package:cookable_flutter/ui/styles/cookable-theme.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(CookableFlutter());
 }
 

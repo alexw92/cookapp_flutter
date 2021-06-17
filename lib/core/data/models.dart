@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+
 
 class Recipe {
   final int id;
@@ -80,6 +80,7 @@ class FoodProduct {
   final QuantityType quantityType;
   final int foodCategoryId;
   final String imgSrc;
+  final Nutrients nutrients;
 
   FoodProduct(
       {this.id,
@@ -87,7 +88,8 @@ class FoodProduct {
       this.description,
       this.quantityType,
       this.foodCategoryId,
-      this.imgSrc});
+      this.imgSrc,
+      this.nutrients});
 
   factory FoodProduct.fromJson(Map<String, dynamic> json) {
     return FoodProduct(
@@ -96,7 +98,8 @@ class FoodProduct {
         description: json['description'],
         quantityType: QuantityType.fromInt(json['quantityType']),
         foodCategoryId: json['foodCategoryId'],
-        imgSrc: json['img_src']);
+        imgSrc: json['img_src'],
+        nutrients: json['nutrients']);
   }
 }
 
@@ -127,4 +130,37 @@ class QuantityType {
   }
 
   const QuantityType(this.value);
+}
+
+class Nutrients {
+  final int id;
+  final double fat;
+  final double carbohydrate;
+  final double sugar;
+  final double protein;
+  final double calories;
+  final String source;
+  final DateTime dateOfRetrieval;
+
+  Nutrients(
+      {this.id,
+      this.fat,
+      this.carbohydrate,
+      this.sugar,
+      this.protein,
+      this.calories,
+      this.source,
+      this.dateOfRetrieval});
+
+  factory Nutrients.fromJson(Map<String, dynamic> json) {
+    return Nutrients(
+        id: json['id'],
+        fat: json['fat'],
+        carbohydrate: json['carbohydrate'],
+        sugar: json['sugar'],
+        protein: json['protein'],
+        calories: json['calories'],
+        source: json['source'],
+        dateOfRetrieval: json['dateOfRetrieval']);
+  }
 }
