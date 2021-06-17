@@ -1,20 +1,21 @@
-import 'package:cookable_flutter/core/models/ingredient.model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/ui/styles/cookable-theme.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class FridgeTileComponent extends StatefulWidget {
-  Ingredient ingredient;
-  FridgeTileComponent({Key key, this.ingredient}) : super(key: key);
+  FoodProduct foodProduct;
+  FridgeTileComponent({Key key, this.foodProduct}) : super(key: key);
 
   @override
   _FridgeTileComponentState createState() =>
-      _FridgeTileComponentState(ingredient: ingredient);
+      _FridgeTileComponentState(foodProduct: foodProduct);
 }
 
 class _FridgeTileComponentState extends State<FridgeTileComponent> {
-  Ingredient ingredient;
-  _FridgeTileComponentState({this.ingredient});
+  FoodProduct foodProduct;
+  _FridgeTileComponentState({this.foodProduct});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,17 +23,19 @@ class _FridgeTileComponentState extends State<FridgeTileComponent> {
         mainAxisSize: MainAxisSize.min,
         children: [
           CircleAvatar(
-            backgroundImage: AssetImage(ingredient.imagePath),
+            backgroundImage: CachedNetworkImageProvider(
+              "http://192.168.2.102:8080${foodProduct.imgSrc}"
+            ),
             // backgroundColor: Colors.transparent,
             backgroundColor: CookableTheme.darkGrey,
             radius: 40,
           ),
           Text(
-            ingredient.title,
+            foodProduct.name,
             style: CookableTheme.smallWhiteFont,
           ),
           Text(
-            ingredient.quantity.toString() + ' ' + ingredient.unit,
+            "50" + " " + foodProduct.quantityType.toString(),
             style: CookableTheme.smallWhiteFont,
           ),
         ],

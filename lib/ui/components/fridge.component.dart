@@ -1,8 +1,8 @@
-import 'package:cookable_flutter/core/models/ingredient.model.dart';
+import 'package:cookable_flutter/core/data/models.dart';
+import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/ui/components/fridge-tile.component.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class FridgeComponent extends StatefulWidget {
   FridgeComponent({Key key}) : super(key: key);
@@ -12,29 +12,23 @@ class FridgeComponent extends StatefulWidget {
 }
 
 class _FridgeComponentState extends State<FridgeComponent> {
-  List<Ingredient> ingredientsList = [];
+  List<FoodProduct> foodProductList = [];
+
+  void loadFoodProducts() async{
+    foodProductList = await FoodProductController.getFoodProducts();
+    setState(() {
+
+    });
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    loadFoodProducts();
+  }
 
   @override
   Widget build(BuildContext context) {
-    ingredientsList.clear();
-    Ingredient tomato =
-        Ingredient('abc', 'assets/apple.png', 'Tomato', 500, 'kg');
-    Ingredient avocado =
-        Ingredient('def', 'assets/avocado.png', 'Avocado', 1, 'pcs');
-    Ingredient baguette =
-        Ingredient('ghi', 'assets/baguette.png', 'Baguette', 2, 'pcs');
-
-    ingredientsList.add(tomato);
-    ingredientsList.add(avocado);
-    ingredientsList.add(baguette);
-    ingredientsList.add(avocado);
-    ingredientsList.add(baguette);
-    ingredientsList.add(avocado);
-    ingredientsList.add(avocado);
-    ingredientsList.add(baguette);
-    ingredientsList.add(avocado);
-    ingredientsList.add(baguette);
-
     // return Container(
     //   color: Colors.black,
     //   child: new StaggeredGridView.countBuilder(
@@ -73,10 +67,10 @@ class _FridgeComponentState extends State<FridgeComponent> {
 
   List<Widget> getAllTiles() {
     List<Widget> myTiles = [];
-    for (int i = 0; i < ingredientsList.length; i++) {
+    for (int i = 0; i < foodProductList.length; i++) {
       myTiles.add(
         FridgeTileComponent(
-          ingredient: ingredientsList[i],
+          foodProduct: foodProductList[i],
         ),
       );
     }

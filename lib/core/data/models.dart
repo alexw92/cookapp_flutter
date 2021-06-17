@@ -96,7 +96,7 @@ class FoodProduct {
         id: json['id'],
         name: json['name'],
         description: json['description'],
-        quantityType: QuantityType.fromInt(json['quantityType']),
+        quantityType: QuantityType.fromInt(json['quantityUnit']),
         foodCategoryId: json['foodCategoryId'],
         imgSrc: json['img_src'],
         nutrients: json['nutrients']);
@@ -115,13 +115,32 @@ class QuantityType {
     var result;
     switch (quantityType) {
       case MILLILITER:
-        result = QuantityType.MILLILITER;
+        result = QuantityType(MILLILITER);
         break;
       case GRAM:
-        result = QuantityType.GRAM;
+        result = QuantityType(GRAM);
         break;
       case PICES:
-        result = QuantityType.PICES;
+        result = QuantityType(PICES);
+        break;
+      default:
+        result = null;
+    }
+    return result;
+  }
+
+  @override
+  String toString() {
+    var result;
+    switch (value) {
+      case MILLILITER:
+        result = "ml";
+        break;
+      case GRAM:
+        result = "g";
+        break;
+      case PICES:
+        result = "pc";
         break;
       default:
         result = null;
