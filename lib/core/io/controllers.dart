@@ -13,7 +13,7 @@ class RecipeController {
     String storedToken = await tokenStore.getToken();
 
     var response = await http
-        .get(Uri.parse("http://192.168.2.102:8080/recipes"), headers: {
+        .get(Uri.parse("${IOConfig.apiUrl}/recipes"), headers: {
       "Authorization": "Bearer $storedToken"
     }).timeout(IOConfig.timeoutDuration);
 
@@ -36,7 +36,7 @@ class FoodProductController {
     String storedToken = await tokenStore.getToken();
 
     var response = await http
-        .get(Uri.parse("http://192.168.2.102:8080/foodProducts"), headers: {
+        .get(Uri.parse("${IOConfig.apiUrl}/foodProducts"), headers: {
       "Authorization": "Bearer $storedToken"
     }).timeout(IOConfig.timeoutDuration);
 
