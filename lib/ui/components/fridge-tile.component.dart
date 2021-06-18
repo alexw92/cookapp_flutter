@@ -7,16 +7,18 @@ import 'package:flutter/material.dart';
 
 class FridgeTileComponent extends StatefulWidget {
   UserFoodProduct userFoodProduct;
-  FridgeTileComponent({Key key, this.userFoodProduct}) : super(key: key);
+  String apiToken;
+  FridgeTileComponent({Key key, this.userFoodProduct, this.apiToken}) : super(key: key);
 
   @override
   _FridgeTileComponentState createState() =>
-      _FridgeTileComponentState(userFoodProduct: userFoodProduct);
+      _FridgeTileComponentState(userFoodProduct: userFoodProduct, apiToken: apiToken);
 }
 
 class _FridgeTileComponentState extends State<FridgeTileComponent> {
   UserFoodProduct userFoodProduct;
-  _FridgeTileComponentState({this.userFoodProduct});
+  String apiToken;
+  _FridgeTileComponentState({this.userFoodProduct, this.apiToken});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,7 +27,8 @@ class _FridgeTileComponentState extends State<FridgeTileComponent> {
         children: [
           CircleAvatar(
             backgroundImage: CachedNetworkImageProvider(
-              "${IOConfig.apiUrl}${userFoodProduct.imgSrc}"
+              "${IOConfig.apiUrl}${userFoodProduct.imgSrc}",
+              headers: {"Authorization": "Bearer $apiToken"}
             ),
             // backgroundColor: Colors.transparent,
             backgroundColor: CookableTheme.darkGrey,

@@ -1,5 +1,6 @@
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
+import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/components/fridge-tile.component.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +14,11 @@ class FridgeComponent extends StatefulWidget {
 
 class _FridgeComponentState extends State<FridgeComponent> {
   List<UserFoodProduct> userFoodProductList = [];
+  String apiToken;
 
   void loadFoodProducts() async{
     userFoodProductList = await UserFoodProductController.getUserFoodProducts();
+    apiToken = await TokenStore().getToken();
     setState(() {
 
     });
@@ -71,6 +74,7 @@ class _FridgeComponentState extends State<FridgeComponent> {
       myTiles.add(
         FridgeTileComponent(
           userFoodProduct: userFoodProductList[i],
+            apiToken: apiToken
         ),
       );
     }
