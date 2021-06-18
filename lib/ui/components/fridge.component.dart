@@ -12,10 +12,10 @@ class FridgeComponent extends StatefulWidget {
 }
 
 class _FridgeComponentState extends State<FridgeComponent> {
-  List<FoodProduct> foodProductList = [];
+  List<UserFoodProduct> userFoodProductList = [];
 
   void loadFoodProducts() async{
-    foodProductList = await FoodProductController.getFoodProducts();
+    userFoodProductList = await UserFoodProductController.getUserFoodProducts();
     setState(() {
 
     });
@@ -67,10 +67,10 @@ class _FridgeComponentState extends State<FridgeComponent> {
 
   List<Widget> getAllTiles() {
     List<Widget> myTiles = [];
-    for (int i = 0; i < foodProductList.length; i++) {
+    for (int i = 0; i < userFoodProductList.length; i++) {
       myTiles.add(
         FridgeTileComponent(
-          foodProduct: foodProductList[i],
+          userFoodProduct: userFoodProductList[i],
         ),
       );
     }

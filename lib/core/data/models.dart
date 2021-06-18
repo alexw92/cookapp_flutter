@@ -1,5 +1,3 @@
-
-
 class Recipe {
   final int id;
   final String imgSrc;
@@ -77,7 +75,7 @@ class FoodProduct {
   final int id;
   final String name;
   final String description;
-  final QuantityType quantityType;
+  final QuantityUnit quantityType;
   final int foodCategoryId;
   final String imgSrc;
   final Nutrients nutrients;
@@ -96,14 +94,44 @@ class FoodProduct {
         id: json['id'],
         name: json['name'],
         description: json['description'],
-        quantityType: QuantityType.fromInt(json['quantityUnit']),
+        quantityType: QuantityUnit.fromInt(json['quantityUnit']),
         foodCategoryId: json['foodCategoryId'],
         imgSrc: json['img_src'],
-        nutrients: json['nutrients']);
+        nutrients: Nutrients.fromJson(json['nutrients']));
   }
 }
 
-class QuantityType {
+class UserFoodProduct {
+  final int foodProductId;
+  final String name;
+  final double amount;
+  final String description;
+  final QuantityUnit quantityUnit;
+  final String imgSrc;
+  final Nutrients nutrients;
+
+  UserFoodProduct(
+      {this.foodProductId,
+        this.name,
+        this.amount,
+        this.description,
+        this.quantityUnit,
+        this.imgSrc,
+        this.nutrients});
+
+  factory UserFoodProduct.fromJson(Map<String, dynamic> json) {
+    return UserFoodProduct(
+        foodProductId: json['foodProductId'],
+        name: json['name'],
+        amount: json['amount'],
+        description: json['description'],
+        quantityUnit: QuantityUnit.fromInt(json['quantityUnit']),
+        imgSrc: json['img_src'],
+        nutrients: Nutrients.fromJson(json['nutrients']));
+  }
+}
+
+class QuantityUnit {
   static const MILLILITER = 1;
   static const GRAM = 2;
   static const PICES = 3;
@@ -111,17 +139,17 @@ class QuantityType {
   static get values => [MILLILITER, GRAM, PICES];
   final int value;
 
-  factory QuantityType.fromInt(int quantityType) {
+  factory QuantityUnit.fromInt(int quantityType) {
     var result;
     switch (quantityType) {
       case MILLILITER:
-        result = QuantityType(MILLILITER);
+        result = QuantityUnit(MILLILITER);
         break;
       case GRAM:
-        result = QuantityType(GRAM);
+        result = QuantityUnit(GRAM);
         break;
       case PICES:
-        result = QuantityType(PICES);
+        result = QuantityUnit(PICES);
         break;
       default:
         result = null;
@@ -148,7 +176,7 @@ class QuantityType {
     return result;
   }
 
-  const QuantityType(this.value);
+  const QuantityUnit(this.value);
 }
 
 class Nutrients {
@@ -172,6 +200,8 @@ class Nutrients {
       this.dateOfRetrieval});
 
   factory Nutrients.fromJson(Map<String, dynamic> json) {
+    if (json==null)
+      return null;
     return Nutrients(
         id: json['id'],
         fat: json['fat'],

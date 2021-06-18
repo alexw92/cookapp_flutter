@@ -52,3 +52,27 @@ class FoodProductController {
         "Error requesting food products, Code: ${response.statusCode} Message: ${response.body} ");
   }
 }
+
+class UserFoodProductController {
+  static Future<List<UserFoodProduct>> getUserFoodProducts() async {
+    // get token from token store
+    var tokenStore = IOConfig.tokenStore;
+    String storedToken = await tokenStore.getToken();
+
+    var response = await http
+        .get(Uri.parse("${IOConfig.apiUrl}/userFood"), headers: {
+      "Authorization": "Bearer $storedToken"
+    }).timeout(IOConfig.timeoutDuration);
+
+    /// If the first API call is successful
+    if (response.statusCode == HttpStatus.ok) {
+      var list = json.decode(response.body) as List;
+      List<UserFoodProduct> userFoodProducts =
+      list.map((it) => UserFoodProduct.fromJson(it)).toList();
+      return userFoodProducts;
+    }
+
+    throw Exception(
+        "Error requesting food products, Code: ${response.statusCode} Message: ${response.body} ");
+  }
+}
