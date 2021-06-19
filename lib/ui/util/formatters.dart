@@ -4,9 +4,17 @@ import 'package:fraction/fraction.dart';
 class Utility {
   static String getFormattedAmount(UserFoodProduct userFoodProduct) {
     if (userFoodProduct.quantityUnit.value == QuantityUnit.PICES) {
-      return "${_getFormattedFraction(userFoodProduct.amount)} ${userFoodProduct.quantityUnit.toString()}";
-    } else
-      return "${userFoodProduct.amount} ${userFoodProduct.quantityUnit.toString()}";
+      return "${_getFormattedFraction(userFoodProduct.amount)} ${userFoodProduct
+          .quantityUnit.toString()}";
+    }
+    else if(userFoodProduct.quantityUnit.value == QuantityUnit.MILLILITER ||
+    userFoodProduct.quantityUnit.value == QuantityUnit.GRAM){
+      return "${toWholeNumberStringIfPossible(userFoodProduct.amount)} ${userFoodProduct.quantityUnit
+          .toString()}";
+    }
+    else
+      return "${userFoodProduct.amount} ${userFoodProduct.quantityUnit
+          .toString()}";
   }
 
   static String _getFormattedFraction(double amount) {
@@ -16,7 +24,9 @@ class Utility {
     if (amount == 1)
       return "${amount.round()}";
     else if (amount > 1) {
-      whole = MixedFraction.fromFraction(Fraction.fromDouble(amount)).whole;
+      whole = MixedFraction
+          .fromFraction(Fraction.fromDouble(amount))
+          .whole;
       fractionPart = Fraction.fromDouble(amount - whole).toString();
     } else {
       fractionPart = Fraction.fromDouble(amount).toString();
@@ -43,4 +53,15 @@ class Utility {
     else
       return "$formattedFraction";
   }
+
+
+  static String toWholeNumberStringIfPossible(num value) {
+    if (value.isInt)
+      return (value).round().toString();
+    return (value).toString();
+  }
+
+}
+extension on num {
+  bool get isInt => this % 1 == 0;
 }
