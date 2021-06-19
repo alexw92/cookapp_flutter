@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/io-config.dart';
 import 'package:cookable_flutter/ui/styles/cookable-theme.dart';
+import 'package:cookable_flutter/ui/util/formatters.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +40,7 @@ class _FridgeTileComponentState extends State<FridgeTileComponent> {
             style: CookableTheme.smallWhiteFont,
           ),
           Text(
-            "${userFoodProduct.amount} ${userFoodProduct.quantityUnit.toString()}",
+            "${Utility.getFormattedAmount(userFoodProduct)}",
             style: CookableTheme.smallWhiteFont,
           ),
         ],
