@@ -1,5 +1,4 @@
-import 'package:cookable_flutter/core/io/controllers.dart';
-import 'package:cookable_flutter/ui/components/app-bar.component.dart';
+import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/components/fridge.component.dart';
 import 'package:cookable_flutter/ui/components/recepies.component.dart';
 import 'package:cookable_flutter/ui/styles/cookable-theme.dart';
@@ -19,14 +18,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    FirebaseAuth.instance.signInAnonymously().then((UserCredential user) => {
-          RecipeController.getRecipes().then(
-              (result) => print("List contains ${result.length} recipes."),
-              onError: (error) => print("error requesting recipes: $error")),
-          FoodProductController.getFoodProducts().then(
-              (result) => print("List contains ${result.length} food products."),
-              onError: (error) => print("error requesting food products: $error"))
-        });
+    FirebaseAuth.instance
+        .signInAnonymously()
+        .then((UserCredential user) => {TokenStore().getToken()});
 
     return MaterialApp(
       home: DefaultTabController(
