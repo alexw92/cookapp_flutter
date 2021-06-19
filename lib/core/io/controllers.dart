@@ -73,6 +73,6 @@ class UserFoodProductController {
     }
 
     throw Exception(
-        "Error requesting food products, Code: ${response.statusCode} Message: ${response.body} ");
+        "Error requesting user food products, Code: ${response.statusCode} Message: ${response.body} ");
   }
 }
