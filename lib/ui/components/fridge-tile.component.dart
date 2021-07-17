@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/io-config.dart';
 import 'package:cookable_flutter/ui/styles/cookable-theme.dart';
@@ -27,9 +28,12 @@ class _FridgeTileComponentState extends State<FridgeTileComponent> {
         mainAxisSize: MainAxisSize.min,
         children: [
           CircleAvatar(
-            backgroundImage: CachedNetworkImageProvider(
+            // does not work ob cause fucking cachednetworkimageprovider doesnt support headers
+            backgroundImage:CachedNetworkImageProvider(
               "${IOConfig.apiUrl}${userFoodProduct.imgSrc}",
-              headers: {"Authorization": "Bearer $apiToken"}
+              headers: {"Authorization": "Bearer $apiToken",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "Access-Control-Allow-Origin, Accept"},imageRenderMethodForWeb: ImageRenderMethodForWeb.HttpGet
             ),
             // backgroundColor: Colors.transparent,
             backgroundColor: CookableTheme.darkGrey,
