@@ -15,8 +15,6 @@ class RecipeController {
     var response = await http
         .get(Uri.parse("${IOConfig.apiUrl}/recipes"), headers: {
       "Authorization": "Bearer $storedToken",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Headers": "Access-Control-Allow-Origin, Accept",
       'Content-Type': 'application/json',
     }).timeout(IOConfig.timeoutDuration);
 
@@ -41,8 +39,6 @@ class FoodProductController {
     var response = await http
         .get(Uri.parse("${IOConfig.apiUrl}/foodProducts"), headers: {
       "Authorization": "Bearer $storedToken",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Headers": "Access-Control-Allow-Origin, Accept",
       'Content-Type': 'application/json',
     }).timeout(IOConfig.timeoutDuration);
 
@@ -68,8 +64,6 @@ class UserFoodProductController {
     var response = await http
         .get(Uri.parse("${IOConfig.apiUrl}/userFood"), headers: {
       "Authorization": "Bearer $storedToken",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Headers": "Access-Control-Allow-Origin, Accept",
       'Content-Type': 'application/json',
     }).timeout(IOConfig.timeoutDuration);
 

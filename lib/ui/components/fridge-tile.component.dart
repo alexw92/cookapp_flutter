@@ -28,11 +28,10 @@ class _FridgeTileComponentState extends State<FridgeTileComponent> {
         mainAxisSize: MainAxisSize.min,
         children: [
           CircleAvatar(
-            // does not work ob cause fucking cachednetworkimageprovider doesnt support headers
+            // needs --web-renderer html
             backgroundImage:CachedNetworkImageProvider(
               "${IOConfig.apiUrl}${userFoodProduct.imgSrc}",
               headers: {"Authorization": "Bearer $apiToken",
-                "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Headers": "Access-Control-Allow-Origin, Accept"},imageRenderMethodForWeb: ImageRenderMethodForWeb.HttpGet
             ),
             // backgroundColor: Colors.transparent,
