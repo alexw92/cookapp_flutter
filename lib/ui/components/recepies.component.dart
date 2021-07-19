@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class RecepiesComponent extends StatefulWidget {
   RecepiesComponent({Key key}) : super(key: key);
@@ -12,7 +12,7 @@ class _RecepiesComponentState extends State<RecepiesComponent> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black,
+      color: Colors.blueGrey,
     );
   }
 }

@@ -52,9 +52,9 @@ class _FridgeComponentState extends State<FridgeComponent> {
     //   ),
 
     return Container(
-      color: Colors.black,
+      color: Colors.blueGrey,
       child: Container(
-        height: 400,
+       // height: 400,
         margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
         child: GridView.count(
           primary: true,

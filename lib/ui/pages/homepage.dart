@@ -1,7 +1,6 @@
 import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/components/fridge.component.dart';
 import 'package:cookable_flutter/ui/components/recepies.component.dart';
-import 'package:cookable_flutter/ui/styles/cookable-theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +15,23 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   get error => null;
 
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static List<Widget> _widgetOptions = <Widget>[
+    Text(
+      'Index 0: Home',
+      style: optionStyle,
+    ),
+    FridgeComponent(),
+    RecepiesComponent(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     FirebaseAuth.instance
@@ -26,35 +42,54 @@ class _HomePageState extends State<HomePage> {
       home: DefaultTabController(
         length: 2,
         child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.green,
-            bottom: TabBar(
-              tabs: [
-                Tab(
-                  child: Text(
-                    'Fridge',
-                    style: CookableTheme.noramlWhiteFont,
-                  ),
-                ),
-                Tab(
-                  child: Text('Recipes', style: CookableTheme.noramlWhiteFont),
-                ),
-              ],
+            appBar: AppBar(
+              title: const Text('Cookable'),
             ),
-            title: Container(
-              child: Center(
-                child: Text(
-                  'Cookable',
-                  style: CookableTheme.largeBoldFont,
-                ),
-              ),
-            ),
+          // appBar: AppBar(
+          //   backgroundColor: Colors.green,
+          //   bottom: TabBar(
+          //     tabs: [
+          //       Tab(
+          //         child: Text(
+          //           'Fridge',
+          //           style: CookableTheme.noramlWhiteFont,
+          //         ),
+          //       ),
+          //       Tab(
+          //         child: Text('Recipes', style: CookableTheme.noramlWhiteFont),
+          //       ),
+          //     ],
+          //   ),
+          //   title: Container(
+          //     child: Center(
+          //       child: Text(
+          //         'Cookable',
+          //         style: CookableTheme.largeBoldFont,
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          body: Center(
+            child: _widgetOptions.elementAt(_selectedIndex),
           ),
-          body: TabBarView(
-            children: [
-              FridgeComponent(),
-              RecepiesComponent(),
+          bottomNavigationBar: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.shopping_basket),
+                label: 'Fridge',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.lunch_dining),
+                label: 'Recipes',
+              ),
             ],
+            currentIndex: _selectedIndex,
+            selectedItemColor: Colors.amber[800],
+            onTap: _onItemTapped,
           ),
         ),
       ),
