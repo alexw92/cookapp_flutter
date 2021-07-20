@@ -43,32 +43,8 @@ class _HomePageState extends State<HomePage> {
         length: 2,
         child: Scaffold(
             appBar: AppBar(
-              title: const Text('Cookable'),
+              title: const Text('Friganto'),
             ),
-          // appBar: AppBar(
-          //   backgroundColor: Colors.green,
-          //   bottom: TabBar(
-          //     tabs: [
-          //       Tab(
-          //         child: Text(
-          //           'Fridge',
-          //           style: CookableTheme.noramlWhiteFont,
-          //         ),
-          //       ),
-          //       Tab(
-          //         child: Text('Recipes', style: CookableTheme.noramlWhiteFont),
-          //       ),
-          //     ],
-          //   ),
-          //   title: Container(
-          //     child: Center(
-          //       child: Text(
-          //         'Cookable',
-          //         style: CookableTheme.largeBoldFont,
-          //       ),
-          //     ),
-          //   ),
-          // ),
           body: Center(
             child: _widgetOptions.elementAt(_selectedIndex),
           ),
