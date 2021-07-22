@@ -39,11 +39,10 @@ class _HomePageState extends State<HomePage> {
         .then((UserCredential user) => {TokenStore().getToken()});
 
     return MaterialApp(
-      home: DefaultTabController(
-        length: 2,
-        child: Scaffold(
+      home: Scaffold(
             appBar: AppBar(
               title: const Text('Friganto'),
+              actions: [Icon(Icons.settings)],
             ),
           body: Center(
             child: _widgetOptions.elementAt(_selectedIndex),
@@ -68,7 +67,7 @@ class _HomePageState extends State<HomePage> {
             onTap: _onItemTapped,
           ),
         ),
-      ),
+
     );
   }
 }
