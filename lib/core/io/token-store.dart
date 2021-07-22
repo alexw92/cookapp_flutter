@@ -41,8 +41,6 @@ class TokenStore {
 
   _getTokenMobile() async {
     var user = FirebaseAuth.instance.currentUser;
-    print(user);
-
     var storedToken = await storage.read(key: user.uid);
 
     if (storedToken == null ||
@@ -59,10 +57,7 @@ class TokenStore {
   _getTokenWeb() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var user = FirebaseAuth.instance.currentUser;
-    print(user);
-
     String storedToken = (prefs.getString(user.uid));
-
     if (storedToken == null ||
         JwtDecoder.isExpired(storedToken) ||
         JwtDecoder.getRemainingTime(storedToken).inSeconds < 10) {

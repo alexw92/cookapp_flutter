@@ -34,10 +34,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    FirebaseAuth.instance
-        .signInAnonymously()
-        .then((UserCredential user) => {TokenStore().getToken()});
-
     return MaterialApp(
       home: Scaffold(
             appBar: AppBar(

@@ -25,6 +25,9 @@
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
+<!-- to prevent "ClientID not set. Either set it on a <meta name=\"google-signin-client_id\" content=\"CLIENT_ID\" /> tag, or pass clientId when calling init()" -->
+  <!-- use flutter run -d chrome --web-port 5000 .  when adding new oauth origins in google it takes some time to update (minutes) -->
+  <meta name="google-signin-client_id" content="639711322532-ske9ql6lemhh7m66io1e9sop9nrv8ucs.apps.googleusercontent.com" />
 
   <title>cookable_flutter</title>
   <link rel="manifest" href="manifest.json">
@@ -46,13 +49,13 @@
 
   <script>
     const firebaseConfig = {
-      apiKey: "AIzaSyBfnXX1hmqnHSVBfRV9VPBfo1gQA-pp_eg",
-      authDomain: "cookable-flutter.firebaseapp.com",
-      projectId: "cookable-flutter",
-      storageBucket: "cookable-flutter.appspot.com",
-      messagingSenderId: "639711322532",
-      appId: "1:639711322532:web:c68cd0dbd8bb2d50b4e131",
-      measurementId: "G-E64CT3TZSH"
+    apiKey: "AIzaSyBfnXX1hmqnHSVBfRV9VPBfo1gQA-pp_eg",
+    authDomain: "cookable-flutter.firebaseapp.com",
+    projectId: "cookable-flutter",
+    storageBucket: "cookable-flutter.appspot.com",
+    messagingSenderId: "639711322532",
+    appId: "1:639711322532:web:b9e22d9082bf770db4e131",
+    measurementId: "G-3RRWGLGPZ5"
     };
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);

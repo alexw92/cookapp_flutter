@@ -1,7 +1,10 @@
+import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/pages/homepage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 const users = const {
   'dribbble@gmail.com': '12345',
@@ -47,7 +50,10 @@ class LoginScreen extends StatelessWidget {
           label: 'Google',
           callback: () async {
             print('start google sign in');
-            await Future.delayed(loginTime);
+            // await FirebaseAuth.instance
+            //     .sign()
+            //     .then((UserCredential user) => {TokenStore().getToken()});
+            await signInWithGoogle().then((UserCredential user) => {TokenStore().getToken()});
             print('stop google sign in');
             return null;
           },
@@ -89,4 +95,23 @@ class LoginScreen extends StatelessWidget {
       onRecoverPassword: _recoverPassword,
     );
   }
+}
+
+
+
+Future<UserCredential> signInWithGoogle() async {
+  // Trigger the authentication flow
+  final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+
+  // Obtain the auth details from the request
+  final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+  // Create a new credential
+  final credential = GoogleAuthProvider.credential(
+    accessToken: googleAuth.accessToken,
+    idToken: googleAuth.idToken,
+  );
+
+  // Once signed in, return the UserCredential
+  return await FirebaseAuth.instance.signInWithCredential(credential);
 }

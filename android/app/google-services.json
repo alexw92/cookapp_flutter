@@ -33,6 +33,43 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:639711322532:android:8e044f80be3bd16ab4e131",
+        "android_client_info": {
+          "package_name": "de.alexanderwerthmann.cookable_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "639711322532-r6nutr9emtofbmpsdn7ld9vnn4koe4mv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "de.alexanderwerthmann.cookable_flutter",
+            "certificate_hash": "28c5d1754c16dcfff6571414c549dab624f6fd4a"
+          }
+        },
+        {
+          "client_id": "639711322532-39p5o62vs32v85aaoecuk34ilbl4ra8i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXFPRW96jhOdcRsOfyq1JngFGo8pgGiqk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "639711322532-39p5o62vs32v85aaoecuk34ilbl4ra8i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"
