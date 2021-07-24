@@ -68,24 +68,6 @@ class LoginScreen extends StatelessWidget {
             return null;
           },
         ),
-        LoginProvider(
-          icon: FontAwesomeIcons.linkedinIn,
-          callback: () async {
-            print('start linkdin sign in');
-            await Future.delayed(loginTime);
-            print('stop linkdin sign in');
-            return null;
-          },
-        ),
-        LoginProvider(
-          icon: FontAwesomeIcons.githubAlt,
-          callback: () async {
-            print('start github sign in');
-            await Future.delayed(loginTime);
-            print('stop github sign in');
-            return null;
-          },
-        ),
       ],
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
