@@ -1,7 +1,5 @@
-import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/components/fridge.component.dart';
 import 'package:cookable_flutter/ui/components/recepies.component.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +13,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   get error => null;
 
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
   static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
     Text(

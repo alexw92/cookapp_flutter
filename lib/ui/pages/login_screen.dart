@@ -43,6 +43,7 @@ class LoginScreen extends StatelessWidget {
       title: 'Friganto',
       onLogin: _authUser,
       onSignup: _authUser,
+      showDebugButtons: false,
 
       loginProviders: <LoginProvider>[
         LoginProvider(

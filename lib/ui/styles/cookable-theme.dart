@@ -13,7 +13,7 @@ class CookableTheme {
 
         // Define the default TextTheme. Use this to specify the default
         // text styling for headlines, titles, bodies of text, and more.
-        primarySwatch: Colors.deepPurple,
+        primarySwatch: Colors.lightGreen,
         //  accentColor: Colors.orange,
         textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.orange),
         // fontFamily: 'SourceSansPro',
