@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
       style: optionStyle,
     ),
     FridgeComponent(),
-    RecepiesComponent(),
+    RecipesComponent(),
   ];
 
   void _onItemTapped(int index) {
