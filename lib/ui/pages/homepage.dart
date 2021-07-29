@@ -1,4 +1,5 @@
 import 'package:cookable_flutter/ui/components/fridge.component.dart';
+import 'package:cookable_flutter/ui/components/fridgenew.component.dart';
 import 'package:cookable_flutter/ui/components/recepies.component.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ class _HomePageState extends State<HomePage> {
       style: optionStyle,
     ),
     FridgeComponent(),
+    CheckBoxListTileWidget(),
     RecipesComponent(),
   ];
 
@@ -52,11 +54,16 @@ class _HomePageState extends State<HomePage> {
                 label: 'Fridge',
               ),
               BottomNavigationBarItem(
+                icon: Icon(Icons.shopping_bag),
+                label: 'Fridge 2',
+              ),
+              BottomNavigationBarItem(
                 icon: Icon(Icons.lunch_dining),
                 label: 'Recipes',
               ),
             ],
             currentIndex: _selectedIndex,
+            unselectedItemColor: Colors.grey,
             selectedItemColor: Colors.amber[800],
             onTap: _onItemTapped,
           ),
