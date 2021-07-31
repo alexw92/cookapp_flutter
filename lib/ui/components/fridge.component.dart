@@ -17,7 +17,7 @@ class _FridgeComponentState extends State<FridgeComponent> {
   String apiToken;
 
   void loadFoodProducts() async{
-    userFoodProductList = await UserFoodProductController.getUserFoodProducts();
+    userFoodProductList = await UserFoodProductController.getUserFoodProducts(true);
     apiToken = await TokenStore().getToken();
     setState(() {
 

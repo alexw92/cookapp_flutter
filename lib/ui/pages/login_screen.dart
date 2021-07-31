@@ -15,7 +15,6 @@ class LoginScreen extends StatelessWidget {
   Duration get loginTime => Duration(milliseconds: 2250);
 
   Future<String> _authUser(LoginData data) {
-    print('Name: ${data.name}, Password: ${data.password}');
     return Future.delayed(loginTime).then((_) {
       if (!users.containsKey(data.name)) {
         return 'User not exists';
@@ -28,7 +27,6 @@ class LoginScreen extends StatelessWidget {
   }
 
   Future<String> _recoverPassword(String name) {
-    print('Name: $name');
     return Future.delayed(loginTime).then((_) {
       if (!users.containsKey(name)) {
         return 'User not exists';
@@ -50,12 +48,10 @@ class LoginScreen extends StatelessWidget {
           icon: FontAwesomeIcons.google,
           label: 'Google',
           callback: () async {
-            print('start google sign in');
             // await FirebaseAuth.instance
             //     .sign()
             //     .then((UserCredential user) => {TokenStore().getToken()});
             await signInWithGoogle().then((UserCredential user) => {TokenStore().getToken()});
-            print('stop google sign in');
             return null;
           },
         ),

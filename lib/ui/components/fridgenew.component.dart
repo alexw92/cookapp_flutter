@@ -1,15 +1,22 @@
+import 'package:cookable_flutter/core/data/models.dart';
+import 'package:cookable_flutter/core/io/controllers.dart';
+import 'package:cookable_flutter/core/io/io-config.dart';
+import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class CheckBoxListTileWidget extends StatefulWidget {
   CheckBoxListTileWidget({Key key}) : super(key: key);
+
   @override
   CheckBoxListTileState createState() => new CheckBoxListTileState();
 }
 
 class CheckBoxListTileState extends State<CheckBoxListTileWidget> {
-  List<CheckBoxListTileModel> checkBoxListTileModel =
-      CheckBoxListTileModel.getUsers();
+  List<GroceryCheckBoxListTileModel> checkBoxListTileModel = [];
+  List<UserFoodProduct> ownedGroceries = [];
+  List<UserFoodProduct> missingGroceries = [];
+  String apiToken;
 
   @override
   Widget build(BuildContext context) {
@@ -18,12 +25,15 @@ class CheckBoxListTileState extends State<CheckBoxListTileWidget> {
           itemCount: checkBoxListTileModel.length,
           itemBuilder: (BuildContext context, int index) {
             return new Card(
+              color: checkBoxListTileModel[index].isCheck
+                  ? Colors.green
+                  : Colors.grey,
               child: new Container(
                 padding: new EdgeInsets.all(10.0),
                 child: Column(
                   children: <Widget>[
                     new CheckboxListTile(
-                        activeColor: Colors.pink[300],
+                        activeColor: Colors.orange,
                         dense: true,
                         //font change
                         title: new Text(
@@ -34,17 +44,25 @@ class CheckBoxListTileState extends State<CheckBoxListTileWidget> {
                               letterSpacing: 0.5),
                         ),
                         value: checkBoxListTileModel[index].isCheck,
-                        secondary: Container(
-                          height: 50,
-                          width: 50,
-                          child: Image.asset(
-                            checkBoxListTileModel[index].img,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                        secondary: checkBoxListTileModel[index].isLoading
+                            ? CircularProgressIndicator(
+                                value: null,
+                                color: Colors.orange,
+                              )
+                            : Container(
+                                height: 50,
+                                width: 50,
+                                child: Image.network(
+                                    "${IOConfig.apiUrl}${checkBoxListTileModel[index].img}",
+                                    headers: {
+                                      "Authorization": "Bearer $apiToken",
+                                      "Access-Control-Allow-Headers":
+                                          "Access-Control-Allow-Origin, Accept"
+                                    }),
+                              ),
                         onChanged: (bool val) {
                           itemChange(val, index);
-                        })
+                        }),
                   ],
                 ),
               ),
@@ -53,48 +71,100 @@ class CheckBoxListTileState extends State<CheckBoxListTileWidget> {
     );
   }
 
-  void itemChange(bool val, int index) {
+  void loadFoodProducts() async {
+    ownedGroceries = await UserFoodProductController.getUserFoodProducts(false);
+    missingGroceries =
+        await UserFoodProductController.getUserFoodProducts(true);
+    apiToken = await TokenStore().getToken();
     setState(() {
-      checkBoxListTileModel[index].isCheck = val;
+      this.checkBoxListTileModel = getGroceries();
     });
+  }
+
+  List<GroceryCheckBoxListTileModel> getGroceries() {
+    var groceryListTiles = this
+        .ownedGroceries
+        .map((grocery) => GroceryCheckBoxListTileModel(
+            groceryId: grocery.foodProductId,
+            img: grocery.imgSrc,
+            isCheck: true,
+            title: grocery.name,
+            isLoading: false))
+        .toList();
+    groceryListTiles.addAll(this
+        .missingGroceries
+        .map((grocery) => GroceryCheckBoxListTileModel(
+            groceryId: grocery.foodProductId,
+            img: grocery.imgSrc,
+            isCheck: false,
+            title: grocery.name,
+            isLoading: false))
+        .toList());
+    return groceryListTiles;
+    // for (int i = 0; i < this.groceryList.length; i++) {
+    //   myTiles.add(
+    //     FridgeTileComponent(
+    //         userFoodProduct: userFoodProductList[i],
+    //         apiToken: apiToken
+    //     ),
+    //   );
+    // }
+    // return <GroceryCheckBoxListTileModel>[
+    //
+    //   GroceryCheckBoxListTileModel(
+    //       groceryId: 1,
+    //       img: 'assets/images/android_img.png',
+    //       title: "Android",
+    //       isCheck: true),
+    //   GroceryCheckBoxListTileModel(
+    //       groceryId: 2,
+    //       img: 'assets/images/flutter.jpeg',
+    //       title: "Flutter",
+    //       isCheck: false),
+    //   GroceryCheckBoxListTileModel(
+    //       groceryId: 3,
+    //       img: 'assets/images/ios_img.webp',
+    //       title: "IOS",
+    //       isCheck: false),
+    //   GroceryCheckBoxListTileModel(
+    //       groceryId: 4,
+    //       img: 'assets/images/php_img.png',
+    //       title: "PHP",
+    //       isCheck: false),
+    //   GroceryCheckBoxListTileModel(
+    //       groceryId: 5,
+    //       img: 'assets/images/node_img.png',
+    //       title: "Node",
+    //       isCheck: false),
+    // ];
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadFoodProducts();
+  }
+
+  void itemChange(bool val, int index) {
+    var tileModel = checkBoxListTileModel[index];
+    setState(() {
+      tileModel.isLoading = true;
+    });
+    UserFoodProductController.toogleUserFoodProduct(tileModel.groceryId, val)
+        .then((value) => setState(() {
+              tileModel.isCheck = val;
+              tileModel.isLoading = false;
+            }));
   }
 }
 
-class CheckBoxListTileModel {
-  int userId;
+class GroceryCheckBoxListTileModel {
+  int groceryId;
   String img;
   String title;
   bool isCheck;
+  bool isLoading;
 
-  CheckBoxListTileModel({this.userId, this.img, this.title, this.isCheck});
-
-  static List<CheckBoxListTileModel> getUsers() {
-    return <CheckBoxListTileModel>[
-      CheckBoxListTileModel(
-          userId: 1,
-          img: 'assets/images/android_img.png',
-          title: "Android",
-          isCheck: true),
-      CheckBoxListTileModel(
-          userId: 2,
-          img: 'assets/images/flutter.jpeg',
-          title: "Flutter",
-          isCheck: false),
-      CheckBoxListTileModel(
-          userId: 3,
-          img: 'assets/images/ios_img.webp',
-          title: "IOS",
-          isCheck: false),
-      CheckBoxListTileModel(
-          userId: 4,
-          img: 'assets/images/php_img.png',
-          title: "PHP",
-          isCheck: false),
-      CheckBoxListTileModel(
-          userId: 5,
-          img: 'assets/images/node_img.png',
-          title: "Node",
-          isCheck: false),
-    ];
-  }
+  GroceryCheckBoxListTileModel(
+      {this.groceryId, this.img, this.title, this.isCheck, this.isLoading});
 }
