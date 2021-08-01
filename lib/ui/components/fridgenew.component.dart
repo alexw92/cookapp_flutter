@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/io-config.dart';
@@ -52,13 +54,12 @@ class CheckBoxListTileState extends State<CheckBoxListTileWidget> {
                             : Container(
                                 height: 50,
                                 width: 50,
-                                child: Image.network(
+                                child: Image( image: CachedNetworkImageProvider(
                                     "${IOConfig.apiUrl}${checkBoxListTileModel[index].img}",
-                                    headers: {
-                                      "Authorization": "Bearer $apiToken",
-                                      "Access-Control-Allow-Headers":
-                                          "Access-Control-Allow-Origin, Accept"
-                                    }),
+                                    headers: {"Authorization": "Bearer $apiToken",
+                                      "Access-Control-Allow-Headers": "Access-Control-Allow-Origin, Accept"},imageRenderMethodForWeb: ImageRenderMethodForWeb.HttpGet
+                                )
+                                    ),
                               ),
                         onChanged: (bool val) {
                           itemChange(val, index);
