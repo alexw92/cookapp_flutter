@@ -1,6 +1,6 @@
 import 'package:cookable_flutter/ui/components/fridge.component.dart';
 import 'package:cookable_flutter/ui/components/fridgenew.component.dart';
-import 'package:cookable_flutter/ui/components/recepies.component.dart';
+import 'package:cookable_flutter/ui/components/recipes.component.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
