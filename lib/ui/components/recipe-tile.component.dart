@@ -23,6 +23,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
 
   _RecipeTileComponentState({this.recipe, this.apiToken});
 
+  // Todo 1: Fix overflow shit and keep it kinda responsive
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -30,7 +31,8 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
         child: Column(mainAxisSize: MainAxisSize.min, children: [
       Stack(
         children: [
-          Image(
+          Container(
+              child: Image(
             // needs --web-renderer html
             image:
                 CachedNetworkImageProvider("${IOConfig.apiUrl}${recipe.imgSrc}",
@@ -41,10 +43,10 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                     },
                     imageRenderMethodForWeb: ImageRenderMethodForWeb.HttpGet),
             width: 300,
-            height: 250,
+            height: 282,
             // backgroundColor: Colors.transparent,
             //  radius: 40,
-          ),
+          )),
           Container(
               alignment: Alignment.center,
               child: Text(
@@ -59,12 +61,12 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
           // ),
         ],
       ),
-      Expanded(
-        flex: 2,
-          child: Container(
+      // Todo this is where I want to add #persons, diet icon, nutrients
+      Container(
+        height: 50,
         alignment: Alignment.bottomCenter,
         color: Colors.orange,
-      )),
+      ),
     ]));
   }
 }
