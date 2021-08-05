@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/io-config.dart';
+import 'package:cookable_flutter/ui/pages/recipe-details-page.dart';
 import 'package:cookable_flutter/ui/styles/cookable-theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,9 +27,11 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
   // Todo 1: Fix overflow shit and keep it kinda responsive
   @override
   Widget build(BuildContext context) {
-    return Card(
-        //padding: new EdgeInsets.all(20.0),
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
+    return GestureDetector(
+        onTap: () => navigateToRecipePage(),
+        child: Card(
+            //padding: new EdgeInsets.all(20.0),
+            child: Column(mainAxisSize: MainAxisSize.min, children: [
       Stack(
         children: [
           Container(
@@ -67,6 +70,17 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
         alignment: Alignment.bottomCenter,
         color: Colors.orange,
       ),
-    ]));
+    ])));
+  }
+
+  navigateToRecipePage() async {
+    //navigate to materials page when callbackPath is not report page and list component is clicked
+    //Return the result to this component when task is finished from materials
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              RecipesDetailsPage()),
+    );
   }
 }
