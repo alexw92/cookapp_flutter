@@ -28,7 +28,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () => navigateToRecipePage(),
+        onTap: () => navigateToRecipePage(recipe.id),
         child: Card(
             //padding: new EdgeInsets.all(20.0),
             child: Column(mainAxisSize: MainAxisSize.min, children: [
@@ -73,14 +73,14 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
     ])));
   }
 
-  navigateToRecipePage() async {
+  navigateToRecipePage(int recipeId) async {
     //navigate to materials page when callbackPath is not report page and list component is clicked
     //Return the result to this component when task is finished from materials
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) =>
-              RecipesDetailsPage()),
+              RecipesDetailsPage(recipeId))
     );
   }
 }

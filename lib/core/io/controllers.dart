@@ -13,7 +13,7 @@ class RecipeController {
     String storedToken = await tokenStore.getToken();
 
     var response =
-        await http.get(Uri.parse("${IOConfig.apiUrl}/recipes"), headers: {
+        await http.get(Uri.parse("${IOConfig.apiUrl}/recipes/all"), headers: {
       "Authorization": "Bearer $storedToken",
       'Content-Type': 'application/json',
     }).timeout(IOConfig.timeoutDuration);
@@ -23,6 +23,28 @@ class RecipeController {
       var list = json.decode(response.body) as List;
       List<Recipe> recipes = list.map((it) => Recipe.fromJson(it)).toList();
       return recipes;
+    }
+
+    throw Exception(
+        "Error requesting recipes, Code: ${response.statusCode} Message: ${response.body} ");
+  }
+
+  static Future<RecipeDetails> getRecipe(int id) async {
+    // get token from token store
+    var tokenStore = IOConfig.tokenStore;
+    String storedToken = await tokenStore.getToken();
+
+    var response =
+    await http.get(Uri.parse("${IOConfig.apiUrl}/recipes/$id"), headers: {
+      "Authorization": "Bearer $storedToken",
+      'Content-Type': 'application/json',
+    }).timeout(IOConfig.timeoutDuration);
+
+    /// If the first API call is successful
+    if (response.statusCode == HttpStatus.ok) {
+      var recipeJson = json.decode(response.body);
+      RecipeDetails recipe = RecipeDetails.fromJson(recipeJson);
+      return recipe;
     }
 
     throw Exception(
