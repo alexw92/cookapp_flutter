@@ -34,8 +34,8 @@ class CheckBoxListTileState extends State<CheckBoxListTileWidget> {
                 padding: new EdgeInsets.all(10.0),
                 child: Column(
                   children: <Widget>[
-                    new CheckboxListTile(
-                        activeColor: Colors.orange,
+                    new SwitchListTile(
+                        activeColor: Colors.black,
                         dense: true,
                         //font change
                         title: new Text(
