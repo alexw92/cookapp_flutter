@@ -52,7 +52,7 @@ class _FridgeComponentState extends State<FridgeComponent> {
     //   ),
 
     return Container(
-      color: Colors.blueGrey,
+      color: Colors.black,
       child: Container(
        // height: 400,
         margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
