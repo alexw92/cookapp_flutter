@@ -1,4 +1,5 @@
 import 'package:cookable_flutter/core/io/token-store.dart';
+import 'package:cookable_flutter/ui/styles/glow_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -29,12 +30,24 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     const TextStyle optionStyle =
-    TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-    return  Text(
-    'Index 0: Home',
-      style: optionStyle,
-    );
+        TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+    return SingleChildScrollView(
+        child:
+            Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+      CustomPaint(
+        foregroundPainter: BorderPainter(),
+        child: Container(
+          width: 300,
+          height: 100,
+        ),
+      ),
+      CustomPaint(
+        foregroundPainter: BorderPainter(),
+        child: Container(
+          width: 300,
+          height: 100,
+        ),
+      )
+    ]));
   }
-
-
 }
