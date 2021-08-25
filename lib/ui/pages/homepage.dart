@@ -1,6 +1,7 @@
 import 'package:cookable_flutter/ui/components/fridge.component.dart';
 import 'package:cookable_flutter/ui/components/fridgenew.component.dart';
 import 'package:cookable_flutter/ui/components/recipes.component.dart';
+import 'package:cookable_flutter/ui/pages/dashboard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,12 +16,8 @@ class _HomePageState extends State<HomePage> {
   get error => null;
 
   int _selectedIndex = 1;
-  static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
+    DashboardPage(),
     FridgeComponent(),
     CheckBoxListTileWidget(),
     RecipesComponent(),
@@ -36,39 +33,38 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-            appBar: AppBar(
-              title: const Text('Friganto'),
-              actions: [Icon(Icons.settings)],
-            ),
-          body: Center(
-            child: _widgetOptions.elementAt(_selectedIndex),
-          ),
-          bottomNavigationBar: BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_basket),
-                label: 'Fridge',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_bag),
-                label: 'Fridge 2',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.lunch_dining),
-                label: 'Recipes',
-              ),
-            ],
-            currentIndex: _selectedIndex,
-            unselectedItemColor: Colors.grey,
-            selectedItemColor: Colors.amber[800],
-            onTap: _onItemTapped,
-          ),
+        appBar: AppBar(
+          title: const Text('Friganto'),
+          actions: [Icon(Icons.settings)],
         ),
-
+        body: Center(
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_basket),
+              label: 'Fridge',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_bag),
+              label: 'Fridge 2',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.lunch_dining),
+              label: 'Recipes',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          unselectedItemColor: Colors.grey,
+          selectedItemColor: Colors.amber[800],
+          onTap: _onItemTapped,
+        ),
+      ),
     );
   }
 }
