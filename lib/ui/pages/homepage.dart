@@ -1,8 +1,7 @@
-import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/components/fridge.component.dart';
-import 'package:cookable_flutter/ui/components/recepies.component.dart';
-import 'package:cookable_flutter/ui/styles/cookable-theme.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cookable_flutter/ui/components/fridgenew.component.dart';
+import 'package:cookable_flutter/ui/components/recipes.component.dart';
+import 'package:cookable_flutter/ui/pages/dashboard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -16,46 +15,54 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   get error => null;
 
+  int _selectedIndex = 1;
+  static List<Widget> _widgetOptions = <Widget>[
+    DashboardPage(),
+    FridgeComponent(),
+    CheckBoxListTileWidget(),
+    RecipesComponent(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    FirebaseAuth.instance
-        .signInAnonymously()
-        .then((UserCredential user) => {TokenStore().getToken()});
-
     return MaterialApp(
-      home: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.green,
-            bottom: TabBar(
-              tabs: [
-                Tab(
-                  child: Text(
-                    'Fridge',
-                    style: CookableTheme.noramlWhiteFont,
-                  ),
-                ),
-                Tab(
-                  child: Text('Recipes', style: CookableTheme.noramlWhiteFont),
-                ),
-              ],
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Friganto'),
+          actions: [Icon(Icons.settings)],
+        ),
+        body: Center(
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
             ),
-            title: Container(
-              child: Center(
-                child: Text(
-                  'Cookable',
-                  style: CookableTheme.largeBoldFont,
-                ),
-              ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_basket),
+              label: 'Fridge',
             ),
-          ),
-          body: TabBarView(
-            children: [
-              FridgeComponent(),
-              RecepiesComponent(),
-            ],
-          ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_bag),
+              label: 'Fridge 2',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.lunch_dining),
+              label: 'Recipes',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          unselectedItemColor: Colors.grey,
+          selectedItemColor: Colors.amber[800],
+          onTap: _onItemTapped,
         ),
       ),
     );

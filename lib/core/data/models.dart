@@ -5,6 +5,7 @@ class Recipe {
   final String uploadedBy;
   final List<RecipeInstruction> instructions;
   final List<Ingredient> ingredients;
+  final int numberOfPersons;
 
   Recipe(
       {this.id,
@@ -12,7 +13,8 @@ class Recipe {
       this.name,
       this.uploadedBy,
       this.instructions,
-      this.ingredients});
+      this.ingredients,
+      this.numberOfPersons});
 
   factory Recipe.fromJson(Map<String, dynamic> recipeJson) {
     return Recipe(
@@ -25,7 +27,45 @@ class Recipe {
             .toList(),
         ingredients: (recipeJson['ingredients'] as List)
             .map((it) => Ingredient.fromJson(it))
-            .toList());
+            .toList(),
+        numberOfPersons: recipeJson['numberOfPersons']);
+  }
+}
+
+class RecipeDetails {
+  final int id;
+  final String imgSrc;
+  final String name;
+  final String uploadedBy;
+  final List<RecipeInstruction> instructions;
+  final List<Ingredient> ingredients;
+  final int numberOfPersons;
+  final Nutrients nutrients;
+
+  RecipeDetails(
+      {this.id,
+        this.imgSrc,
+        this.name,
+        this.uploadedBy,
+        this.instructions,
+        this.ingredients,
+        this.numberOfPersons,
+        this.nutrients});
+
+  factory RecipeDetails.fromJson(Map<String, dynamic> recipeJson) {
+    return RecipeDetails(
+        id: recipeJson['id'],
+        imgSrc: recipeJson['img_src'],
+        name: recipeJson['name'],
+        uploadedBy: recipeJson['uploadedBy'],
+        instructions: (recipeJson['instructions'] as List)
+            .map((it) => RecipeInstruction.fromJson(it))
+            .toList(),
+        ingredients: (recipeJson['ingredients'] as List)
+            .map((it) => Ingredient.fromJson(it))
+            .toList(),
+        nutrients: Nutrients.fromJson(recipeJson['nutrients']),
+        numberOfPersons: recipeJson['numberOfPersons']);
   }
 }
 

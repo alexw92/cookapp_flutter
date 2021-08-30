@@ -6,5 +6,5 @@ class IOConfig{
   static final tokenStore = TokenStore();
   static final apiUrlDev = "http://192.168.2.102:8080";
   static final apiUrlLive = "http://cookable.eu-central-1.elasticbeanstalk.com";
-  static final apiUrl = apiUrlLive;
+  static final apiUrl = apiUrlDev;
 }

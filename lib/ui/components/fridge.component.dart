@@ -17,7 +17,7 @@ class _FridgeComponentState extends State<FridgeComponent> {
   String apiToken;
 
   void loadFoodProducts() async{
-    userFoodProductList = await UserFoodProductController.getUserFoodProducts();
+    userFoodProductList = await UserFoodProductController.getUserFoodProducts(true);
     apiToken = await TokenStore().getToken();
     setState(() {
 
@@ -54,7 +54,7 @@ class _FridgeComponentState extends State<FridgeComponent> {
     return Container(
       color: Colors.black,
       child: Container(
-        height: 400,
+       // height: 400,
         margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
         child: GridView.count(
           primary: true,
