@@ -13,56 +13,57 @@ class RecipesComponent extends StatefulWidget {
 }
 
 class _RecipesComponentState extends State<RecipesComponent> {
-
-
   List<Recipe> recipeList = [];
   String apiToken;
+  bool loading = false;
 
-  void loadFoodProducts() async{
+  void loadFoodProducts() async {
+    loading = true;
     recipeList = await RecipeController.getRecipes();
     apiToken = await TokenStore().getToken();
     setState(() {
-
+      loading = false;
     });
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     loadFoodProducts();
   }
 
   @override
   Widget build(BuildContext context) {
-
-    return Container(
-      color: Colors.blueGrey,
-      child: Container(
-        // height: 400,
-        margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-        child: GridView.count(
-          primary: true,
-          padding: const EdgeInsets.all(0),
-          crossAxisCount: 1,
-          mainAxisSpacing: 0,
-          crossAxisSpacing: 0,
-          children: [...getAllTiles()],
+    if (loading)
+      return CircularProgressIndicator(
+        value: null,
+        color: Colors.green,
+      );
+    else
+      return Container(
+        color: Colors.blueGrey,
+        child: Container(
+          // height: 400,
+          margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+          child: GridView.count(
+            primary: true,
+            padding: const EdgeInsets.all(0),
+            crossAxisCount: 1,
+            mainAxisSpacing: 0,
+            crossAxisSpacing: 0,
+            children: [...getAllTiles()],
+          ),
         ),
-      ),
-    );
+      );
   }
 
   List<Widget> getAllTiles() {
     List<Widget> myTiles = [];
     for (int i = 0; i < recipeList.length; i++) {
       myTiles.add(
-        RecipeTileComponent(
-            recipe: recipeList[i],
-            apiToken: apiToken
-        ),
+        RecipeTileComponent(recipe: recipeList[i], apiToken: apiToken),
       );
     }
     return myTiles;
   }
-
 }

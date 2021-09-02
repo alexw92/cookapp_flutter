@@ -19,66 +19,79 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget> {
   List<UserFoodProduct> ownedGroceries = [];
   List<UserFoodProduct> missingGroceries = [];
   String apiToken;
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
-    return new Container(
-      child: new ListView.builder(
-          itemCount: checkBoxListTileModel.length,
-          itemBuilder: (BuildContext context, int index) {
-            return new Card(
-              color: checkBoxListTileModel[index].isCheck
-                  ? Colors.green
-                  : Colors.grey,
-              child: new Container(
-                padding: new EdgeInsets.all(10.0),
-                child: Column(
-                  children: <Widget>[
-                    new SwitchListTile(
-                        activeColor: Colors.black,
-                        dense: true,
-                        //font change
-                        title: new Text(
-                          checkBoxListTileModel[index].title,
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 0.5),
-                        ),
-                        value: checkBoxListTileModel[index].isCheck,
-                        secondary: checkBoxListTileModel[index].isLoading
-                            ? CircularProgressIndicator(
-                                value: null,
-                                color: Colors.orange,
-                              )
-                            : Container(
-                                height: 50,
-                                width: 50,
-                                child: Image( image: CachedNetworkImageProvider(
-                                    "${IOConfig.apiUrl}${checkBoxListTileModel[index].img}",
-                                    headers: {"Authorization": "Bearer $apiToken",
-                                      "Access-Control-Allow-Headers": "Access-Control-Allow-Origin, Accept"},imageRenderMethodForWeb: ImageRenderMethodForWeb.HttpGet
+    if (loading)
+      return CircularProgressIndicator(
+        value: null,
+        color: Colors.green,
+      );
+    else
+      return new Container(
+        child: new ListView.builder(
+            itemCount: checkBoxListTileModel.length,
+            itemBuilder: (BuildContext context, int index) {
+              return new Card(
+                color: checkBoxListTileModel[index].isCheck
+                    ? Colors.green
+                    : Colors.grey,
+                child: new Container(
+                  padding: new EdgeInsets.all(10.0),
+                  child: Column(
+                    children: <Widget>[
+                      new SwitchListTile(
+                          activeColor: Colors.black,
+                          dense: true,
+                          //font change
+                          title: new Text(
+                            checkBoxListTileModel[index].title,
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 0.5),
+                          ),
+                          value: checkBoxListTileModel[index].isCheck,
+                          secondary: checkBoxListTileModel[index].isLoading
+                              ? CircularProgressIndicator(
+                                  value: null,
+                                  color: Colors.orange,
                                 )
-                                    ),
-                              ),
-                        onChanged: (bool val) {
-                          itemChange(val, index);
-                        }),
-                  ],
+                              : Container(
+                                  height: 50,
+                                  width: 50,
+                                  child: Image(
+                                      image: CachedNetworkImageProvider(
+                                          "${IOConfig.apiUrl}${checkBoxListTileModel[index].img}",
+                                          headers: {
+                                            "Authorization": "Bearer $apiToken",
+                                            "Access-Control-Allow-Headers":
+                                                "Access-Control-Allow-Origin, Accept"
+                                          },
+                                          imageRenderMethodForWeb:
+                                              ImageRenderMethodForWeb.HttpGet)),
+                                ),
+                          onChanged: (bool val) {
+                            itemChange(val, index);
+                          }),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          }),
-    );
+              );
+            }),
+      );
   }
 
   void loadFoodProducts() async {
+    loading = true;
     ownedGroceries = await UserFoodProductController.getUserFoodProducts(false);
     missingGroceries =
         await UserFoodProductController.getUserFoodProducts(true);
     apiToken = await TokenStore().getToken();
     setState(() {
       this.checkBoxListTileModel = getGroceries();
+      loading = false;
     });
   }
 
