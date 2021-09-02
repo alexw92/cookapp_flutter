@@ -1,7 +1,7 @@
-import 'package:cookable_flutter/ui/components/fridge.component.dart';
 import 'package:cookable_flutter/ui/components/fridgenew.component.dart';
 import 'package:cookable_flutter/ui/components/recipes.component.dart';
 import 'package:cookable_flutter/ui/pages/dashboard.dart';
+import 'package:cookable_flutter/ui/pages/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -18,9 +18,10 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 1;
   static List<Widget> _widgetOptions = <Widget>[
     DashboardPage(),
-    FridgeComponent(),
-    CheckBoxListTileWidget(),
+    // FridgeComponent(),
+    ToggleFridgeWidget(),
     RecipesComponent(),
+    ProfilePage(),
   ];
 
   void _onItemTapped(int index) {
@@ -46,10 +47,10 @@ class _HomePageState extends State<HomePage> {
               icon: Icon(Icons.home),
               label: 'Home',
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_basket),
-              label: 'Fridge',
-            ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.shopping_basket),
+            //   label: 'Fridge',
+            // ),
             BottomNavigationBarItem(
               icon: Icon(Icons.shopping_bag),
               label: 'Fridge 2',
@@ -57,6 +58,10 @@ class _HomePageState extends State<HomePage> {
             BottomNavigationBarItem(
               icon: Icon(Icons.lunch_dining),
               label: 'Recipes',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
             ),
           ],
           currentIndex: _selectedIndex,

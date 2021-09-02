@@ -7,14 +7,14 @@ import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class CheckBoxListTileWidget extends StatefulWidget {
-  CheckBoxListTileWidget({Key key}) : super(key: key);
+class ToggleFridgeWidget extends StatefulWidget {
+  ToggleFridgeWidget({Key key}) : super(key: key);
 
   @override
   CheckBoxListTileState createState() => new CheckBoxListTileState();
 }
 
-class CheckBoxListTileState extends State<CheckBoxListTileWidget> {
+class CheckBoxListTileState extends State<ToggleFridgeWidget> {
   List<GroceryCheckBoxListTileModel> checkBoxListTileModel = [];
   List<UserFoodProduct> ownedGroceries = [];
   List<UserFoodProduct> missingGroceries = [];
