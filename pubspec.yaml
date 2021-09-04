@@ -26,6 +26,7 @@ dependencies:
     sdk: flutter
   firebase_core: ^1.4.0
   firebase_auth: ^3.0.1
+  firebase_storage: ^10.0.3
   flutter_secure_storage: 4.2.0
   jwt_decoder: ^2.0.1
   #flutter_i18n: ^0.16.0
@@ -44,6 +45,8 @@ dependencies:
   cupertino_icons: ^1.0.0
   # https://pub.dev/packages/flutter_login/install
   flutter_login: ^2.2.1
+  # picking img from gallery
+  image_picker: ^0.8.4
 
 dev_dependencies:
   flutter_test:

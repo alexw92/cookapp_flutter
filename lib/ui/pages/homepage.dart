@@ -5,6 +5,8 @@ import 'package:cookable_flutter/ui/pages/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'image_upload_test.dart';
+
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
 
@@ -22,6 +24,7 @@ class _HomePageState extends State<HomePage> {
     ToggleFridgeWidget(),
     RecipesComponent(),
     ProfilePage(),
+    ImageUploadPage()
   ];
 
   void _onItemTapped(int index) {
@@ -62,6 +65,10 @@ class _HomePageState extends State<HomePage> {
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
               label: 'Profile',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.image),
+              label: 'ImageTest',
             ),
           ],
           currentIndex: _selectedIndex,
