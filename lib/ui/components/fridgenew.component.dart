@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
-import 'package:cookable_flutter/core/io/io-config.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +19,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget> {
   List<UserFoodProduct> missingGroceries = [];
   String apiToken;
   bool loading = false;
+  List<GroceryCheckBoxListTileModel> groceries;
 
   @override
   Widget build(BuildContext context) {
@@ -63,12 +63,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget> {
                                   width: 50,
                                   child: Image(
                                       image: CachedNetworkImageProvider(
-                                          "${IOConfig.apiUrl}${checkBoxListTileModel[index].img}",
-                                          headers: {
-                                            "Authorization": "Bearer $apiToken",
-                                            "Access-Control-Allow-Headers":
-                                                "Access-Control-Allow-Origin, Accept"
-                                          },
+                                          "${checkBoxListTileModel[index].img}",
                                           imageRenderMethodForWeb:
                                               ImageRenderMethodForWeb.HttpGet)),
                                 ),
@@ -89,8 +84,9 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget> {
     missingGroceries =
         await UserFoodProductController.getUserFoodProducts(true);
     apiToken = await TokenStore().getToken();
+    groceries = getGroceries();
     setState(() {
-      this.checkBoxListTileModel = getGroceries();
+      this.checkBoxListTileModel = groceries;
       loading = false;
     });
   }
