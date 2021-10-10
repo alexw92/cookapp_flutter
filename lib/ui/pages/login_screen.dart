@@ -38,7 +38,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlutterLogin(
-      title: 'Friganto',
+      title: 'Foodict',
       onLogin: _authUser,
       onSignup: _authUser,
       showDebugButtons: false,
@@ -65,6 +65,17 @@ class LoginScreen extends StatelessWidget {
             return null;
           },
         ),
+        LoginProvider(
+          icon: FontAwesomeIcons.ban,
+          label: 'Without Login',
+          callback: () async {
+            print('start anonymous sign in');
+            await Future.delayed(loginTime);
+            print('end anonymous sign in');
+            return null;
+          },
+
+        )
       ],
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
