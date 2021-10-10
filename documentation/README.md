@@ -82,7 +82,7 @@ in here. So we should keep it customizable
 * :x: We need to be able to handle errors from the backend at all time and should use material snackbars to display it (we can beautify later)
 * :x: Since we dont use registration we should define the point when registration is mandatory
   + As long as the user is unverified we need some identifier for him to apply a preregistration [check this!!](https://firebase.google.com/docs/auth/web/anonymous-auth)
-  + From the point when it we want to register we can do Firebase auth to do a full registration
+  + From the point when we want to register we can do Firebase auth to do a full registration [by linking the already existing account](https://firebase.flutter.dev/docs/auth/usage/#linking-user-accounts)
   + We might also need to include a data usage agreement
 * :x: The number of recipes, instructions could potentially very large - We should not load everything at the beginning, especially images need huge bandwith
 * :heavy_check_mark: We need a good library for proper scaling of images

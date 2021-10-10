@@ -70,7 +70,8 @@ class LoginScreen extends StatelessWidget {
           label: 'Without Login',
           callback: () async {
             print('start anonymous sign in');
-            await Future.delayed(loginTime);
+            await signInAnonymously().then((UserCredential user) => {TokenStore().getToken()});
+
             print('end anonymous sign in');
             return null;
           },
@@ -87,7 +88,9 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-
+Future<UserCredential> signInAnonymously() async {
+  return await FirebaseAuth.instance.signInAnonymously();
+}
 
 Future<UserCredential> signInWithGoogle() async {
   // Trigger the authentication flow
