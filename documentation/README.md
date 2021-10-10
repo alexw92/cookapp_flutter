@@ -84,6 +84,18 @@ in here. So we should keep it customizable
   + As long as the user is unverified we need some identifier for him to apply a preregistration [check this!!](https://firebase.google.com/docs/auth/web/anonymous-auth)
   + From the point when we want to register we can do Firebase auth to do a full registration [by linking the already existing account](https://firebase.flutter.dev/docs/auth/usage/#linking-user-accounts)
   + We might also need to include a data usage agreement
+  + This is to check if user was signed in anonymously  
+```dart
+    var user = FirebaseAuth.instance.currentUser;
+    print(user.isAnonymous);
+```
+  + This is to link anonymous account [link](https://firebase.google.com/docs/auth/web/anonymous-auth)
+```dart
+import { GoogleAuthProvider } from "firebase/auth";
+
+const credential = GoogleAuthProvider.credential(
+        googleUser.getAuthResponse().id_token);
+```
 * :x: The number of recipes, instructions could potentially very large - We should not load everything at the beginning, especially images need huge bandwith
 * :heavy_check_mark: We need a good library for proper scaling of images
 * :x: We should add a settings page offering config options for
