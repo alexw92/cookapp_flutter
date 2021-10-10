@@ -26,7 +26,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget> {
     if (loading)
       return CircularProgressIndicator(
         value: null,
-        color: Colors.green,
+        backgroundColor: Colors.green,
       );
     else
       return new Container(
@@ -56,7 +56,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget> {
                           secondary: checkBoxListTileModel[index].isLoading
                               ? CircularProgressIndicator(
                                   value: null,
-                                  color: Colors.orange,
+                                  backgroundColor: Colors.orange,
                                 )
                               : Container(
                                   height: 50,

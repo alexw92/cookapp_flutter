@@ -37,7 +37,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
     if (loading)
       return CircularProgressIndicator(
         value: null,
-        color: Colors.green,
+        backgroundColor: Colors.green,
       );
     else
       return Container(

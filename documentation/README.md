@@ -1,6 +1,20 @@
 # cookable_flutter
 # Owner : Awesome CEO Alex
 [flutter-fire](https://firebase.flutter.dev/docs/auth/overview)
+
+**Run in web:** 
+
+```use flutter run -d chrome --web-port 5000 .  when adding new oauth origins in google it takes some time to update (minutes)```
+
+**Cors Config on Firebase Bucket to load imgs from flutter web while Testing:**
+
+```
+(cookable-flutter)$ touch cors.js
+(cookable-flutter)$ nano cors.js
+(cookable-flutter)$ mv cors.js cors.json
+(cookable-flutter)$ gsutil cors set cors.json gs://cookable-flutter.appspot.com
+```
+
 # UI Ideas
 Most notes are written directly in the image
 ## The current login page
