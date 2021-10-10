@@ -37,15 +37,6 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var user = FirebaseAuth.instance.currentUser;
-    if(user!= null){
-    print(user.isAnonymous);
-    TokenStore().getToken();
-
-    Navigator.of(context).pushReplacement(MaterialPageRoute(
-      builder: (context) => HomePage(),
-    ));
-    }
     return FlutterLogin(
       title: 'Foodict',
       onLogin: _authUser,
