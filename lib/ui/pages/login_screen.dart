@@ -66,7 +66,7 @@ class LoginScreen extends StatelessWidget {
           },
         ),
         LoginProvider(
-          icon: FontAwesomeIcons.ban,
+          icon: FontAwesomeIcons.userSecret,
           label: 'Without Login',
           callback: () async {
             print('start anonymous sign in');
