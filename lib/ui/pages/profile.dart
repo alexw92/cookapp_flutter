@@ -84,8 +84,14 @@ class _ProfilePageState extends State<ProfilePage> {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
+    String newIdToken;
     FirebaseAuth.instance.currentUser.linkWithCredential(credential).then(
-        (user) => {
+        (user) async => {
+              // getting a new token seems to be necessary here to avoid the audience not recognized error in the backend
+              newIdToken =
+                  await FirebaseAuth.instance.currentUser.getIdToken(true),
+              TokenStore()
+                  .putToken(FirebaseAuth.instance.currentUser.uid, newIdToken),
               print(
                   "Anonymous account successfully upgraded: " + user.toString())
             },
