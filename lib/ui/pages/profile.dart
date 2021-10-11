@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({Key key}) : super(key: key);
@@ -63,8 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
               onPressed: () {},
             ),
           ]));
-    }
-    else {
+    } else {
       return Container(
         child: Text("User is not anonymous. display profile page here"),
       );
@@ -72,8 +72,24 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> convertAnonymousToGoogle() async {
-    apiToken = await TokenStore().getToken();
+    // Trigger the authentication flow
+    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
 
-    var credential = GoogleAuthProvider.credential(idToken: apiToken);
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+    FirebaseAuth.instance.currentUser.linkWithCredential(credential).then(
+        (user) => {
+              print(
+                  "Anonymous account successfully upgraded: " + user.toString())
+            },
+        onError: (error) =>
+            {print("Error while upgrading user: " + error.toString())});
   }
 }
