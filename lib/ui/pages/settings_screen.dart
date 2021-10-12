@@ -30,9 +30,11 @@ class _SettingsPageState extends State<SettingsPage> {
                 leading: Icon(Icons.language),
                 onPressed: (context) async {
                   final result = await Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => LanguagesScreen(language: 'English'),
+                    builder: (_) => LanguagesScreen(language: language),
                   ));
-                  this.language = result;
+                  setState(() {
+                    this.language = result;
+                  });
                 },
               ),
               SettingsTile.switchTile(
