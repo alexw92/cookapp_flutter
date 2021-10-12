@@ -13,6 +13,7 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   bool isSwitched = false;
+  String language = 'English';
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +26,13 @@ class _SettingsPageState extends State<SettingsPage> {
             tiles: [
               SettingsTile(
                 title: 'Language',
-                subtitle: 'English',
+                subtitle: language,
                 leading: Icon(Icons.language),
-                onPressed: (context) {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => LanguagesScreen(),
+                onPressed: (context) async {
+                  final result = await Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => LanguagesScreen(language: 'English'),
                   ));
+                  this.language = result;
                 },
               ),
               SettingsTile.switchTile(

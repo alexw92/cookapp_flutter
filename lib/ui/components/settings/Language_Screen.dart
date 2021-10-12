@@ -2,12 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 class LanguagesScreen extends StatefulWidget {
+  final String language;
+  LanguagesScreen({this.language});
+
   @override
-  _LanguagesScreenState createState() => _LanguagesScreenState();
+  _LanguagesScreenState createState() => _LanguagesScreenState(this.language);
 }
 
 class _LanguagesScreenState extends State<LanguagesScreen> {
+  List<String> languages = ['English', 'German'];
   int languageIndex = 0;
+
+  _LanguagesScreenState(String language){
+    languageIndex = languages.indexOf(language);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,5 +54,6 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
     setState(() {
       languageIndex = index;
     });
+    Navigator.pop(context, languages[index]);
   }
 }
