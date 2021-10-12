@@ -2,6 +2,7 @@ import 'package:cookable_flutter/ui/components/fridgenew.component.dart';
 import 'package:cookable_flutter/ui/components/recipes.component.dart';
 import 'package:cookable_flutter/ui/pages/dashboard.dart';
 import 'package:cookable_flutter/ui/pages/profile.dart';
+import 'package:cookable_flutter/ui/pages/settings_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -38,8 +39,23 @@ class _HomePageState extends State<HomePage> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Friganto'),
-          actions: [Icon(Icons.settings)],
+          title: const Text('Foodict'),
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.settings,
+              ),
+              tooltip: 'Settings',
+              onPressed: () async {
+                await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            SettingsPage())
+                );
+              },
+            )
+          ],
         ),
         body: Center(
           child: _widgetOptions.elementAt(_selectedIndex),

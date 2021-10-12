@@ -47,6 +47,7 @@ dependencies:
   flutter_login: ^2.2.1
   # picking img from gallery
   image_picker: ^0.8.4
+  settings_ui: ^1.0.0
 
 dev_dependencies:
   flutter_test:
