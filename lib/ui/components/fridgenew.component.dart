@@ -80,9 +80,15 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget> {
 
   void loadFoodProducts() async {
     loading = true;
-    ownedGroceries = await UserFoodProductController.getUserFoodProducts(false);
-    missingGroceries =
-        await UserFoodProductController.getUserFoodProducts(true);
+    try {
+      ownedGroceries =
+      await UserFoodProductController.getUserFoodProducts(false);
+      missingGroceries =
+      await UserFoodProductController.getUserFoodProducts(true);
+    }
+    catch(err){
+      loading = false;
+    }
     apiToken = await TokenStore().getToken();
     groceries = getGroceries();
     setState(() {
