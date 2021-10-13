@@ -5,6 +5,8 @@ import 'package:cookable_flutter/ui/styles/cookable-theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,6 +39,17 @@ class _CookableFlutterState extends State<CookableFlutter> {
       materialAppBuilder: (context, theme) {
         return MaterialApp(
           title: 'Foodict',
+          localizationsDelegates: [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: [
+            Locale('en', ''), // English, no country code
+            Locale('es', ''), // Spanish, no country code
+            Locale('de', ''), // German, no country code
+          ],
           theme: _theme,
           //    supportedLocales: [const Locale('de'), const Locale('en')],
           routes: <String, WidgetBuilder>{

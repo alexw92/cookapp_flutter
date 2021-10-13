@@ -2,6 +2,7 @@ import 'package:cookable_flutter/ui/components/settings/Language_Screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsPage extends StatefulWidget {
   SettingsPage({Key key, this.title}) : super(key: key);
@@ -22,7 +23,7 @@ class _SettingsPageState extends State<SettingsPage> {
         sections: [
           SettingsSection(
             titlePadding: EdgeInsets.all(20),
-            title: 'Settings',
+            title: AppLocalizations.of(context).settings,
             tiles: [
               SettingsTile(
                 title: 'Language',
