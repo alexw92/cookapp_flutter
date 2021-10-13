@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../../main.dart';
 
 class LanguagesScreen extends StatefulWidget {
   final String language;
@@ -12,6 +13,7 @@ class LanguagesScreen extends StatefulWidget {
 
 class _LanguagesScreenState extends State<LanguagesScreen> {
   List<String> languages = ['English', 'German'];
+  List<String> langCodes = ['en', 'de'];
   int languageIndex = 0;
 
   _LanguagesScreenState(String language){
@@ -55,6 +57,7 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
     setState(() {
       languageIndex = index;
     });
+    CookableFlutter.setLocale(context, Locale(langCodes[index], ""));
     Navigator.pop(context, languages[index]);
   }
 }

@@ -5,8 +5,9 @@ import 'package:cookable_flutter/ui/styles/cookable-theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,6 +18,22 @@ void main() async {
 class CookableFlutter extends StatefulWidget {
   CookableFlutter();
 
+  /*
+  To Change Locale of App
+   */
+  static void setLocale(BuildContext context, Locale newLocale) async {
+    _CookableFlutterState state = context.findAncestorStateOfType<_CookableFlutterState>();
+
+    var prefs = await SharedPreferences.getInstance();
+    prefs.setString('languageCode', newLocale.languageCode);
+    prefs.setString('countryCode', "");
+
+    state.setState(() {
+      state._locale = newLocale;
+    });
+
+  }
+
   @override
   _CookableFlutterState createState() => _CookableFlutterState();
 }
@@ -24,12 +41,27 @@ class CookableFlutter extends StatefulWidget {
 class _CookableFlutterState extends State<CookableFlutter> {
   // This widget is the root of your application.
   final ThemeData _theme = CookableTheme().theme;
+  Locale _locale = Locale('en', '');
   User _user;
 
   @override
   void initState() {
     super.initState();
-    _user = FirebaseAuth.instance.currentUser;
+    this._fetchLocale().then((locale) {
+      setState(() {
+        _user = FirebaseAuth.instance.currentUser;
+        this._locale = locale;
+      });
+    });
+  }
+
+  Future<Locale> _fetchLocale() async {
+    var prefs = await SharedPreferences.getInstance();
+
+    String languageCode = prefs.getString('languageCode') ?? 'en';
+    String countryCode = prefs.getString('countryCode') ?? '';
+
+    return Locale(languageCode, countryCode);
   }
 
   @override
@@ -39,6 +71,7 @@ class _CookableFlutterState extends State<CookableFlutter> {
       materialAppBuilder: (context, theme) {
         return MaterialApp(
           title: 'Foodict',
+          locale: _locale,
           localizationsDelegates: [
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
