@@ -1,8 +1,8 @@
 import 'package:cookable_flutter/ui/components/settings/Language_Screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:settings_ui/settings_ui.dart';
 
 class SettingsPage extends StatefulWidget {
   SettingsPage({Key key, this.title}) : super(key: key);
@@ -26,7 +26,7 @@ class _SettingsPageState extends State<SettingsPage> {
             title: AppLocalizations.of(context).settings,
             tiles: [
               SettingsTile(
-                title: 'Language',
+                title: AppLocalizations.of(context).languages,
                 subtitle: language,
                 leading: Icon(Icons.language),
                 onPressed: (context) async {
@@ -39,7 +39,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 },
               ),
               SettingsTile.switchTile(
-                title: 'Use System Theme',
+                title: AppLocalizations.of(context).useSystemTheme,
                 leading: Icon(Icons.phone_android),
                 switchValue: isSwitched,
                 onToggle: (value) {
@@ -52,10 +52,10 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           SettingsSection(
             titlePadding: EdgeInsets.all(20),
-            title: 'Security',
+            title: AppLocalizations.of(context).security,
             tiles: [
               SettingsTile.switchTile(
-                title: 'Use fingerprint',
+                title: AppLocalizations.of(context).useFingerprint,
                 leading: Icon(Icons.fingerprint),
                 switchValue: true,
                 onToggle: (value) {},

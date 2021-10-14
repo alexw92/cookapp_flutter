@@ -5,6 +5,7 @@ import 'package:cookable_flutter/ui/pages/profile.dart';
 import 'package:cookable_flutter/ui/pages/settings_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'image_upload_test.dart';
 
@@ -45,7 +46,7 @@ class _HomePageState extends State<HomePage> {
               icon: Icon(
                 Icons.settings,
               ),
-              tooltip: 'Settings',
+              tooltip: AppLocalizations.of(context).settings,
               onPressed: () async {
                 await Navigator.push(
                     context,
@@ -64,7 +65,7 @@ class _HomePageState extends State<HomePage> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              label: 'Home',
+              label: AppLocalizations.of(context).home,
             ),
             // BottomNavigationBarItem(
             //   icon: Icon(Icons.shopping_basket),
@@ -72,15 +73,15 @@ class _HomePageState extends State<HomePage> {
             // ),
             BottomNavigationBarItem(
               icon: Icon(Icons.shopping_bag),
-              label: 'Fridge 2',
+              label: AppLocalizations.of(context).fridge,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.lunch_dining),
-              label: 'Recipes',
+              label: AppLocalizations.of(context).recipes,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
-              label: 'Profile',
+              label: AppLocalizations.of(context).profile,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.image),

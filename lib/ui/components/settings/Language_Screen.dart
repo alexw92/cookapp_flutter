@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 import '../../../main.dart';
@@ -23,7 +24,7 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Languages')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context).languages)),
       body: SettingsList(
         sections: [
           SettingsSection(tiles: [

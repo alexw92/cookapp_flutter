@@ -3,5 +3,21 @@
     "@helloWorld": {
       "description": "The conventional newborn programmer greeting"
     },
-    "settings": "Settings"
+    "settings": "Settings",
+    "home": "Home",
+    "fridge": "Fridge",
+    "recipes": "Recipes",
+    "profile": "Profile",
+    "withoutLogin": "Without Login",
+    "loginToAccessThisPage": "Login to access this page",
+    "continueWithFacebook":"Continue with Facebook",
+    "continueWithGoogle": "Continue with Google",
+    "createAccount":"Create Account",
+    "loginWithAccount": "Login with Account",
+    "userNotAnonymous":"User is not anonymous",
+    "language":  "Language",
+    "languages":  "Sprachen",
+    "useSystemTheme": "Use System Theme",
+    "security":  "Security",
+    "useFingerprint": "Use Fingerprint"
 }

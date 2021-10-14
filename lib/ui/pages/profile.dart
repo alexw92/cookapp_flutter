@@ -2,8 +2,10 @@ import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({Key key}) : super(key: key);
@@ -38,35 +40,35 @@ class _ProfilePageState extends State<ProfilePage> {
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
             Text(
-              "Login to access this page!",
+              AppLocalizations.of(context).loginToAccessThisPage,
             ),
             SignInButton(
               Buttons.Facebook,
-              text: "Continue with Facebook",
+              text: AppLocalizations.of(context).continueWithFacebook,
               onPressed: () {},
             ),
             SignInButton(
               Buttons.Google,
-              text: "Continue with Google",
+              text: AppLocalizations.of(context).continueWithGoogle,
               onPressed: () {
                 convertAnonymousToGoogle();
               },
             ),
             SignInButton(
               Buttons.Email,
-              text: "Create Account",
+              text: AppLocalizations.of(context).createAccount,
               onPressed: () {},
             ),
             Text("or"),
             SignInButton(
               Buttons.Email,
-              text: "Login with Account",
+              text: AppLocalizations.of(context).loginWithAccount,
               onPressed: () {},
             ),
           ]));
     } else {
       return Container(
-        child: Text("User is not anonymous. display profile page here"),
+        child: Text(AppLocalizations.of(context).userNotAnonymous),
       );
     }
   }

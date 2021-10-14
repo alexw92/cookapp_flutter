@@ -1,5 +1,22 @@
 {
     "helloWorld": "Hallo Welt!",
-    "settings": "Einstellungen"
+    "settings": "Einstellungen",
+    "home": "Home",
+    "fridge": "Kühlschrank",
+    "recipes": "Rezepte",
+    "profile": "Profil",
+    "withoutLogin": "Ohne Login",
+    "loginToAccessThisPage": "Logge dich ein, um auf diese Seite zuzugreifen",
+    "continueWithFacebook":"Weiter mit Facebook",
+    "continueWithGoogle": "Weiter mit Google",
+    "createAccount":"Neuer Account",
+    "loginWithAccount": "Login with Account",
+    "userNotAnonymous":"Nutzer ist nicht anonym",
+    "language":  "Sprache",
+    "languages":  "Sprachen",
+    "useSystemTheme": "Benutze System Theme",
+    "security":  "Sicherheit",
+    "useFingerprint": "Nutze Fingerabdruck"
+
 
 }

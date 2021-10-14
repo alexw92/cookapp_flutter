@@ -2,9 +2,11 @@ import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/pages/homepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
 
 const users = const {
   'dribbble@gmail.com': '12345',
@@ -67,7 +69,7 @@ class LoginScreen extends StatelessWidget {
         ),
         LoginProvider(
           icon: FontAwesomeIcons.userSecret,
-          label: 'Without Login',
+          label: AppLocalizations.of(context).withoutLogin,
           callback: () async {
             print('start anonymous sign in');
             await signInAnonymously().then((UserCredential user) => {
