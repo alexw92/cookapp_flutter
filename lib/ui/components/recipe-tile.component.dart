@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
 import 'package:cookable_flutter/core/data/models.dart';
-import 'package:cookable_flutter/core/io/io-config.dart';
 import 'package:cookable_flutter/ui/pages/recipe-details-page.dart';
 import 'package:cookable_flutter/ui/styles/cookable-theme.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,12 +37,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
               child: Image(
             // needs --web-renderer html
             image:
-                CachedNetworkImageProvider("${IOConfig.apiUrl}${recipe.imgSrc}",
-                    headers: {
-                      "Authorization": "Bearer $apiToken",
-                      "Access-Control-Allow-Headers":
-                          "Access-Control-Allow-Origin, Accept"
-                    },
+                CachedNetworkImageProvider(recipe.imgSrc,
                     imageRenderMethodForWeb: ImageRenderMethodForWeb.HttpGet),
             width: 300,
             height: 282,

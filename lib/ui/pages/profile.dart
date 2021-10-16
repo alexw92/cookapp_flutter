@@ -2,6 +2,7 @@ import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -34,40 +35,41 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     var user = FirebaseAuth.instance.currentUser;
     if (user.isAnonymous) {
+      var x = AppLocalizations.of(context).continueWithGoogle;
       return Container(
           margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
             Text(
-              "AppLocalizations.of(context).loginToAccessThisPage",
+              AppLocalizations.of(context).loginToAccessThisPage,
             ),
             SignInButton(
               Buttons.Facebook,
-              text: "AppLocalizations.of(context).continueWithFacebook",
+              text: AppLocalizations.of(context).continueWithFacebook,
               onPressed: () {},
             ),
             SignInButton(
               Buttons.Google,
-              text: "AppLocalizations.of(context).continueWithGoogle",
+              text: AppLocalizations.of(context).continueWithGoogle,
               onPressed: () {
                 convertAnonymousToGoogle();
               },
             ),
             SignInButton(
               Buttons.Email,
-              text: "AppLocalizations.of(context).createAccount",
+              text: AppLocalizations.of(context).createAccount,
               onPressed: () {},
             ),
             Text("or"),
             SignInButton(
               Buttons.Email,
-              text: "AppLocalizations.of(context).loginWithAccount",
+              text: AppLocalizations.of(context).loginWithAccount,
               onPressed: () {},
             ),
           ]));
     } else {
       return Container(
-        child: Text("AppLocalizations.of(context).userNotAnonymous"),
+        child: Text(AppLocalizations.of(context).userNotAnonymous),
       );
     }
   }
