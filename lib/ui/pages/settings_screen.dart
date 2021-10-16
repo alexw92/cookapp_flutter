@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:settings_ui/settings_ui.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
   SettingsPage({Key key, this.title}) : super(key: key);
@@ -15,6 +16,29 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   bool isSwitched = false;
   String language = 'English';
+
+  _SettingsPageState(){
+    _fetchLocale();
+  }
+
+  Future<String> _fetchLocale() async {
+    var prefs = await SharedPreferences.getInstance();
+
+    String languageCode = prefs.getString('languageCode') ?? 'en';
+
+    if(languageCode == "en"){
+      setState(() {
+        language= 'English';
+      });
+    }
+    if(languageCode == "de"){
+      setState(() {
+        language= 'Deutsch';
+      });
+    }
+
+    return language;
+  }
 
   @override
   Widget build(BuildContext context) {

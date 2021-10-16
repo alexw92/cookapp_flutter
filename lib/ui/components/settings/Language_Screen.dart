@@ -13,7 +13,7 @@ class LanguagesScreen extends StatefulWidget {
 }
 
 class _LanguagesScreenState extends State<LanguagesScreen> {
-  List<String> languages = ['English', 'German'];
+  List<String> languages = ['English', 'Deutsch'];
   List<String> langCodes = ['en', 'de'];
   int languageIndex = 0;
 
@@ -36,7 +36,7 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
               },
             ),
             SettingsTile(
-              title: "German",
+              title: "Deutsch",
               trailing: trailingWidget(1),
               onPressed: (BuildContext context) {
                 changeLanguage(1);
