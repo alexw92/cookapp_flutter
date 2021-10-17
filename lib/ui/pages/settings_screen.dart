@@ -36,6 +36,11 @@ class _SettingsPageState extends State<SettingsPage> {
         language = 'Deutsch';
       });
     }
+    if (languageCode == "es") {
+      setState(() {
+        language = 'Español';
+      });
+    }
 
     return language;
   }
@@ -94,10 +99,7 @@ class _SettingsPageState extends State<SettingsPage> {
               SettingsTile(
                 title: AppLocalizations.of(context).deleteAccount,
                 leading: Icon(Icons.lock),
-                onPressed: (context) async {
-
-
-                },
+                onPressed: (context) async {},
                 titleTextStyle: TextStyle(color: Colors.red),
               ),
             ],

@@ -6,6 +6,7 @@ import '../../../main.dart';
 
 class LanguagesScreen extends StatefulWidget {
   final String language;
+
   LanguagesScreen({this.language});
 
   @override
@@ -13,11 +14,11 @@ class LanguagesScreen extends StatefulWidget {
 }
 
 class _LanguagesScreenState extends State<LanguagesScreen> {
-  List<String> languages = ['English', 'Deutsch'];
-  List<String> langCodes = ['en', 'de'];
+  List<String> languages = ['English', 'Deutsch', 'Español'];
+  List<String> langCodes = ['en', 'de', 'es'];
   int languageIndex = 0;
 
-  _LanguagesScreenState(String language){
+  _LanguagesScreenState(String language) {
     languageIndex = languages.indexOf(language);
   }
 
@@ -25,26 +26,17 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(AppLocalizations.of(context).languages)),
-      body: SettingsList(
-        sections: [
-          SettingsSection(tiles: [
-            SettingsTile(
-              title: "English",
-              trailing: trailingWidget(0),
-              onPressed: (BuildContext context) {
-                changeLanguage(0);
-              },
-            ),
-            SettingsTile(
-              title: "Deutsch",
-              trailing: trailingWidget(1),
-              onPressed: (BuildContext context) {
-                changeLanguage(1);
-              },
-            ),
-          ]),
-        ],
-      ),
+      body: SettingsList(sections: [
+        SettingsSection(
+            tiles: languages
+                .map((lang) => SettingsTile(
+                    title: lang,
+                    trailing: trailingWidget(languages.indexOf(lang)),
+                    onPressed: (BuildContext context) {
+                      changeLanguage(languages.indexOf(lang));
+                    }))
+                .toList())
+      ]),
     );
   }
 
