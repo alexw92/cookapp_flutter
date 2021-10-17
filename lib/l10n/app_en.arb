@@ -19,5 +19,7 @@
     "languages":  "Languages",
     "useSystemTheme": "Use System Theme",
     "security":  "Security",
-    "useFingerprint": "Use Fingerprint"
+    "useFingerprint": "Use Fingerprint",
+    "account": "Account",
+    "deleteAccount": "Delete Account"
 }

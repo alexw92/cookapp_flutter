@@ -17,7 +17,7 @@ class _SettingsPageState extends State<SettingsPage> {
   bool isSwitched = false;
   String language = 'English';
 
-  _SettingsPageState(){
+  _SettingsPageState() {
     _fetchLocale();
   }
 
@@ -26,14 +26,14 @@ class _SettingsPageState extends State<SettingsPage> {
 
     String languageCode = prefs.getString('languageCode') ?? 'en';
 
-    if(languageCode == "en"){
+    if (languageCode == "en") {
       setState(() {
-        language= 'English';
+        language = 'English';
       });
     }
-    if(languageCode == "de"){
+    if (languageCode == "de") {
       setState(() {
-        language= 'Deutsch';
+        language = 'Deutsch';
       });
     }
 
@@ -54,7 +54,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 subtitle: language,
                 leading: Icon(Icons.language),
                 onPressed: (context) async {
-                  final result = await Navigator.of(context).push(MaterialPageRoute(
+                  final result =
+                      await Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => LanguagesScreen(language: language),
                   ));
                   setState(() {
@@ -83,6 +84,21 @@ class _SettingsPageState extends State<SettingsPage> {
                 leading: Icon(Icons.fingerprint),
                 switchValue: true,
                 onToggle: (value) {},
+              ),
+            ],
+          ),
+          SettingsSection(
+            titlePadding: EdgeInsets.all(20),
+            title: AppLocalizations.of(context).account,
+            tiles: [
+              SettingsTile(
+                title: AppLocalizations.of(context).deleteAccount,
+                leading: Icon(Icons.lock),
+                onPressed: (context) async {
+
+
+                },
+                titleTextStyle: TextStyle(color: Colors.red),
               ),
             ],
           ),

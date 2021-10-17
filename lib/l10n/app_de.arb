@@ -16,7 +16,10 @@
     "languages":  "Sprachen",
     "useSystemTheme": "Benutze System Theme",
     "security":  "Sicherheit",
-    "useFingerprint": "Nutze Fingerabdruck"
+    "useFingerprint": "Nutze Fingerabdruck",
+    "account": "Konto",
+    "deleteAccount": "Konto löschen"
+
 
 
 }
