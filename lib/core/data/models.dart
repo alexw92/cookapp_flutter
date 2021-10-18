@@ -44,13 +44,13 @@ class RecipeDetails {
 
   RecipeDetails(
       {this.id,
-        this.imgSrc,
-        this.name,
-        this.uploadedBy,
-        this.instructions,
-        this.ingredients,
-        this.numberOfPersons,
-        this.nutrients});
+      this.imgSrc,
+      this.name,
+      this.uploadedBy,
+      this.instructions,
+      this.ingredients,
+      this.numberOfPersons,
+      this.nutrients});
 
   factory RecipeDetails.fromJson(Map<String, dynamic> recipeJson) {
     return RecipeDetails(
@@ -149,15 +149,17 @@ class UserFoodProduct {
   final QuantityUnit quantityUnit;
   final String imgSrc;
   final Nutrients nutrients;
+  final FoodCategory foodCategory;
 
   UserFoodProduct(
       {this.foodProductId,
-        this.name,
-        this.amount,
-        this.description,
-        this.quantityUnit,
-        this.imgSrc,
-        this.nutrients});
+      this.name,
+      this.amount,
+      this.description,
+      this.quantityUnit,
+      this.imgSrc,
+      this.nutrients,
+      this.foodCategory});
 
   factory UserFoodProduct.fromJson(Map<String, dynamic> json) {
     return UserFoodProduct(
@@ -167,7 +169,8 @@ class UserFoodProduct {
         description: json['description'],
         quantityUnit: QuantityUnit.fromInt(json['quantityUnit']),
         imgSrc: json['img_src'],
-        nutrients: Nutrients.fromJson(json['nutrients']));
+        nutrients: Nutrients.fromJson(json['nutrients']),
+        foodCategory: FoodCategory.fromJson(json['foodCategoryData']));
   }
 }
 
@@ -219,6 +222,20 @@ class QuantityUnit {
   const QuantityUnit(this.value);
 }
 
+class FoodCategory {
+  final int id;
+  final String name;
+  final String iconURL;
+
+  FoodCategory({this.id, this.name, this.iconURL});
+
+  factory FoodCategory.fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
+    return FoodCategory(
+        id: json['id'], name: json['name'], iconURL: json['iconURL']);
+  }
+}
+
 class Nutrients {
   final int id;
   final double fat;
@@ -240,8 +257,7 @@ class Nutrients {
       this.dateOfRetrieval});
 
   factory Nutrients.fromJson(Map<String, dynamic> json) {
-    if (json==null)
-      return null;
+    if (json == null) return null;
     return Nutrients(
         id: json['id'],
         fat: json['fat'],

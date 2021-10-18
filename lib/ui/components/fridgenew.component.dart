@@ -16,6 +16,9 @@ class ToggleFridgeWidget extends StatefulWidget {
 class CheckBoxListTileState extends State<ToggleFridgeWidget>
     with SingleTickerProviderStateMixin {
   List<GroceryCheckBoxListTileModel> checkBoxListTileModel = [];
+  List<GroceryCheckBoxListTileModel> checkBoxListTileModelFruits = [];
+  List<GroceryCheckBoxListTileModel> checkBoxListTileModelVegetables = [];
+  List<GroceryCheckBoxListTileModel> checkBoxListTileModelSpices = [];
   List<UserFoodProduct> ownedGroceries = [];
   List<UserFoodProduct> missingGroceries = [];
   String apiToken;
@@ -46,14 +49,110 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
           body: TabBarView(
               controller: _tabController,
               children: [
-            Text("lol"),
-            Text("lolol"),
+                new Container(
+                  child: new ListView.builder(
+                      itemCount: checkBoxListTileModelFruits.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return new Card(
+                          color: checkBoxListTileModelFruits[index].isCheck
+                              ? Colors.green
+                              : Colors.grey,
+                          child: new Container(
+                            padding: new EdgeInsets.all(10.0),
+                            child: Column(
+                              children: <Widget>[
+                                new SwitchListTile(
+                                    activeColor: Colors.black,
+                                    dense: true,
+                                    //font change
+                                    title: new Text(
+                                      checkBoxListTileModelFruits[index].title,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          letterSpacing: 0.5),
+                                    ),
+                                    value: checkBoxListTileModelFruits[index].isCheck,
+                                    secondary:
+                                    checkBoxListTileModelFruits[index].isLoading
+                                        ? CircularProgressIndicator(
+                                      value: null,
+                                      backgroundColor: Colors.orange,
+                                    )
+                                        : Container(
+                                      height: 50,
+                                      width: 50,
+                                      child: Image(
+                                          image: CachedNetworkImageProvider(
+                                              "${checkBoxListTileModelFruits[index].img}",
+                                              imageRenderMethodForWeb:
+                                              ImageRenderMethodForWeb
+                                                  .HttpGet)),
+                                    ),
+                                    onChanged: (bool val) {
+                                      itemChangeFruits(val, index);
+                                    }),
+                              ],
+                            ),
+                          ),
+                        );
+                      }),
+                ),
+                new Container(
+                  child: new ListView.builder(
+                      itemCount: checkBoxListTileModelVegetables.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return new Card(
+                          color: checkBoxListTileModelVegetables[index].isCheck
+                              ? Colors.green
+                              : Colors.grey,
+                          child: new Container(
+                            padding: new EdgeInsets.all(10.0),
+                            child: Column(
+                              children: <Widget>[
+                                new SwitchListTile(
+                                    activeColor: Colors.black,
+                                    dense: true,
+                                    //font change
+                                    title: new Text(
+                                      checkBoxListTileModelVegetables[index].title,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          letterSpacing: 0.5),
+                                    ),
+                                    value: checkBoxListTileModelVegetables[index].isCheck,
+                                    secondary:
+                                    checkBoxListTileModelVegetables[index].isLoading
+                                        ? CircularProgressIndicator(
+                                      value: null,
+                                      backgroundColor: Colors.orange,
+                                    )
+                                        : Container(
+                                      height: 50,
+                                      width: 50,
+                                      child: Image(
+                                          image: CachedNetworkImageProvider(
+                                              "${checkBoxListTileModelVegetables[index].img}",
+                                              imageRenderMethodForWeb:
+                                              ImageRenderMethodForWeb
+                                                  .HttpGet)),
+                                    ),
+                                    onChanged: (bool val) {
+                                      itemChangeVegetables(val, index);
+                                    }),
+                              ],
+                            ),
+                          ),
+                        );
+                      }),
+                ),
             new Container(
               child: new ListView.builder(
-                  itemCount: checkBoxListTileModel.length,
+                  itemCount: checkBoxListTileModelSpices.length,
                   itemBuilder: (BuildContext context, int index) {
                     return new Card(
-                      color: checkBoxListTileModel[index].isCheck
+                      color: checkBoxListTileModelSpices[index].isCheck
                           ? Colors.green
                           : Colors.grey,
                       child: new Container(
@@ -65,15 +164,15 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                                 dense: true,
                                 //font change
                                 title: new Text(
-                                  checkBoxListTileModel[index].title,
+                                  checkBoxListTileModelSpices[index].title,
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
                                       letterSpacing: 0.5),
                                 ),
-                                value: checkBoxListTileModel[index].isCheck,
+                                value: checkBoxListTileModelSpices[index].isCheck,
                                 secondary:
-                                    checkBoxListTileModel[index].isLoading
+                                checkBoxListTileModelSpices[index].isLoading
                                         ? CircularProgressIndicator(
                                             value: null,
                                             backgroundColor: Colors.orange,
@@ -83,13 +182,13 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                                             width: 50,
                                             child: Image(
                                                 image: CachedNetworkImageProvider(
-                                                    "${checkBoxListTileModel[index].img}",
+                                                    "${checkBoxListTileModelSpices[index].img}",
                                                     imageRenderMethodForWeb:
                                                         ImageRenderMethodForWeb
                                                             .HttpGet)),
                                           ),
                                 onChanged: (bool val) {
-                                  itemChange(val, index);
+                                  itemChangeSpices(val, index);
                                 }),
                           ],
                         ),
@@ -114,6 +213,10 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     groceries = getGroceries();
     setState(() {
       this.checkBoxListTileModel = groceries;
+      print(groceries);
+      this.checkBoxListTileModelFruits = groceries.where((element) => element.foodCategory.name.contains("fruits")).toList();
+      this.checkBoxListTileModelVegetables = groceries.where((element) => element.foodCategory.name.contains("vegetables")).toList();
+      this.checkBoxListTileModelSpices = groceries.where((element) => element.foodCategory.name.contains("spices")).toList();
       loading = false;
     });
   }
@@ -123,7 +226,8 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
         .ownedGroceries
         .map((grocery) => GroceryCheckBoxListTileModel(
             groceryId: grocery.foodProductId,
-            img: grocery.imgSrc,
+        foodCategory: grocery.foodCategory,
+        img: grocery.imgSrc,
             isCheck: true,
             title: grocery.name,
             isLoading: false))
@@ -132,48 +236,13 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
         .missingGroceries
         .map((grocery) => GroceryCheckBoxListTileModel(
             groceryId: grocery.foodProductId,
+            foodCategory: grocery.foodCategory,
             img: grocery.imgSrc,
             isCheck: false,
             title: grocery.name,
             isLoading: false))
         .toList());
     return groceryListTiles;
-    // for (int i = 0; i < this.groceryList.length; i++) {
-    //   myTiles.add(
-    //     FridgeTileComponent(
-    //         userFoodProduct: userFoodProductList[i],
-    //         apiToken: apiToken
-    //     ),
-    //   );
-    // }
-    // return <GroceryCheckBoxListTileModel>[
-    //
-    //   GroceryCheckBoxListTileModel(
-    //       groceryId: 1,
-    //       img: 'assets/images/android_img.png',
-    //       title: "Android",
-    //       isCheck: true),
-    //   GroceryCheckBoxListTileModel(
-    //       groceryId: 2,
-    //       img: 'assets/images/flutter.jpeg',
-    //       title: "Flutter",
-    //       isCheck: false),
-    //   GroceryCheckBoxListTileModel(
-    //       groceryId: 3,
-    //       img: 'assets/images/ios_img.webp',
-    //       title: "IOS",
-    //       isCheck: false),
-    //   GroceryCheckBoxListTileModel(
-    //       groceryId: 4,
-    //       img: 'assets/images/php_img.png',
-    //       title: "PHP",
-    //       isCheck: false),
-    //   GroceryCheckBoxListTileModel(
-    //       groceryId: 5,
-    //       img: 'assets/images/node_img.png',
-    //       title: "Node",
-    //       isCheck: false),
-    // ];
   }
 
   @override
@@ -183,8 +252,8 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     _tabController = new TabController(length: 3, vsync: this);
   }
 
-  void itemChange(bool val, int index) {
-    var tileModel = checkBoxListTileModel[index];
+  void itemChangeFruits(bool val, int index) {
+    var tileModel = checkBoxListTileModelFruits[index];
     setState(() {
       tileModel.isLoading = true;
     });
@@ -194,15 +263,40 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
               tileModel.isLoading = false;
             }));
   }
+
+  void itemChangeVegetables(bool val, int index) {
+    var tileModel = checkBoxListTileModelVegetables[index];
+    setState(() {
+      tileModel.isLoading = true;
+    });
+    UserFoodProductController.toogleUserFoodProduct(tileModel.groceryId, val)
+        .then((value) => setState(() {
+      tileModel.isCheck = val;
+      tileModel.isLoading = false;
+    }));
+  }
+
+  void itemChangeSpices(bool val, int index) {
+    var tileModel = checkBoxListTileModelSpices[index];
+    setState(() {
+      tileModel.isLoading = true;
+    });
+    UserFoodProductController.toogleUserFoodProduct(tileModel.groceryId, val)
+        .then((value) => setState(() {
+      tileModel.isCheck = val;
+      tileModel.isLoading = false;
+    }));
+  }
 }
 
 class GroceryCheckBoxListTileModel {
   int groceryId;
+  FoodCategory foodCategory;
   String img;
   String title;
   bool isCheck;
   bool isLoading;
 
   GroceryCheckBoxListTileModel(
-      {this.groceryId, this.img, this.title, this.isCheck, this.isLoading});
+      {this.groceryId, this.foodCategory, this.img, this.title, this.isCheck, this.isLoading});
 }
