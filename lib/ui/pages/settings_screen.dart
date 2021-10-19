@@ -47,12 +47,12 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: SettingsList(
+    return Scaffold(
+      appBar: AppBar(title: Text(AppLocalizations.of(context).settings)),
+      body: SettingsList(
         sections: [
           SettingsSection(
             titlePadding: EdgeInsets.all(20),
-            title: AppLocalizations.of(context).settings,
             tiles: [
               SettingsTile(
                 title: AppLocalizations.of(context).languages,
