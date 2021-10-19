@@ -62,7 +62,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   final result =
                       await Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => LanguagesScreen(language: language),
-                  ));
+                  )).then((value) => _fetchLocale() );
                   setState(() {
                     this.language = result;
                   });
