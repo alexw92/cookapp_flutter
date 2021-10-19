@@ -18,7 +18,14 @@
     "security":  "Sicherheit",
     "useFingerprint": "Nutze Fingerabdruck",
     "account": "Konto",
-    "deleteAccount": "Konto löschen"
+    "deleteAccount": "Konto löschen",
+    "tab_fruits": "Obst",
+    "tab_vegetables": "Gemüse",
+    "tab_spices": "Gewürze",
+    "tab_pantry": "Vorratskammer",
+    "tab_dairy": "Milchprodukte",
+    "tab_meat": "Fleisch",
+    "tab_fish": "Fisch"
 
 
 

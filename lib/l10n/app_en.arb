@@ -21,5 +21,12 @@
     "security":  "Security",
     "useFingerprint": "Use Fingerprint",
     "account": "Account",
-    "deleteAccount": "Delete Account"
+    "deleteAccount": "Delete Account",
+    "tab_fruits": "Fruits",
+    "tab_vegetables": "Vegetables",
+    "tab_spices": "Spices",
+    "tab_pantry": "Pantry",
+    "tab_dairy": "Dairy",
+    "tab_meat": "Meat",
+    "tab_fish": "Fish"
 }
