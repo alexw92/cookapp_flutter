@@ -60,7 +60,8 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
           body: TabBarView(
               controller: _tabController,
               children: [
-                new Container(
+                RefreshIndicator(onRefresh: refreshTriggered,
+                              child: new Container(
                   child: new ListView.builder(
                       itemCount: checkBoxListTileModelFruits.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -107,9 +108,10 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                             ),
                           ),
                         );
-                      }),
+                      })),
                 ),
-                new Container(
+          RefreshIndicator(onRefresh: refreshTriggered,
+              child: new Container(
                   child: new ListView.builder(
                       itemCount: checkBoxListTileModelVegetables.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -156,9 +158,10 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                             ),
                           ),
                         );
-                      }),
+                      })),
                 ),
-            new Container(
+          RefreshIndicator(onRefresh: refreshTriggered,
+              child: new Container(
               child: new ListView.builder(
                   itemCount: checkBoxListTileModelSpices.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -205,9 +208,10 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                         ),
                       ),
                     );
-                  }),
+                  })),
             ),
-                new Container(
+          RefreshIndicator(onRefresh: refreshTriggered,
+              child: new Container(
                   child: new ListView.builder(
                       itemCount: checkBoxListTileModelPantry.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -254,9 +258,10 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                             ),
                           ),
                         );
-                      }),
+                      })),
                 ),
-                new Container(
+          RefreshIndicator(onRefresh: refreshTriggered,
+              child: new Container(
                   child: new ListView.builder(
                       itemCount: checkBoxListTileModelDairy.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -303,9 +308,10 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                             ),
                           ),
                         );
-                      }),
+                      })),
                 ),
-                new Container(
+          RefreshIndicator(onRefresh: refreshTriggered,
+              child: new Container(
                   child: new ListView.builder(
                       itemCount: checkBoxListTileModelMeat.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -352,9 +358,10 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                             ),
                           ),
                         );
-                      }),
+                      })),
                 ),
-                new Container(
+          RefreshIndicator(onRefresh: refreshTriggered,
+              child: new Container(
                   child: new ListView.builder(
                       itemCount: checkBoxListTileModelFish.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -401,9 +408,14 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                             ),
                           ),
                         );
-                      }),
+                      })),
                 )
           ]));
+  }
+
+  Future<void> refreshTriggered() async {
+    print("refresh triggered");
+    return loadFoodProducts();
   }
 
   void loadFoodProducts() async {
@@ -414,6 +426,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
       missingGroceries =
           await UserFoodProductController.getUserFoodProducts(true);
     } catch (err) {
+      print(err);
       loading = false;
     }
     apiToken = await TokenStore().getToken();
