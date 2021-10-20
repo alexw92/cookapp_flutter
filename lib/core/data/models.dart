@@ -169,7 +169,7 @@ class UserFoodProduct {
         description: json['description'],
         quantityUnit: QuantityUnit.fromInt(json['quantityUnit']),
         imgSrc: json['img_src'],
-        nutrients: Nutrients.fromJson(json['nutrients']),
+        nutrients: Nutrients.fromJson(json['nutrientsData']),
         foodCategory: FoodCategory.fromJson(json['foodCategoryData']));
   }
 }
@@ -242,7 +242,7 @@ class Nutrients {
   final double carbohydrate;
   final double sugar;
   final double protein;
-  final double calories;
+  final int calories;
   final String source;
   final DateTime dateOfRetrieval;
 
@@ -266,6 +266,6 @@ class Nutrients {
         protein: json['protein'],
         calories: json['calories'],
         source: json['source'],
-        dateOfRetrieval: json['dateOfRetrieval']);
+        dateOfRetrieval: DateTime.parse(json['dateOfRetrieval']));
   }
 }
