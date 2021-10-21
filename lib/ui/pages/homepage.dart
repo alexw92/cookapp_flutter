@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext ctx) {
     return Container(
       child: Scaffold(
         appBar: AppBar(
@@ -47,21 +47,26 @@ class _HomePageState extends State<HomePage> {
             // AppLocalizations.of(context).logout
             // AppLocalizations.of(context).settings
             PopupMenuButton(
+              onSelected: (result){
+                switch(result){
+                  case 0: _openSettings(); break;
+                  case 1: _signOut(); break;
+                }
+              },
               itemBuilder: (context) => [
                 PopupMenuItem(
                   child: Text(AppLocalizations.of(context).settings),
-                  onTap: _openSettings,
+                value: 0
                 ),
-                // PopupMenuItem(
-                //   child: Text(AppLocalizations.of(context).logout),
-                //   onTap: _signOut,
-                // )
+                PopupMenuItem(
+                  child: Text(AppLocalizations.of(context).logout),
+                  value: 1
+                )
               ],
               icon: Icon(
                 Icons.settings,
               ),
-            ),
-            IconButton(onPressed: _openSettings, icon: Icon(Icons.settings))
+            )
           ],
         ),
         body: Center(
@@ -112,7 +117,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _openSettings() async {
     print('settings');
-    await Navigator.push(
+    await  Navigator.push(
         context, MaterialPageRoute(builder: (context) => SettingsPage()));
     print('settings completed');
   }
