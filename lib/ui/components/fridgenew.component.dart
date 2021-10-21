@@ -42,7 +42,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     else // AppLocalizations.of(context).settings
       return Scaffold(
           appBar: AppBar(
-            toolbarHeight: 52,
+            toolbarHeight: 0,
             bottom: TabBar(
               controller: _tabController,
               isScrollable: true,

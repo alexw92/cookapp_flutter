@@ -5,6 +5,7 @@
     "fridge": "Kühlschrank",
     "recipes": "Rezepte",
     "profile": "Profil",
+    "logout": "Logout",
     "withoutLogin": "Ohne Login",
     "loginToAccessThisPage": "Logge dich ein, um auf diese Seite zuzugreifen",
     "continueWithFacebook":"Weiter mit Facebook",

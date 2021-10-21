@@ -8,6 +8,7 @@
     "fridge": "Fridge",
     "recipes": "Recipes",
     "profile": "Profile",
+    "logout": "Logout",
     "withoutLogin": "Without Login",
     "loginToAccessThisPage": "Login to access this page",
     "continueWithFacebook":"Continue with Facebook",

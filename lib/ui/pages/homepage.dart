@@ -1,8 +1,10 @@
 import 'package:cookable_flutter/ui/components/fridgenew.component.dart';
 import 'package:cookable_flutter/ui/components/recipes.component.dart';
 import 'package:cookable_flutter/ui/pages/dashboard.dart';
+import 'package:cookable_flutter/ui/pages/login_screen.dart';
 import 'package:cookable_flutter/ui/pages/profile.dart';
 import 'package:cookable_flutter/ui/pages/settings_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -42,20 +44,24 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           title: const Text('Foodict'),
           actions: [
-            IconButton(
+            // AppLocalizations.of(context).logout
+            // AppLocalizations.of(context).settings
+            PopupMenuButton(
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  child: Text(AppLocalizations.of(context).settings),
+                  onTap: _openSettings,
+                ),
+                // PopupMenuItem(
+                //   child: Text(AppLocalizations.of(context).logout),
+                //   onTap: _signOut,
+                // )
+              ],
               icon: Icon(
                 Icons.settings,
               ),
-              tooltip: AppLocalizations.of(context).settings,
-              onPressed: () async {
-                await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            SettingsPage())
-                );
-              },
-            )
+            ),
+            IconButton(onPressed: _openSettings, icon: Icon(Icons.settings))
           ],
         ),
         body: Center(
@@ -95,5 +101,19 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  Future<void> _signOut() async {
+    print('signout');
+    await FirebaseAuth.instance.signOut();
+    await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+  }
+
+  Future<void> _openSettings() async {
+    print('settings');
+    await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => SettingsPage()));
+    print('settings completed');
   }
 }
