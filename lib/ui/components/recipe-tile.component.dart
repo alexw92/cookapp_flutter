@@ -48,7 +48,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
               alignment: Alignment.center,
               child: Text(
                 recipe.name,
-                style: CookableTheme.noramlBlackFont,
+                style: CookableTheme.normalBlackFont,
               )),
 
           // removed amount from api

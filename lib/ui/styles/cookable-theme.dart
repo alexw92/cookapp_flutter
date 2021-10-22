@@ -57,9 +57,9 @@ class CookableTheme {
 
   static const largeBoldFont = TextStyle(
       fontSize: 30.0, fontWeight: FontWeight.bold, color: Colors.white);
-  static const noramlWhiteFont = TextStyle(
+  static const normalWhiteFont = TextStyle(
       fontSize: 16.0, fontWeight: FontWeight.normal, color: Colors.white);
-  static const noramlBlackFont = TextStyle(
+  static const normalBlackFont = TextStyle(
       fontSize: 16.0, fontWeight: FontWeight.normal, color: Colors.black);
   static const smallWhiteFont = TextStyle(
       fontSize: 14.0, fontWeight: FontWeight.normal, color: Colors.white);

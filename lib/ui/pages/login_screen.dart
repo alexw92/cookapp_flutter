@@ -41,6 +41,9 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlutterLogin(
       title: 'Foodict',
+      logo: 'assets/icon_sample2.PNG',
+      // logoTag: Constants.logoTag,
+      // titleTag: Constants.titleTag,
       onLogin: _authUser,
       onSignup: _authUser,
       showDebugButtons: false,
