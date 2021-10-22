@@ -2,9 +2,16 @@
 # Owner : Awesome CEO Alex
 [flutter-fire](https://firebase.flutter.dev/docs/auth/overview)
 
-**Run in web:** 
+**Run in web:**
+use
+```bash
+flutter run -d chrome --web-port 5000 . 
+``` 
+when adding new oauth origins in google. It takes some time to update (minutes). 
+The port is important. Localhost:5000 is currently configured as Google's oauth accepted URL.
 
-```use flutter run -d chrome --web-port 5000 .  when adding new oauth origins in google it takes some time to update (minutes)```
+**Generate Android/IOS icons**
+```flutter pub run flutter_launcher_icons:main```
 
 **Cors Config on Firebase Bucket to load imgs from flutter web while Testing:**
 
