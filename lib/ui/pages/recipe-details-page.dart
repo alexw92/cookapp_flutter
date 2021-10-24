@@ -45,13 +45,17 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                     mainAxisSize: MainAxisSize.max,
                     children: [CircularProgressIndicator()])
               ])
-        : Container(
+        : Scaffold(
+            body: SafeArea(
+                child: Container(
             color: Colors.blueGrey,
             child: Container(
               // height: 400,
               margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: Text(this.recipe.name),
+              child: Center(
+                  child:
+                      Text(this.recipe.name, style: TextStyle(fontSize: 20))),
             ),
-          );
+          )));
   }
 }

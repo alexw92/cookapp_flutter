@@ -39,70 +39,74 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext ctx) {
-    return Container(
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Foodict'),
-          actions: [
-            // AppLocalizations.of(context).logout
-            // AppLocalizations.of(context).settings
-            PopupMenuButton(
-              onSelected: (result){
-                switch(result){
-                  case 0: _openSettings(); break;
-                  case 1: _signOut(); break;
-                }
-              },
-              itemBuilder: (context) => [
-                PopupMenuItem(
-                  child: Text(AppLocalizations.of(context).settings),
-                value: 0
+    return Scaffold(
+      body: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Foodict'),
+            actions: [
+              // AppLocalizations.of(context).logout
+              // AppLocalizations.of(context).settings
+              PopupMenuButton(
+                onSelected: (result) {
+                  switch (result) {
+                    case 0:
+                      _openSettings();
+                      break;
+                    case 1:
+                      _signOut();
+                      break;
+                  }
+                },
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                      child: Text(AppLocalizations.of(context).settings),
+                      value: 0),
+                  PopupMenuItem(
+                      child: Text(AppLocalizations.of(context).logout),
+                      value: 1)
+                ],
+                icon: Icon(
+                  Icons.settings,
                 ),
-                PopupMenuItem(
-                  child: Text(AppLocalizations.of(context).logout),
-                  value: 1
-                )
-              ],
-              icon: Icon(
-                Icons.settings,
+              )
+            ],
+          ),
+          body: Center(
+            child: _widgetOptions.elementAt(_selectedIndex),
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            items: <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: AppLocalizations.of(context).home,
               ),
-            )
-          ],
-        ),
-        body: Center(
-          child: _widgetOptions.elementAt(_selectedIndex),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: AppLocalizations.of(context).home,
-            ),
-            // BottomNavigationBarItem(
-            //   icon: Icon(Icons.shopping_basket),
-            //   label: 'Fridge',
-            // ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_bag),
-              label: AppLocalizations.of(context).fridge,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.lunch_dining),
-              label: AppLocalizations.of(context).recipes,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: AppLocalizations.of(context).profile,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.image),
-              label: 'ImageTest',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          unselectedItemColor: Colors.grey,
-          selectedItemColor: Colors.amber[800],
-          onTap: _onItemTapped,
+              // BottomNavigationBarItem(
+              //   icon: Icon(Icons.shopping_basket),
+              //   label: 'Fridge',
+              // ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.shopping_bag),
+                label: AppLocalizations.of(context).fridge,
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.lunch_dining),
+                label: AppLocalizations.of(context).recipes,
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: AppLocalizations.of(context).profile,
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.image),
+                label: 'ImageTest',
+              ),
+            ],
+            currentIndex: _selectedIndex,
+            unselectedItemColor: Colors.grey,
+            selectedItemColor: Colors.amber[800],
+            onTap: _onItemTapped,
+          ),
         ),
       ),
     );
@@ -117,7 +121,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _openSettings() async {
     print('settings');
-    await  Navigator.push(
+    await Navigator.push(
         context, MaterialPageRoute(builder: (context) => SettingsPage()));
     print('settings completed');
   }
