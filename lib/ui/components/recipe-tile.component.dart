@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/ui/pages/recipe-details-page.dart';
-import 'package:cookable_flutter/ui/styles/cookable-theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -39,17 +38,20 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
             image:
                 CachedNetworkImageProvider(recipe.imgSrc,
                     imageRenderMethodForWeb: ImageRenderMethodForWeb.HttpGet),
-            width: 300,
-            height: 282,
+            // width: double.infinity,
+            // height: double.infinity,
+            fit: BoxFit.cover,
+
             // backgroundColor: Colors.transparent,
             //  radius: 40,
           )),
-          Container(
-              alignment: Alignment.center,
-              child: Text(
-                recipe.name,
-                style: CookableTheme.normalBlackFont,
-              )),
+          // Container(
+          //     alignment: Alignment.center,
+          //     child: Text(
+          //       recipe.name,
+          //       style: CookableTheme.normalBlackFont,
+          //     )
+         // ),
 
           // removed amount from api
           // Text(
@@ -59,11 +61,11 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
         ],
       ),
       // Todo this is where I want to add #persons, diet icon, nutrients
-      Container(
-        height: 50,
-        alignment: Alignment.bottomCenter,
-        color: Colors.orange,
-      ),
+      // Container(
+      //   height: 50,
+      //   alignment: Alignment.bottomCenter,
+      //   color: Colors.orange,
+      // ),
     ])));
   }
 
