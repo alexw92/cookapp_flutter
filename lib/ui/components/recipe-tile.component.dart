@@ -29,22 +29,19 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
         onTap: () => navigateToRecipePage(recipe.id),
         child: Card(
             //padding: new EdgeInsets.all(20.0),
-            child: Column(mainAxisSize: MainAxisSize.min, children: [
-      Stack(
-        children: [
+            child:
           Container(
-              child: Image(
+              height: 300,
+              width: 300,
+              child: FittedBox(fit: BoxFit.fill,
+                  child: Image(
             // needs --web-renderer html
             image:
                 CachedNetworkImageProvider(recipe.imgSrc,
                     imageRenderMethodForWeb: ImageRenderMethodForWeb.HttpGet),
-            // width: double.infinity,
-            // height: double.infinity,
-            fit: BoxFit.cover,
-
             // backgroundColor: Colors.transparent,
             //  radius: 40,
-          )),
+          ))),
           // Container(
           //     alignment: Alignment.center,
           //     child: Text(
@@ -58,7 +55,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
           //   "${Utility.getFormattedAmount(userFoodProduct)}",
           //   style: CookableTheme.smallWhiteFont,
           // ),
-        ],
+
       ),
       // Todo this is where I want to add #persons, diet icon, nutrients
       // Container(
@@ -66,7 +63,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
       //   alignment: Alignment.bottomCenter,
       //   color: Colors.orange,
       // ),
-    ])));
+    );
   }
 
   navigateToRecipePage(int recipeId) async {

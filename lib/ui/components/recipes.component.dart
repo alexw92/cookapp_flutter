@@ -48,7 +48,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
           child: GridView.count(
             primary: true,
             padding: const EdgeInsets.all(0),
-            crossAxisCount: 2,
+            crossAxisCount: 1,
             mainAxisSpacing: 0,
             crossAxisSpacing: 0,
             children: [...getAllTiles()],
