@@ -44,16 +44,26 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                     //  radius: 40,
                   ),
                 )),
-            Container(
+            Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
                 width: 100,
                 height: 50,
-                color: Color.fromARGB(150, 255, 255, 255),
-                child: Text("Laaaaawwlllll")),
-            Container(
-              width: 30,
-              height: 30,
-              color: Color.fromARGB(200, 200, 0, 0),
-            )
+
+                color: Color.fromARGB(200, 255, 255, 255),
+                child: Text("Laaaaawwlllll"))),
+            Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                    width: 100,
+                    height: 30,
+
+                    color: Color.fromARGB(200, 255, 255, 255),
+                    child: Text(this.recipe.name,style: TextStyle(fontSize: 20),textAlign: TextAlign.center)))
           ]),
         )
         // Container(
