@@ -44,6 +44,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
             Container(
                 height: 300,
                 width: 300,
+                color:Colors.grey,
                 child: FittedBox(
                   fit: BoxFit.fill,
                   child: ClipRRect(

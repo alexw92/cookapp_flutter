@@ -42,7 +42,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
     else
       return RefreshIndicator(onRefresh: refreshTriggered,
         child: Container(
-        color: Colors.white,
+        color: Colors.green,
         child: Container(
           // height: 400,
           margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
