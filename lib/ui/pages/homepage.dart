@@ -1,6 +1,5 @@
 import 'package:cookable_flutter/ui/components/fridgenew.component.dart';
 import 'package:cookable_flutter/ui/components/recipes.component.dart';
-import 'package:cookable_flutter/ui/pages/dashboard.dart';
 import 'package:cookable_flutter/ui/pages/login_screen.dart';
 import 'package:cookable_flutter/ui/pages/profile.dart';
 import 'package:cookable_flutter/ui/pages/settings_screen.dart';
@@ -23,7 +22,7 @@ class _HomePageState extends State<HomePage> {
 
   int _selectedIndex = 1;
   static List<Widget> _widgetOptions = <Widget>[
-    DashboardPage(),
+    //DashboardPage(),
     // FridgeComponent(),
     ToggleFridgeWidget(),
     RecipesComponent(),
@@ -77,10 +76,10 @@ class _HomePageState extends State<HomePage> {
           ),
           bottomNavigationBar: BottomNavigationBar(
             items: <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: AppLocalizations.of(context).home,
-              ),
+              // BottomNavigationBarItem(
+              //   icon: Icon(Icons.home),
+              //   label: AppLocalizations.of(context).home,
+              // ),
               // BottomNavigationBarItem(
               //   icon: Icon(Icons.shopping_basket),
               //   label: 'Fridge',
