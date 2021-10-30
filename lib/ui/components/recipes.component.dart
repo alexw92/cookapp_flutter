@@ -17,7 +17,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
   String apiToken;
   bool loading = false;
 
-  void loadFoodProducts() async {
+  void loadRecipes() async {
     loading = true;
     recipeList = await RecipeController.getRecipes();
     apiToken = await TokenStore().getToken();
@@ -29,7 +29,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
   @override
   void initState() {
     super.initState();
-    loadFoodProducts();
+    loadRecipes();
   }
 
   @override
@@ -40,8 +40,9 @@ class _RecipesComponentState extends State<RecipesComponent> {
         backgroundColor: Colors.green,
       );
     else
-      return Container(
-        color: Colors.blueGrey,
+      return RefreshIndicator(onRefresh: refreshTriggered,
+        child: Container(
+        color: Colors.white,
         child: Container(
           // height: 400,
           margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
@@ -54,6 +55,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
             children: [...getAllTiles()],
           ),
         ),
+        )
       );
   }
 
@@ -65,5 +67,10 @@ class _RecipesComponentState extends State<RecipesComponent> {
       );
     }
     return myTiles;
+  }
+
+  Future<void> refreshTriggered() async {
+    print("refresh recipes");
+    return loadRecipes();
   }
 }
