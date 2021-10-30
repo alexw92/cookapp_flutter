@@ -28,14 +28,26 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
         onTap: () => navigateToRecipePage(recipe.id),
         child: Container(
           alignment: Alignment.center,
+          clipBehavior: Clip.hardEdge,
 
-          child: Stack(children: [
+          margin: EdgeInsets.only(bottom: 10),
+            decoration: BoxDecoration(
+                border: Border.all(
+                  color: Color.fromARGB(0, 0, 0, 0),
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(20))
+            ),
+
+          child: Stack(
+              fit:StackFit.expand,
+              children: [
             Container(
                 height: 300,
                 width: 300,
                 child: FittedBox(
                   fit: BoxFit.fill,
-                  child: Image(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20), child:Image(
                     // needs --web-renderer html
                     image: CachedNetworkImageProvider(recipe.imgSrc,
                         imageRenderMethodForWeb:
@@ -43,7 +55,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                     // backgroundColor: Colors.transparent,
                     //  radius: 40,
                   ),
-                )),
+                ))),
             Positioned(
                 bottom: 0,
                 left: 0,
@@ -51,8 +63,14 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                 child: Container(
                 width: 100,
                 height: 50,
+                    decoration: BoxDecoration(
+                        color: Color.fromARGB(200, 255, 255, 255),
 
-                color: Color.fromARGB(200, 255, 255, 255),
+                        border: Border.all(
+                          color: Color.fromARGB(0, 0, 0, 0),
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(20))
+                    ),
                 child: Text("Laaaaawwlllll"))),
             Positioned(
                 top: 0,
@@ -61,8 +79,13 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                 child: Container(
                     width: 100,
                     height: 30,
-
-                    color: Color.fromARGB(200, 255, 255, 255),
+                    decoration: BoxDecoration(
+                        color: Color.fromARGB(200, 255, 255, 255),
+                        border: Border.all(
+                          color: Color.fromARGB(0, 0, 0, 0),
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(20))
+                    ),
                     child: Text(this.recipe.name,style: TextStyle(fontSize: 20),textAlign: TextAlign.center)))
           ]),
         )
