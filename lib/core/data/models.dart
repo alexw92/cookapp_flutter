@@ -92,6 +92,7 @@ class Ingredient {
   final int amount;
   final int recipeId;
   final int foodProductId;
+  final String imgSrc;
 
   Ingredient({
     this.id,
@@ -99,6 +100,7 @@ class Ingredient {
     this.amount,
     this.recipeId,
     this.foodProductId,
+    this.imgSrc
   });
 
   factory Ingredient.fromJson(Map<String, dynamic> json) {
@@ -107,7 +109,8 @@ class Ingredient {
         name: json['name'],
         amount: json['amount'],
         recipeId: json['recipeId'],
-        foodProductId: json['foodProductId']);
+        foodProductId: json['foodProductId'],
+        imgSrc: json['img_src']);
   }
 }
 
