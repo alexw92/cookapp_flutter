@@ -64,7 +64,7 @@ class RecipeDetails {
         ingredients: (recipeJson['ingredients'] as List)
             .map((it) => Ingredient.fromJson(it))
             .toList(),
-        nutrients: Nutrients.fromJson(recipeJson['nutrients']),
+        nutrients: Nutrients.fromJson(recipeJson['nutrientsData']),
         numberOfPersons: recipeJson['numberOfPersons']);
   }
 }

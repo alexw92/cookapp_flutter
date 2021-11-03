@@ -5,6 +5,7 @@ import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class RecipesDetailsPage extends StatefulWidget {
   final int recipeId;
@@ -49,120 +50,123 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
               ])
         : Scaffold(
             body: SafeArea(
-                child: Container(
-              child: SingleChildScrollView(
-                  //  padding: EdgeInsets.only(bottom: 15),
-                  child: Column(children: [
-                //  Container( child: Stack(
-                //        fit:StackFit.expand,
-                //        children: [
-                //   Container(
-                //       height: 300,
-                //       width: 300,
-                //       color:Colors.grey,
-                //       child: FittedBox(
-                //           fit: BoxFit.fill,
-                //           child: ClipRRect(
-                //             borderRadius: BorderRadius.circular(20), child:Image(
-                //             // needs --web-renderer html
-                //             image: CachedNetworkImageProvider(recipe.imgSrc,
-                //                 imageRenderMethodForWeb:
-                //                 ImageRenderMethodForWeb.HttpGet),
-                //             // backgroundColor: Colors.transparent,
-                //             //  radius: 40,
-                //           ),
-                //           ))),
-                //   Positioned(
-                //       bottom: 0,
-                //       left: 0,
-                //       right: 0,
-                //       child: Container(
-                //           width: 100,
-                //           height: 50,
-                //           decoration: BoxDecoration(
-                //               color: Color.fromARGB(200, 255, 255, 255),
-                //
-                //               border: Border.all(
-                //                 color: Color.fromARGB(0, 0, 0, 0),
-                //               ),
-                //               borderRadius: BorderRadius.all(Radius.circular(20))
-                //           ),
-                //           child: Text("Laaaaawwlllll"))),
-                //   Positioned(
-                //       top: 0,
-                //       left: 0,
-                //       right: 0,
-                //       child: Container(
-                //           width: 100,
-                //           height: 30,
-                //           decoration: BoxDecoration(
-                //               color: Color.fromARGB(200, 255, 255, 255),
-                //               border: Border.all(
-                //                 color: Color.fromARGB(0, 0, 0, 0),
-                //               ),
-                //               borderRadius: BorderRadius.all(Radius.circular(20))
-                //           ),
-                //           child: Text(this.recipe.name,style: TextStyle(fontSize: 20),textAlign: TextAlign.center)))
-                // ])),
-                Container(
-                    height: 400,
-                    width: double.infinity,
-                    child: FittedBox(
-                        fit: BoxFit.fill,
-                        child: Image(
-                          // needs --web-renderer html
-                          image: CachedNetworkImageProvider(recipe.imgSrc,
-                              imageRenderMethodForWeb:
-                                  ImageRenderMethodForWeb.HttpGet),
-                          // backgroundColor: Colors.transparent,
-                          //  radius: 40,
-                        ))),
-                Container(
-                  color: Colors.black,
+            child: Container(
+                child: SingleChildScrollView(
+                    //  padding: EdgeInsets.only(bottom: 15),
+                    child: Column(children: [
+              //  Container( child: Stack(
+              //        fit:StackFit.expand,
+              //        children: [
+              //   Container(
+              //       height: 300,
+              //       width: 300,
+              //       color:Colors.grey,
+              //       child: FittedBox(
+              //           fit: BoxFit.fill,
+              //           child: ClipRRect(
+              //             borderRadius: BorderRadius.circular(20), child:Image(
+              //             // needs --web-renderer html
+              //             image: CachedNetworkImageProvider(recipe.imgSrc,
+              //                 imageRenderMethodForWeb:
+              //                 ImageRenderMethodForWeb.HttpGet),
+              //             // backgroundColor: Colors.transparent,
+              //             //  radius: 40,
+              //           ),
+              //           ))),
+              //   Positioned(
+              //       bottom: 0,
+              //       left: 0,
+              //       right: 0,
+              //       child: Container(
+              //           width: 100,
+              //           height: 50,
+              //           decoration: BoxDecoration(
+              //               color: Color.fromARGB(200, 255, 255, 255),
+              //
+              //               border: Border.all(
+              //                 color: Color.fromARGB(0, 0, 0, 0),
+              //               ),
+              //               borderRadius: BorderRadius.all(Radius.circular(20))
+              //           ),
+              //           child: Text("Laaaaawwlllll"))),
+              //   Positioned(
+              //       top: 0,
+              //       left: 0,
+              //       right: 0,
+              //       child: Container(
+              //           width: 100,
+              //           height: 30,
+              //           decoration: BoxDecoration(
+              //               color: Color.fromARGB(200, 255, 255, 255),
+              //               border: Border.all(
+              //                 color: Color.fromARGB(0, 0, 0, 0),
+              //               ),
+              //               borderRadius: BorderRadius.all(Radius.circular(20))
+              //           ),
+              //           child: Text(this.recipe.name,style: TextStyle(fontSize: 20),textAlign: TextAlign.center)))
+              // ])),
+              Container(
+                  height: 400,
                   width: double.infinity,
-                  child: Column(children: [
-                    Text(
-                      "Ingredients",
-                      style: TextStyle(color: Colors.white, fontSize: 26),
-                    ),
-                    Container(
-                        child: new GridView.count(
-                      //     primary: true,
-                      //    padding: const EdgeInsets.all(0),
-                      shrinkWrap: true,
-                      crossAxisCount: 3,
-                      mainAxisSpacing: 0,
-                      crossAxisSpacing: 0,
-                      children: [
-                        ...getAllIngredientTiles()
-                        //
-                      ],
-                    ))
-                  ]),
-                ),
-                Container(
+                  child: FittedBox(
+                      fit: BoxFit.fill,
+                      child: Image(
+                        // needs --web-renderer html
+                        image: CachedNetworkImageProvider(recipe.imgSrc,
+                            imageRenderMethodForWeb:
+                                ImageRenderMethodForWeb.HttpGet),
+                        // backgroundColor: Colors.transparent,
+                        //  radius: 40,
+                      ))),
+              Container(
+                color: Colors.black,
+                width: double.infinity,
+                child: Column(children: [
+                  Text(
+                    "Ingredients",
+                    style: TextStyle(color: Colors.white, fontSize: 26),
+                  ),
+                  Container(
+                      margin: const EdgeInsets.only(left: 5, right: 5),
+                      child: new GridView.count(
+                        //     primary: true,
+                        //    padding: const EdgeInsets.all(0),
+                        shrinkWrap: true,
+                        crossAxisCount: 3,
+                        mainAxisSpacing: 0,
+                        crossAxisSpacing: 10,
+                        children: [
+                          ...getAllIngredientTiles()
+                          //
+                        ],
+                      ))
+                ]),
+              ),
+              Container(
                   color: Colors.black,
                   width: double.infinity,
                   child: Column(children: [
                     Text(
                       "Nutrients",
                       style: TextStyle(color: Colors.white, fontSize: 26),
-                    )
-                  ]),
-                ),
-                Container(
-                  color: Colors.black,
-                  width: double.infinity,
-                  child: Column(children: [
-                    Text(
-                      "How to",
-                      style: TextStyle(color: Colors.white, fontSize: 26),
-                    )
-                  ]),
-                )
-              ])),
-            )),
-          );
+                    ),
+                    Container(
+                        margin: const EdgeInsets.only(left: 5, right: 5),
+                        child: new GridView.count(
+                          //     primary: true,
+                          //    padding: const EdgeInsets.all(0),
+                          shrinkWrap: true,
+                          crossAxisCount: 4,
+                          mainAxisSpacing: 0,
+                          crossAxisSpacing: 5,
+                          children: [
+                            ...getNutrientTiles()
+                            //
+                          ],
+                        ))
+                  ])),
+            ]))),
+          ));
   }
 
   List<Widget> getAllIngredientTiles() {
@@ -173,6 +177,22 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
             ingredient: recipe.ingredients[i], apiToken: apiToken),
       );
     }
+    return myTiles;
+  }
+
+  List<Widget> getNutrientTiles() {
+    List<Widget> myTiles = [];
+      myTiles.addAll([
+        NutrientTileComponent(
+            nutrientName: "Calories", nutrientAmount: recipe.nutrients.calories.toDouble(),),
+        NutrientTileComponent(
+            nutrientName: "Fat", nutrientAmount: recipe.nutrients.fat,),
+        NutrientTileComponent(
+            nutrientName: "Carbs", nutrientAmount: recipe.nutrients.carbohydrate,),
+        NutrientTileComponent(
+            nutrientName: "Protein", nutrientAmount: recipe.nutrients.protein,)]
+      );
+
     return myTiles;
   }
 }
@@ -198,15 +218,58 @@ class _IngredientTileComponentState extends State<IngredientTileComponent> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 30,
-      width: 30,
-      color: Colors.grey,
+      height: 28,
+      width: 28,
+      color: Colors.black,
       child: CircleAvatar(
         backgroundImage: CachedNetworkImageProvider(ingredient.imgSrc,
             imageRenderMethodForWeb: ImageRenderMethodForWeb.HttpGet),
         // backgroundColor: Colors.transparent,
         radius: 40,
       ),
+    );
+  }
+}
+
+class NutrientTileComponent extends StatefulWidget {
+  String nutrientName;
+  double nutrientAmount;
+  double dailyRecAmount;
+
+  NutrientTileComponent({Key key, this.nutrientName, this.nutrientAmount, this.dailyRecAmount})
+      : super(key: key);
+
+  @override
+  _NutrientTileComponentState createState() =>
+      _NutrientTileComponentState(nutrientName: nutrientName, nutrientAmount: nutrientAmount, dailyRecAmount: dailyRecAmount);
+}
+
+class _NutrientTileComponentState extends State<NutrientTileComponent> {
+  String nutrientName;
+  double nutrientAmount;
+  double dailyRecAmount;
+
+  _NutrientTileComponentState({this.nutrientName, this.nutrientAmount, this.dailyRecAmount});
+
+  @override
+  Widget build(BuildContext context) {
+    return new CircularPercentIndicator(
+      radius: 60.0,
+      lineWidth: 5.0,
+      animation: true,
+      percent: 0.7,
+      center: new Text(
+        "70.0%",
+        style:
+        new TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 10.0),
+      ),
+      footer: new Text(
+        nutrientName,
+        style:
+        new TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 10.0),
+      ),
+      circularStrokeCap: CircularStrokeCap.round,
+      progressColor: Colors.purple,
     );
   }
 }

@@ -51,6 +51,7 @@ dependencies:
   # picking img from gallery
   image_picker: ^0.8.4
   settings_ui: ^1.0.0
+  percent_indicator: ^3.4.0
 
 dev_dependencies:
   flutter_launcher_icons: "^0.9.2"
