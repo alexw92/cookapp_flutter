@@ -7,6 +7,28 @@ import 'package:http/http.dart' as http;
 import 'io-config.dart';
 
 class RecipeController {
+
+  // public getDefaultNutrients(): Observable<DefaultNutrients>  {
+  // return this.httpService.get('/constants/defaultNutrients', {responseType: 'text'}).pipe(map(res => JSON.parse(res)));
+  // }
+  static Future<DefaultNutrients> getDefaultNutrients() async {
+    // get token from token store
+    var tokenStore = IOConfig.tokenStore;
+    String storedToken = await tokenStore.getToken();
+
+    var response =
+    await http.get(Uri.parse("${IOConfig.apiUrl}/constants/defaultNutrients"), headers: {
+      "Authorization": "Bearer $storedToken",
+      'Content-Type': 'application/json',
+    }).timeout(IOConfig.timeoutDuration);
+
+    /// If the first API call is successful
+    if (response.statusCode == HttpStatus.ok) {
+      DefaultNutrients defaultNutrients =  DefaultNutrients.fromJson(json.decode(response.body));
+      return defaultNutrients;
+    }
+  }
+
   static Future<List<Recipe>> getRecipes() async {
     // get token from token store
     var tokenStore = IOConfig.tokenStore;

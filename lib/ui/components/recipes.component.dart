@@ -4,6 +4,7 @@ import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/components/recipe-tile.component.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RecipesComponent extends StatefulWidget {
   RecipesComponent({Key key}) : super(key: key);
@@ -21,8 +22,19 @@ class _RecipesComponentState extends State<RecipesComponent> {
     loading = true;
     recipeList = await RecipeController.getRecipes();
     apiToken = await TokenStore().getToken();
+    await loadDefaultNutrition();
     setState(() {
       loading = false;
+    });
+  }
+
+  Future<void> loadDefaultNutrition() async {
+    var prefs = await SharedPreferences.getInstance();
+    RecipeController.getDefaultNutrients().then((nutrients) => {
+    prefs.setInt('dailyCalories', nutrients.recDailyCalories),
+    prefs.setDouble('dailyCarbohydrate', nutrients.recDailyCarbohydrate),
+    prefs.setDouble('dailyProtein', nutrients.recDailyProtein),
+    prefs.setDouble('dailyFat', nutrients.recDailyFat)
     });
   }
 

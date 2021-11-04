@@ -86,6 +86,39 @@ class RecipeInstruction {
   }
 }
 
+class DefaultNutrients {
+  final int id;
+  final double recDailyFat;
+  final double recDailySaturatedFat;
+  final double recDailyCarbohydrate;
+  final double recDailySugar;
+  final double recDailyProtein;
+  final int recDailyCalories;
+  final String source;
+
+  DefaultNutrients(
+      {this.id,
+      this.recDailyFat,
+      this.recDailySaturatedFat,
+      this.recDailyCarbohydrate,
+      this.recDailySugar,
+      this.recDailyProtein,
+      this.recDailyCalories,
+      this.source});
+
+  factory DefaultNutrients.fromJson(Map<String, dynamic> json) {
+    return DefaultNutrients(
+        id: json['id'],
+        recDailyFat: json['recDailyFat'],
+        recDailySaturatedFat: json['recDailySaturatedFat'],
+        recDailyCarbohydrate: json['recDailyCarbohydrate'],
+        recDailySugar: json['recDailySugar'],
+        recDailyProtein: json['recDailyProtein'],
+        recDailyCalories: json['recDailyCalories'],
+        source: json['source']);
+  }
+}
+
 class Ingredient {
   final int id;
   final String name;
@@ -94,14 +127,13 @@ class Ingredient {
   final int foodProductId;
   final String imgSrc;
 
-  Ingredient({
-    this.id,
-    this.name,
-    this.amount,
-    this.recipeId,
-    this.foodProductId,
-    this.imgSrc
-  });
+  Ingredient(
+      {this.id,
+      this.name,
+      this.amount,
+      this.recipeId,
+      this.foodProductId,
+      this.imgSrc});
 
   factory Ingredient.fromJson(Map<String, dynamic> json) {
     return Ingredient(

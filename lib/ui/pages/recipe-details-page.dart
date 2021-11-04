@@ -6,6 +6,7 @@ import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RecipesDetailsPage extends StatefulWidget {
   final int recipeId;
@@ -19,12 +20,21 @@ class RecipesDetailsPage extends StatefulWidget {
 class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
   RecipeDetails recipe;
   String apiToken;
+  int dailyCalories;
+  double dailyCarbohydrate;
+  double dailyProtein;
+  double dailyFat;
 
   _RecipesDetailsPageState();
 
   void loadRecipe() async {
     // recipe = await RecipeController.getRecipe();
     apiToken = await TokenStore().getToken();
+    var prefs = await SharedPreferences.getInstance();
+    dailyCalories = prefs.getInt('dailyCalories');
+    dailyCarbohydrate = prefs.getDouble('dailyCarbohydrate');
+    dailyProtein = prefs.getDouble('dailyProtein');
+    dailyFat = prefs.getDouble('dailyFat');
     this.recipe = await RecipeController.getRecipe(this.widget.recipeId);
     setState(() {});
   }
@@ -184,13 +194,17 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
     List<Widget> myTiles = [];
       myTiles.addAll([
         NutrientTileComponent(
-            nutrientName: "Calories", nutrientAmount: recipe.nutrients.calories.toDouble(),),
+            nutrientName: "Calories", nutrientAmount: recipe.nutrients.calories.toDouble(),
+            dailyRecAmount: dailyCalories.toDouble(), isCalories: true),
         NutrientTileComponent(
-            nutrientName: "Fat", nutrientAmount: recipe.nutrients.fat,),
+            nutrientName: "Fat", nutrientAmount: recipe.nutrients.fat,
+            dailyRecAmount: dailyFat, isCalories: false),
         NutrientTileComponent(
-            nutrientName: "Carbs", nutrientAmount: recipe.nutrients.carbohydrate,),
+            nutrientName: "Carbs", nutrientAmount: recipe.nutrients.carbohydrate,
+            dailyRecAmount: dailyCarbohydrate, isCalories: false),
         NutrientTileComponent(
-            nutrientName: "Protein", nutrientAmount: recipe.nutrients.protein,)]
+            nutrientName: "Protein", nutrientAmount: recipe.nutrients.protein,
+            dailyRecAmount: dailyProtein, isCalories: false)]
       );
 
     return myTiles;
@@ -235,21 +249,24 @@ class NutrientTileComponent extends StatefulWidget {
   String nutrientName;
   double nutrientAmount;
   double dailyRecAmount;
+  bool isCalories = false;
 
-  NutrientTileComponent({Key key, this.nutrientName, this.nutrientAmount, this.dailyRecAmount})
+  NutrientTileComponent({Key key, this.nutrientName, this.nutrientAmount, this.dailyRecAmount, this.isCalories})
       : super(key: key);
 
   @override
   _NutrientTileComponentState createState() =>
-      _NutrientTileComponentState(nutrientName: nutrientName, nutrientAmount: nutrientAmount, dailyRecAmount: dailyRecAmount);
+      _NutrientTileComponentState(nutrientName: nutrientName, nutrientAmount: nutrientAmount,
+          dailyRecAmount: dailyRecAmount, isCalories: isCalories);
 }
 
 class _NutrientTileComponentState extends State<NutrientTileComponent> {
   String nutrientName;
   double nutrientAmount;
   double dailyRecAmount;
+  bool isCalories;
 
-  _NutrientTileComponentState({this.nutrientName, this.nutrientAmount, this.dailyRecAmount});
+  _NutrientTileComponentState({this.nutrientName, this.nutrientAmount, this.dailyRecAmount, this.isCalories});
 
   @override
   Widget build(BuildContext context) {
@@ -257,9 +274,9 @@ class _NutrientTileComponentState extends State<NutrientTileComponent> {
       radius: 60.0,
       lineWidth: 5.0,
       animation: true,
-      percent: 0.7,
+      percent: nutrientAmount/dailyRecAmount,
       center: new Text(
-        "70.0%",
+        "${isCalories?nutrientAmount.toInt():nutrientAmount} ${isCalories?"kcal":"g"}",
         style:
         new TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 10.0),
       ),
