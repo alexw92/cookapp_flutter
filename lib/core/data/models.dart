@@ -217,9 +217,9 @@ class UserFoodProduct {
 class QuantityUnit {
   static const MILLILITER = 0;
   static const GRAM = 1;
-  static const PICES = 2;
+  static const PIECES = 2;
 
-  static get values => [MILLILITER, GRAM, PICES];
+  static get values => [MILLILITER, GRAM, PIECES];
   final int value;
 
   factory QuantityUnit.fromInt(int quantityType) {
@@ -231,8 +231,8 @@ class QuantityUnit {
       case GRAM:
         result = QuantityUnit(GRAM);
         break;
-      case PICES:
-        result = QuantityUnit(PICES);
+      case PIECES:
+        result = QuantityUnit(PIECES);
         break;
       default:
         result = null;
@@ -250,7 +250,7 @@ class QuantityUnit {
       case GRAM:
         result = "g";
         break;
-      case PICES:
+      case PIECES:
         result = "pc";
         break;
       default:

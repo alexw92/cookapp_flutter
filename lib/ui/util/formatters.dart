@@ -3,7 +3,7 @@ import 'package:fraction/fraction.dart';
 
 class Utility {
   static String getFormattedAmount(UserFoodProduct userFoodProduct) {
-    if (userFoodProduct.quantityUnit.value == QuantityUnit.PICES) {
+    if (userFoodProduct.quantityUnit.value == QuantityUnit.PIECES) {
       return "${_getFormattedFraction(userFoodProduct.amount)} ${userFoodProduct.quantityUnit.toString()}";
     } else if (userFoodProduct.quantityUnit.value == QuantityUnit.MILLILITER ||
         userFoodProduct.quantityUnit.value == QuantityUnit.GRAM) {
