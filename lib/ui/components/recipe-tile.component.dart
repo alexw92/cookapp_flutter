@@ -54,7 +54,6 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                         imageRenderMethodForWeb:
                             ImageRenderMethodForWeb.HttpGet),
                     // backgroundColor: Colors.transparent,
-                    //  radius: 40,
                   ),
                 ))),
             Positioned(
@@ -62,7 +61,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                 left: 0,
                 right: 0,
                 child: Container(
-                width: 100,
+
                 height: 50,
                     decoration: BoxDecoration(
                         color: Color.fromARGB(200, 255, 255, 255),
@@ -70,7 +69,8 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                         border: Border.all(
                           color: Color.fromARGB(0, 0, 0, 0),
                         ),
-                        borderRadius: BorderRadius.all(Radius.circular(20))
+                        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(19),
+                            bottomRight: Radius.circular(19))
                     ),
                 child: Text("Laaaaawwlllll"))),
             Positioned(
@@ -78,7 +78,6 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                 left: 0,
                 right: 0,
                 child: Container(
-                    width: 100,
                     height: 30,
                     decoration: BoxDecoration(
                         color: Color.fromARGB(200, 255, 255, 255),
