@@ -126,6 +126,7 @@ class Ingredient {
   final int recipeId;
   final int foodProductId;
   final String imgSrc;
+  final QuantityUnit quantityType;
 
   Ingredient(
       {this.id,
@@ -133,7 +134,8 @@ class Ingredient {
       this.amount,
       this.recipeId,
       this.foodProductId,
-      this.imgSrc});
+      this.imgSrc,
+      this.quantityType});
 
   factory Ingredient.fromJson(Map<String, dynamic> json) {
     return Ingredient(
@@ -142,7 +144,10 @@ class Ingredient {
         amount: json['amount'],
         recipeId: json['recipeId'],
         foodProductId: json['foodProductId'],
-        imgSrc: json['img_src']);
+        imgSrc: json['img_src'],
+        quantityType: QuantityUnit.fromInt(json['quantityType']),
+
+    );
   }
 }
 
@@ -210,9 +215,9 @@ class UserFoodProduct {
 }
 
 class QuantityUnit {
-  static const MILLILITER = 1;
-  static const GRAM = 2;
-  static const PICES = 3;
+  static const MILLILITER = 0;
+  static const GRAM = 1;
+  static const PICES = 2;
 
   static get values => [MILLILITER, GRAM, PICES];
   final int value;

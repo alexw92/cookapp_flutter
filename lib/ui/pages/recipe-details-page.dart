@@ -144,6 +144,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                         shrinkWrap: true,
                         crossAxisCount: 3,
                         mainAxisSpacing: 0,
+                        padding: EdgeInsets.only(left:10,right:10),
                         crossAxisSpacing: 10,
                         children: [
                           ...getAllIngredientTiles()
@@ -232,15 +233,18 @@ class _IngredientTileComponentState extends State<IngredientTileComponent> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 28,
-      width: 28,
+      height: 40,
+      width: 20,
       color: Colors.black,
-      child: CircleAvatar(
+      child: Column( children:[CircleAvatar(
         backgroundImage: CachedNetworkImageProvider(ingredient.imgSrc,
             imageRenderMethodForWeb: ImageRenderMethodForWeb.HttpGet),
         // backgroundColor: Colors.transparent,
-        radius: 40,
+        radius: 35,
       ),
+        Text(ingredient.name,style: TextStyle(color: Colors.white),),
+        Text(ingredient.amount.toString()+" ${ingredient.quantityType}",style: TextStyle(color: Colors.white,),)
+        ])
     );
   }
 }
@@ -286,7 +290,7 @@ class _NutrientTileComponentState extends State<NutrientTileComponent> {
         new TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 10.0),
       ),
       circularStrokeCap: CircularStrokeCap.round,
-      progressColor: Colors.purple,
+      progressColor: Colors.blue,
     );
   }
 }
