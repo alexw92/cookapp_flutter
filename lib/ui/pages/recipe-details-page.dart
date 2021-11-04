@@ -3,10 +3,13 @@ import 'package:cached_network_image_platform_interface/cached_network_image_pla
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
+import 'package:cookable_flutter/ui/components/ingredient-tile.component.dart';
+import 'package:cookable_flutter/ui/components/nutrient-tile.component.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/percent_indicator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 
 class RecipesDetailsPage extends StatefulWidget {
   final int recipeId;
@@ -133,7 +136,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                 width: double.infinity,
                 child: Column(children: [
                   Text(
-                    "Ingredients",
+                    AppLocalizations.of(context).ingredients,
                     style: TextStyle(color: Colors.white, fontSize: 26),
                   ),
                   Container(
@@ -158,8 +161,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                   width: double.infinity,
                   child: Column(children: [
                     Text(
-                      "Nutrients",
-                      style: TextStyle(color: Colors.white, fontSize: 26),
+                      AppLocalizations.of(context).nutrients, style: TextStyle(color: Colors.white, fontSize: 26),
                     ),
                     Container(
                         margin: const EdgeInsets.only(left: 5, right: 5),
@@ -195,16 +197,16 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
     List<Widget> myTiles = [];
       myTiles.addAll([
         NutrientTileComponent(
-            nutrientName: "Calories", nutrientAmount: recipe.nutrients.calories.toDouble(),
+            nutrientName: AppLocalizations.of(context).calories, nutrientAmount: recipe.nutrients.calories.toDouble(),
             dailyRecAmount: dailyCalories.toDouble(), isCalories: true),
         NutrientTileComponent(
-            nutrientName: "Fat", nutrientAmount: recipe.nutrients.fat,
+            nutrientName: AppLocalizations.of(context).fat, nutrientAmount: recipe.nutrients.fat,
             dailyRecAmount: dailyFat, isCalories: false),
         NutrientTileComponent(
-            nutrientName: "Carbs", nutrientAmount: recipe.nutrients.carbohydrate,
+            nutrientName: AppLocalizations.of(context).carbs, nutrientAmount: recipe.nutrients.carbohydrate,
             dailyRecAmount: dailyCarbohydrate, isCalories: false),
         NutrientTileComponent(
-            nutrientName: "Protein", nutrientAmount: recipe.nutrients.protein,
+            nutrientName: AppLocalizations.of(context).protein, nutrientAmount: recipe.nutrients.protein,
             dailyRecAmount: dailyProtein, isCalories: false)]
       );
 
@@ -212,85 +214,6 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
   }
 }
 
-class IngredientTileComponent extends StatefulWidget {
-  Ingredient ingredient;
-  String apiToken;
 
-  IngredientTileComponent({Key key, this.ingredient, this.apiToken})
-      : super(key: key);
 
-  @override
-  _IngredientTileComponentState createState() =>
-      _IngredientTileComponentState(ingredient: ingredient, apiToken: apiToken);
-}
 
-class _IngredientTileComponentState extends State<IngredientTileComponent> {
-  Ingredient ingredient;
-  String apiToken;
-
-  _IngredientTileComponentState({this.ingredient, this.apiToken});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 40,
-      width: 20,
-      color: Colors.black,
-      child: Column( children:[CircleAvatar(
-        backgroundImage: CachedNetworkImageProvider(ingredient.imgSrc,
-            imageRenderMethodForWeb: ImageRenderMethodForWeb.HttpGet),
-        // backgroundColor: Colors.transparent,
-        radius: 35,
-      ),
-        Text(ingredient.name,style: TextStyle(color: Colors.white),),
-        Text(ingredient.amount.toString()+" ${ingredient.quantityType}",style: TextStyle(color: Colors.white,),)
-        ])
-    );
-  }
-}
-
-class NutrientTileComponent extends StatefulWidget {
-  String nutrientName;
-  double nutrientAmount;
-  double dailyRecAmount;
-  bool isCalories = false;
-
-  NutrientTileComponent({Key key, this.nutrientName, this.nutrientAmount, this.dailyRecAmount, this.isCalories})
-      : super(key: key);
-
-  @override
-  _NutrientTileComponentState createState() =>
-      _NutrientTileComponentState(nutrientName: nutrientName, nutrientAmount: nutrientAmount,
-          dailyRecAmount: dailyRecAmount, isCalories: isCalories);
-}
-
-class _NutrientTileComponentState extends State<NutrientTileComponent> {
-  String nutrientName;
-  double nutrientAmount;
-  double dailyRecAmount;
-  bool isCalories;
-
-  _NutrientTileComponentState({this.nutrientName, this.nutrientAmount, this.dailyRecAmount, this.isCalories});
-
-  @override
-  Widget build(BuildContext context) {
-    return new CircularPercentIndicator(
-      radius: 60.0,
-      lineWidth: 5.0,
-      animation: true,
-      percent: nutrientAmount/dailyRecAmount,
-      center: new Text(
-        "${isCalories?nutrientAmount.toInt():nutrientAmount} ${isCalories?"kcal":"g"}",
-        style:
-        new TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 10.0),
-      ),
-      footer: new Text(
-        nutrientName,
-        style:
-        new TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 10.0),
-      ),
-      circularStrokeCap: CircularStrokeCap.round,
-      progressColor: Colors.blue,
-    );
-  }
-}

@@ -26,7 +26,13 @@
     "tab_pantry": "Vorratskammer",
     "tab_dairy": "Milchprodukte",
     "tab_meat": "Fleisch",
-    "tab_fish": "Fisch"
+    "tab_fish": "Fisch",
+    "ingredients":  "Zutaten",
+    "nutrients": "Nährwerte",
+    "calories": "Kalorien",
+    "fat": "Fett",
+    "carbs": "Kohlenhydrate",
+    "protein": "Eiweiß"
 
 
 

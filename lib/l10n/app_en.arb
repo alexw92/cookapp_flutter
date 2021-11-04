@@ -29,5 +29,12 @@
     "tab_pantry": "Pantry",
     "tab_dairy": "Dairy",
     "tab_meat": "Meat",
-    "tab_fish": "Fish"
+    "tab_fish": "Fish",
+    "ingredients":  "Ingredients",
+    "nutrients": "Nutrients",
+    "calories": "Calories",
+    "fat": "Fat",
+    "carbs": "Carbs",
+    "protein": "Protein"
+
 }
