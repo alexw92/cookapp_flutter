@@ -1,5 +1,9 @@
 import 'package:cookable_flutter/core/data/models.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fraction/fraction.dart';
+
 
 class Utility {
   static String getFormattedAmount(UserFoodProduct userFoodProduct) {
@@ -10,6 +14,44 @@ class Utility {
       return "${toWholeNumberStringIfPossible(userFoodProduct.amount)} ${userFoodProduct.quantityUnit.toString()}";
     } else
       return "${userFoodProduct.amount} ${userFoodProduct.quantityUnit.toString()}";
+  }
+
+  static String getTranslatedDiet(BuildContext context, Diet diet) {
+    String retDiet;
+    switch (diet) {
+      case Diet.NORMAL:
+        retDiet = AppLocalizations.of(context).meat;
+        break;
+      case Diet.VEGETARIAN:
+        retDiet = AppLocalizations.of(context).vegetarian;
+        break;
+      case Diet.VEGAN:
+        retDiet = AppLocalizations.of(context).vegan;
+        break;
+      case Diet.PESCATARIAN:
+        retDiet = AppLocalizations.of(context).pescatarian;
+        break;
+    }
+    return retDiet;
+  }
+
+  static Widget getIconForDiet(Diet diet){
+    Widget retIcon;
+    switch (diet) {
+      case Diet.NORMAL:
+        retIcon = Icon(Icons.lunch_dining, color:Colors.red);
+        break;
+      case Diet.VEGETARIAN:
+        retIcon = Icon(Icons.eco_outlined, color:Colors.green);
+        break;
+      case Diet.VEGAN:
+        retIcon = Icon(Icons.eco_outlined, color:Colors.green);
+        break;
+      case Diet.PESCATARIAN:
+        retIcon = Icon(Icons.sailing, color:Colors.blue);
+        break;
+    }
+    return retIcon;
   }
 
   static String _getFormattedFraction(double amount) {

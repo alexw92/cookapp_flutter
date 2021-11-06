@@ -5,6 +5,7 @@ import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/components/ingredient-tile.component.dart';
 import 'package:cookable_flutter/ui/components/nutrient-tile.component.dart';
+import 'package:cookable_flutter/ui/util/formatters.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -104,9 +105,9 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                           ),
                           Chip(
                             labelPadding: EdgeInsets.all(4.0),
-                            avatar: Icon(Icons.eco_outlined),
+                            avatar: Utility.getIconForDiet(recipe.diet),
                             label: Text(
-                              "Vegetarian",
+                              Utility.getTranslatedDiet(context, recipe.diet),
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold),

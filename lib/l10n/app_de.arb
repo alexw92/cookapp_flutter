@@ -32,8 +32,10 @@
     "calories": "Kalorien",
     "fat": "Fett",
     "carbs": "Kohlenhydrate",
-    "protein": "Eiweiß"
-
-
+    "protein": "Eiweiß",
+    "vegetarian": "Vegetarisch",
+    "pescatarian": "Pescetarisch",
+    "vegan": "Vegan",
+    "meat": "Fleisch"
 
 }

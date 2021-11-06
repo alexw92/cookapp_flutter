@@ -6,6 +6,7 @@ class Recipe {
   final List<RecipeInstruction> instructions;
   final List<Ingredient> ingredients;
   final int numberOfPersons;
+  final Diet diet;
 
   Recipe(
       {this.id,
@@ -14,7 +15,8 @@ class Recipe {
       this.uploadedBy,
       this.instructions,
       this.ingredients,
-      this.numberOfPersons});
+      this.numberOfPersons,
+      this.diet});
 
   factory Recipe.fromJson(Map<String, dynamic> recipeJson) {
     return Recipe(
@@ -28,7 +30,9 @@ class Recipe {
         ingredients: (recipeJson['ingredients'] as List)
             .map((it) => Ingredient.fromJson(it))
             .toList(),
-        numberOfPersons: recipeJson['numberOfPersons']);
+        numberOfPersons: recipeJson['numberOfPersons'],
+        diet: Diet.values[ recipeJson['dietIdentifier'] as int]
+    );
   }
 }
 
@@ -41,6 +45,7 @@ class RecipeDetails {
   final List<Ingredient> ingredients;
   final int numberOfPersons;
   final Nutrients nutrients;
+  final Diet diet;
 
   RecipeDetails(
       {this.id,
@@ -50,7 +55,8 @@ class RecipeDetails {
       this.instructions,
       this.ingredients,
       this.numberOfPersons,
-      this.nutrients});
+      this.nutrients,
+      this.diet});
 
   factory RecipeDetails.fromJson(Map<String, dynamic> recipeJson) {
     return RecipeDetails(
@@ -65,7 +71,8 @@ class RecipeDetails {
             .map((it) => Ingredient.fromJson(it))
             .toList(),
         nutrients: Nutrients.fromJson(recipeJson['nutrientsData']),
-        numberOfPersons: recipeJson['numberOfPersons']);
+        numberOfPersons: recipeJson['numberOfPersons'],
+        diet: Diet.values[ recipeJson['dietIdentifier'] as int]);
   }
 }
 
@@ -308,4 +315,8 @@ class Nutrients {
         source: json['source'],
         dateOfRetrieval: DateTime.parse(json['dateOfRetrieval']));
   }
+}
+
+enum Diet{
+  VEGAN, PESCATARIAN, VEGETARIAN, NORMAL
 }

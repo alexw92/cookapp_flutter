@@ -35,6 +35,11 @@
     "calories": "Calories",
     "fat": "Fat",
     "carbs": "Carbs",
-    "protein": "Protein"
+    "protein": "Protein",
+    "vegetarian": "vegetarian",
+    "pescatarian": "pescatarian",
+    "vegan": "vegan",
+    "meat": "meat"
+
 
 }
