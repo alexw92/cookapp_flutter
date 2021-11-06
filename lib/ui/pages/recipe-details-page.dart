@@ -82,6 +82,62 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
               Container(
                 color: Colors.black,
                 width: double.infinity,
+                child: Column(
+                  children: [
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Chip(
+                            labelPadding: EdgeInsets.all(4.0),
+                            avatar: Icon(Icons.access_time),
+                            label: Text(
+                              "45 min",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            backgroundColor: Colors.white,
+                            elevation: 6.0,
+                            shadowColor: Colors.grey[60],
+                            padding: EdgeInsets.all(8.0),
+                          ),
+                          Chip(
+                            labelPadding: EdgeInsets.all(4.0),
+                            avatar: Icon(Icons.eco_outlined),
+                            label: Text(
+                              "Vegetarian",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            backgroundColor: Colors.white,
+                            elevation: 6.0,
+                            shadowColor: Colors.grey[60],
+                            padding: EdgeInsets.all(8.0),
+                          ),
+                          Chip(
+                            labelPadding: EdgeInsets.all(4.0),
+                            avatar: Icon(Icons.group),
+                            label: Text(
+                              "2",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            backgroundColor: Colors.white,
+                            elevation: 6.0,
+                            shadowColor: Colors.grey[60],
+                            padding: EdgeInsets.all(8.0),
+                          )
+                        ]),
+                    Row()
+                  ],
+                ),
+              ),
+              Container(
+                color: Colors.black,
+                width: double.infinity,
                 child: Column(children: [
                   Text(
                     AppLocalizations.of(context).ingredients,
