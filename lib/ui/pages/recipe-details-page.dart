@@ -93,7 +93,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                             labelPadding: EdgeInsets.all(4.0),
                             avatar: Icon(Icons.access_time),
                             label: Text(
-                              "45 min",
+                              "${recipe.prepTimeMinutes} min",
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold),
@@ -121,7 +121,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                             labelPadding: EdgeInsets.all(4.0),
                             avatar: Icon(Icons.group),
                             label: Text(
-                              "2",
+                              recipe.numberOfPersons.toString(),
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold),
