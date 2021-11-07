@@ -31,8 +31,7 @@ class Recipe {
             .map((it) => Ingredient.fromJson(it))
             .toList(),
         numberOfPersons: recipeJson['numberOfPersons'],
-        diet: Diet.values[ recipeJson['dietIdentifier'] as int]
-    );
+        diet: Diet.values[recipeJson['dietIdentifier'] as int]);
   }
 }
 
@@ -72,7 +71,7 @@ class RecipeDetails {
             .toList(),
         nutrients: Nutrients.fromJson(recipeJson['nutrientsData']),
         numberOfPersons: recipeJson['numberOfPersons'],
-        diet: Diet.values[ recipeJson['dietIdentifier'] as int]);
+        diet: Diet.values[recipeJson['dietIdentifier'] as int]);
   }
 }
 
@@ -146,14 +145,13 @@ class Ingredient {
 
   factory Ingredient.fromJson(Map<String, dynamic> json) {
     return Ingredient(
-        id: json['id'],
-        name: json['name'],
-        amount: json['amount'],
-        recipeId: json['recipeId'],
-        foodProductId: json['foodProductId'],
-        imgSrc: json['img_src'],
-        quantityType: QuantityUnit.fromInt(json['quantityType']),
-
+      id: json['id'],
+      name: json['name'],
+      amount: json['amount'],
+      recipeId: json['recipeId'],
+      foodProductId: json['foodProductId'],
+      imgSrc: json['img_src'],
+      quantityType: QuantityUnit.fromInt(json['quantityType']),
     );
   }
 }
@@ -317,6 +315,6 @@ class Nutrients {
   }
 }
 
-enum Diet{
-  VEGAN, PESCATARIAN, VEGETARIAN, NORMAL
-}
+enum Diet { VEGAN, PESCATARIAN, VEGETARIAN, NORMAL }
+
+enum NutritionType { CALORIES, CARBOHYDRATE, FAT, PROTEIN, SUGAR }

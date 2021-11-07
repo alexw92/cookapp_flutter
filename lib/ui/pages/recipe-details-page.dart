@@ -171,15 +171,15 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                       style: TextStyle(color: Colors.white, fontSize: 26),
                     ),
                     Container(
-                        margin: const EdgeInsets.only(left: 5, right: 5),
+                        margin: const EdgeInsets.only(left: 0, right: 0),
                         child: new GridView.count(
                           //     primary: true,
                           //    padding: const EdgeInsets.all(0),
                           physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           crossAxisCount: 4,
-                          mainAxisSpacing: 0,
-                          crossAxisSpacing: 5,
+                          mainAxisSpacing: 3,
+                          crossAxisSpacing: 0,
                           children: [
                             ...getNutrientTiles()
                             //
@@ -208,22 +208,22 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
           nutrientName: AppLocalizations.of(context).calories,
           nutrientAmount: recipe.nutrients.calories.toDouble(),
           dailyRecAmount: dailyCalories.toDouble(),
-          isCalories: true),
+          nutritionType: NutritionType.CALORIES),
       NutrientTileComponent(
           nutrientName: AppLocalizations.of(context).fat,
           nutrientAmount: recipe.nutrients.fat,
           dailyRecAmount: dailyFat,
-          isCalories: false),
+          nutritionType: NutritionType.FAT),
       NutrientTileComponent(
           nutrientName: AppLocalizations.of(context).carbs,
           nutrientAmount: recipe.nutrients.carbohydrate,
           dailyRecAmount: dailyCarbohydrate,
-          isCalories: false),
+          nutritionType: NutritionType.CARBOHYDRATE),
       NutrientTileComponent(
           nutrientName: AppLocalizations.of(context).protein,
           nutrientAmount: recipe.nutrients.protein,
           dailyRecAmount: dailyProtein,
-          isCalories: false)
+          nutritionType: NutritionType.PROTEIN)
     ]);
 
     return myTiles;
