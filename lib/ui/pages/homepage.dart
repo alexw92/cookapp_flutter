@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
               //   label: 'Fridge',
               // ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_bag),
+                icon: ImageIcon(AssetImage("assets/fridge32.png")),
                 label: AppLocalizations.of(context).fridge,
               ),
               BottomNavigationBarItem(
