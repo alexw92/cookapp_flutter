@@ -41,36 +41,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: SafeArea(
         child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Foodict'),
-            actions: [
-              // AppLocalizations.of(context).logout
-              // AppLocalizations.of(context).settings
-              PopupMenuButton(
-                onSelected: (result) {
-                  switch (result) {
-                    case 0:
-                      _openSettings();
-                      break;
-                    case 1:
-                      _signOut();
-                      break;
-                  }
-                },
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                      child: Text(AppLocalizations.of(context).settings),
-                      value: 0),
-                  PopupMenuItem(
-                      child: Text(AppLocalizations.of(context).logout),
-                      value: 1)
-                ],
-                icon: Icon(
-                  Icons.settings,
-                ),
-              )
-            ],
-          ),
+
           body: Center(
             child: _widgetOptions.elementAt(_selectedIndex),
           ),

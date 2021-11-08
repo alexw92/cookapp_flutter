@@ -7,7 +7,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 class ToggleFridgeWidget extends StatefulWidget {
   ToggleFridgeWidget({Key key}) : super(key: key);
 
@@ -42,375 +41,445 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     else // AppLocalizations.of(context).settings
       return Scaffold(
           appBar: AppBar(
-            toolbarHeight: 0,
-            bottom: TabBar(
-              controller: _tabController,
-              isScrollable: true,
-              tabs: [
-                Tab(text: AppLocalizations.of(context).tab_fruits),
-                Tab(text: AppLocalizations.of(context).tab_vegetables),
-                Tab(text: AppLocalizations.of(context).tab_spices),
-                Tab(text: AppLocalizations.of(context).tab_pantry),
-                Tab(text: AppLocalizations.of(context).tab_dairy),
-                Tab(text: AppLocalizations.of(context).tab_meat),
-                Tab(text: AppLocalizations.of(context).tab_fish),
-              ],
-            ),
+            title: Text(AppLocalizations.of(context).fridge),
+            actions: [
+              // AppLocalizations.of(context).logout
+              // AppLocalizations.of(context).settings
+              PopupMenuButton(
+                onSelected: (result) {
+                  switch (result) {
+                    case 0:
+                      0;
+                      break;
+                    case 1:
+                      0;
+                      break;
+                  }
+                },
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                      child: Text(AppLocalizations.of(context).settings),
+                      value: 0),
+                  PopupMenuItem(
+                      child: Text(AppLocalizations.of(context).logout),
+                      value: 1)
+                ],
+                icon: Icon(
+                  Icons.settings,
+                ),
+              )
+            ],
           ),
-          body: TabBarView(
-              controller: _tabController,
-              children: [
-                RefreshIndicator(onRefresh: refreshTriggered,
+          body: Scaffold(
+              appBar: AppBar(
+                toolbarHeight: 0,
+                bottom: TabBar(
+                  controller: _tabController,
+                  isScrollable: true,
+                  tabs: [
+                    Tab(text: AppLocalizations.of(context).tab_fruits),
+                    Tab(text: AppLocalizations.of(context).tab_vegetables),
+                    Tab(text: AppLocalizations.of(context).tab_spices),
+                    Tab(text: AppLocalizations.of(context).tab_pantry),
+                    Tab(text: AppLocalizations.of(context).tab_dairy),
+                    Tab(text: AppLocalizations.of(context).tab_meat),
+                    Tab(text: AppLocalizations.of(context).tab_fish),
+                  ],
+                ),
+              ),
+              body: TabBarView(controller: _tabController, children: [
+                RefreshIndicator(
+                  onRefresh: refreshTriggered,
+                  child: new Container(
+                      child: new ListView.builder(
+                          itemCount: checkBoxListTileModelFruits.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return new Card(
+                              color: checkBoxListTileModelFruits[index].isCheck
+                                  ? Colors.green
+                                  : Colors.grey,
                               child: new Container(
-                  child: new ListView.builder(
-                      itemCount: checkBoxListTileModelFruits.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return new Card(
-                          color: checkBoxListTileModelFruits[index].isCheck
-                              ? Colors.green
-                              : Colors.grey,
-                          child: new Container(
-                            padding: new EdgeInsets.all(10.0),
-                            child: Column(
-                              children: <Widget>[
-                                new SwitchListTile(
-                                    activeColor: Colors.black,
-                                    dense: true,
-                                    //font change
-                                    title: new Text(
-                                      checkBoxListTileModelFruits[index].title,
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                          letterSpacing: 0.5),
-                                    ),
-                                    value: checkBoxListTileModelFruits[index].isCheck,
-                                    secondary:
-                                    checkBoxListTileModelFruits[index].isLoading
-                                        ? CircularProgressIndicator(
-                                      value: null,
-                                      backgroundColor: Colors.orange,
-                                    )
-                                        : Container(
-                                      height: 50,
-                                      width: 50,
-                                      child: Image(
-                                          image: CachedNetworkImageProvider(
-                                              "${checkBoxListTileModelFruits[index].img}",
-                                              imageRenderMethodForWeb:
-                                              ImageRenderMethodForWeb
-                                                  .HttpGet)),
-                                    ),
-                                    onChanged: (bool val) {
-                                      itemChangeFruits(val, index);
-                                    }),
-                              ],
-                            ),
-                          ),
-                        );
-                      })),
-                ),
-          RefreshIndicator(onRefresh: refreshTriggered,
-              child: new Container(
-                  child: new ListView.builder(
-                      itemCount: checkBoxListTileModelVegetables.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return new Card(
-                          color: checkBoxListTileModelVegetables[index].isCheck
-                              ? Colors.green
-                              : Colors.grey,
-                          child: new Container(
-                            padding: new EdgeInsets.all(10.0),
-                            child: Column(
-                              children: <Widget>[
-                                new SwitchListTile(
-                                    activeColor: Colors.black,
-                                    dense: true,
-                                    //font change
-                                    title: new Text(
-                                      checkBoxListTileModelVegetables[index].title,
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                          letterSpacing: 0.5),
-                                    ),
-                                    value: checkBoxListTileModelVegetables[index].isCheck,
-                                    secondary:
-                                    checkBoxListTileModelVegetables[index].isLoading
-                                        ? CircularProgressIndicator(
-                                      value: null,
-                                      backgroundColor: Colors.orange,
-                                    )
-                                        : Container(
-                                      height: 50,
-                                      width: 50,
-                                      child: Image(
-                                          image: CachedNetworkImageProvider(
-                                              "${checkBoxListTileModelVegetables[index].img}",
-                                              imageRenderMethodForWeb:
-                                              ImageRenderMethodForWeb
-                                                  .HttpGet)),
-                                    ),
-                                    onChanged: (bool val) {
-                                      itemChangeVegetables(val, index);
-                                    }),
-                              ],
-                            ),
-                          ),
-                        );
-                      })),
-                ),
-          RefreshIndicator(onRefresh: refreshTriggered,
-              child: new Container(
-              child: new ListView.builder(
-                  itemCount: checkBoxListTileModelSpices.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return new Card(
-                      color: checkBoxListTileModelSpices[index].isCheck
-                          ? Colors.green
-                          : Colors.grey,
-                      child: new Container(
-                        padding: new EdgeInsets.all(10.0),
-                        child: Column(
-                          children: <Widget>[
-                            new SwitchListTile(
-                                activeColor: Colors.black,
-                                dense: true,
-                                //font change
-                                title: new Text(
-                                  checkBoxListTileModelSpices[index].title,
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                      letterSpacing: 0.5),
+                                padding: new EdgeInsets.all(10.0),
+                                child: Column(
+                                  children: <Widget>[
+                                    new SwitchListTile(
+                                        activeColor: Colors.black,
+                                        dense: true,
+                                        //font change
+                                        title: new Text(
+                                          checkBoxListTileModelFruits[index]
+                                              .title,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                              letterSpacing: 0.5),
+                                        ),
+                                        value:
+                                            checkBoxListTileModelFruits[index]
+                                                .isCheck,
+                                        secondary:
+                                            checkBoxListTileModelFruits[index]
+                                                    .isLoading
+                                                ? CircularProgressIndicator(
+                                                    value: null,
+                                                    backgroundColor:
+                                                        Colors.orange,
+                                                  )
+                                                : Container(
+                                                    height: 50,
+                                                    width: 50,
+                                                    child: Image(
+                                                        image: CachedNetworkImageProvider(
+                                                            "${checkBoxListTileModelFruits[index].img}",
+                                                            imageRenderMethodForWeb:
+                                                                ImageRenderMethodForWeb
+                                                                    .HttpGet)),
+                                                  ),
+                                        onChanged: (bool val) {
+                                          itemChangeFruits(val, index);
+                                        }),
+                                  ],
                                 ),
-                                value: checkBoxListTileModelSpices[index].isCheck,
-                                secondary:
-                                checkBoxListTileModelSpices[index].isLoading
-                                        ? CircularProgressIndicator(
-                                            value: null,
-                                            backgroundColor: Colors.orange,
-                                          )
-                                        : Container(
-                                            height: 50,
-                                            width: 50,
-                                            child: Image(
-                                                image: CachedNetworkImageProvider(
-                                                    "${checkBoxListTileModelSpices[index].img}",
-                                                    imageRenderMethodForWeb:
-                                                        ImageRenderMethodForWeb
-                                                            .HttpGet)),
-                                          ),
-                                onChanged: (bool val) {
-                                  itemChangeSpices(val, index);
-                                }),
-                          ],
-                        ),
-                      ),
-                    );
-                  })),
-            ),
-          RefreshIndicator(onRefresh: refreshTriggered,
-              child: new Container(
-                  child: new ListView.builder(
-                      itemCount: checkBoxListTileModelPantry.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return new Card(
-                          color: checkBoxListTileModelPantry[index].isCheck
-                              ? Colors.green
-                              : Colors.grey,
-                          child: new Container(
-                            padding: new EdgeInsets.all(10.0),
-                            child: Column(
-                              children: <Widget>[
-                                new SwitchListTile(
-                                    activeColor: Colors.black,
-                                    dense: true,
-                                    //font change
-                                    title: new Text(
-                                      checkBoxListTileModelPantry[index].title,
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                          letterSpacing: 0.5),
-                                    ),
-                                    value: checkBoxListTileModelPantry[index].isCheck,
-                                    secondary:
-                                    checkBoxListTileModelPantry[index].isLoading
-                                        ? CircularProgressIndicator(
-                                      value: null,
-                                      backgroundColor: Colors.orange,
-                                    )
-                                        : Container(
-                                      height: 50,
-                                      width: 50,
-                                      child: Image(
-                                          image: CachedNetworkImageProvider(
-                                              "${checkBoxListTileModelPantry[index].img}",
-                                              imageRenderMethodForWeb:
-                                              ImageRenderMethodForWeb
-                                                  .HttpGet)),
-                                    ),
-                                    onChanged: (bool val) {
-                                      itemChangePantry(val, index);
-                                    }),
-                              ],
-                            ),
-                          ),
-                        );
-                      })),
+                              ),
+                            );
+                          })),
                 ),
-          RefreshIndicator(onRefresh: refreshTriggered,
-              child: new Container(
-                  child: new ListView.builder(
-                      itemCount: checkBoxListTileModelDairy.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return new Card(
-                          color: checkBoxListTileModelDairy[index].isCheck
-                              ? Colors.green
-                              : Colors.grey,
-                          child: new Container(
-                            padding: new EdgeInsets.all(10.0),
-                            child: Column(
-                              children: <Widget>[
-                                new SwitchListTile(
-                                    activeColor: Colors.black,
-                                    dense: true,
-                                    //font change
-                                    title: new Text(
-                                      checkBoxListTileModelDairy[index].title,
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                          letterSpacing: 0.5),
-                                    ),
-                                    value: checkBoxListTileModelDairy[index].isCheck,
-                                    secondary:
-                                    checkBoxListTileModelDairy[index].isLoading
-                                        ? CircularProgressIndicator(
-                                      value: null,
-                                      backgroundColor: Colors.orange,
-                                    )
-                                        : Container(
-                                      height: 50,
-                                      width: 50,
-                                      child: Image(
-                                          image: CachedNetworkImageProvider(
-                                              "${checkBoxListTileModelDairy[index].img}",
-                                              imageRenderMethodForWeb:
-                                              ImageRenderMethodForWeb
-                                                  .HttpGet)),
-                                    ),
-                                    onChanged: (bool val) {
-                                      itemChangeDairy(val, index);
-                                    }),
-                              ],
-                            ),
-                          ),
-                        );
-                      })),
+                RefreshIndicator(
+                  onRefresh: refreshTriggered,
+                  child: new Container(
+                      child: new ListView.builder(
+                          itemCount: checkBoxListTileModelVegetables.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return new Card(
+                              color:
+                                  checkBoxListTileModelVegetables[index].isCheck
+                                      ? Colors.green
+                                      : Colors.grey,
+                              child: new Container(
+                                padding: new EdgeInsets.all(10.0),
+                                child: Column(
+                                  children: <Widget>[
+                                    new SwitchListTile(
+                                        activeColor: Colors.black,
+                                        dense: true,
+                                        //font change
+                                        title: new Text(
+                                          checkBoxListTileModelVegetables[index]
+                                              .title,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                              letterSpacing: 0.5),
+                                        ),
+                                        value: checkBoxListTileModelVegetables[
+                                                index]
+                                            .isCheck,
+                                        secondary:
+                                            checkBoxListTileModelVegetables[
+                                                        index]
+                                                    .isLoading
+                                                ? CircularProgressIndicator(
+                                                    value: null,
+                                                    backgroundColor:
+                                                        Colors.orange,
+                                                  )
+                                                : Container(
+                                                    height: 50,
+                                                    width: 50,
+                                                    child: Image(
+                                                        image: CachedNetworkImageProvider(
+                                                            "${checkBoxListTileModelVegetables[index].img}",
+                                                            imageRenderMethodForWeb:
+                                                                ImageRenderMethodForWeb
+                                                                    .HttpGet)),
+                                                  ),
+                                        onChanged: (bool val) {
+                                          itemChangeVegetables(val, index);
+                                        }),
+                                  ],
+                                ),
+                              ),
+                            );
+                          })),
                 ),
-          RefreshIndicator(onRefresh: refreshTriggered,
-              child: new Container(
-                  child: new ListView.builder(
-                      itemCount: checkBoxListTileModelMeat.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return new Card(
-                          color: checkBoxListTileModelMeat[index].isCheck
-                              ? Colors.green
-                              : Colors.grey,
-                          child: new Container(
-                            padding: new EdgeInsets.all(10.0),
-                            child: Column(
-                              children: <Widget>[
-                                new SwitchListTile(
-                                    activeColor: Colors.black,
-                                    dense: true,
-                                    //font change
-                                    title: new Text(
-                                      checkBoxListTileModelMeat[index].title,
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                          letterSpacing: 0.5),
-                                    ),
-                                    value: checkBoxListTileModelMeat[index].isCheck,
-                                    secondary:
-                                    checkBoxListTileModelMeat[index].isLoading
-                                        ? CircularProgressIndicator(
-                                      value: null,
-                                      backgroundColor: Colors.orange,
-                                    )
-                                        : Container(
-                                      height: 50,
-                                      width: 50,
-                                      child: Image(
-                                          image: CachedNetworkImageProvider(
-                                              "${checkBoxListTileModelMeat[index].img}",
-                                              imageRenderMethodForWeb:
-                                              ImageRenderMethodForWeb
-                                                  .HttpGet)),
-                                    ),
-                                    onChanged: (bool val) {
-                                      itemChangeMeat(val, index);
-                                    }),
-                              ],
-                            ),
-                          ),
-                        );
-                      })),
+                RefreshIndicator(
+                  onRefresh: refreshTriggered,
+                  child: new Container(
+                      child: new ListView.builder(
+                          itemCount: checkBoxListTileModelSpices.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return new Card(
+                              color: checkBoxListTileModelSpices[index].isCheck
+                                  ? Colors.green
+                                  : Colors.grey,
+                              child: new Container(
+                                padding: new EdgeInsets.all(10.0),
+                                child: Column(
+                                  children: <Widget>[
+                                    new SwitchListTile(
+                                        activeColor: Colors.black,
+                                        dense: true,
+                                        //font change
+                                        title: new Text(
+                                          checkBoxListTileModelSpices[index]
+                                              .title,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                              letterSpacing: 0.5),
+                                        ),
+                                        value:
+                                            checkBoxListTileModelSpices[index]
+                                                .isCheck,
+                                        secondary:
+                                            checkBoxListTileModelSpices[index]
+                                                    .isLoading
+                                                ? CircularProgressIndicator(
+                                                    value: null,
+                                                    backgroundColor:
+                                                        Colors.orange,
+                                                  )
+                                                : Container(
+                                                    height: 50,
+                                                    width: 50,
+                                                    child: Image(
+                                                        image: CachedNetworkImageProvider(
+                                                            "${checkBoxListTileModelSpices[index].img}",
+                                                            imageRenderMethodForWeb:
+                                                                ImageRenderMethodForWeb
+                                                                    .HttpGet)),
+                                                  ),
+                                        onChanged: (bool val) {
+                                          itemChangeSpices(val, index);
+                                        }),
+                                  ],
+                                ),
+                              ),
+                            );
+                          })),
                 ),
-          RefreshIndicator(onRefresh: refreshTriggered,
-              child: new Container(
-                  child: new ListView.builder(
-                      itemCount: checkBoxListTileModelFish.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return new Card(
-                          color: checkBoxListTileModelFish[index].isCheck
-                              ? Colors.green
-                              : Colors.grey,
-                          child: new Container(
-                            padding: new EdgeInsets.all(10.0),
-                            child: Column(
-                              children: <Widget>[
-                                new SwitchListTile(
-                                    activeColor: Colors.black,
-                                    dense: true,
-                                    //font change
-                                    title: new Text(
-                                      checkBoxListTileModelFish[index].title,
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                          letterSpacing: 0.5),
-                                    ),
-                                    value: checkBoxListTileModelFish[index].isCheck,
-                                    secondary:
-                                    checkBoxListTileModelFish[index].isLoading
-                                        ? CircularProgressIndicator(
-                                      value: null,
-                                      backgroundColor: Colors.orange,
-                                    )
-                                        : Container(
-                                      height: 50,
-                                      width: 50,
-                                      child: Image(
-                                          image: CachedNetworkImageProvider(
-                                              "${checkBoxListTileModelFish[index].img}",
-                                              imageRenderMethodForWeb:
-                                              ImageRenderMethodForWeb
-                                                  .HttpGet)),
-                                    ),
-                                    onChanged: (bool val) {
-                                      itemChangeFish(val, index);
-                                    }),
-                              ],
-                            ),
-                          ),
-                        );
-                      })),
+                RefreshIndicator(
+                  onRefresh: refreshTriggered,
+                  child: new Container(
+                      child: new ListView.builder(
+                          itemCount: checkBoxListTileModelPantry.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return new Card(
+                              color: checkBoxListTileModelPantry[index].isCheck
+                                  ? Colors.green
+                                  : Colors.grey,
+                              child: new Container(
+                                padding: new EdgeInsets.all(10.0),
+                                child: Column(
+                                  children: <Widget>[
+                                    new SwitchListTile(
+                                        activeColor: Colors.black,
+                                        dense: true,
+                                        //font change
+                                        title: new Text(
+                                          checkBoxListTileModelPantry[index]
+                                              .title,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                              letterSpacing: 0.5),
+                                        ),
+                                        value:
+                                            checkBoxListTileModelPantry[index]
+                                                .isCheck,
+                                        secondary:
+                                            checkBoxListTileModelPantry[index]
+                                                    .isLoading
+                                                ? CircularProgressIndicator(
+                                                    value: null,
+                                                    backgroundColor:
+                                                        Colors.orange,
+                                                  )
+                                                : Container(
+                                                    height: 50,
+                                                    width: 50,
+                                                    child: Image(
+                                                        image: CachedNetworkImageProvider(
+                                                            "${checkBoxListTileModelPantry[index].img}",
+                                                            imageRenderMethodForWeb:
+                                                                ImageRenderMethodForWeb
+                                                                    .HttpGet)),
+                                                  ),
+                                        onChanged: (bool val) {
+                                          itemChangePantry(val, index);
+                                        }),
+                                  ],
+                                ),
+                              ),
+                            );
+                          })),
+                ),
+                RefreshIndicator(
+                  onRefresh: refreshTriggered,
+                  child: new Container(
+                      child: new ListView.builder(
+                          itemCount: checkBoxListTileModelDairy.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return new Card(
+                              color: checkBoxListTileModelDairy[index].isCheck
+                                  ? Colors.green
+                                  : Colors.grey,
+                              child: new Container(
+                                padding: new EdgeInsets.all(10.0),
+                                child: Column(
+                                  children: <Widget>[
+                                    new SwitchListTile(
+                                        activeColor: Colors.black,
+                                        dense: true,
+                                        //font change
+                                        title: new Text(
+                                          checkBoxListTileModelDairy[index]
+                                              .title,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                              letterSpacing: 0.5),
+                                        ),
+                                        value: checkBoxListTileModelDairy[index]
+                                            .isCheck,
+                                        secondary:
+                                            checkBoxListTileModelDairy[index]
+                                                    .isLoading
+                                                ? CircularProgressIndicator(
+                                                    value: null,
+                                                    backgroundColor:
+                                                        Colors.orange,
+                                                  )
+                                                : Container(
+                                                    height: 50,
+                                                    width: 50,
+                                                    child: Image(
+                                                        image: CachedNetworkImageProvider(
+                                                            "${checkBoxListTileModelDairy[index].img}",
+                                                            imageRenderMethodForWeb:
+                                                                ImageRenderMethodForWeb
+                                                                    .HttpGet)),
+                                                  ),
+                                        onChanged: (bool val) {
+                                          itemChangeDairy(val, index);
+                                        }),
+                                  ],
+                                ),
+                              ),
+                            );
+                          })),
+                ),
+                RefreshIndicator(
+                  onRefresh: refreshTriggered,
+                  child: new Container(
+                      child: new ListView.builder(
+                          itemCount: checkBoxListTileModelMeat.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return new Card(
+                              color: checkBoxListTileModelMeat[index].isCheck
+                                  ? Colors.green
+                                  : Colors.grey,
+                              child: new Container(
+                                padding: new EdgeInsets.all(10.0),
+                                child: Column(
+                                  children: <Widget>[
+                                    new SwitchListTile(
+                                        activeColor: Colors.black,
+                                        dense: true,
+                                        //font change
+                                        title: new Text(
+                                          checkBoxListTileModelMeat[index]
+                                              .title,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                              letterSpacing: 0.5),
+                                        ),
+                                        value: checkBoxListTileModelMeat[index]
+                                            .isCheck,
+                                        secondary:
+                                            checkBoxListTileModelMeat[index]
+                                                    .isLoading
+                                                ? CircularProgressIndicator(
+                                                    value: null,
+                                                    backgroundColor:
+                                                        Colors.orange,
+                                                  )
+                                                : Container(
+                                                    height: 50,
+                                                    width: 50,
+                                                    child: Image(
+                                                        image: CachedNetworkImageProvider(
+                                                            "${checkBoxListTileModelMeat[index].img}",
+                                                            imageRenderMethodForWeb:
+                                                                ImageRenderMethodForWeb
+                                                                    .HttpGet)),
+                                                  ),
+                                        onChanged: (bool val) {
+                                          itemChangeMeat(val, index);
+                                        }),
+                                  ],
+                                ),
+                              ),
+                            );
+                          })),
+                ),
+                RefreshIndicator(
+                  onRefresh: refreshTriggered,
+                  child: new Container(
+                      child: new ListView.builder(
+                          itemCount: checkBoxListTileModelFish.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return new Card(
+                              color: checkBoxListTileModelFish[index].isCheck
+                                  ? Colors.green
+                                  : Colors.grey,
+                              child: new Container(
+                                padding: new EdgeInsets.all(10.0),
+                                child: Column(
+                                  children: <Widget>[
+                                    new SwitchListTile(
+                                        activeColor: Colors.black,
+                                        dense: true,
+                                        //font change
+                                        title: new Text(
+                                          checkBoxListTileModelFish[index]
+                                              .title,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                              letterSpacing: 0.5),
+                                        ),
+                                        value: checkBoxListTileModelFish[index]
+                                            .isCheck,
+                                        secondary:
+                                            checkBoxListTileModelFish[index]
+                                                    .isLoading
+                                                ? CircularProgressIndicator(
+                                                    value: null,
+                                                    backgroundColor:
+                                                        Colors.orange,
+                                                  )
+                                                : Container(
+                                                    height: 50,
+                                                    width: 50,
+                                                    child: Image(
+                                                        image: CachedNetworkImageProvider(
+                                                            "${checkBoxListTileModelFish[index].img}",
+                                                            imageRenderMethodForWeb:
+                                                                ImageRenderMethodForWeb
+                                                                    .HttpGet)),
+                                                  ),
+                                        onChanged: (bool val) {
+                                          itemChangeFish(val, index);
+                                        }),
+                                  ],
+                                ),
+                              ),
+                            );
+                          })),
                 )
-          ]));
+              ])));
   }
 
   Future<void> refreshTriggered() async {
@@ -433,13 +502,27 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     groceries = getGroceries();
     setState(() {
       this.checkBoxListTileModel = groceries;
-      this.checkBoxListTileModelFruits = groceries.where((element) => element.foodCategory.name.contains("fruits")).toList();
-      this.checkBoxListTileModelVegetables = groceries.where((element) => element.foodCategory.name.contains("vegetables")).toList();
-      this.checkBoxListTileModelSpices = groceries.where((element) => element.foodCategory.name.contains("spices")).toList();
-      this.checkBoxListTileModelPantry = groceries.where((element) => element.foodCategory.name.contains("pantry")).toList();
-      this.checkBoxListTileModelDairy = groceries.where((element) => element.foodCategory.name.contains("dairy")).toList();
-      this.checkBoxListTileModelMeat = groceries.where((element) => element.foodCategory.name.contains("meat")).toList();
-      this.checkBoxListTileModelFish = groceries.where((element) => element.foodCategory.name.contains("fish")).toList();
+      this.checkBoxListTileModelFruits = groceries
+          .where((element) => element.foodCategory.name.contains("fruits"))
+          .toList();
+      this.checkBoxListTileModelVegetables = groceries
+          .where((element) => element.foodCategory.name.contains("vegetables"))
+          .toList();
+      this.checkBoxListTileModelSpices = groceries
+          .where((element) => element.foodCategory.name.contains("spices"))
+          .toList();
+      this.checkBoxListTileModelPantry = groceries
+          .where((element) => element.foodCategory.name.contains("pantry"))
+          .toList();
+      this.checkBoxListTileModelDairy = groceries
+          .where((element) => element.foodCategory.name.contains("dairy"))
+          .toList();
+      this.checkBoxListTileModelMeat = groceries
+          .where((element) => element.foodCategory.name.contains("meat"))
+          .toList();
+      this.checkBoxListTileModelFish = groceries
+          .where((element) => element.foodCategory.name.contains("fish"))
+          .toList();
       loading = false;
     });
   }
@@ -449,8 +532,8 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
         .ownedGroceries
         .map((grocery) => GroceryCheckBoxListTileModel(
             groceryId: grocery.foodProductId,
-        foodCategory: grocery.foodCategory,
-        img: grocery.imgSrc,
+            foodCategory: grocery.foodCategory,
+            img: grocery.imgSrc,
             isCheck: true,
             title: grocery.name,
             isLoading: false))
@@ -494,9 +577,9 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     });
     UserFoodProductController.toogleUserFoodProduct(tileModel.groceryId, val)
         .then((value) => setState(() {
-      tileModel.isCheck = val;
-      tileModel.isLoading = false;
-    }));
+              tileModel.isCheck = val;
+              tileModel.isLoading = false;
+            }));
   }
 
   void itemChangeSpices(bool val, int index) {
@@ -506,9 +589,9 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     });
     UserFoodProductController.toogleUserFoodProduct(tileModel.groceryId, val)
         .then((value) => setState(() {
-      tileModel.isCheck = val;
-      tileModel.isLoading = false;
-    }));
+              tileModel.isCheck = val;
+              tileModel.isLoading = false;
+            }));
   }
 
   void itemChangePantry(bool val, int index) {
@@ -518,9 +601,9 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     });
     UserFoodProductController.toogleUserFoodProduct(tileModel.groceryId, val)
         .then((value) => setState(() {
-      tileModel.isCheck = val;
-      tileModel.isLoading = false;
-    }));
+              tileModel.isCheck = val;
+              tileModel.isLoading = false;
+            }));
   }
 
   void itemChangeDairy(bool val, int index) {
@@ -530,9 +613,9 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     });
     UserFoodProductController.toogleUserFoodProduct(tileModel.groceryId, val)
         .then((value) => setState(() {
-      tileModel.isCheck = val;
-      tileModel.isLoading = false;
-    }));
+              tileModel.isCheck = val;
+              tileModel.isLoading = false;
+            }));
   }
 
   void itemChangeMeat(bool val, int index) {
@@ -542,9 +625,9 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     });
     UserFoodProductController.toogleUserFoodProduct(tileModel.groceryId, val)
         .then((value) => setState(() {
-      tileModel.isCheck = val;
-      tileModel.isLoading = false;
-    }));
+              tileModel.isCheck = val;
+              tileModel.isLoading = false;
+            }));
   }
 
   void itemChangeFish(bool val, int index) {
@@ -554,9 +637,9 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     });
     UserFoodProductController.toogleUserFoodProduct(tileModel.groceryId, val)
         .then((value) => setState(() {
-      tileModel.isCheck = val;
-      tileModel.isLoading = false;
-    }));
+              tileModel.isCheck = val;
+              tileModel.isLoading = false;
+            }));
   }
 }
 
@@ -569,5 +652,10 @@ class GroceryCheckBoxListTileModel {
   bool isLoading;
 
   GroceryCheckBoxListTileModel(
-      {this.groceryId, this.foodCategory, this.img, this.title, this.isCheck, this.isLoading});
+      {this.groceryId,
+      this.foodCategory,
+      this.img,
+      this.title,
+      this.isCheck,
+      this.isLoading});
 }
