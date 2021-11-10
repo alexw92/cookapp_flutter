@@ -54,6 +54,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
             actions: [
               // AppLocalizations.of(context).logout
               // AppLocalizations.of(context).settings
+              IconButton(icon: ImageIcon(AssetImage("assets/filter_icon.jpg")), onPressed: ()=>print("asd"),),
               PopupMenuButton(
                 onSelected: (result) {
                   switch (result) {
@@ -91,6 +92,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
             actions: [
               // AppLocalizations.of(context).logout
               // AppLocalizations.of(context).settings
+              IconButton(icon: ImageIcon(AssetImage("assets/filter_icon.jpg")), onPressed: ()=>print("asd"),),
               PopupMenuButton(
                 onSelected: (result) {
                   switch (result) {
