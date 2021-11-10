@@ -31,12 +31,13 @@ class _RecipesComponentState extends State<RecipesComponent> {
 
   Future<void> loadDefaultNutrition() async {
     var prefs = await SharedPreferences.getInstance();
-    RecipeController.getDefaultNutrients().then((nutrients) => {
-          prefs.setInt('dailyCalories', nutrients.recDailyCalories),
-          prefs.setDouble('dailyCarbohydrate', nutrients.recDailyCarbohydrate),
-          prefs.setDouble('dailyProtein', nutrients.recDailyProtein),
-          prefs.setDouble('dailyFat', nutrients.recDailyFat)
-        });
+    RecipeController.getDefaultNutrients().then((nutrients) =>
+    {
+      prefs.setInt('dailyCalories', nutrients.recDailyCalories),
+      prefs.setDouble('dailyCarbohydrate', nutrients.recDailyCarbohydrate),
+      prefs.setDouble('dailyProtein', nutrients.recDailyProtein),
+      prefs.setDouble('dailyFat', nutrients.recDailyFat)
+    });
   }
 
   @override
@@ -50,11 +51,14 @@ class _RecipesComponentState extends State<RecipesComponent> {
     if (loading)
       return Scaffold(
           appBar: AppBar(
-            title: Text(AppLocalizations.of(context).recipes),
+            title: Text(AppLocalizations
+                .of(context)
+                .recipes),
             actions: [
               // AppLocalizations.of(context).logout
               // AppLocalizations.of(context).settings
-              IconButton(icon: ImageIcon(AssetImage("assets/filter_icon.jpg")), onPressed: ()=>print("asd"),),
+              IconButton(
+                icon: ImageIcon(AssetImage("assets/filter_icon.jpg")),),
               PopupMenuButton(
                 onSelected: (result) {
                   switch (result) {
@@ -66,12 +70,17 @@ class _RecipesComponentState extends State<RecipesComponent> {
                       break;
                   }
                 },
-                itemBuilder: (context) => [
+                itemBuilder: (context) =>
+                [
                   PopupMenuItem(
-                      child: Text(AppLocalizations.of(context).settings),
+                      child: Text(AppLocalizations
+                          .of(context)
+                          .settings),
                       value: 0),
                   PopupMenuItem(
-                      child: Text(AppLocalizations.of(context).logout),
+                      child: Text(AppLocalizations
+                          .of(context)
+                          .logout),
                       value: 1)
                 ],
                 icon: Icon(
@@ -82,17 +91,20 @@ class _RecipesComponentState extends State<RecipesComponent> {
           ),
           body: Center(
               child: CircularProgressIndicator(
-            value: null,
-            backgroundColor: Colors.green,
-          )));
+                value: null,
+                backgroundColor: Colors.green,
+              )));
     else
       return Scaffold(
           appBar: AppBar(
-            title: Text(AppLocalizations.of(context).recipes),
+            title: Text(AppLocalizations
+                .of(context)
+                .recipes),
             actions: [
               // AppLocalizations.of(context).logout
               // AppLocalizations.of(context).settings
-              IconButton(icon: ImageIcon(AssetImage("assets/filter_icon.jpg")), onPressed: ()=>print("asd"),),
+              IconButton(icon: ImageIcon(AssetImage("assets/filter_icon.jpg")),
+                onPressed: _showFilterDialog,),
               PopupMenuButton(
                 onSelected: (result) {
                   switch (result) {
@@ -104,12 +116,17 @@ class _RecipesComponentState extends State<RecipesComponent> {
                       break;
                   }
                 },
-                itemBuilder: (context) => [
+                itemBuilder: (context) =>
+                [
                   PopupMenuItem(
-                      child: Text(AppLocalizations.of(context).settings),
+                      child: Text(AppLocalizations
+                          .of(context)
+                          .settings),
                       value: 0),
                   PopupMenuItem(
-                      child: Text(AppLocalizations.of(context).logout),
+                      child: Text(AppLocalizations
+                          .of(context)
+                          .logout),
                       value: 1)
                 ],
                 icon: Icon(
@@ -151,4 +168,26 @@ class _RecipesComponentState extends State<RecipesComponent> {
     print("refresh recipes");
     return loadRecipes();
   }
+
+  void _showFilterDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Filter Recipes'),
+          content: Text("content"),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Okay'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
 }
