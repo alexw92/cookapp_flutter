@@ -19,6 +19,12 @@ class _RecipesComponentState extends State<RecipesComponent> {
   String apiToken;
   bool loading = false;
 
+  // recipe filters
+  bool _filterVegetarian = true;
+  bool _filterVegan = true;
+  bool _filterPescatarian = true;
+  bool _filterMeat = true;
+
   void loadRecipes() async {
     loading = true;
     recipeList = await RecipeController.getRecipes();
@@ -31,13 +37,12 @@ class _RecipesComponentState extends State<RecipesComponent> {
 
   Future<void> loadDefaultNutrition() async {
     var prefs = await SharedPreferences.getInstance();
-    RecipeController.getDefaultNutrients().then((nutrients) =>
-    {
-      prefs.setInt('dailyCalories', nutrients.recDailyCalories),
-      prefs.setDouble('dailyCarbohydrate', nutrients.recDailyCarbohydrate),
-      prefs.setDouble('dailyProtein', nutrients.recDailyProtein),
-      prefs.setDouble('dailyFat', nutrients.recDailyFat)
-    });
+    RecipeController.getDefaultNutrients().then((nutrients) => {
+          prefs.setInt('dailyCalories', nutrients.recDailyCalories),
+          prefs.setDouble('dailyCarbohydrate', nutrients.recDailyCarbohydrate),
+          prefs.setDouble('dailyProtein', nutrients.recDailyProtein),
+          prefs.setDouble('dailyFat', nutrients.recDailyFat)
+        });
   }
 
   @override
@@ -51,14 +56,13 @@ class _RecipesComponentState extends State<RecipesComponent> {
     if (loading)
       return Scaffold(
           appBar: AppBar(
-            title: Text(AppLocalizations
-                .of(context)
-                .recipes),
+            title: Text(AppLocalizations.of(context).recipes),
             actions: [
               // AppLocalizations.of(context).logout
               // AppLocalizations.of(context).settings
               IconButton(
-                icon: ImageIcon(AssetImage("assets/filter_icon.jpg")),),
+                icon: ImageIcon(AssetImage("assets/filter_icon.jpg")),
+              ),
               PopupMenuButton(
                 onSelected: (result) {
                   switch (result) {
@@ -70,17 +74,12 @@ class _RecipesComponentState extends State<RecipesComponent> {
                       break;
                   }
                 },
-                itemBuilder: (context) =>
-                [
+                itemBuilder: (context) => [
                   PopupMenuItem(
-                      child: Text(AppLocalizations
-                          .of(context)
-                          .settings),
+                      child: Text(AppLocalizations.of(context).settings),
                       value: 0),
                   PopupMenuItem(
-                      child: Text(AppLocalizations
-                          .of(context)
-                          .logout),
+                      child: Text(AppLocalizations.of(context).logout),
                       value: 1)
                 ],
                 icon: Icon(
@@ -91,20 +90,20 @@ class _RecipesComponentState extends State<RecipesComponent> {
           ),
           body: Center(
               child: CircularProgressIndicator(
-                value: null,
-                backgroundColor: Colors.green,
-              )));
+            value: null,
+            backgroundColor: Colors.green,
+          )));
     else
       return Scaffold(
           appBar: AppBar(
-            title: Text(AppLocalizations
-                .of(context)
-                .recipes),
+            title: Text(AppLocalizations.of(context).recipes),
             actions: [
               // AppLocalizations.of(context).logout
               // AppLocalizations.of(context).settings
-              IconButton(icon: ImageIcon(AssetImage("assets/filter_icon.jpg")),
-                onPressed: _showFilterDialog,),
+              IconButton(
+                icon: ImageIcon(AssetImage("assets/filter_icon.jpg")),
+                onPressed: _showFilterDialog,
+              ),
               PopupMenuButton(
                 onSelected: (result) {
                   switch (result) {
@@ -116,17 +115,12 @@ class _RecipesComponentState extends State<RecipesComponent> {
                       break;
                   }
                 },
-                itemBuilder: (context) =>
-                [
+                itemBuilder: (context) => [
                   PopupMenuItem(
-                      child: Text(AppLocalizations
-                          .of(context)
-                          .settings),
+                      child: Text(AppLocalizations.of(context).settings),
                       value: 0),
                   PopupMenuItem(
-                      child: Text(AppLocalizations
-                          .of(context)
-                          .logout),
+                      child: Text(AppLocalizations.of(context).logout),
                       value: 1)
                 ],
                 icon: Icon(
@@ -169,6 +163,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
     return loadRecipes();
   }
 
+  // todo need to create custom diag to make it work https://stackoverflow.com/a/52684999/11751609
   void _showFilterDialog() {
     showDialog(
       context: context,
@@ -177,6 +172,38 @@ class _RecipesComponentState extends State<RecipesComponent> {
           title: Text('Filter Recipes'),
           content: Text("content"),
           actions: <Widget>[
+            CheckboxListTile(
+                title: Text("vegan"),
+                value: _filterVegan,
+                onChanged: (bool value) {
+                  setState(() {
+                    _filterVegan = value;
+                  });
+                }),
+            CheckboxListTile(
+                title: Text("vegetarian"),
+                value: _filterVegetarian,
+                onChanged: (bool value) {
+                  setState(() {
+                    _filterVegetarian = value;
+                  });
+                }),
+            CheckboxListTile(
+                title: Text("pescatarian"),
+                value: _filterPescatarian,
+                onChanged: (bool value) {
+                  setState(() {
+                    _filterPescatarian = value;
+                  });
+                }),
+            CheckboxListTile(
+                title: Text("meat"),
+                value: _filterMeat,
+                onChanged: (bool value) {
+                  setState(() {
+                    _filterMeat = value;
+                  });
+                }),
             TextButton(
               child: Text('Okay'),
               onPressed: () {
@@ -188,6 +215,4 @@ class _RecipesComponentState extends State<RecipesComponent> {
       },
     );
   }
-
-
 }
