@@ -1,6 +1,7 @@
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
+import 'package:cookable_flutter/ui/components/recipe-filter-dialog.component.dart';
 import 'package:cookable_flutter/ui/components/recipe-tile.component.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -168,50 +169,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Filter Recipes'),
-          content: Text("content"),
-          actions: <Widget>[
-            CheckboxListTile(
-                title: Text("vegan"),
-                value: _filterVegan,
-                onChanged: (bool value) {
-                  setState(() {
-                    _filterVegan = value;
-                  });
-                }),
-            CheckboxListTile(
-                title: Text("vegetarian"),
-                value: _filterVegetarian,
-                onChanged: (bool value) {
-                  setState(() {
-                    _filterVegetarian = value;
-                  });
-                }),
-            CheckboxListTile(
-                title: Text("pescatarian"),
-                value: _filterPescatarian,
-                onChanged: (bool value) {
-                  setState(() {
-                    _filterPescatarian = value;
-                  });
-                }),
-            CheckboxListTile(
-                title: Text("meat"),
-                value: _filterMeat,
-                onChanged: (bool value) {
-                  setState(() {
-                    _filterMeat = value;
-                  });
-                }),
-            TextButton(
-              child: Text('Okay'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
+        return new FilterRecipesDialog(filterMeat: true,filterPescatarian: true,filterVegan: true,filterVegetarian: true,);
       },
     );
   }
