@@ -39,7 +39,7 @@
     "vegetarian": "vegetarian",
     "pescatarian": "pescatarian",
     "vegan": "vegan",
-    "meat": "meat"
+    "normal": "normal"
 
 
 }

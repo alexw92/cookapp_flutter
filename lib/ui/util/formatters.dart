@@ -20,7 +20,7 @@ class Utility {
     String retDiet;
     switch (diet) {
       case Diet.NORMAL:
-        retDiet = AppLocalizations.of(context).meat;
+        retDiet = AppLocalizations.of(context).normal;
         break;
       case Diet.VEGETARIAN:
         retDiet = AppLocalizations.of(context).vegetarian;

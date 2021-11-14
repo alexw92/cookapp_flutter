@@ -20,15 +20,14 @@ class _RecipesComponentState extends State<RecipesComponent> {
   String apiToken;
   bool loading = false;
 
-  // recipe filters
-  bool _filterVegetarian = true;
-  bool _filterVegan = true;
-  bool _filterPescatarian = true;
-  bool _filterMeat = true;
 
   void loadRecipes() async {
     loading = true;
-    recipeList = await RecipeController.getRecipes();
+    var prefs = await SharedPreferences.getInstance();
+    var dietIndex = prefs.getInt('recipeDietFilter')??Diet.NORMAL.index;
+    var diet = Diet.values[dietIndex];
+    recipeList = await RecipeController.getFilteredRecipes(diet);
+    print(recipeList);
     apiToken = await TokenStore().getToken();
     await loadDefaultNutrition();
     setState(() {
@@ -165,12 +164,17 @@ class _RecipesComponentState extends State<RecipesComponent> {
   }
 
   // todo need to create custom diag to make it work https://stackoverflow.com/a/52684999/11751609
-  void _showFilterDialog() {
+  Future<void> _showFilterDialog() async {
+    var prefs = await SharedPreferences.getInstance();
+    var dietIndex = prefs.getInt('recipeDietFilter')??Diet.NORMAL.index;
+    var diet = Diet.values[dietIndex];
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return new FilterRecipesDialog(filterMeat: true,filterPescatarian: true,filterVegan: true,filterVegetarian: true,);
+        return new FilterRecipesDialog(diet: diet);
       },
-    );
+    ).then((value) => {
+      loadRecipes()
+    });
   }
 }
