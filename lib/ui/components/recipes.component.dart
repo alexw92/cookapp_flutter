@@ -26,6 +26,9 @@ class _RecipesComponentState extends State<RecipesComponent> {
     var prefs = await SharedPreferences.getInstance();
     var dietIndex = prefs.getInt('recipeDietFilter')??Diet.NORMAL.index;
     var diet = Diet.values[dietIndex];
+    setState(() {
+      recipeList = [];
+    });
     recipeList = await RecipeController.getFilteredRecipes(diet);
     print(recipeList);
     apiToken = await TokenStore().getToken();
