@@ -64,6 +64,8 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
         : Scaffold(
             body: SafeArea(
             child: Container(
+                height: double.infinity,
+                color: Colors.black,
                 child: SingleChildScrollView(
                     //  padding: EdgeInsets.only(bottom: 15),
                     child: Column(children: [
