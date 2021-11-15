@@ -37,6 +37,10 @@ class Recipe {
         diet: Diet.values[recipeJson['dietIdentifier'] as int],
         prepTimeMinutes: recipeJson['prepTimeMinutes']);
   }
+
+  String toString(){
+    return "id=$id, name=$name, ingredients=${ingredients.length} ";
+  }
 }
 
 class RecipeDetails {
