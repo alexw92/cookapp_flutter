@@ -1,10 +1,13 @@
 import 'package:cookable_flutter/core/io/token-store.dart';
+import 'package:cookable_flutter/ui/pages/settings_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+import 'login_screen.dart';
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({Key key}) : super(key: key);
@@ -44,10 +47,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 onSelected: (result) {
                   switch (result) {
                     case 0:
-                      0;
+                      _openSettings();
                       break;
                     case 1:
-                      1;
+                      _signOut();
                       break;
                   }
                 },
@@ -108,10 +111,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 onSelected: (result) {
                   switch (result) {
                     case 0:
-                      0;
+                      _openSettings();
                       break;
                     case 1:
-                      1;
+                      _signOut();
                       break;
                   }
                 },
@@ -161,5 +164,20 @@ class _ProfilePageState extends State<ProfilePage> {
             },
         onError: (error) =>
             {print("Error while upgrading user: " + error.toString())});
+  }
+
+
+  Future<void> _signOut() async {
+    print('signout');
+    await FirebaseAuth.instance.signOut();
+    await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+  }
+
+  Future<void> _openSettings() async {
+    print('settings');
+    await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => SettingsPage()));
+    print('settings completed');
   }
 }

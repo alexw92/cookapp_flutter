@@ -3,9 +3,13 @@ import 'package:cached_network_image_platform_interface/cached_network_image_pla
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
+import 'package:cookable_flutter/ui/pages/settings_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'login_screen.dart';
 
 class ToggleFridgeWidget extends StatefulWidget {
   ToggleFridgeWidget({Key key}) : super(key: key);
@@ -49,10 +53,10 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                 onSelected: (result) {
                   switch (result) {
                     case 0:
-                      0;
+                      _openSettings();
                       break;
                     case 1:
-                      0;
+                      _signOut();
                       break;
                   }
                 },
@@ -640,6 +644,20 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
               tileModel.isCheck = val;
               tileModel.isLoading = false;
             }));
+  }
+
+  Future<void> _signOut() async {
+    print('signout');
+    await FirebaseAuth.instance.signOut();
+    await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+  }
+
+  Future<void> _openSettings() async {
+    print('settings');
+    await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => SettingsPage()));
+    print('settings completed');
   }
 }
 

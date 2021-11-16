@@ -1,9 +1,6 @@
-import 'package:cookable_flutter/ui/components/fridgenew.component.dart';
-import 'package:cookable_flutter/ui/components/recipes.component.dart';
-import 'package:cookable_flutter/ui/pages/login_screen.dart';
+import 'package:cookable_flutter/ui/pages/fridgenew.dart';
 import 'package:cookable_flutter/ui/pages/profile.dart';
-import 'package:cookable_flutter/ui/pages/settings_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cookable_flutter/ui/pages/recipes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -22,8 +19,6 @@ class _HomePageState extends State<HomePage> {
 
   int _selectedIndex = 1;
   static List<Widget> _widgetOptions = <Widget>[
-    //DashboardPage(),
-    // FridgeComponent(),
     ToggleFridgeWidget(),
     RecipesComponent(),
     ProfilePage(),
@@ -47,14 +42,6 @@ class _HomePageState extends State<HomePage> {
           ),
           bottomNavigationBar: BottomNavigationBar(
             items: <BottomNavigationBarItem>[
-              // BottomNavigationBarItem(
-              //   icon: Icon(Icons.home),
-              //   label: AppLocalizations.of(context).home,
-              // ),
-              // BottomNavigationBarItem(
-              //   icon: Icon(Icons.shopping_basket),
-              //   label: 'Fridge',
-              // ),
               BottomNavigationBarItem(
                 icon: ImageIcon(AssetImage("assets/fridge32.png")),
                 label: AppLocalizations.of(context).fridge,
@@ -80,19 +67,5 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
-  }
-
-  Future<void> _signOut() async {
-    print('signout');
-    await FirebaseAuth.instance.signOut();
-    await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => LoginScreen()));
-  }
-
-  Future<void> _openSettings() async {
-    print('settings');
-    await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => SettingsPage()));
-    print('settings completed');
   }
 }
