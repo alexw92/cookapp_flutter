@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/ui/pages/recipe-details-page.dart';
+import 'package:cookable_flutter/ui/util/formatters.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -61,18 +62,27 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                 left: 0,
                 right: 0,
                 child: Container(
-
                 height: 50,
-                    decoration: BoxDecoration(
-                        color: Color.fromARGB(200, 255, 255, 255),
-
-                        border: Border.all(
-                          color: Color.fromARGB(0, 0, 0, 0),
+                margin: EdgeInsets.only(left: 5),
+                child: Row(
+                    children:[
+                      Chip(
+                        labelPadding: EdgeInsets.all(4.0),
+                        avatar: Utility.getIconForDiet(recipe.diet),
+                        label: Text(
+                          Utility.getTranslatedDiet(context, recipe.diet),
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
                         ),
-                        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(19),
-                            bottomRight: Radius.circular(19))
-                    ),
-                child: Text("Laaaaawwlllll"))),
+                        backgroundColor: Colors.white,
+                        elevation: 6.0,
+                        shadowColor: Colors.grey[60],
+                        padding: EdgeInsets.all(8.0),
+                      ),
+                    ])
+                )
+            ),
             Positioned(
                 top: 0,
                 left: 0,
