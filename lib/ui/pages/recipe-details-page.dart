@@ -69,42 +69,6 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                 child: SingleChildScrollView(
                     //  padding: EdgeInsets.only(bottom: 15),
                     child: Column(children: [
-              //  Container( child: Stack(
-              //        fit:StackFit.expand,
-              //        children: [
-              //   Container(
-              //       height: 300,
-              //       width: 300,
-              //       color:Colors.grey,
-              //       child: FittedBox(
-              //           fit: BoxFit.fill,
-              //           child: ClipRRect(
-              //             borderRadius: BorderRadius.circular(20), child:Image(
-              //             // needs --web-renderer html
-              //             image: CachedNetworkImageProvider(recipe.imgSrc,
-              //                 imageRenderMethodForWeb:
-              //                 ImageRenderMethodForWeb.HttpGet),
-              //             // backgroundColor: Colors.transparent,
-              //             //  radius: 40,
-              //           ),
-              //           ))),
-              //   Positioned(
-              //       bottom: 0,
-              //       left: 0,
-              //       right: 0,
-              //       child: Container(
-              //           width: 100,
-              //           height: 50,
-              //           decoration: BoxDecoration(
-              //               color: Color.fromARGB(200, 255, 255, 255),
-              //
-              //               border: Border.all(
-              //                 color: Color.fromARGB(0, 0, 0, 0),
-              //               ),
-              //               borderRadius: BorderRadius.all(Radius.circular(20))
-              //           ),
-              //           child: Text("Laaaaawwlllll"))),
-
               Stack(children: [
                 Container(
                     height: 400,
