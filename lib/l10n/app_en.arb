@@ -39,7 +39,9 @@
     "vegetarian": "vegetarian",
     "pescatarian": "pescatarian",
     "vegan": "vegan",
-    "normal": "normal"
+    "normal": "normal",
+    "howToCook": "How To Cook"
+
 
 
 }
