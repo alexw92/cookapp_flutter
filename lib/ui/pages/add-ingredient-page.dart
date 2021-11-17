@@ -19,7 +19,7 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
   String searchString = "";
   Future<List<FoodProduct>> foodProducts;
   String apiToken;
-  List<bool> foodProductChecked;
+  List<FoodProduct> foodProductsAdded = [];
 
   _AddIngredientPageState();
 
@@ -68,7 +68,8 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
                                 .toLowerCase()
                                 .contains(searchString)
                             ? CheckboxListTile(
-                          controlAffinity: ListTileControlAffinity.trailing,
+                                controlAffinity:
+                                    ListTileControlAffinity.trailing,
                                 secondary: CircleAvatar(
                                   backgroundImage: CachedNetworkImageProvider(
                                       "${snapshot.data[index].imgSrc}",
@@ -84,18 +85,21 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
                                 title: Text('${snapshot.data[index].name}'),
                                 subtitle: Text(
                                     'Category: ${Utility.getTranslatedFoodCategory(context, snapshot.data[index].foodCategory)}'),
-                          value: foodProductChecked[index],
-                          onChanged: (bool value) {
-                            setState(() {
-                              foodProductChecked[index] = value;
-                              // if(value){
-                              //   for(int i=0;i<foodProductChecked.length;i++){
-                              //     if(i!=index)
-                              //       foodProductChecked[index] = false;
-                              //   }
-                              // }
-                            });
-                          },
+                                value: foodProductsAdded
+                                    .contains(snapshot.data[index]),
+                                onChanged: (bool value) {
+                                  if (value)
+                                    setState(() {
+                                      foodProductsAdded
+                                          .add(snapshot.data[index]);
+                                    });
+                                  else {
+                                    setState(() {
+                                      foodProductsAdded
+                                          .remove(snapshot.data[index]);
+                                    });
+                                  }
+                                },
                               )
                             : Container();
                       },
@@ -116,11 +120,19 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
                 // Our existing list code
               ),
             ),
+            showIngredientUIIfSelected()
           ],
         ));
   }
 
   void loadToken() async {
     apiToken = await TokenStore().getToken();
+  }
+
+  Widget showIngredientUIIfSelected(){
+    if(foodProductsAdded.isNotEmpty)
+      return Container(height:100, color: Colors.black);
+    else
+      return Container(height: 0);
   }
 }
