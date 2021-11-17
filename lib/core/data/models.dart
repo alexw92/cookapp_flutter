@@ -183,6 +183,7 @@ class FoodProduct {
   final String description;
   final QuantityUnit quantityType;
   final int foodCategoryId;
+  final String foodCategory;
   final String imgSrc;
   final Nutrients nutrients;
 
@@ -192,6 +193,7 @@ class FoodProduct {
       this.description,
       this.quantityType,
       this.foodCategoryId,
+      this.foodCategory,
       this.imgSrc,
       this.nutrients});
 
@@ -202,6 +204,7 @@ class FoodProduct {
         description: json['description'],
         quantityType: QuantityUnit.fromInt(json['quantityUnit']),
         foodCategoryId: json['foodCategoryId'],
+        foodCategory: json['foodCategory'],
         imgSrc: json['img_src'],
         nutrients: Nutrients.fromJson(json['nutrients']));
   }

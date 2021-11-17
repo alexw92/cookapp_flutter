@@ -44,7 +44,9 @@
     "recipeCreation": "Create Recipe",
     "howToCookSteps": "Preparation Steps",
     "addIngredient": "Add Ingredient",
-    "searchIngredient": "Search in Groceries"
+    "searchIngredient": "Search in Groceries",
+    "unknownFoodCategory": "Unknown Category"
+
 
 
 

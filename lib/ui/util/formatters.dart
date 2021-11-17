@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fraction/fraction.dart';
 
-
 class Utility {
   static String getFormattedAmount(UserFoodProduct userFoodProduct) {
     if (userFoodProduct.quantityUnit.value == QuantityUnit.PIECES) {
@@ -35,20 +34,43 @@ class Utility {
     return retDiet;
   }
 
-  static Widget getIconForDiet(Diet diet){
+  static String getTranslatedFoodCategory(
+      BuildContext context, String foodCategory) {
+    String retCat = AppLocalizations.of(context).unknownFoodCategory;
+    foodCategory = foodCategory.toLowerCase();
+    if (foodCategory.contains("fruits")) {
+      retCat = AppLocalizations.of(context).tab_fruits;
+    } else if (foodCategory.contains("vegetables")) {
+      retCat = AppLocalizations.of(context).tab_vegetables;
+    } else if (foodCategory.contains("spices")) {
+      retCat = AppLocalizations.of(context).tab_spices;
+    } else if (foodCategory.contains("pantry")) {
+      retCat = AppLocalizations.of(context).tab_pantry;
+    } else if (foodCategory.contains("dairy")) {
+      retCat = AppLocalizations.of(context).tab_dairy;
+    } else if (foodCategory.contains("meat")) {
+      retCat = AppLocalizations.of(context).tab_meat;
+    } else if (foodCategory.contains("fish")) {
+      retCat = AppLocalizations.of(context).tab_fish;
+    }
+
+    return retCat;
+  }
+
+  static Widget getIconForDiet(Diet diet) {
     Widget retIcon;
     switch (diet) {
       case Diet.NORMAL:
-        retIcon = Icon(Icons.lunch_dining, color:Colors.red);
+        retIcon = Icon(Icons.lunch_dining, color: Colors.red);
         break;
       case Diet.VEGETARIAN:
-        retIcon = Icon(Icons.eco_outlined, color:Colors.green);
+        retIcon = Icon(Icons.eco_outlined, color: Colors.green);
         break;
       case Diet.VEGAN:
-        retIcon = Icon(Icons.eco_outlined, color:Colors.green);
+        retIcon = Icon(Icons.eco_outlined, color: Colors.green);
         break;
       case Diet.PESCATARIAN:
-        retIcon = Icon(Icons.sailing, color:Colors.blue);
+        retIcon = Icon(Icons.sailing, color: Colors.blue);
         break;
     }
     return retIcon;

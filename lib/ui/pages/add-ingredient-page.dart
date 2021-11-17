@@ -3,10 +3,10 @@ import 'package:cached_network_image_platform_interface/cached_network_image_pla
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
+import 'package:cookable_flutter/ui/util/formatters.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 
 class AddIngredientPage extends StatefulWidget {
   AddIngredientPage({Key key}) : super(key: key);
@@ -26,9 +26,7 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
     super.initState();
     loadToken();
     foodProducts = FoodProductController.getFoodProducts();
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   @override
@@ -75,14 +73,15 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
                                       headers: {
                                         "Authorization": "Bearer $apiToken",
                                         "Access-Control-Allow-Headers":
-                                        "Access-Control-Allow-Origin, Accept"
+                                            "Access-Control-Allow-Origin, Accept"
                                       },
-                                      imageRenderMethodForWeb: ImageRenderMethodForWeb.HttpGet),
+                                      imageRenderMethodForWeb:
+                                          ImageRenderMethodForWeb.HttpGet),
                                   radius: 30,
                                 ),
                                 title: Text('${snapshot.data[index].name}'),
                                 subtitle: Text(
-                                    'Placeholder: ${snapshot.data[index].name}'),
+                                    'Category: ${Utility.getTranslatedFoodCategory(context, snapshot.data[index].foodCategory)}'),
                               )
                             : Container();
                       },
@@ -107,8 +106,7 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
         ));
   }
 
-   void loadToken() async {
+  void loadToken() async {
     apiToken = await TokenStore().getToken();
   }
-
 }

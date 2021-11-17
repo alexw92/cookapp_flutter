@@ -41,6 +41,7 @@
     "recipeCreation": "Rezept erstellen",
     "howToCookSteps": "Zubereitungsschritte",
     "addIngredient": "Neue Zutat",
-    "searchIngredient": "Suche in Lebensmitteln"
+    "searchIngredient": "Suche in Lebensmitteln",
+    "unknownFoodCategory": "Unbekannte Kategorie"
 
 }
