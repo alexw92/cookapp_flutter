@@ -6,6 +6,7 @@ import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/util/formatters.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddIngredientPage extends StatefulWidget {
@@ -20,6 +21,9 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
   Future<List<FoodProduct>> foodProducts;
   String apiToken;
   List<FoodProduct> foodProductsAdded = [];
+  int ingredientAmount;
+  final _formKey = GlobalKey<FormState>();
+  final amountController = TextEditingController();
 
   _AddIngredientPageState();
 
@@ -129,10 +133,98 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
     apiToken = await TokenStore().getToken();
   }
 
-  Widget showIngredientUIIfSelected(){
-    if(foodProductsAdded.isNotEmpty)
-      return Container(height:100, color: Colors.black);
-    else
-      return Container(height: 0);
+  Widget showIngredientUIIfSelected() {
+    if (foodProductsAdded.isNotEmpty) {
+      var foodProduct = foodProductsAdded.first;
+      return Form(
+          key: _formKey,
+          child: Card(
+              //  height: 100,
+              color: Colors.white,
+              elevation: 25,
+              child:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                SizedBox(width: 20),
+                CircleAvatar(
+                  backgroundImage: CachedNetworkImageProvider(
+                      "${foodProduct.imgSrc}",
+                      headers: {
+                        "Authorization": "Bearer $apiToken",
+                        "Access-Control-Allow-Headers":
+                            "Access-Control-Allow-Origin, Accept"
+                      },
+                      imageRenderMethodForWeb: ImageRenderMethodForWeb.HttpGet),
+                  radius: 40,
+                ),
+                Expanded(
+                    child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(foodProduct.name, style: TextStyle(fontSize: 20)),
+                    SizedBox(
+                        width: 100,
+                        child: TextFormField(
+                          controller: amountController,
+                          decoration: InputDecoration(
+                              border: UnderlineInputBorder(),
+                              labelText:
+                                  'Amount (${foodProduct.quantityType.toString()})',
+                              suffixText: foodProduct.quantityType.toString(),
+                          errorMaxLines: 1),
+                          maxLength: 6,
+                          maxLines: 1,
+                          keyboardType: TextInputType.numberWithOptions(
+                              decimal: false, signed: false),
+                          // inputFormatters: <TextInputFormatter>[
+                          //   FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+                          // ],
+                          validator: (v) {
+                               if(num.tryParse(v) == null){
+                                 return "Invalid amount";
+                               }
+                              else {
+                                return null;}
+                              },
+                        )),
+                  ],
+                )),
+                Column(children: [
+                  ElevatedButton(
+                    child: Text("Okay"),
+                    onPressed: () {
+                      if (_formKey.currentState.validate()) {
+                        ingredientAmount = num.parse(amountController.value.text);
+                        print("added "+ingredientAmount.toString()+" " + foodProduct.name);
+                        addIngredientAndNavigateBack(foodProduct, ingredientAmount);
+                      }
+                    },
+                  ),
+                  ElevatedButton(
+                    child: Text("Cancel"),
+                    style: ElevatedButton.styleFrom(primary: Colors.red),
+                    onPressed: () {
+                      setState(() {
+                        foodProductsAdded.clear();
+                      });
+                    },
+                  )
+                ])
+              ])));
+    } else
+      return Container();
+  }
+
+  void addIngredientAndNavigateBack(FoodProduct foodProduct, int amount) {
+    print('leave add ingredient');
+    Ingredient ingredient = Ingredient(
+      id: 0,
+      name: foodProduct.name,
+      quantityType: foodProduct.quantityType,
+      imgSrc: foodProduct.imgSrc,
+      foodProductId: foodProduct.id,
+      recipeId: 0,
+      amount: amount
+    );
+    Navigator.pop(context, ingredient);
   }
 }

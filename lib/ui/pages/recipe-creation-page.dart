@@ -34,7 +34,10 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                     isExpanded: _isOpen[0],
                     headerBuilder: (context, isOpen) {
                       return Text(
-                        AppLocalizations.of(context).ingredients+" ("+ingredients.length.toString()+")",
+                        AppLocalizations.of(context).ingredients +
+                            " (" +
+                            ingredients.length.toString() +
+                            ")",
                         style: TextStyle(fontSize: 24),
                       );
                     },
@@ -50,7 +53,11 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                 ExpansionPanel(
                     isExpanded: _isOpen[1],
                     headerBuilder: (context, isOpen) {
-                      return Text(AppLocalizations.of(context).howToCookSteps+" ("+instructions.length.toString()+")",
+                      return Text(
+                          AppLocalizations.of(context).howToCookSteps +
+                              " (" +
+                              instructions.length.toString() +
+                              ")",
                           style: TextStyle(fontSize: 24));
                     },
                     body: Text("Now Open 2")),
@@ -74,11 +81,18 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
         ));
   }
 
-  Future<void>  _openAddIngredientScreen() async{
-      print('addIngredientScreen');
-      await Navigator.push(
-          context, MaterialPageRoute(builder: (context) => AddIngredientPage()));
-      print('addIngredientScreen completed');
+  Future<void> _openAddIngredientScreen() async {
+    print('addIngredientScreen');
+    await Navigator.push(context,
+            MaterialPageRoute(builder: (context) => AddIngredientPage()))
+        .then((ingredient) => {
+              if (ingredient is Ingredient)
+                {
+                  setState(() {
+                    ingredients.add(ingredient);
+                  })
+                }
+            });
+    print('addIngredientScreen completed');
   }
-
 }
