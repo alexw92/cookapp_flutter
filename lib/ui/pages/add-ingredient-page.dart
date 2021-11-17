@@ -19,6 +19,7 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
   String searchString = "";
   Future<List<FoodProduct>> foodProducts;
   String apiToken;
+  List<bool> foodProductChecked;
 
   _AddIngredientPageState();
 
@@ -66,8 +67,9 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
                         return snapshot.data[index].name
                                 .toLowerCase()
                                 .contains(searchString)
-                            ? ListTile(
-                                leading: CircleAvatar(
+                            ? CheckboxListTile(
+                          controlAffinity: ListTileControlAffinity.trailing,
+                                secondary: CircleAvatar(
                                   backgroundImage: CachedNetworkImageProvider(
                                       "${snapshot.data[index].imgSrc}",
                                       headers: {
@@ -82,6 +84,18 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
                                 title: Text('${snapshot.data[index].name}'),
                                 subtitle: Text(
                                     'Category: ${Utility.getTranslatedFoodCategory(context, snapshot.data[index].foodCategory)}'),
+                          value: foodProductChecked[index],
+                          onChanged: (bool value) {
+                            setState(() {
+                              foodProductChecked[index] = value;
+                              // if(value){
+                              //   for(int i=0;i<foodProductChecked.length;i++){
+                              //     if(i!=index)
+                              //       foodProductChecked[index] = false;
+                              //   }
+                              // }
+                            });
+                          },
                               )
                             : Container();
                       },
