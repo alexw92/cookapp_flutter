@@ -3,6 +3,7 @@ import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/components/recipe-filter-dialog.component.dart';
 import 'package:cookable_flutter/ui/components/recipe-tile.component.dart';
+import 'package:cookable_flutter/ui/pages/recipe-creation-page.dart';
 import 'package:cookable_flutter/ui/pages/settings_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -68,6 +69,9 @@ class _RecipesComponentState extends State<RecipesComponent> {
               // AppLocalizations.of(context).logout
               // AppLocalizations.of(context).settings
               IconButton(
+                icon: Icon(Icons.add),
+              ),
+              IconButton(
                 icon: ImageIcon(AssetImage("assets/filter_icon.jpg")),
               ),
               PopupMenuButton(
@@ -107,6 +111,10 @@ class _RecipesComponentState extends State<RecipesComponent> {
             actions: [
               // AppLocalizations.of(context).logout
               // AppLocalizations.of(context).settings
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: _openCreateRecipeScreen,
+              ),
               IconButton(
                 icon: ImageIcon(AssetImage("assets/filter_icon.jpg")),
                 onPressed: _showFilterDialog,
@@ -198,4 +206,12 @@ class _RecipesComponentState extends State<RecipesComponent> {
         context, MaterialPageRoute(builder: (context) => SettingsPage()));
     print('settings completed');
   }
+
+  Future<void> _openCreateRecipeScreen() async {
+    print('addIngredientScreen');
+    await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => RecipeCreationPage()));
+    print('addIngredientScreen completed');
+  }
+
 }

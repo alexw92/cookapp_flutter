@@ -40,7 +40,12 @@
     "pescatarian": "pescatarian",
     "vegan": "vegan",
     "normal": "normal",
-    "howToCook": "How To Cook"
+    "howToCook": "How To Cook",
+    "recipeCreation": "Create Recipe",
+    "howToCookSteps": "Preparation Steps",
+    "addIngredient": "Add Ingredient",
+    "searchIngredient": "Search in Groceries"
+
 
 
 

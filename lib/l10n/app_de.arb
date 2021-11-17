@@ -37,6 +37,10 @@
     "pescatarian": "Pescetarisch",
     "vegan": "Vegan",
     "normal": "Normal",
-    "howToCook": "How To Cook"
+    "howToCook": "How To Cook",
+    "recipeCreation": "Rezept erstellen",
+    "howToCookSteps": "Zubereitungsschritte",
+    "addIngredient": "Neue Zutat",
+    "searchIngredient": "Suche in Lebensmitteln"
 
 }
