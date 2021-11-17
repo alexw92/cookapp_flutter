@@ -188,7 +188,6 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                                 padding: EdgeInsets.all(8.0),
                               )
                             ]),
-                        Row()
                       ],
                     ),
                   ),
