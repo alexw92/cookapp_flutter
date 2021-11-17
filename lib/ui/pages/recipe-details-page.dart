@@ -28,6 +28,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
   double dailyProtein;
   double dailyFat;
   int numberOfPersonsTmp;
+  List<Ingredient> ingredientsTmp;
 
   _RecipesDetailsPageState();
 
@@ -40,8 +41,10 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
     dailyProtein = prefs.getDouble('dailyProtein');
     dailyFat = prefs.getDouble('dailyFat');
     this.recipe = await RecipeController.getRecipe(this.widget.recipeId);
+    var ingredientsCopy = copyIngredients(recipe.ingredients);
     setState(() {
       numberOfPersonsTmp = recipe.numberOfPersons;
+      ingredientsTmp = ingredientsCopy;
     });
   }
 
@@ -51,7 +54,8 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
       numberOfPersonsTmp = numberOfPersonsTmp + 1;
       for (int i = 0; i < recipe.ingredients.length; i++) {
         var ingredient = recipe.ingredients[i];
-        ingredient.amount = ((ingredient.amount / (numberOfPersonsTmp - 1)) *
+        var ingredientCpy = ingredientsTmp[i];
+        ingredientCpy.amount = ((ingredient.amount / recipe.numberOfPersons) *
                 numberOfPersonsTmp)
             .toInt();
       }
@@ -64,11 +68,21 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
       numberOfPersonsTmp = numberOfPersonsTmp - 1;
       for (int i = 0; i < recipe.ingredients.length; i++) {
         var ingredient = recipe.ingredients[i];
-        ingredient.amount = ((ingredient.amount / (numberOfPersonsTmp + 1)) *
+        var ingredientCpy = ingredientsTmp[i];
+        ingredientCpy.amount = ((ingredient.amount / recipe.numberOfPersons) *
                 numberOfPersonsTmp)
             .toInt();
       }
     });
+  }
+
+  List<Ingredient> copyIngredients(List<Ingredient> ingredients){
+    List<Ingredient> ingredientCopy = [];
+    for (int i = 0; i < ingredients.length; i++) {
+      var ingredient = ingredients[i];
+      ingredientCopy.add(ingredient.clone());
+    }
+    return ingredientCopy;
   }
 
   @override
@@ -312,10 +326,10 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
 
   List<Widget> getAllIngredientTiles() {
     List<Widget> myTiles = [];
-    for (int i = 0; i < recipe.ingredients.length; i++) {
+    for (int i = 0; i < ingredientsTmp.length; i++) {
       myTiles.add(
         IngredientTileComponent(
-            ingredient: recipe.ingredients[i], apiToken: apiToken),
+            ingredient: ingredientsTmp[i], apiToken: apiToken),
       );
     }
     return myTiles;

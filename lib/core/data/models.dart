@@ -9,7 +9,6 @@ class Recipe {
   final Diet diet;
   final int prepTimeMinutes;
 
-
   Recipe(
       {this.id,
       this.imgSrc,
@@ -38,7 +37,7 @@ class Recipe {
         prepTimeMinutes: recipeJson['prepTimeMinutes']);
   }
 
-  String toString(){
+  String toString() {
     return "id=$id, name=$name, ingredients=${ingredients.length} ";
   }
 }
@@ -164,6 +163,17 @@ class Ingredient {
       imgSrc: json['img_src'],
       quantityType: QuantityUnit.fromInt(json['quantityType']),
     );
+  }
+
+  Ingredient clone() {
+    return Ingredient(
+        id: this.id,
+        name: this.name,
+        amount: this.amount,
+        recipeId: this.recipeId,
+        foodProductId: this.foodProductId,
+        imgSrc: this.imgSrc,
+        quantityType: this.quantityType);
   }
 }
 
