@@ -139,7 +139,7 @@ class DefaultNutrients {
 class Ingredient {
   final int id;
   final String name;
-  final int amount;
+  int amount;
   final int recipeId;
   final int foodProductId;
   final String imgSrc;

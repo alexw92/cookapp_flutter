@@ -27,6 +27,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
   double dailyCarbohydrate;
   double dailyProtein;
   double dailyFat;
+  int numberOfPersonsTmp;
 
   _RecipesDetailsPageState();
 
@@ -39,7 +40,35 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
     dailyProtein = prefs.getDouble('dailyProtein');
     dailyFat = prefs.getDouble('dailyFat');
     this.recipe = await RecipeController.getRecipe(this.widget.recipeId);
-    setState(() {});
+    setState(() {
+      numberOfPersonsTmp = recipe.numberOfPersons;
+    });
+  }
+
+  void increaseNumberOfPersons() {
+    if (numberOfPersonsTmp == 20) return;
+    setState(() {
+      numberOfPersonsTmp = numberOfPersonsTmp + 1;
+      for (int i = 0; i < recipe.ingredients.length; i++) {
+        var ingredient = recipe.ingredients[i];
+        ingredient.amount = ((ingredient.amount / (numberOfPersonsTmp - 1)) *
+                numberOfPersonsTmp)
+            .toInt();
+      }
+    });
+  }
+
+  void decreaseNumberOfPersons() {
+    if (numberOfPersonsTmp == 1) return;
+    setState(() {
+      numberOfPersonsTmp = numberOfPersonsTmp - 1;
+      for (int i = 0; i < recipe.ingredients.length; i++) {
+        var ingredient = recipe.ingredients[i];
+        ingredient.amount = ((ingredient.amount / (numberOfPersonsTmp + 1)) *
+                numberOfPersonsTmp)
+            .toInt();
+      }
+    });
   }
 
   @override
@@ -157,6 +186,53 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                         AppLocalizations.of(context).ingredients,
                         style: TextStyle(color: Colors.white, fontSize: 26),
                       ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                decreaseNumberOfPersons();
+                              },
+                              child: Icon(Icons.remove),
+                              style: ButtonStyle(
+                                shape:
+                                    MaterialStateProperty.all(CircleBorder()),
+                                padding: MaterialStateProperty.all(
+                                    EdgeInsets.all(20)),
+                                backgroundColor: MaterialStateProperty.all(
+                                    Colors.white), // <-- Button color
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            CircleAvatar(
+                              radius: 30,
+                              child: Text(numberOfPersonsTmp.toString(),
+                                  style: TextStyle(
+                                      fontSize: 30, color: Colors.black)),
+                              backgroundColor: Colors.white,
+                            ),
+                            SizedBox(width: 10),
+                            ElevatedButton(
+                              onPressed: () {
+                                increaseNumberOfPersons();
+                              },
+                              child: Icon(Icons.add),
+                              style: ButtonStyle(
+                                shape:
+                                    MaterialStateProperty.all(CircleBorder()),
+                                padding: MaterialStateProperty.all(
+                                    EdgeInsets.all(20)),
+                                backgroundColor: MaterialStateProperty.all(
+                                    Colors.white), // <-- Button color
+                              ),
+                            )
+                          ]),
+                      SizedBox(
+                        height: 5,
+                      ),
                       Container(
                           margin: const EdgeInsets.only(left: 5, right: 5),
                           child: new GridView.count(
@@ -210,30 +286,29 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                         Container(
                             margin: const EdgeInsets.only(left: 0, right: 0),
                             child: ListView.builder(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemCount: recipe.instructions.length,
-                              itemBuilder: (context, index) {
-                                final instruction = recipe.instructions[index];
-                                    return Container(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: recipe.instructions.length,
+                                itemBuilder: (context, index) {
+                                  final instruction =
+                                      recipe.instructions[index];
+                                  return Container(
                                       child: Card(
-                                        child: Column(
-                                          children: <Widget>[
-                                            Text("Step "+instruction.step.toString(),
-                                            style: TextStyle(fontSize: 16),),
-                                            Text(instruction.instructionsText)
-                                          ],
+                                    child: Column(
+                                      children: <Widget>[
+                                        Text(
+                                          "Step " + instruction.step.toString(),
+                                          style: TextStyle(fontSize: 16),
                                         ),
-                                      )
-                                    );
-                              }
-                            ))
+                                        Text(instruction.instructionsText)
+                                      ],
+                                    ),
+                                  ));
+                                }))
                       ])),
                 ]))),
           ));
   }
-
-  List<Widget> getInstructionTiles(){}
 
   List<Widget> getAllIngredientTiles() {
     List<Widget> myTiles = [];
