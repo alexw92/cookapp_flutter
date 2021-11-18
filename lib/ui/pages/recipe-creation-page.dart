@@ -1,4 +1,6 @@
 import 'package:cookable_flutter/core/data/models.dart';
+import 'package:cookable_flutter/core/io/token-store.dart';
+import 'package:cookable_flutter/ui/components/ingredient-tile.component.dart';
 import 'package:cookable_flutter/ui/pages/add-ingredient-page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +17,15 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
   List<bool> _isOpen = [false, false];
   List<Ingredient> ingredients = [];
   List<RecipeInstruction> instructions = [];
+  String apiToken;
 
   _RecipeCreationPageState();
+
+  @override
+  void initState() {
+    getToken();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +56,23 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                           icon: Icon(Icons.add),
                           iconSize: 36,
                           onPressed: _openAddIngredientScreen,
-                        )
+                        ),
+                        Container(
+                            margin: const EdgeInsets.only(left: 5, right: 5),
+                            child: new GridView.count(
+                              //     primary: true,
+                              //    padding: const EdgeInsets.all(0),
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              crossAxisCount: 3,
+                              mainAxisSpacing: 3,
+                              padding: EdgeInsets.only(left: 10, right: 10),
+                              crossAxisSpacing: 10,
+                              children: [
+                                ...getAllIngredientTiles()
+                                //
+                              ],
+                            ))
                       ],
                     )),
                 ExpansionPanel(
@@ -81,6 +106,17 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
         ));
   }
 
+  List<Widget> getAllIngredientTiles() {
+    List<Widget> myTiles = [];
+    for (int i = 0; i < ingredients.length; i++) {
+      myTiles.add(
+        IngredientTileComponent(
+            ingredient: ingredients[i], apiToken: apiToken, textColor: Colors.black,),
+      );
+    }
+    return myTiles;
+  }
+
   Future<void> _openAddIngredientScreen() async {
     print('addIngredientScreen');
     await Navigator.push(context,
@@ -95,4 +131,9 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
             });
     print('addIngredientScreen completed');
   }
+
+  Future<void> getToken() async {
+    apiToken = await TokenStore().getToken();
+  }
+
 }

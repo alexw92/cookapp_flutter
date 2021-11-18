@@ -25,11 +25,10 @@ class _RecipesComponentState extends State<RecipesComponent> {
   String apiToken;
   bool loading = false;
 
-
   void loadRecipes() async {
     loading = true;
     var prefs = await SharedPreferences.getInstance();
-    var dietIndex = prefs.getInt('recipeDietFilter')??Diet.NORMAL.index;
+    var dietIndex = prefs.getInt('recipeDietFilter') ?? Diet.NORMAL.index;
     var diet = Diet.values[dietIndex];
     setState(() {
       recipeList = [];
@@ -160,7 +159,8 @@ class _RecipesComponentState extends State<RecipesComponent> {
                     children: [...getAllTiles()],
                   ),
                 ),
-              )));
+              )
+          ));
   }
 
   List<Widget> getAllTiles() {
@@ -181,16 +181,14 @@ class _RecipesComponentState extends State<RecipesComponent> {
   // todo need to create custom diag to make it work https://stackoverflow.com/a/52684999/11751609
   Future<void> _showFilterDialog() async {
     var prefs = await SharedPreferences.getInstance();
-    var dietIndex = prefs.getInt('recipeDietFilter')??Diet.NORMAL.index;
+    var dietIndex = prefs.getInt('recipeDietFilter') ?? Diet.NORMAL.index;
     var diet = Diet.values[dietIndex];
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return new FilterRecipesDialog(diet: diet);
       },
-    ).then((value) => {
-      loadRecipes()
-    });
+    ).then((value) => {loadRecipes()});
   }
 
   Future<void> _signOut() async {
@@ -213,5 +211,4 @@ class _RecipesComponentState extends State<RecipesComponent> {
         context, MaterialPageRoute(builder: (context) => RecipeCreationPage()));
     print('addIngredientScreen completed');
   }
-
 }
