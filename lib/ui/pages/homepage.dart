@@ -1,4 +1,5 @@
 import 'package:cookable_flutter/ui/pages/fridgenew.dart';
+import 'package:cookable_flutter/ui/pages/private_recipes.dart';
 import 'package:cookable_flutter/ui/pages/profile.dart';
 import 'package:cookable_flutter/ui/pages/recipes.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,6 +22,7 @@ class _HomePageState extends State<HomePage> {
   static List<Widget> _widgetOptions = <Widget>[
     ToggleFridgeWidget(),
     RecipesComponent(),
+    PrivateRecipesComponent(),
     ProfilePage(),
     ImageUploadPage()
   ];
@@ -49,6 +51,10 @@ class _HomePageState extends State<HomePage> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.lunch_dining),
                 label: AppLocalizations.of(context).recipes,
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.archive),
+                label: AppLocalizations.of(context).yourRecipes,
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),

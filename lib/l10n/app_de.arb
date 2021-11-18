@@ -39,9 +39,11 @@
     "normal": "Normal",
     "howToCook": "How To Cook",
     "recipeCreation": "Rezept erstellen",
+    "recipeEdit": "Rezept bearbeiten",
     "howToCookSteps": "Zubereitungsschritte",
     "addIngredient": "Neue Zutat",
     "searchIngredient": "Suche in Lebensmitteln",
-    "unknownFoodCategory": "Unbekannte Kategorie"
+    "unknownFoodCategory": "Unbekannte Kategorie",
+    "yourRecipes": "Deine Rezepte"
 
 }

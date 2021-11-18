@@ -42,10 +42,13 @@
     "normal": "normal",
     "howToCook": "How To Cook",
     "recipeCreation": "Create Recipe",
+    "recipeEdit": "Edit Recipe",
     "howToCookSteps": "Preparation Steps",
     "addIngredient": "Add Ingredient",
     "searchIngredient": "Search in Groceries",
-    "unknownFoodCategory": "Unknown Category"
+    "unknownFoodCategory": "Unknown Category",
+    "yourRecipes": "Your Recipes"
+
 
 
 

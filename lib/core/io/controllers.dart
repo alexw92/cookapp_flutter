@@ -96,6 +96,52 @@ class RecipeController {
     throw Exception(
         "Error requesting recipes, Code: ${response.statusCode} Message: ${response.body} ");
   }
+
+  static Future<List<PrivateRecipe>> getPrivateRecipes() async {
+    // get token from token store
+    var tokenStore = IOConfig.tokenStore;
+    String storedToken = await tokenStore.getToken();
+
+    var response =
+    await http.get(Uri.parse("${IOConfig.apiUrl}/privaterecipes/all"), headers: {
+      "Authorization": "Bearer $storedToken",
+      'Content-Type': 'application/json',
+    }).timeout(IOConfig.timeoutDuration);
+
+    /// If the first API call is successful
+    if (response.statusCode == HttpStatus.ok) {
+      var list = json.decode(response.body) as List;
+      List<PrivateRecipe> recipes = list.map((it) => PrivateRecipe.fromJson(it)).toList();
+      return recipes;
+    }
+
+    throw Exception(
+        "Error requesting private recipes, Code: ${response.statusCode} Message: ${response.body} ");
+  }
+
+  static Future<PrivateRecipe> createPrivateRecipe(String recipeName) async {
+    // get token from token store
+    var tokenStore = IOConfig.tokenStore;
+    String storedToken = await tokenStore.getToken();
+    var body = json.encode({
+      "name": recipeName
+    });
+    var response =
+    await http.post(Uri.parse("${IOConfig.apiUrl}/privaterecipes/add"), headers: {
+      "Authorization": "Bearer $storedToken",
+      'Content-Type': 'application/json',
+    }, body: body).timeout(IOConfig.timeoutDuration);
+
+    /// If the first API call is successful
+    if (response.statusCode == HttpStatus.ok) {
+      var recipeJson = json.decode(response.body);
+      PrivateRecipe recipe = PrivateRecipe.fromJson(recipeJson);
+      return recipe;
+    }
+
+    throw Exception(
+        "Error requesting recipes, Code: ${response.statusCode} Message: ${response.body} ");
+  }
 }
 
 class FoodProductController {

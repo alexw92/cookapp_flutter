@@ -42,6 +42,69 @@ class Recipe {
   }
 }
 
+class PrivateRecipe {
+  final int id;
+  final String imgSrc;
+  final String name;
+  final String uploadedBy;
+  final List<RecipeInstruction> instructions;
+  final List<Ingredient> ingredients;
+  final Nutrients nutrients;
+  final int numberOfPersons;
+  final Diet diet;
+  final int prepTimeMinutes;
+  final bool isPublishable;
+
+  PrivateRecipe(
+      {this.id,
+        this.imgSrc,
+        this.name,
+        this.uploadedBy,
+        this.instructions,
+        this.ingredients,
+        this.nutrients,
+        this.numberOfPersons,
+        this.diet,
+        this.prepTimeMinutes,
+        this.isPublishable});
+
+  factory PrivateRecipe.fromJson(Map<String, dynamic> recipeJson) {
+    return PrivateRecipe(
+        id: recipeJson['id'],
+        imgSrc: recipeJson['img_src'],
+        name: recipeJson['name'],
+        uploadedBy: recipeJson['uploadedBy'],
+        instructions: (recipeJson['instructions'] as List)
+            .map((it) => RecipeInstruction.fromJson(it))
+            .toList(),
+        ingredients: (recipeJson['ingredients'] as List)
+            .map((it) => Ingredient.fromJson(it))
+            .toList(),
+        nutrients: Nutrients.fromJson(recipeJson['nutrientsData']),
+        numberOfPersons: recipeJson['numberOfPersons'],
+        diet: Diet.values[recipeJson['dietIdentifier'] as int],
+        prepTimeMinutes: recipeJson['prepTimeMinutes'],
+        isPublishable: recipeJson['isPublishable'] as bool );
+  }
+
+  String toString() {
+    return "private-recipe, id=$id, name=$name, ingredients=${ingredients.length} ";
+  }
+}
+
+// val id: Long,
+// val img_src: String?,
+// val name: String,
+// val instructions: List<RecipeInstructionData>,
+// val ingredients: List<IngredientData>,
+// val uploadedBy: String,
+// val numberOfPersons: Int,
+// val dietIdentifier: DietIdentifier,
+// val nutrientsData: NutrientsData?,
+// val publishedRecipe: RecipeData?,
+// var prepTimeMinutes: Int,
+// val isPublishable: Boolean
+
 class RecipeDetails {
   final int id;
   final String imgSrc;

@@ -1,8 +1,10 @@
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
+import 'package:cookable_flutter/ui/components/private-recipe-tile.component.dart';
 import 'package:cookable_flutter/ui/components/recipe-filter-dialog.component.dart';
-import 'package:cookable_flutter/ui/components/recipe-tile.component.dart';
+import 'package:cookable_flutter/ui/pages/recipe-creation-dialog.dart';
+import 'package:cookable_flutter/ui/pages/recipe-edit-page.dart';
 import 'package:cookable_flutter/ui/pages/settings_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,15 +14,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'login_screen.dart';
 
-class RecipesComponent extends StatefulWidget {
-  RecipesComponent({Key key}) : super(key: key);
+class PrivateRecipesComponent extends StatefulWidget {
+  PrivateRecipesComponent({Key key}) : super(key: key);
 
   @override
-  _RecipesComponentState createState() => _RecipesComponentState();
+  _PrivateRecipesComponentState createState() => _PrivateRecipesComponentState();
 }
 
-class _RecipesComponentState extends State<RecipesComponent> {
-  List<Recipe> recipeList = [];
+class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
+  List<PrivateRecipe> recipeList = [];
   String apiToken;
   bool loading = false;
 
@@ -32,7 +34,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
     setState(() {
       recipeList = [];
     });
-    recipeList = await RecipeController.getFilteredRecipes(diet);
+    recipeList = await RecipeController.getPrivateRecipes();
     print(recipeList);
     apiToken = await TokenStore().getToken();
     await loadDefaultNutrition();
@@ -44,11 +46,11 @@ class _RecipesComponentState extends State<RecipesComponent> {
   Future<void> loadDefaultNutrition() async {
     var prefs = await SharedPreferences.getInstance();
     RecipeController.getDefaultNutrients().then((nutrients) => {
-          prefs.setInt('dailyCalories', nutrients.recDailyCalories),
-          prefs.setDouble('dailyCarbohydrate', nutrients.recDailyCarbohydrate),
-          prefs.setDouble('dailyProtein', nutrients.recDailyProtein),
-          prefs.setDouble('dailyFat', nutrients.recDailyFat)
-        });
+      prefs.setInt('dailyCalories', nutrients.recDailyCalories),
+      prefs.setDouble('dailyCarbohydrate', nutrients.recDailyCarbohydrate),
+      prefs.setDouble('dailyProtein', nutrients.recDailyProtein),
+      prefs.setDouble('dailyFat', nutrients.recDailyFat)
+    });
   }
 
   @override
@@ -66,6 +68,9 @@ class _RecipesComponentState extends State<RecipesComponent> {
             actions: [
               // AppLocalizations.of(context).logout
               // AppLocalizations.of(context).settings
+              IconButton(
+                icon: Icon(Icons.add),
+              ),
               IconButton(
                 icon: ImageIcon(AssetImage("assets/filter_icon.jpg")),
               ),
@@ -96,9 +101,9 @@ class _RecipesComponentState extends State<RecipesComponent> {
           ),
           body: Center(
               child: CircularProgressIndicator(
-            value: null,
-            backgroundColor: Colors.green,
-          )));
+                value: null,
+                backgroundColor: Colors.green,
+              )));
     else
       return Scaffold(
           appBar: AppBar(
@@ -106,6 +111,10 @@ class _RecipesComponentState extends State<RecipesComponent> {
             actions: [
               // AppLocalizations.of(context).logout
               // AppLocalizations.of(context).settings
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: _showRecipeCreateDialog,
+              ),
               IconButton(
                 icon: ImageIcon(AssetImage("assets/filter_icon.jpg")),
                 onPressed: _showFilterDialog,
@@ -159,7 +168,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
     List<Widget> myTiles = [];
     for (int i = 0; i < recipeList.length; i++) {
       myTiles.add(
-        RecipeTileComponent(recipe: recipeList[i], apiToken: apiToken),
+        PrivateRecipeTileComponent(privateRecipe: recipeList[i], apiToken: apiToken),
       );
     }
     return myTiles;
@@ -196,5 +205,26 @@ class _RecipesComponentState extends State<RecipesComponent> {
     print('settings completed');
   }
 
+  Future<void> _showRecipeCreateDialog() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return new CreateRecipeDialog();
+      },
+    ).then((privateRecipe) => {
+      print("private recipe after diag: "+privateRecipe.toString()),
+      if(privateRecipe != null){
+        _openEditRecipeScreen(privateRecipe)
+      }
+    }, onError: (error) =>{
+      print("Error in recipes "+error)
+    });
+  }
 
+  Future<void> _openEditRecipeScreen(PrivateRecipe privateRecipe) async {
+    print('editRecipeScreen');
+    await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => RecipeEditPage(privateRecipe)));
+    print('editRecipeScreen completed');
+  }
 }

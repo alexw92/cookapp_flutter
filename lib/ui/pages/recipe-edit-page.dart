@@ -6,24 +6,28 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class RecipeCreationPage extends StatefulWidget {
-  RecipeCreationPage({Key key}) : super(key: key);
+class RecipeEditPage extends StatefulWidget {
+  final PrivateRecipe privateRecipe;
+
+  RecipeEditPage(this.privateRecipe, {Key key}) : super(key: key);
 
   @override
-  _RecipeCreationPageState createState() => _RecipeCreationPageState();
+  _RecipeEditPageState createState() => _RecipeEditPageState();
 }
 
-class _RecipeCreationPageState extends State<RecipeCreationPage> {
+class _RecipeEditPageState extends State<RecipeEditPage> {
   List<bool> _isOpen = [false, false];
   List<Ingredient> ingredients = [];
   List<RecipeInstruction> instructions = [];
   String apiToken;
+  PrivateRecipe privateRecipe;
 
-  _RecipeCreationPageState();
+  _RecipeEditPageState();
 
   @override
   void initState() {
     getToken();
+    privateRecipe = widget.privateRecipe;
     super.initState();
   }
 
@@ -31,9 +35,13 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar:
-            AppBar(title: Text(AppLocalizations.of(context).recipeCreation)),
+        AppBar(title: Text(AppLocalizations
+            .of(context)
+            .recipeEdit)),
         body: Column(
           children: [
+            Text(privateRecipe.name, style: TextStyle(fontSize: 26)),
+            SizedBox(height: 16,),
             ExpansionPanelList(
               elevation: 1,
               expandedHeaderPadding: EdgeInsets.all(4),
@@ -43,9 +51,11 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                     isExpanded: _isOpen[0],
                     headerBuilder: (context, isOpen) {
                       return Text(
-                        AppLocalizations.of(context).ingredients +
+                        AppLocalizations
+                            .of(context)
+                            .ingredients +
                             " (" +
-                            ingredients.length.toString() +
+                            privateRecipe.ingredients.length.toString() +
                             ")",
                         style: TextStyle(fontSize: 24),
                       );
@@ -57,37 +67,25 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
                           iconSize: 36,
                           onPressed: _openAddIngredientScreen,
                         ),
-                        Container(
-                            margin: const EdgeInsets.only(left: 5, right: 5),
-                            child: new GridView.count(
-                              //     primary: true,
-                              //    padding: const EdgeInsets.all(0),
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              crossAxisCount: 3,
-                              mainAxisSpacing: 3,
-                              padding: EdgeInsets.only(left: 10, right: 10),
-                              crossAxisSpacing: 10,
-                              children: [
-                                ...getAllIngredientTiles()
-                                //
-                              ],
-                            ))
+                        getIngredientGridView()
                       ],
                     )),
                 ExpansionPanel(
                     isExpanded: _isOpen[1],
                     headerBuilder: (context, isOpen) {
                       return Text(
-                          AppLocalizations.of(context).howToCookSteps +
+                          AppLocalizations
+                              .of(context)
+                              .howToCookSteps +
                               " (" +
-                              instructions.length.toString() +
+                              privateRecipe.instructions.length.toString() +
                               ")",
                           style: TextStyle(fontSize: 24));
                     },
                     body: Text("Now Open 2")),
               ],
-              expansionCallback: (i, isOpen) => {
+              expansionCallback: (i, isOpen) =>
+              {
                 setState(() {
                   _isOpen[i] = !isOpen;
                 })
@@ -108,10 +106,12 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
 
   List<Widget> getAllIngredientTiles() {
     List<Widget> myTiles = [];
-    for (int i = 0; i < ingredients.length; i++) {
+    for (int i = 0; i < privateRecipe.ingredients.length; i++) {
       myTiles.add(
         IngredientTileComponent(
-            ingredient: ingredients[i], apiToken: apiToken, textColor: Colors.black,),
+          ingredient: privateRecipe.ingredients[i],
+          apiToken: apiToken,
+          textColor: Colors.black,),
       );
     }
     return myTiles;
@@ -120,20 +120,44 @@ class _RecipeCreationPageState extends State<RecipeCreationPage> {
   Future<void> _openAddIngredientScreen() async {
     print('addIngredientScreen');
     await Navigator.push(context,
-            MaterialPageRoute(builder: (context) => AddIngredientPage()))
-        .then((ingredient) => {
-              if (ingredient is Ingredient)
-                {
-                  setState(() {
-                    ingredients.add(ingredient);
-                  })
-                }
-            });
+        MaterialPageRoute(builder: (context) => AddIngredientPage()))
+        .then((ingredient) =>
+    {
+      if (ingredient is Ingredient)
+        {
+          setState(() {
+            privateRecipe.ingredients.add(ingredient);
+          })
+        }
+    });
     print('addIngredientScreen completed');
   }
 
   Future<void> getToken() async {
     apiToken = await TokenStore().getToken();
   }
+
+  Widget getIngredientGridView() {
+    if (privateRecipe.ingredients.length == 0)
+      return Container();
+    else
+      return Container(
+          margin: const EdgeInsets.only(left: 5, right: 5),
+          child: new GridView.count(
+            //     primary: true,
+            //    padding: const EdgeInsets.all(0),
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            crossAxisCount: 3,
+            mainAxisSpacing: 3,
+            padding: EdgeInsets.only(left: 10, right: 10),
+            crossAxisSpacing: 10,
+            children: [
+              ...getAllIngredientTiles()
+              //
+            ],
+          ));
+  }
+
 
 }
