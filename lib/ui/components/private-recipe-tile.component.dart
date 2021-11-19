@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
 import 'package:cookable_flutter/core/data/models.dart';
-import 'package:cookable_flutter/ui/pages/recipe-details-page.dart';
+import 'package:cookable_flutter/ui/pages/private-recipe-details-page.dart';
 import 'package:cookable_flutter/ui/pages/recipe-edit-page.dart';
 import 'package:cookable_flutter/ui/util/formatters.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,7 +27,7 @@ class _PrivateRecipeTileComponentState extends State<PrivateRecipeTileComponent>
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () => navigateToRecipePage(privateRecipe.id),
+        onTap: () => navigatePrivateToRecipePage(privateRecipe.id),
         child: Container(
           alignment: Alignment.center,
           clipBehavior: Clip.hardEdge,
@@ -119,11 +119,11 @@ class _PrivateRecipeTileComponentState extends State<PrivateRecipeTileComponent>
     );
   }
 
-  navigateToRecipePage(int recipeId) async {
+  navigatePrivateToRecipePage(int recipeId) async {
     //navigate to materials page when callbackPath is not report page and list component is clicked
     //Return the result to this component when task is finished from materials
     final result = await Navigator.push(context,
-        MaterialPageRoute(builder: (context) => RecipesDetailsPage(recipeId)));
+        MaterialPageRoute(builder: (context) => PrivateRecipeDetailsPage(recipeId)));
   }
 
   Future<void> _openEditRecipeScreen(PrivateRecipe privateRecipe) async {

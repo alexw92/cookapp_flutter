@@ -2,7 +2,6 @@ import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/components/private-recipe-tile.component.dart';
-import 'package:cookable_flutter/ui/components/recipe-filter-dialog.component.dart';
 import 'package:cookable_flutter/ui/pages/recipe-creation-dialog.dart';
 import 'package:cookable_flutter/ui/pages/recipe-edit-page.dart';
 import 'package:cookable_flutter/ui/pages/settings_screen.dart';
@@ -64,15 +63,12 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
     if (loading)
       return Scaffold(
           appBar: AppBar(
-            title: Text(AppLocalizations.of(context).recipes),
+            title: Text(AppLocalizations.of(context).yourRecipes),
             actions: [
               // AppLocalizations.of(context).logout
               // AppLocalizations.of(context).settings
               IconButton(
                 icon: Icon(Icons.add),
-              ),
-              IconButton(
-                icon: ImageIcon(AssetImage("assets/filter_icon.jpg")),
               ),
               PopupMenuButton(
                 onSelected: (result) {
@@ -107,17 +103,13 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
     else
       return Scaffold(
           appBar: AppBar(
-            title: Text(AppLocalizations.of(context).recipes),
+            title: Text(AppLocalizations.of(context).yourRecipes),
             actions: [
               // AppLocalizations.of(context).logout
               // AppLocalizations.of(context).settings
               IconButton(
                 icon: Icon(Icons.add),
                 onPressed: _showRecipeCreateDialog,
-              ),
-              IconButton(
-                icon: ImageIcon(AssetImage("assets/filter_icon.jpg")),
-                onPressed: _showFilterDialog,
               ),
               PopupMenuButton(
                 onSelected: (result) {
@@ -177,18 +169,6 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
   Future<void> refreshTriggered() async {
     print("refresh recipes");
     return loadRecipes();
-  }
-
-  Future<void> _showFilterDialog() async {
-    var prefs = await SharedPreferences.getInstance();
-    var dietIndex = prefs.getInt('recipeDietFilter') ?? Diet.NORMAL.index;
-    var diet = Diet.values[dietIndex];
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return new FilterRecipesDialog(diet: diet);
-      },
-    ).then((value) => {loadRecipes()});
   }
 
   Future<void> _signOut() async {

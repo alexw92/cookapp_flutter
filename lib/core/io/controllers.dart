@@ -97,6 +97,28 @@ class RecipeController {
         "Error requesting recipes, Code: ${response.statusCode} Message: ${response.body} ");
   }
 
+  static Future<PrivateRecipe> getPrivateRecipe(int id) async {
+    // get token from token store
+    var tokenStore = IOConfig.tokenStore;
+    String storedToken = await tokenStore.getToken();
+
+    var response =
+    await http.get(Uri.parse("${IOConfig.apiUrl}/privaterecipes/$id"), headers: {
+      "Authorization": "Bearer $storedToken",
+      'Content-Type': 'application/json',
+    }).timeout(IOConfig.timeoutDuration);
+
+    /// If the first API call is successful
+    if (response.statusCode == HttpStatus.ok) {
+      var recipeJson = json.decode(response.body);
+      PrivateRecipe recipe = PrivateRecipe.fromJson(recipeJson);
+      return recipe;
+    }
+
+    throw Exception(
+        "Error requesting recipes, Code: ${response.statusCode} Message: ${response.body} ");
+  }
+
   static Future<List<PrivateRecipe>> getPrivateRecipes() async {
     // get token from token store
     var tokenStore = IOConfig.tokenStore;
