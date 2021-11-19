@@ -8,9 +8,9 @@ class NutrientTileComponent extends StatefulWidget {
   double nutrientAmount;
   double dailyRecAmount;
   NutritionType nutritionType;
+  Color textColor;
 
-
-  static Color getNutitionColor(NutritionType nutrition){
+  static Color getNutitionColor(NutritionType nutrition) {
     Color retColor;
     switch (nutrition) {
       case NutritionType.CALORIES:
@@ -34,7 +34,8 @@ class NutrientTileComponent extends StatefulWidget {
       this.nutrientName,
       this.nutrientAmount,
       this.dailyRecAmount,
-      this.nutritionType})
+      this.nutritionType,
+      this.textColor = Colors.black})
       : super(key: key);
 
   @override
@@ -42,7 +43,8 @@ class NutrientTileComponent extends StatefulWidget {
       nutrientName: nutrientName,
       nutrientAmount: nutrientAmount,
       dailyRecAmount: dailyRecAmount,
-      nutritionType: nutritionType);
+      nutritionType: nutritionType,
+      textColor: textColor);
 }
 
 class _NutrientTileComponentState extends State<NutrientTileComponent> {
@@ -50,12 +52,14 @@ class _NutrientTileComponentState extends State<NutrientTileComponent> {
   double nutrientAmount;
   double dailyRecAmount;
   NutritionType nutritionType;
+  Color textColor;
 
   _NutrientTileComponentState(
       {this.nutrientName,
       this.nutrientAmount,
       this.dailyRecAmount,
-      this.nutritionType});
+      this.nutritionType,
+      this.textColor});
 
   @override
   Widget build(BuildContext context) {
@@ -65,15 +69,15 @@ class _NutrientTileComponentState extends State<NutrientTileComponent> {
       backgroundWidth: 2.0,
       animation: true,
       percent: (nutrientAmount.round()) / dailyRecAmount,
-      center: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-      children: [
+      center: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         new Text(
           nutrientName,
           style: new TextStyle(
-              fontWeight: FontWeight.bold, color: Colors.white, fontSize: 12.0),
+              fontWeight: FontWeight.bold, color: textColor, fontSize: 12.0),
         ),
-        new Text(nutrientAmount.toInt().toString()+((nutritionType!=NutritionType.CALORIES)?"g":""),
+        new Text(
+            nutrientAmount.toInt().toString() +
+                ((nutritionType != NutritionType.CALORIES) ? "g" : ""),
             style: new TextStyle(
                 fontWeight: FontWeight.normal,
                 color: NutrientTileComponent.getNutitionColor(nutritionType),

@@ -1,11 +1,13 @@
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/components/ingredient-tile.component.dart';
+import 'package:cookable_flutter/ui/components/nutrient-tile.component.dart';
 import 'package:cookable_flutter/ui/components/private-recipe/private-recipe-instruction-tile.component.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/add-ingredient-page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'add-instruction-dialog.dart';
 
@@ -22,21 +24,35 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
   List<bool> _isOpen = [false, false];
   String apiToken;
   PrivateRecipe privateRecipe;
+  int dailyCalories;
+  double dailyCarbohydrate;
+  double dailyProtein;
+  double dailyFat;
 
   _RecipeEditPageState();
 
   @override
   void initState() {
     getToken();
+    loadDailyRequiredNutrients();
     privateRecipe = widget.privateRecipe;
     super.initState();
+  }
+
+  loadDailyRequiredNutrients() async {
+    var prefs = await SharedPreferences.getInstance();
+    dailyCalories = prefs.getInt('dailyCalories');
+    dailyCarbohydrate = prefs.getDouble('dailyCarbohydrate');
+    dailyProtein = prefs.getDouble('dailyProtein');
+    dailyFat = prefs.getDouble('dailyFat');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text(AppLocalizations.of(context).recipeEdit)),
-        body: SingleChildScrollView( child:Column(
+        body: SingleChildScrollView(
+            child: Column(
           children: [
             Text(privateRecipe.name, style: TextStyle(fontSize: 26)),
             SizedBox(
@@ -71,7 +87,8 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                                 Colors.white), // <-- Button color,
                           ),
                         ),
-                        getIngredientGridView()
+                        getIngredientGridView(),
+                        getNutritionGridView()
                       ],
                     )),
                 ExpansionPanel(
@@ -117,8 +134,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                       Colors.white), // <-- Button color
                 ))
           ],
-        ))
-    );
+        )));
   }
 
   List<Widget> getAllIngredientTiles() {
@@ -159,9 +175,8 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
       return Container();
     else
       return Card(
-        elevation: 10,
-        margin: EdgeInsets.all(10),
-
+          elevation: 10,
+          margin: EdgeInsets.all(10),
           child: new GridView.count(
             //     primary: true,
             //    padding: const EdgeInsets.all(0),
@@ -178,25 +193,76 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
           ));
   }
 
+  Widget getNutritionGridView() {
+    if (privateRecipe.ingredients.length == 0)
+      return Container();
+    else
+      return Card(
+          elevation: 10,
+          margin: EdgeInsets.all(10),
+          child: new GridView.count(
+            //     primary: true,
+            //    padding: const EdgeInsets.all(0),
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            crossAxisCount: 4,
+            mainAxisSpacing: 3,
+            crossAxisSpacing: 0,
+            children: [
+              ...getNutrientTiles()
+              //
+            ],
+          ));
+  }
+
+  List<Widget> getNutrientTiles() {
+    List<Widget> myTiles = [];
+    myTiles.addAll([
+      NutrientTileComponent(
+          nutrientName: AppLocalizations.of(context).calories,
+          nutrientAmount: privateRecipe.nutrients.calories.toDouble(),
+          dailyRecAmount: dailyCalories.toDouble(),
+          nutritionType: NutritionType.CALORIES,
+      textColor: Colors.black),
+      NutrientTileComponent(
+          nutrientName: AppLocalizations.of(context).fat,
+          nutrientAmount: privateRecipe.nutrients.fat,
+          dailyRecAmount: dailyFat,
+          nutritionType: NutritionType.FAT),
+      NutrientTileComponent(
+          nutrientName: AppLocalizations.of(context).carbs,
+          nutrientAmount: privateRecipe.nutrients.carbohydrate,
+          dailyRecAmount: dailyCarbohydrate,
+          nutritionType: NutritionType.CARBOHYDRATE),
+      NutrientTileComponent(
+          nutrientName: AppLocalizations.of(context).protein,
+          nutrientAmount: privateRecipe.nutrients.protein,
+          dailyRecAmount: dailyProtein,
+          nutritionType: NutritionType.PROTEIN)
+    ]);
+
+    return myTiles;
+  }
+
   Widget getInstructions() {
     if (privateRecipe.instructions.length == 0)
       return Container();
     else
       return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
-          children: getInstructionTiles()
-      );
+          children: getInstructionTiles());
   }
 
   List<Widget> getInstructionTiles() {
     List<Widget> instructionTiles = [];
-    privateRecipe.instructions.sort((RecipeInstruction a, RecipeInstruction b){
+    privateRecipe.instructions.sort((RecipeInstruction a, RecipeInstruction b) {
       return a.step.compareTo(b.step);
     });
     for (int i = 0; i < privateRecipe.instructions.length; i++) {
       RecipeInstruction instruction = privateRecipe.instructions[i];
-      instructionTiles.add(PrivateRecipeInstructionTileComponent(recipeInstruction: instruction));
+      instructionTiles.add(PrivateRecipeInstructionTileComponent(
+          recipeInstruction: instruction));
     }
     return instructionTiles;
   }
