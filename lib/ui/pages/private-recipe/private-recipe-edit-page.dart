@@ -6,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'add-instruction-dialog.dart';
+
 class RecipeEditPage extends StatefulWidget {
   final PrivateRecipe privateRecipe;
 
@@ -17,8 +19,6 @@ class RecipeEditPage extends StatefulWidget {
 
 class _RecipeEditPageState extends State<RecipeEditPage> {
   List<bool> _isOpen = [false, false];
-  List<Ingredient> ingredients = [];
-  List<RecipeInstruction> instructions = [];
   String apiToken;
   PrivateRecipe privateRecipe;
 
@@ -59,10 +59,16 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                     },
                     body: Column(
                       children: [
-                        IconButton(
-                          icon: Icon(Icons.add),
-                          iconSize: 36,
-                          onPressed: _openAddIngredientScreen,
+                        ElevatedButton(
+                          onPressed: () => _openAddIngredientScreen,
+                          child: Icon(Icons.add),
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all(CircleBorder()),
+                            padding:
+                                MaterialStateProperty.all(EdgeInsets.all(10)),
+                            backgroundColor: MaterialStateProperty.all(
+                                Colors.white), // <-- Button color,
+                          ),
                         ),
                         getIngredientGridView()
                       ],
@@ -77,7 +83,22 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                               ")",
                           style: TextStyle(fontSize: 24));
                     },
-                    body: Text("Now Open 2")),
+                    body: Column(
+                      children: [
+                        ElevatedButton(
+                          onPressed: openAddInstructionDialog,
+                          child: Icon(Icons.add),
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all(CircleBorder()),
+                            padding:
+                                MaterialStateProperty.all(EdgeInsets.all(10)),
+                            backgroundColor: MaterialStateProperty.all(
+                                Colors.white), // <-- Button color,
+                          ),
+                        ),
+                        getInstructions()
+                      ],
+                    )),
               ],
               expansionCallback: (i, isOpen) => {
                 setState(() {
@@ -151,5 +172,48 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
               //
             ],
           ));
+  }
+
+  Widget getInstructions() {
+    if (privateRecipe.instructions.length == 0)
+      return Container();
+    else
+      return Column(children: getInstructionTiles());
+  }
+
+  List<Widget> getInstructionTiles() {
+    List<Widget> instructionTiles = [];
+    for (int i = 0; i < privateRecipe.instructions.length; i++) {
+      RecipeInstruction instruction = privateRecipe.instructions[i];
+      instructionTiles.add(Text(instruction.instructionsText));
+    }
+    return instructionTiles;
+  }
+
+  Future<void> openAddInstructionDialog() async {
+    int lastStep = 0;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return new AddRecipeInstructionDialog();
+      },
+    ).then((value) => {
+          if (value != null)
+            {
+              print("instruction " + value),
+              privateRecipe.instructions.forEach((element) {
+                if (element.step > lastStep) {
+                  lastStep = element.step;
+                }
+              }),
+              setState(() {
+                privateRecipe.instructions.add(RecipeInstruction(
+                    id: 0,
+                    recipeId: privateRecipe.id,
+                    step: lastStep + 1,
+                    instructionsText: value));
+              })
+            }
+        });
   }
 }
