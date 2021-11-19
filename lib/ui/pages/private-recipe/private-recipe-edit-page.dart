@@ -158,8 +158,10 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
     if (privateRecipe.ingredients.length == 0)
       return Container();
     else
-      return Container(
-          margin: const EdgeInsets.only(left: 5, right: 5),
+      return Card(
+        elevation: 10,
+        margin: EdgeInsets.all(10),
+
           child: new GridView.count(
             //     primary: true,
             //    padding: const EdgeInsets.all(0),
@@ -167,7 +169,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
             shrinkWrap: true,
             crossAxisCount: 3,
             mainAxisSpacing: 3,
-            padding: EdgeInsets.only(left: 10, right: 10),
+            padding: EdgeInsets.all(10),
             crossAxisSpacing: 10,
             children: [
               ...getAllIngredientTiles()

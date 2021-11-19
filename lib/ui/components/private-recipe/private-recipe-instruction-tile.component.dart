@@ -43,16 +43,25 @@ class _PrivateRecipeInstructionTileComponentState
                 child: Center(
                     child: Text(
                   recipeInstruction.step.toString(),
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 )))
           ],
         ),
         SizedBox(
           width: 10,
         ),
-        Flexible(child: Text(recipeInstruction.instructionsText))
+        SizedBox(
+            width: 225,
+            child: Text(
+              recipeInstruction.instructionsText,
+              overflow: TextOverflow.clip,
+            )),
+        Column(
+          children: [
+            IconButton(icon: Icon(Icons.arrow_upward)),
+            IconButton(icon: Icon(Icons.arrow_downward))
+          ],
+        )
       ]),
     );
   }
