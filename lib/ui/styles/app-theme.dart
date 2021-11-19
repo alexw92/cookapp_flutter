@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CookableTheme {
+class MyAppTheme {
   ThemeData get theme => ThemeData(
         brightness: Brightness.light,
         primaryColor: Colors.green,

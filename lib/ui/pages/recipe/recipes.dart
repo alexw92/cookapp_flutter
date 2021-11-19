@@ -1,9 +1,8 @@
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
-import 'package:cookable_flutter/ui/components/private-recipe-tile.component.dart';
-import 'package:cookable_flutter/ui/pages/recipe-creation-dialog.dart';
-import 'package:cookable_flutter/ui/pages/recipe-edit-page.dart';
+import 'package:cookable_flutter/ui/components/recipe/recipe-filter-dialog.component.dart';
+import 'package:cookable_flutter/ui/components/recipe/recipe-tile.component.dart';
 import 'package:cookable_flutter/ui/pages/settings_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,26 +10,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'login_screen.dart';
+import '../login_screen.dart';
 
-class PrivateRecipesComponent extends StatefulWidget {
-  PrivateRecipesComponent({Key key}) : super(key: key);
+class RecipesComponent extends StatefulWidget {
+  RecipesComponent({Key key}) : super(key: key);
 
   @override
-  _PrivateRecipesComponentState createState() => _PrivateRecipesComponentState();
+  _RecipesComponentState createState() => _RecipesComponentState();
 }
 
-class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
-  List<PrivateRecipe> recipeList = [];
+class _RecipesComponentState extends State<RecipesComponent> {
+  List<Recipe> recipeList = [];
   String apiToken;
   bool loading = false;
 
   void loadRecipes() async {
     loading = true;
+    var prefs = await SharedPreferences.getInstance();
+    var dietIndex = prefs.getInt('recipeDietFilter') ?? Diet.NORMAL.index;
+    var diet = Diet.values[dietIndex];
     setState(() {
       recipeList = [];
     });
-    recipeList = await RecipeController.getPrivateRecipes();
+    recipeList = await RecipeController.getFilteredRecipes(diet);
     print(recipeList);
     apiToken = await TokenStore().getToken();
     await loadDefaultNutrition();
@@ -42,11 +44,11 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
   Future<void> loadDefaultNutrition() async {
     var prefs = await SharedPreferences.getInstance();
     RecipeController.getDefaultNutrients().then((nutrients) => {
-      prefs.setInt('dailyCalories', nutrients.recDailyCalories),
-      prefs.setDouble('dailyCarbohydrate', nutrients.recDailyCarbohydrate),
-      prefs.setDouble('dailyProtein', nutrients.recDailyProtein),
-      prefs.setDouble('dailyFat', nutrients.recDailyFat)
-    });
+          prefs.setInt('dailyCalories', nutrients.recDailyCalories),
+          prefs.setDouble('dailyCarbohydrate', nutrients.recDailyCarbohydrate),
+          prefs.setDouble('dailyProtein', nutrients.recDailyProtein),
+          prefs.setDouble('dailyFat', nutrients.recDailyFat)
+        });
   }
 
   @override
@@ -60,10 +62,12 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
     if (loading)
       return Scaffold(
           appBar: AppBar(
-            title: Text(AppLocalizations.of(context).yourRecipes),
+            title: Text(AppLocalizations.of(context).recipes),
             actions: [
+              // AppLocalizations.of(context).logout
+              // AppLocalizations.of(context).settings
               IconButton(
-                icon: Icon(Icons.add),
+                icon: ImageIcon(AssetImage("assets/filter_icon.jpg")),
               ),
               PopupMenuButton(
                 onSelected: (result) {
@@ -92,17 +96,19 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
           ),
           body: Center(
               child: CircularProgressIndicator(
-                value: null,
-                backgroundColor: Colors.green,
-              )));
+            value: null,
+            backgroundColor: Colors.green,
+          )));
     else
       return Scaffold(
           appBar: AppBar(
-            title: Text(AppLocalizations.of(context).yourRecipes),
+            title: Text(AppLocalizations.of(context).recipes),
             actions: [
+              // AppLocalizations.of(context).logout
+              // AppLocalizations.of(context).settings
               IconButton(
-                icon: Icon(Icons.add),
-                onPressed: _showRecipeCreateDialog,
+                icon: ImageIcon(AssetImage("assets/filter_icon.jpg")),
+                onPressed: _showFilterDialog,
               ),
               PopupMenuButton(
                 onSelected: (result) {
@@ -153,7 +159,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
     List<Widget> myTiles = [];
     for (int i = 0; i < recipeList.length; i++) {
       myTiles.add(
-        PrivateRecipeTileComponent(privateRecipe: recipeList[i], apiToken: apiToken),
+        RecipeTileComponent(recipe: recipeList[i], apiToken: apiToken),
       );
     }
     return myTiles;
@@ -162,6 +168,18 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
   Future<void> refreshTriggered() async {
     print("refresh recipes");
     return loadRecipes();
+  }
+
+  Future<void> _showFilterDialog() async {
+    var prefs = await SharedPreferences.getInstance();
+    var dietIndex = prefs.getInt('recipeDietFilter') ?? Diet.NORMAL.index;
+    var diet = Diet.values[dietIndex];
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return new FilterRecipesDialog(diet: diet);
+      },
+    ).then((value) => {loadRecipes()});
   }
 
   Future<void> _signOut() async {
@@ -178,26 +196,5 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
     print('settings completed');
   }
 
-  Future<void> _showRecipeCreateDialog() async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return new CreateRecipeDialog();
-      },
-    ).then((privateRecipe) => {
-      print("private recipe after diag: "+privateRecipe.toString()),
-      if(privateRecipe != null){
-        _openEditRecipeScreen(privateRecipe)
-      }
-    }, onError: (error) =>{
-      print("Error in recipes "+error)
-    });
-  }
 
-  Future<void> _openEditRecipeScreen(PrivateRecipe privateRecipe) async {
-    print('editRecipeScreen');
-    await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => RecipeEditPage(privateRecipe)));
-    print('editRecipeScreen completed');
-  }
 }

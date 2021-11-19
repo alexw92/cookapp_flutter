@@ -1,4 +1,4 @@
-import 'package:cookable_flutter/ui/styles/cookable-theme.dart';
+import 'package:cookable_flutter/ui/styles/app-theme.dart';
 import 'package:flutter/material.dart';
 
 class AppBarComponent extends StatefulWidget implements PreferredSizeWidget {
@@ -35,7 +35,7 @@ class _AppBarComponentState extends State<AppBarComponent> {
             child: Center(
               child: Text(
                 title,
-                style: CookableTheme.largeBoldFont,
+                style: MyAppTheme.largeBoldFont,
               ),
             ),
           ),

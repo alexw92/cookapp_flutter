@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/io-config.dart';
-import 'package:cookable_flutter/ui/styles/cookable-theme.dart';
+import 'package:cookable_flutter/ui/styles/app-theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -48,7 +48,7 @@ class _FridgeTileComponentState extends State<FridgeTileComponent> {
                 },
                 imageRenderMethodForWeb: ImageRenderMethodForWeb.HttpGet),
             // backgroundColor: Colors.transparent,
-            backgroundColor: CookableTheme.darkGrey,
+            backgroundColor: MyAppTheme.darkGrey,
             radius: 40,
           ),
             decoration: BoxDecoration(
@@ -66,7 +66,7 @@ class _FridgeTileComponentState extends State<FridgeTileComponent> {
           ),
           Text(
             userFoodProduct.name,
-            style: CookableTheme.smallWhiteFont,
+            style: MyAppTheme.smallWhiteFont,
           ),
           // removed amount from api
           // Text(
