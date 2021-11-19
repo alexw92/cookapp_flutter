@@ -1,6 +1,7 @@
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/components/ingredient-tile.component.dart';
+import 'package:cookable_flutter/ui/components/private-recipe/private-recipe-instruction-tile.component.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/add-ingredient-page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text(AppLocalizations.of(context).recipeEdit)),
-        body: Column(
+        body: SingleChildScrollView( child:Column(
           children: [
             Text(privateRecipe.name, style: TextStyle(fontSize: 26)),
             SizedBox(
@@ -60,7 +61,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                     body: Column(
                       children: [
                         ElevatedButton(
-                          onPressed: () => _openAddIngredientScreen,
+                          onPressed: _openAddIngredientScreen,
                           child: Icon(Icons.add),
                           style: ButtonStyle(
                             shape: MaterialStateProperty.all(CircleBorder()),
@@ -116,7 +117,8 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                       Colors.white), // <-- Button color
                 ))
           ],
-        ));
+        ))
+    );
   }
 
   List<Widget> getAllIngredientTiles() {
@@ -178,14 +180,21 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
     if (privateRecipe.instructions.length == 0)
       return Container();
     else
-      return Column(children: getInstructionTiles());
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: getInstructionTiles()
+      );
   }
 
   List<Widget> getInstructionTiles() {
     List<Widget> instructionTiles = [];
+    privateRecipe.instructions.sort((RecipeInstruction a, RecipeInstruction b){
+      return a.step.compareTo(b.step);
+    });
     for (int i = 0; i < privateRecipe.instructions.length; i++) {
       RecipeInstruction instruction = privateRecipe.instructions[i];
-      instructionTiles.add(Text(instruction.instructionsText));
+      instructionTiles.add(PrivateRecipeInstructionTileComponent(recipeInstruction: instruction));
     }
     return instructionTiles;
   }
