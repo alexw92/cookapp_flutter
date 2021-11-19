@@ -347,7 +347,7 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
           ));
     else
       return Text(
-        "No ingredients so far",
+        AppLocalizations.of(context).emptyIngredients,
         style: TextStyle(color: Colors.white),
       );
   }
@@ -377,7 +377,7 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
               }));
     else
       return Text(
-        "No preparation steps so far",
+        AppLocalizations.of(context).emptyInstructions,
         style: TextStyle(color: Colors.white),
       );
   }

@@ -6,7 +6,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class FilterRecipesDialog extends StatefulWidget {
   Diet diet;
+
   FilterRecipesDialog({this.diet});
+
   //final ValueChanged<List<String>> onSelectedCitiesListChanged;
   @override
   _FilterRecipesDialogState createState() => _FilterRecipesDialogState();
@@ -14,6 +16,7 @@ class FilterRecipesDialog extends StatefulWidget {
 
 class _FilterRecipesDialogState extends State<FilterRecipesDialog> {
   Diet recipeDiet;
+
   _FilterRecipesDialogState();
 
   @override

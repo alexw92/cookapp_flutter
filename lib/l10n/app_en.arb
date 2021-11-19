@@ -47,7 +47,9 @@
     "addIngredient": "Add Ingredient",
     "searchIngredient": "Search in Groceries",
     "unknownFoodCategory": "Unknown Category",
-    "yourRecipes": "Your Recipes"
+    "yourRecipes": "Your Recipes",
+    "emptyInstructions": "No preparation steps so far",
+    "emptyIngredients": "No ingredients so far"
 
 
 

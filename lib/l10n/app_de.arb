@@ -44,6 +44,9 @@
     "addIngredient": "Neue Zutat",
     "searchIngredient": "Suche in Lebensmitteln",
     "unknownFoodCategory": "Unbekannte Kategorie",
-    "yourRecipes": "Deine Rezepte"
+    "yourRecipes": "Deine Rezepte",
+    "emptyInstructions": "Noch ohne Zubereitungsschritte",
+    "emptyIngredients": "Noch ohne Zutaten"
+
 
 }

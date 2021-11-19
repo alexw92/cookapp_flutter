@@ -30,59 +30,51 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
         child: Container(
           alignment: Alignment.center,
           clipBehavior: Clip.hardEdge,
-
           margin: EdgeInsets.only(bottom: 10),
-            decoration: BoxDecoration(
-                border: Border.all(
-                  color: Color.fromARGB(0, 0, 0, 0),
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(20))
-            ),
-
-          child: Stack(
-              fit:StackFit.expand,
-              children: [
+          decoration: BoxDecoration(
+              border: Border.all(
+                color: Color.fromARGB(0, 0, 0, 0),
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(20))),
+          child: Stack(fit: StackFit.expand, children: [
             Container(
                 height: 300,
                 width: 300,
-                color:Colors.grey,
+                color: Colors.grey,
                 child: FittedBox(
-                  fit: BoxFit.fill,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20), child:Image(
-                    // needs --web-renderer html
-                    image: CachedNetworkImageProvider(recipe.imgSrc,
-                        imageRenderMethodForWeb:
-                            ImageRenderMethodForWeb.HttpGet),
-                    // backgroundColor: Colors.transparent,
-                  ),
-                ))),
+                    fit: BoxFit.fill,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image(
+                        // needs --web-renderer html
+                        image: CachedNetworkImageProvider(recipe.imgSrc,
+                            imageRenderMethodForWeb:
+                                ImageRenderMethodForWeb.HttpGet),
+                        // backgroundColor: Colors.transparent,
+                      ),
+                    ))),
             Positioned(
                 bottom: 0,
                 left: 0,
                 right: 0,
                 child: Container(
-                height: 50,
-                margin: EdgeInsets.only(left: 5),
-                child: Row(
-                    children:[
+                    height: 50,
+                    margin: EdgeInsets.only(left: 5),
+                    child: Row(children: [
                       Chip(
                         labelPadding: EdgeInsets.all(4.0),
                         avatar: Utility.getIconForDiet(recipe.diet),
                         label: Text(
                           Utility.getTranslatedDiet(context, recipe.diet),
                           style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
+                              color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                         backgroundColor: Colors.white,
                         elevation: 6.0,
                         shadowColor: Colors.grey[60],
                         padding: EdgeInsets.all(8.0),
                       ),
-                    ])
-                )
-            ),
+                    ]))),
             Positioned(
                 top: 0,
                 left: 0,
@@ -94,37 +86,15 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                         border: Border.all(
                           color: Color.fromARGB(0, 0, 0, 0),
                         ),
-                        borderRadius: BorderRadius.all(Radius.circular(20))
-                    ),
-                    child: Text(this.recipe.name,style: TextStyle(fontSize: 20),textAlign: TextAlign.center)))
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    child: Text(this.recipe.name,
+                        style: TextStyle(fontSize: 20),
+                        textAlign: TextAlign.center)))
           ]),
-        )
-        // Container(
-        //     alignment: Alignment.center,
-        //     child: Text(
-        //       recipe.name,
-        //       style: CookableTheme.normalBlackFont,
-        //     )
-        // ),
-
-        // removed amount from api
-        // Text(
-        //   "${Utility.getFormattedAmount(userFoodProduct)}",
-        //   style: CookableTheme.smallWhiteFont,
-        // ),
-
-        // Todo this is where I want to add #persons, diet icon, nutrients
-        // Container(
-        //   height: 50,
-        //   alignment: Alignment.bottomCenter,
-        //   color: Colors.orange,
-        // ),
-        );
+        ));
   }
 
   navigateToRecipePage(int recipeId) async {
-    //navigate to materials page when callbackPath is not report page and list component is clicked
-    //Return the result to this component when task is finished from materials
     final result = await Navigator.push(context,
         MaterialPageRoute(builder: (context) => RecipesDetailsPage(recipeId)));
   }

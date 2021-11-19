@@ -65,8 +65,6 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
           appBar: AppBar(
             title: Text(AppLocalizations.of(context).yourRecipes),
             actions: [
-              // AppLocalizations.of(context).logout
-              // AppLocalizations.of(context).settings
               IconButton(
                 icon: Icon(Icons.add),
               ),
@@ -105,8 +103,6 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
           appBar: AppBar(
             title: Text(AppLocalizations.of(context).yourRecipes),
             actions: [
-              // AppLocalizations.of(context).logout
-              // AppLocalizations.of(context).settings
               IconButton(
                 icon: Icon(Icons.add),
                 onPressed: _showRecipeCreateDialog,

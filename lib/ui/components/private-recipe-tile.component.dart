@@ -11,14 +11,17 @@ class PrivateRecipeTileComponent extends StatefulWidget {
   PrivateRecipe privateRecipe;
   String apiToken;
 
-  PrivateRecipeTileComponent({Key key, this.privateRecipe, this.apiToken}) : super(key: key);
+  PrivateRecipeTileComponent({Key key, this.privateRecipe, this.apiToken})
+      : super(key: key);
 
   @override
   _PrivateRecipeTileComponentState createState() =>
-      _PrivateRecipeTileComponentState(privateRecipe: privateRecipe, apiToken: apiToken);
+      _PrivateRecipeTileComponentState(
+          privateRecipe: privateRecipe, apiToken: apiToken);
 }
 
-class _PrivateRecipeTileComponentState extends State<PrivateRecipeTileComponent> {
+class _PrivateRecipeTileComponentState
+    extends State<PrivateRecipeTileComponent> {
   PrivateRecipe privateRecipe;
   String apiToken;
 
@@ -31,124 +34,110 @@ class _PrivateRecipeTileComponentState extends State<PrivateRecipeTileComponent>
         child: Container(
           alignment: Alignment.center,
           clipBehavior: Clip.hardEdge,
-
           margin: EdgeInsets.only(bottom: 10),
           decoration: BoxDecoration(
               border: Border.all(
                 color: Color.fromARGB(0, 0, 0, 0),
               ),
-              borderRadius: BorderRadius.all(Radius.circular(20))
-          ),
-
-          child: Stack(
-              fit:StackFit.expand,
-              children: [
-                Container(
-                    height: 300,
-                    width: 300,
-                    color:Colors.grey,
-                    child: FittedBox(
-                        fit: BoxFit.fill,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20), child:Image(
-                          // needs --web-renderer html
-                          image: CachedNetworkImageProvider(privateRecipe.imgSrc,
-                              imageRenderMethodForWeb:
-                              ImageRenderMethodForWeb.HttpGet),
-                          // backgroundColor: Colors.transparent,
-                        ),
-                        ))),
-                Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                        height: 30,
-                        decoration: BoxDecoration(
-                            color: Color.fromARGB(200, 255, 255, 255),
-                            border: Border.all(
-                              color: Color.fromARGB(0, 0, 0, 0),
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(20))
-                        ),
-                        child: Text(this.privateRecipe.name,style: TextStyle(fontSize: 20),textAlign: TextAlign.center))),
-                Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                        height: 50,
-                        margin: EdgeInsets.only(left: 5),
-                        child: Row(
-                            children:[
-                              Chip(
-                                labelPadding: EdgeInsets.all(4.0),
-                                avatar: Utility.getIconForDiet(privateRecipe.diet),
-                                label: Text(
-                                  Utility.getTranslatedDiet(context, privateRecipe.diet),
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                backgroundColor: Colors.white,
-                                elevation: 6.0,
-                                shadowColor: Colors.grey[60],
-                                padding: EdgeInsets.all(8.0),
-                              ),
-                            ])
-                    )
-                ),
-                Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Row( children:[
-                      ElevatedButton(
-                        onPressed: () => {
-                          _editPrivateRecipeImg(privateRecipe)
-                        }
-                        ,
-                        child: Icon(Icons.camera_alt),
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.all(CircleBorder()),
-                          padding: MaterialStateProperty.all(EdgeInsets.all(10)),
-                          backgroundColor: MaterialStateProperty.all(Colors.white), // <-- Button color,
-                        ),
+              borderRadius: BorderRadius.all(Radius.circular(20))),
+          child: Stack(fit: StackFit.expand, children: [
+            Container(
+                height: 300,
+                width: 300,
+                color: Colors.grey,
+                child: FittedBox(
+                    fit: BoxFit.fill,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image(
+                        // needs --web-renderer html
+                        image: CachedNetworkImageProvider(privateRecipe.imgSrc,
+                            imageRenderMethodForWeb:
+                                ImageRenderMethodForWeb.HttpGet),
                       ),
-                      ElevatedButton(
-                      onPressed: () => {
-                        _openEditRecipeScreen(privateRecipe)
-                      }
-                      ,
-                      child: Icon(Icons.edit),
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(CircleBorder()),
-                        padding: MaterialStateProperty.all(EdgeInsets.all(10)),
-                        backgroundColor: MaterialStateProperty.all(Colors.white), // <-- Button color,
+                    ))),
+            Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                    height: 30,
+                    decoration: BoxDecoration(
+                        color: Color.fromARGB(200, 255, 255, 255),
+                        border: Border.all(
+                          color: Color.fromARGB(0, 0, 0, 0),
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    child: Text(this.privateRecipe.name,
+                        style: TextStyle(fontSize: 20),
+                        textAlign: TextAlign.center))),
+            Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                    height: 50,
+                    margin: EdgeInsets.only(left: 5),
+                    child: Row(children: [
+                      Chip(
+                        labelPadding: EdgeInsets.all(4.0),
+                        avatar: Utility.getIconForDiet(privateRecipe.diet),
+                        label: Text(
+                          Utility.getTranslatedDiet(
+                              context, privateRecipe.diet),
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
+                        ),
+                        backgroundColor: Colors.white,
+                        elevation: 6.0,
+                        shadowColor: Colors.grey[60],
+                        padding: EdgeInsets.all(8.0),
                       ),
-                    )
-                    ]
-                    )
-                    )
-              ]),
-        )
-    );
+                    ]))),
+            Positioned(
+                bottom: 0,
+                right: 0,
+                child: Row(children: [
+                  ElevatedButton(
+                    onPressed: () => {_editPrivateRecipeImg(privateRecipe)},
+                    child: Icon(Icons.camera_alt),
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all(CircleBorder()),
+                      padding: MaterialStateProperty.all(EdgeInsets.all(10)),
+                      backgroundColor: MaterialStateProperty.all(
+                          Colors.white), // <-- Button color,
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => {_openEditRecipeScreen(privateRecipe)},
+                    child: Icon(Icons.edit),
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all(CircleBorder()),
+                      padding: MaterialStateProperty.all(EdgeInsets.all(10)),
+                      backgroundColor: MaterialStateProperty.all(
+                          Colors.white), // <-- Button color,
+                    ),
+                  )
+                ]))
+          ]),
+        ));
   }
 
   navigatePrivateToRecipePage(int recipeId) async {
-    //navigate to materials page when callbackPath is not report page and list component is clicked
-    //Return the result to this component when task is finished from materials
-    final result = await Navigator.push(context,
-        MaterialPageRoute(builder: (context) => PrivateRecipeDetailsPage(recipeId)));
+    final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => PrivateRecipeDetailsPage(recipeId)));
   }
 
   Future<void> _openEditRecipeScreen(PrivateRecipe privateRecipe) async {
     print('editRecipeScreen');
-    await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => RecipeEditPage(privateRecipe)));
+    await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => RecipeEditPage(privateRecipe)));
     print('editRecipeScreen completed');
   }
 
-  _editPrivateRecipeImg(PrivateRecipe privateRecipe){
+  _editPrivateRecipeImg(PrivateRecipe privateRecipe) {
     //Todo implement
   }
 }
