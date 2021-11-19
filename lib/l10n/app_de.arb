@@ -52,6 +52,8 @@
     "foodCategory": "Kategorie",
     "amount": "Menge",
     "invalidAmount": "Ungültige Menge",
+    "addInstruction": "Neuer Zubereitungsschritt",
+    "newRecipeInstructionSample": "Schneide die Zwiebeln in Würfel...",
     "okay": "Ok",
     "cancel": "Abbrechen",
     "save": "Speichern"

@@ -55,6 +55,8 @@
     "foodCategory": "Category",
     "amount": "Amount",
     "invalidAmount": "Invalid Amount",
+    "addInstruction": "New Preparation Step",
+    "newRecipeInstructionSample": "Mince the onions...",
     "okay": "Ok",
     "cancel": "Cancel",
     "save": "Save"

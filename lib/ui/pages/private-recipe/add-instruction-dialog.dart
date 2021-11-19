@@ -1,15 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddRecipeInstructionDialog extends StatefulWidget {
   AddRecipeInstructionDialog();
 
   @override
-  _AddRecipeInstructionDialogState createState() => _AddRecipeInstructionDialogState();
+  _AddRecipeInstructionDialogState createState() =>
+      _AddRecipeInstructionDialogState();
 }
 
-class _AddRecipeInstructionDialogState extends State<AddRecipeInstructionDialog> {
+class _AddRecipeInstructionDialogState
+    extends State<AddRecipeInstructionDialog> {
   final TextEditingController _controller = TextEditingController();
+
   _AddRecipeInstructionDialogState();
 
   @override
@@ -20,8 +24,18 @@ class _AddRecipeInstructionDialogState extends State<AddRecipeInstructionDialog>
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Add Instruction'),
-      content: TextField(controller: _controller,),
+      title: Text(AppLocalizations.of(context).addInstruction),
+      content: TextField(
+        controller: _controller,
+        keyboardType: TextInputType.multiline,
+        minLines: 1,
+        maxLines: 20,
+        maxLength: 1000,
+          decoration: InputDecoration(
+            labelText: AppLocalizations.of(context).newRecipeInstructionSample,
+            suffixIcon: Icon(Icons.edit),
+          )
+      ),
       actions: <Widget>[
         TextButton(
           child: Text('Okay'),
