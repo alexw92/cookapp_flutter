@@ -46,7 +46,15 @@
     "unknownFoodCategory": "Unbekannte Kategorie",
     "yourRecipes": "Deine Rezepte",
     "emptyInstructions": "Noch ohne Zubereitungsschritte",
-    "emptyIngredients": "Noch ohne Zutaten"
+    "emptyIngredients": "Noch ohne Zutaten",
+    "newRecipe": "Neues Rezept",
+    "recipeInstructionStepShort": "Schritt",
+    "foodCategory": "Kategorie",
+    "amount": "Menge",
+    "invalidAmount": "Ungültige Menge",
+    "okay": "Ok",
+    "cancel": "Abbrechen",
+    "save": "Speichern"
 
 
 }

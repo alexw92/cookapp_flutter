@@ -2,6 +2,7 @@ import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CreateRecipeDialog extends StatefulWidget {
   Diet diet;
@@ -23,7 +24,7 @@ class _CreateRecipeDialogState extends State<CreateRecipeDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('New Recipe'),
+      title: Text(AppLocalizations.of(context).newRecipe),
       content: TextField(controller: _controller,
         decoration: const InputDecoration(
             border: OutlineInputBorder(),

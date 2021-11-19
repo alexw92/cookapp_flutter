@@ -34,14 +34,13 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar:
-        AppBar(title: Text(AppLocalizations
-            .of(context)
-            .recipeEdit)),
+        appBar: AppBar(title: Text(AppLocalizations.of(context).recipeEdit)),
         body: Column(
           children: [
             Text(privateRecipe.name, style: TextStyle(fontSize: 26)),
-            SizedBox(height: 16,),
+            SizedBox(
+              height: 16,
+            ),
             ExpansionPanelList(
               elevation: 1,
               expandedHeaderPadding: EdgeInsets.all(4),
@@ -51,9 +50,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                     isExpanded: _isOpen[0],
                     headerBuilder: (context, isOpen) {
                       return Text(
-                        AppLocalizations
-                            .of(context)
-                            .ingredients +
+                        AppLocalizations.of(context).ingredients +
                             " (" +
                             privateRecipe.ingredients.length.toString() +
                             ")",
@@ -74,9 +71,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                     isExpanded: _isOpen[1],
                     headerBuilder: (context, isOpen) {
                       return Text(
-                          AppLocalizations
-                              .of(context)
-                              .howToCookSteps +
+                          AppLocalizations.of(context).howToCookSteps +
                               " (" +
                               privateRecipe.instructions.length.toString() +
                               ")",
@@ -84,8 +79,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                     },
                     body: Text("Now Open 2")),
               ],
-              expansionCallback: (i, isOpen) =>
-              {
+              expansionCallback: (i, isOpen) => {
                 setState(() {
                   _isOpen[i] = !isOpen;
                 })
@@ -94,7 +88,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
             SizedBox(height: 10),
             ElevatedButton(
                 onPressed: () => {},
-                child: Text("Save"),
+                child: Text(AppLocalizations.of(context).save),
                 style: ButtonStyle(
                   padding: MaterialStateProperty.all(EdgeInsets.all(20)),
                   backgroundColor: MaterialStateProperty.all(
@@ -111,7 +105,8 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
         IngredientTileComponent(
           ingredient: privateRecipe.ingredients[i],
           apiToken: apiToken,
-          textColor: Colors.black,),
+          textColor: Colors.black,
+        ),
       );
     }
     return myTiles;
@@ -120,16 +115,15 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
   Future<void> _openAddIngredientScreen() async {
     print('addIngredientScreen');
     await Navigator.push(context,
-        MaterialPageRoute(builder: (context) => AddIngredientPage()))
-        .then((ingredient) =>
-    {
-      if (ingredient is Ingredient)
-        {
-          setState(() {
-            privateRecipe.ingredients.add(ingredient);
-          })
-        }
-    });
+            MaterialPageRoute(builder: (context) => AddIngredientPage()))
+        .then((ingredient) => {
+              if (ingredient is Ingredient)
+                {
+                  setState(() {
+                    privateRecipe.ingredients.add(ingredient);
+                  })
+                }
+            });
     print('addIngredientScreen completed');
   }
 
@@ -158,6 +152,4 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
             ],
           ));
   }
-
-
 }

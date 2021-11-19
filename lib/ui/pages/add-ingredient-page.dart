@@ -88,7 +88,8 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
                                 ),
                                 title: Text('${snapshot.data[index].name}'),
                                 subtitle: Text(
-                                    'Category: ${Utility.getTranslatedFoodCategory(context, snapshot.data[index].foodCategory)}'),
+                                    '${AppLocalizations.of(context).foodCategory}: '
+                                        '${Utility.getTranslatedFoodCategory(context, snapshot.data[index].foodCategory)}'),
                                 value: foodProductsAdded
                                     .contains(snapshot.data[index]),
                                 onChanged: (bool value) {
@@ -168,7 +169,7 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
                           decoration: InputDecoration(
                               border: UnderlineInputBorder(),
                               labelText:
-                                  'Amount (${foodProduct.quantityType.toString()})',
+                                  '${AppLocalizations.of(context).amount} (${foodProduct.quantityType.toString()})',
                               suffixText: foodProduct.quantityType.toString(),
                           errorMaxLines: 1),
                           maxLength: 6,
@@ -180,7 +181,7 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
                           // ],
                           validator: (v) {
                                if(num.tryParse(v) == null){
-                                 return "Invalid amount";
+                                 return AppLocalizations.of(context).invalidAmount;
                                }
                               else {
                                 return null;}
@@ -190,7 +191,7 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
                 )),
                 Column(children: [
                   ElevatedButton(
-                    child: Text("Okay"),
+                    child: Text(AppLocalizations.of(context).okay),
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
                         ingredientAmount = num.parse(amountController.value.text);
@@ -200,7 +201,7 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
                     },
                   ),
                   ElevatedButton(
-                    child: Text("Cancel"),
+                    child: Text(AppLocalizations.of(context).cancel),
                     style: ElevatedButton.styleFrom(primary: Colors.red),
                     onPressed: () {
                       setState(() {

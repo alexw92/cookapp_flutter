@@ -49,9 +49,15 @@
     "unknownFoodCategory": "Unknown Category",
     "yourRecipes": "Your Recipes",
     "emptyInstructions": "No preparation steps so far",
-    "emptyIngredients": "No ingredients so far"
-
-
+    "emptyIngredients": "No ingredients so far",
+    "newRecipe": "New Recipe",
+    "recipeInstructionStepShort": "Step",
+    "foodCategory": "Category",
+    "amount": "Amount",
+    "invalidAmount": "Invalid Amount",
+    "okay": "Ok",
+    "cancel": "Cancel",
+    "save": "Save"
 
 
 

@@ -27,9 +27,6 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
 
   void loadRecipes() async {
     loading = true;
-    var prefs = await SharedPreferences.getInstance();
-    var dietIndex = prefs.getInt('recipeDietFilter') ?? Diet.NORMAL.index;
-    var diet = Diet.values[dietIndex];
     setState(() {
       recipeList = [];
     });

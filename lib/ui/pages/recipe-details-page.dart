@@ -310,7 +310,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                                     child: Column(
                                       children: <Widget>[
                                         Text(
-                                          "Step " + instruction.step.toString(),
+                                          "${AppLocalizations.of(context).recipeInstructionStepShort} " + instruction.step.toString(),
                                           style: TextStyle(fontSize: 16),
                                         ),
                                         Text(instruction.instructionsText)

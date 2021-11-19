@@ -47,8 +47,6 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
           appBar: AppBar(
             title: Text(AppLocalizations.of(context).fridge),
             actions: [
-              // AppLocalizations.of(context).logout
-              // AppLocalizations.of(context).settings
               PopupMenuButton(
                 onSelected: (result) {
                   switch (result) {
