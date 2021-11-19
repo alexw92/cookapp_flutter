@@ -101,7 +101,20 @@ class _PrivateRecipeTileComponentState extends State<PrivateRecipeTileComponent>
                 Positioned(
                     bottom: 0,
                     right: 0,
-                    child: ElevatedButton(
+                    child: Row( children:[
+                      ElevatedButton(
+                        onPressed: () => {
+                          _editPrivateRecipeImg(privateRecipe)
+                        }
+                        ,
+                        child: Icon(Icons.camera_alt),
+                        style: ButtonStyle(
+                          shape: MaterialStateProperty.all(CircleBorder()),
+                          padding: MaterialStateProperty.all(EdgeInsets.all(10)),
+                          backgroundColor: MaterialStateProperty.all(Colors.white), // <-- Button color,
+                        ),
+                      ),
+                      ElevatedButton(
                       onPressed: () => {
                         _openEditRecipeScreen(privateRecipe)
                       }
@@ -112,6 +125,8 @@ class _PrivateRecipeTileComponentState extends State<PrivateRecipeTileComponent>
                         padding: MaterialStateProperty.all(EdgeInsets.all(10)),
                         backgroundColor: MaterialStateProperty.all(Colors.white), // <-- Button color,
                       ),
+                    )
+                    ]
                     )
                     )
               ]),
@@ -131,5 +146,9 @@ class _PrivateRecipeTileComponentState extends State<PrivateRecipeTileComponent>
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => RecipeEditPage(privateRecipe)));
     print('editRecipeScreen completed');
+  }
+
+  _editPrivateRecipeImg(PrivateRecipe privateRecipe){
+    //Todo implement
   }
 }

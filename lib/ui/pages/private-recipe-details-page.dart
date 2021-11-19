@@ -17,7 +17,8 @@ class PrivateRecipeDetailsPage extends StatefulWidget {
   PrivateRecipeDetailsPage(this.recipeId, {Key key}) : super(key: key);
 
   @override
-  _PrivateRecipeDetailsPageState createState() => _PrivateRecipeDetailsPageState();
+  _PrivateRecipeDetailsPageState createState() =>
+      _PrivateRecipeDetailsPageState();
 }
 
 class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
@@ -33,7 +34,6 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
   _PrivateRecipeDetailsPageState();
 
   void loadRecipe() async {
-    // recipe = await RecipeController.getRecipe();
     apiToken = await TokenStore().getToken();
     var prefs = await SharedPreferences.getInstance();
     dailyCalories = prefs.getInt('dailyCalories');
@@ -55,9 +55,9 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
       for (int i = 0; i < recipe.ingredients.length; i++) {
         var ingredient = recipe.ingredients[i];
         var ingredientCpy = ingredientsTmp[i];
-        ingredientCpy.amount = ((ingredient.amount / recipe.numberOfPersons) *
-            numberOfPersonsTmp)
-            .toInt();
+        ingredientCpy.amount =
+            ((ingredient.amount / recipe.numberOfPersons) * numberOfPersonsTmp)
+                .toInt();
       }
     });
   }
@@ -69,14 +69,14 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
       for (int i = 0; i < recipe.ingredients.length; i++) {
         var ingredient = recipe.ingredients[i];
         var ingredientCpy = ingredientsTmp[i];
-        ingredientCpy.amount = ((ingredient.amount / recipe.numberOfPersons) *
-            numberOfPersonsTmp)
-            .toInt();
+        ingredientCpy.amount =
+            ((ingredient.amount / recipe.numberOfPersons) * numberOfPersonsTmp)
+                .toInt();
       }
     });
   }
 
-  List<Ingredient> copyIngredients(List<Ingredient> ingredients){
+  List<Ingredient> copyIngredients(List<Ingredient> ingredients) {
     List<Ingredient> ingredientCopy = [];
     for (int i = 0; i < ingredients.length; i++) {
       var ingredient = ingredients[i];
@@ -95,232 +95,197 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
   Widget build(BuildContext context) {
     return recipe == null
         ? Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: [CircularProgressIndicator()])
-        ])
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [CircularProgressIndicator()])
+              ])
         : Scaffold(
-        body: SafeArea(
-          child: Container(
-              height: double.infinity,
-              color: Colors.black,
-              child: SingleChildScrollView(
-                //  padding: EdgeInsets.only(bottom: 15),
-                  child: Column(children: [
-                    Stack(children: [
-                      Container(
-                          height: 400,
-                          width: double.infinity,
-                          child: FittedBox(
-                              fit: BoxFit.fill,
-                              child: Image(
-                                // needs --web-renderer html
-                                image: CachedNetworkImageProvider(recipe.imgSrc,
-                                    imageRenderMethodForWeb:
-                                    ImageRenderMethodForWeb.HttpGet),
-                                // backgroundColor: Colors.transparent,
-                                //  radius: 40,
-                              ))),
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: Text(this.recipe.name,
-                            style: TextStyle(fontSize: 30, color: Colors.white),
-                            textAlign: TextAlign.center),
-                      )
-                    ]),
+            body: SafeArea(
+            child: Container(
+                height: double.infinity,
+                color: Colors.black,
+                child: SingleChildScrollView(
+                    //  padding: EdgeInsets.only(bottom: 15),
+                    child: Column(children: [
+                  Stack(children: [
                     Container(
-                      color: Colors.black,
-                      width: double.infinity,
-                      child: Column(
-                        children: [
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Chip(
-                                  labelPadding: EdgeInsets.all(4.0),
-                                  avatar: Icon(Icons.access_time),
-                                  label: Text(
-                                    "${recipe.prepTimeMinutes} min",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  backgroundColor: Colors.white,
-                                  elevation: 6.0,
-                                  shadowColor: Colors.grey[60],
-                                  padding: EdgeInsets.all(8.0),
+                        height: 400,
+                        color: Colors.grey,
+                        width: double.infinity,
+                        child: FittedBox(
+                            fit: BoxFit.fill,
+                            child: Image(
+                              // needs --web-renderer html
+                              image: CachedNetworkImageProvider(recipe.imgSrc,
+                                  imageRenderMethodForWeb:
+                                      ImageRenderMethodForWeb.HttpGet),
+                              // backgroundColor: Colors.transparent,
+                              //  radius: 40,
+                            ))),
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Text(this.recipe.name,
+                          style: TextStyle(fontSize: 30, color: Colors.white),
+                          textAlign: TextAlign.center),
+                    )
+                  ]),
+                  Container(
+                    color: Colors.black,
+                    width: double.infinity,
+                    child: Column(
+                      children: [
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Chip(
+                                labelPadding: EdgeInsets.all(4.0),
+                                avatar: Icon(Icons.access_time),
+                                label: Text(
+                                  "${recipe.prepTimeMinutes} min",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                Chip(
-                                  labelPadding: EdgeInsets.all(4.0),
-                                  avatar: Utility.getIconForDiet(recipe.diet),
-                                  label: Text(
-                                    Utility.getTranslatedDiet(
-                                        context, recipe.diet),
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  backgroundColor: Colors.white,
-                                  elevation: 6.0,
-                                  shadowColor: Colors.grey[60],
-                                  padding: EdgeInsets.all(8.0),
+                                backgroundColor: Colors.white,
+                                elevation: 6.0,
+                                shadowColor: Colors.grey[60],
+                                padding: EdgeInsets.all(8.0),
+                              ),
+                              Chip(
+                                labelPadding: EdgeInsets.all(4.0),
+                                avatar: Utility.getIconForDiet(recipe.diet),
+                                label: Text(
+                                  Utility.getTranslatedDiet(
+                                      context, recipe.diet),
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                Chip(
-                                  labelPadding: EdgeInsets.all(4.0),
-                                  avatar: Icon(Icons.group),
-                                  label: Text(
-                                    recipe.numberOfPersons.toString(),
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  backgroundColor: Colors.white,
-                                  elevation: 6.0,
-                                  shadowColor: Colors.grey[60],
-                                  padding: EdgeInsets.all(8.0),
-                                )
-                              ]),
-                        ],
-                      ),
+                                backgroundColor: Colors.white,
+                                elevation: 6.0,
+                                shadowColor: Colors.grey[60],
+                                padding: EdgeInsets.all(8.0),
+                              ),
+                              Chip(
+                                labelPadding: EdgeInsets.all(4.0),
+                                avatar: Icon(Icons.group),
+                                label: Text(
+                                  recipe.numberOfPersons.toString(),
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                backgroundColor: Colors.white,
+                                elevation: 6.0,
+                                shadowColor: Colors.grey[60],
+                                padding: EdgeInsets.all(8.0),
+                              )
+                            ]),
+                      ],
                     ),
-                    Container(
+                  ),
+                  Container(
+                    color: Colors.black,
+                    width: double.infinity,
+                    child: Column(children: [
+                      Text(
+                        AppLocalizations.of(context).ingredients,
+                        style: TextStyle(color: Colors.white, fontSize: 26),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                decreaseNumberOfPersons();
+                              },
+                              child: Icon(Icons.remove),
+                              style: ButtonStyle(
+                                shape:
+                                    MaterialStateProperty.all(CircleBorder()),
+                                padding: MaterialStateProperty.all(
+                                    EdgeInsets.all(20)),
+                                backgroundColor: MaterialStateProperty.all(
+                                    Colors.white), // <-- Button color
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            CircleAvatar(
+                              radius: 30,
+                              child: Text(numberOfPersonsTmp.toString(),
+                                  style: TextStyle(
+                                      fontSize: 30, color: Colors.black)),
+                              backgroundColor: Colors.white,
+                            ),
+                            SizedBox(width: 10),
+                            ElevatedButton(
+                              onPressed: () {
+                                increaseNumberOfPersons();
+                              },
+                              child: Icon(Icons.add),
+                              style: ButtonStyle(
+                                shape:
+                                    MaterialStateProperty.all(CircleBorder()),
+                                padding: MaterialStateProperty.all(
+                                    EdgeInsets.all(20)),
+                                backgroundColor: MaterialStateProperty.all(
+                                    Colors.white), // <-- Button color
+                              ),
+                            )
+                          ]),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      showIngredientsIfNotEmpty()
+                    ]),
+                  ),
+                  Container(
                       color: Colors.black,
                       width: double.infinity,
                       child: Column(children: [
                         Text(
-                          AppLocalizations.of(context).ingredients,
+                          AppLocalizations.of(context).nutrients,
                           style: TextStyle(color: Colors.white, fontSize: 26),
                         ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  decreaseNumberOfPersons();
-                                },
-                                child: Icon(Icons.remove),
-                                style: ButtonStyle(
-                                  shape:
-                                  MaterialStateProperty.all(CircleBorder()),
-                                  padding: MaterialStateProperty.all(
-                                      EdgeInsets.all(20)),
-                                  backgroundColor: MaterialStateProperty.all(
-                                      Colors.white), // <-- Button color
-                                ),
-                              ),
-                              SizedBox(width: 10),
-                              CircleAvatar(
-                                radius: 30,
-                                child: Text(numberOfPersonsTmp.toString(),
-                                    style: TextStyle(
-                                        fontSize: 30, color: Colors.black)),
-                                backgroundColor: Colors.white,
-                              ),
-                              SizedBox(width: 10),
-                              ElevatedButton(
-                                onPressed: () {
-                                  increaseNumberOfPersons();
-                                },
-                                child: Icon(Icons.add),
-                                style: ButtonStyle(
-                                  shape:
-                                  MaterialStateProperty.all(CircleBorder()),
-                                  padding: MaterialStateProperty.all(
-                                      EdgeInsets.all(20)),
-                                  backgroundColor: MaterialStateProperty.all(
-                                      Colors.white), // <-- Button color
-                                ),
-                              )
-                            ]),
-                        SizedBox(
-                          height: 5,
-                        ),
                         Container(
-                            margin: const EdgeInsets.only(left: 5, right: 5),
+                            margin: const EdgeInsets.only(left: 0, right: 0),
                             child: new GridView.count(
                               //     primary: true,
                               //    padding: const EdgeInsets.all(0),
                               physics: NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
-                              crossAxisCount: 3,
+                              crossAxisCount: 4,
                               mainAxisSpacing: 3,
-                              padding: EdgeInsets.only(left: 10, right: 10),
-                              crossAxisSpacing: 10,
+                              crossAxisSpacing: 0,
                               children: [
-                                ...getAllIngredientTiles()
+                                ...getNutrientTiles()
                                 //
                               ],
                             ))
-                      ]),
-                    ),
-                    Container(
-                        color: Colors.black,
-                        width: double.infinity,
-                        child: Column(children: [
-                          Text(
-                            AppLocalizations.of(context).nutrients,
-                            style: TextStyle(color: Colors.white, fontSize: 26),
-                          ),
-                          Container(
-                              margin: const EdgeInsets.only(left: 0, right: 0),
-                              child: new GridView.count(
-                                //     primary: true,
-                                //    padding: const EdgeInsets.all(0),
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                crossAxisCount: 4,
-                                mainAxisSpacing: 3,
-                                crossAxisSpacing: 0,
-                                children: [
-                                  ...getNutrientTiles()
-                                  //
-                                ],
-                              ))
-                        ])),
-                    Container(
-                        color: Colors.black,
-                        width: double.infinity,
-                        child: Column(children: [
-                          Text(
-                            AppLocalizations.of(context).howToCook,
-                            style: TextStyle(color: Colors.white, fontSize: 26),
-                          ),
-                          Container(
-                              margin: const EdgeInsets.only(left: 0, right: 0),
-                              child: ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: recipe.instructions.length,
-                                  itemBuilder: (context, index) {
-                                    final instruction =
-                                    recipe.instructions[index];
-                                    return Container(
-                                        child: Card(
-                                          child: Column(
-                                            children: <Widget>[
-                                              Text(
-                                                "Step " + instruction.step.toString(),
-                                                style: TextStyle(fontSize: 16),
-                                              ),
-                                              Text(instruction.instructionsText)
-                                            ],
-                                          ),
-                                        ));
-                                  }))
-                        ])),
-                  ]))),
-        ));
+                      ])),
+                  Container(
+                      color: Colors.black,
+                      width: double.infinity,
+                      child: Column(children: [
+                        Text(
+                          AppLocalizations.of(context).howToCook,
+                          style: TextStyle(color: Colors.white, fontSize: 26),
+                        ),
+                        showInstructionsIfNotEmpty()
+                      ])),
+                ]))),
+          ));
   }
 
   List<Widget> getAllIngredientTiles() {
@@ -360,5 +325,60 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
     ]);
 
     return myTiles;
+  }
+
+  Widget showIngredientsIfNotEmpty() {
+    if (recipe.ingredients.length != 0)
+      return Container(
+          margin: const EdgeInsets.only(left: 5, right: 5),
+          child: new GridView.count(
+            //     primary: true,
+            //    padding: const EdgeInsets.all(0),
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            crossAxisCount: 3,
+            mainAxisSpacing: 3,
+            padding: EdgeInsets.only(left: 10, right: 10),
+            crossAxisSpacing: 10,
+            children: [
+              ...getAllIngredientTiles()
+              //
+            ],
+          ));
+    else
+      return Text(
+        "No ingredients so far",
+        style: TextStyle(color: Colors.white),
+      );
+  }
+
+  Widget showInstructionsIfNotEmpty() {
+    if (recipe.instructions.length != 0)
+      return Container(
+          margin: const EdgeInsets.only(left: 0, right: 0),
+          child: ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: recipe.instructions.length,
+              itemBuilder: (context, index) {
+                final instruction = recipe.instructions[index];
+                return Container(
+                    child: Card(
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        "Step " + instruction.step.toString(),
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      Text(instruction.instructionsText)
+                    ],
+                  ),
+                ));
+              }));
+    else
+      return Text(
+        "No preparation steps so far",
+        style: TextStyle(color: Colors.white),
+      );
   }
 }
