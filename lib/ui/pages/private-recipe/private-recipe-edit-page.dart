@@ -76,17 +76,40 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                     },
                     body: Column(
                       children: [
-                        ElevatedButton(
-                          onPressed: _openAddIngredientScreen,
-                          child: Icon(Icons.add),
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all(CircleBorder()),
-                            padding:
-                                MaterialStateProperty.all(EdgeInsets.all(10)),
-                            backgroundColor: MaterialStateProperty.all(
-                                Colors.white), // <-- Button color,
-                          ),
-                        ),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
+                                onPressed: _openAddIngredientScreen,
+                                child: Icon(Icons.add),
+                                style: ButtonStyle(
+                                  shape:
+                                      MaterialStateProperty.all(CircleBorder()),
+                                  padding: MaterialStateProperty.all(
+                                      EdgeInsets.all(10)),
+                                  backgroundColor: MaterialStateProperty.all(
+                                      Colors.white), // <-- Button color,
+                                ),
+                              ),
+                              (privateRecipe.ingredients.length != 0)
+                                  ? ElevatedButton(
+                                      onPressed: _openAddIngredientScreen,
+                                      child: Image.asset(
+                                        "assets/balance.png",
+                                        width: 24,
+                                      ),
+                                      style: ButtonStyle(
+                                        shape: MaterialStateProperty.all(
+                                            CircleBorder()),
+                                        padding: MaterialStateProperty.all(
+                                            EdgeInsets.all(10)),
+                                        backgroundColor:
+                                            MaterialStateProperty.all(Colors
+                                                .white), // <-- Button color,
+                                      ),
+                                    )
+                                  : Container()
+                            ]),
                         getIngredientGridView(),
                         getNutritionGridView()
                       ],
@@ -223,7 +246,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
           nutrientAmount: privateRecipe.nutrients.calories.toDouble(),
           dailyRecAmount: dailyCalories.toDouble(),
           nutritionType: NutritionType.CALORIES,
-      textColor: Colors.black),
+          textColor: Colors.black),
       NutrientTileComponent(
           nutrientName: AppLocalizations.of(context).fat,
           nutrientAmount: privateRecipe.nutrients.fat,
