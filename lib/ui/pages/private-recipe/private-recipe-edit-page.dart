@@ -4,6 +4,7 @@ import 'package:cookable_flutter/ui/components/ingredient-tile.component.dart';
 import 'package:cookable_flutter/ui/components/nutrient-tile.component.dart';
 import 'package:cookable_flutter/ui/components/private-recipe/private-recipe-instruction-tile.component.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/add-ingredient-page.dart';
+import 'package:cookable_flutter/ui/pages/private-recipe/edit-ingredients-amount-page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -93,7 +94,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                               ),
                               (privateRecipe.ingredients.length != 0)
                                   ? ElevatedButton(
-                                      onPressed: _openAddIngredientScreen,
+                                      onPressed: _openEditIngredientsAmountScreen,
                                       child: Image.asset(
                                         "assets/balance.png",
                                         width: 24,
@@ -187,6 +188,24 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                 }
             });
     print('addIngredientScreen completed');
+  }
+
+  Future<void> _openEditIngredientsAmountScreen() async {
+    print('EditIngredientsAmountScreen');
+    await Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => EditIngredientsAmountPage(ingredients: privateRecipe.ingredients,)))
+        .then((ingredients) => {
+              if (ingredients != null)
+                {
+                  privateRecipe.ingredients.clear(),
+                  setState(() {
+                    privateRecipe.ingredients.addAll(ingredients);
+                  })
+                }
+            });
+    print('EditIngredientsAmountScreen completed');
   }
 
   Future<void> getToken() async {
