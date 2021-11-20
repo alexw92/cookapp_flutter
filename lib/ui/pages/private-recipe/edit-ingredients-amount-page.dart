@@ -10,23 +10,23 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditIngredientsAmountPage extends StatefulWidget {
-  EditIngredientsAmountPage({Key key, this.ingredients}) : super(key: key);
-
+  EditIngredientsAmountPage({Key key, this.ingredients, this.routedFromAddIngredient}) : super(key: key);
+  bool routedFromAddIngredient;
   List<Ingredient> ingredients;
 
   @override
   _EditIngredientsAmountPageState createState() =>
-      _EditIngredientsAmountPageState(ingredients);
+      _EditIngredientsAmountPageState(ingredients, routedFromAddIngredient);
 }
 
 class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
   final List<Ingredient> ingredients;
+  final bool routedFromAddIngredient;
   String apiToken;
   List<FoodProduct> foodProductsAdded = [];
-  final _formKey = GlobalKey<FormState>();
   final amountController = TextEditingController();
 
-  _EditIngredientsAmountPageState(this.ingredients);
+  _EditIngredientsAmountPageState(this.ingredients, this.routedFromAddIngredient);
 
   void initState() {
     super.initState();
@@ -44,7 +44,7 @@ class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 10),
-            Flexible(
+            Expanded(
               child: (ingredients.length != 0)
                   ? Center(
                       child: ListView.separated(
@@ -62,7 +62,19 @@ class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
                       : Center(child: CircularProgressIndicator()),
               // Our existing list code
             ),
-            showIngredientUIIfSelected()
+            Container(
+              height: 50,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: Colors.green,
+                  borderRadius:
+                  BorderRadius.vertical(top: Radius.circular(20.0))),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(primary: Colors.green),
+                  onPressed: () { saveAmountsAndContinue(); },
+                  child:Text("Save and Continue", style: TextStyle(fontSize: 20),)
+              )
+            )
           ],
         ));
   }
@@ -135,68 +147,7 @@ class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
         ]));
   }
 
-  Widget showIngredientUIIfSelected() {
-    if (foodProductsAdded.isNotEmpty) {
-      var foodProduct = foodProductsAdded.first;
-      return Form(
-          key: _formKey,
-          child: Card(
-              //  height: 100,
-              color: Colors.white,
-              elevation: 25,
-              child:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                SizedBox(width: 20),
-                CircleAvatar(
-                  backgroundImage: CachedNetworkImageProvider(
-                      "${foodProduct.imgSrc}",
-                      headers: {
-                        "Authorization": "Bearer $apiToken",
-                        "Access-Control-Allow-Headers":
-                            "Access-Control-Allow-Origin, Accept"
-                      },
-                      imageRenderMethodForWeb: ImageRenderMethodForWeb.HttpGet),
-                  radius: 40,
-                ),
-                Expanded(
-                    child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      foodProduct.name,
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    SizedBox(
-                        width: 100,
-                        child: TextFormField(
-                          controller: amountController,
-                          decoration: InputDecoration(
-                              border: UnderlineInputBorder(),
-                              labelText:
-                                  '${AppLocalizations.of(context).amount} (${foodProduct.quantityType.toString()})',
-                              suffixText: foodProduct.quantityType.toString(),
-                              errorMaxLines: 1),
-                          maxLength: 6,
-                          maxLines: 1,
-                          keyboardType: TextInputType.numberWithOptions(
-                              decimal: false, signed: false),
-                          // inputFormatters: <TextInputFormatter>[
-                          //   FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
-                          // ],
-                          validator: (v) {
-                            if (num.tryParse(v) == null) {
-                              return AppLocalizations.of(context).invalidAmount;
-                            } else {
-                              return null;
-                            }
-                          },
-                        )),
-                  ],
-                )),
-              ])));
-    } else
-      return Container();
-  }
+
 
   void decreaseAmount(Ingredient ingredient) {
     if (ingredient.quantityType.value ==
@@ -229,16 +180,19 @@ class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
       });
   }
 
-  void addIngredientAndNavigateBack(FoodProduct foodProduct, int amount) {
-    print('leave add ingredient');
-    Ingredient ingredient = Ingredient(
-        id: 0,
-        name: foodProduct.name,
-        quantityType: foodProduct.quantityType,
-        imgSrc: foodProduct.imgSrc,
-        foodProductId: foodProduct.id,
-        recipeId: 0,
-        amount: amount);
-    Navigator.pop(context, ingredient);
+  void saveAmountsAndContinue(){
+    Ingredient firstIngredient = ingredients.first;
+    // This indicates that the ingredients have just been created
+    // One could think of just submitting them before to the db
+    if(routedFromAddIngredient) {
+      var nav = Navigator.of(context);
+      nav.pop(ingredients);
+      nav.pop(ingredients);
+    }
+    else {
+      var nav = Navigator.of(context);
+      nav.pop(ingredients);
+    }
   }
+
 }

@@ -238,6 +238,10 @@ class Ingredient {
         imgSrc: this.imgSrc,
         quantityType: this.quantityType);
   }
+
+  String toString(){
+    return "Ingredient: $name, amount=$amount";
+  }
 }
 
 class FoodProduct {

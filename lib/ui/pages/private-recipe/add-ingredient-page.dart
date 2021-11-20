@@ -6,14 +6,18 @@ import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/util/formatters.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'edit-ingredients-amount-page.dart';
+
 class AddIngredientPage extends StatefulWidget {
-  AddIngredientPage({Key key}) : super(key: key);
+  PrivateRecipe privateRecipe;
+
+  AddIngredientPage({Key key, this.privateRecipe}) : super(key: key);
 
   @override
-  _AddIngredientPageState createState() => _AddIngredientPageState();
+  _AddIngredientPageState createState() =>
+      _AddIngredientPageState(privateRecipe);
 }
 
 class _AddIngredientPageState extends State<AddIngredientPage> {
@@ -21,17 +25,27 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
   Future<List<FoodProduct>> foodProducts;
   String apiToken;
   List<FoodProduct> foodProductsAdded = [];
-  int ingredientAmount;
-  final _formKey = GlobalKey<FormState>();
-  final amountController = TextEditingController();
 
-  _AddIngredientPageState();
+  PrivateRecipe privateRecipe;
+
+  _AddIngredientPageState(this.privateRecipe);
 
   void initState() {
     super.initState();
     loadToken();
-    foodProducts = FoodProductController.getFoodProducts();
+    foodProducts = loadFoodProductsAndDeleteAlreadyAddedOnes();
     setState(() {});
+  }
+
+  Future<List<FoodProduct>> loadFoodProductsAndDeleteAlreadyAddedOnes() async {
+    return FoodProductController.getFoodProducts().then((foodProds) {
+      privateRecipe.ingredients.forEach((ingredient) {
+        FoodProduct alreadyAddedFoodProduct = foodProds
+            .firstWhere((foodProd) => foodProd.id == ingredient.foodProductId);
+        foodProds.remove(alreadyAddedFoodProduct);
+      });
+      return foodProds;
+    });
   }
 
   @override
@@ -89,7 +103,7 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
                                 title: Text('${snapshot.data[index].name}'),
                                 subtitle: Text(
                                     '${AppLocalizations.of(context).foodCategory}: '
-                                        '${Utility.getTranslatedFoodCategory(context, snapshot.data[index].foodCategory)}'),
+                                    '${Utility.getTranslatedFoodCategory(context, snapshot.data[index].foodCategory)}'),
                                 value: foodProductsAdded
                                     .contains(snapshot.data[index]),
                                 onChanged: (bool value) {
@@ -136,96 +150,37 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
 
   Widget showIngredientUIIfSelected() {
     if (foodProductsAdded.isNotEmpty) {
-      var foodProduct = foodProductsAdded.first;
-      return Form(
-          key: _formKey,
-          child: Card(
-              //  height: 100,
-              color: Colors.white,
-              elevation: 25,
-              child:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                SizedBox(width: 20),
-                CircleAvatar(
-                  backgroundImage: CachedNetworkImageProvider(
-                      "${foodProduct.imgSrc}",
-                      headers: {
-                        "Authorization": "Bearer $apiToken",
-                        "Access-Control-Allow-Headers":
-                            "Access-Control-Allow-Origin, Accept"
-                      },
-                      imageRenderMethodForWeb: ImageRenderMethodForWeb.HttpGet),
-                  radius: 40,
-                ),
-                Expanded(
-                    child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(foodProduct.name, style: TextStyle(fontSize: 20)),
-                    SizedBox(
-                        width: 100,
-                        child: TextFormField(
-                          controller: amountController,
-                          decoration: InputDecoration(
-                              border: UnderlineInputBorder(),
-                              labelText:
-                                  '${AppLocalizations.of(context).amount} (${foodProduct.quantityType.toString()})',
-                              suffixText: foodProduct.quantityType.toString(),
-                          errorMaxLines: 1),
-                          maxLength: 6,
-                          maxLines: 1,
-                          keyboardType: TextInputType.numberWithOptions(
-                              decimal: false, signed: false),
-                          // inputFormatters: <TextInputFormatter>[
-                          //   FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
-                          // ],
-                          validator: (v) {
-                               if(num.tryParse(v) == null){
-                                 return AppLocalizations.of(context).invalidAmount;
-                               }
-                              else {
-                                return null;}
-                              },
-                        )),
-                  ],
-                )),
-                Column(children: [
-                  ElevatedButton(
-                    child: Text(AppLocalizations.of(context).okay),
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        ingredientAmount = num.parse(amountController.value.text);
-                        print("added "+ingredientAmount.toString()+" " + foodProduct.name);
-                        addIngredientAndNavigateBack(foodProduct, ingredientAmount);
-                      }
-                    },
-                  ),
-                  ElevatedButton(
-                    child: Text(AppLocalizations.of(context).cancel),
-                    style: ElevatedButton.styleFrom(primary: Colors.red),
-                    onPressed: () {
-                      setState(() {
-                        foodProductsAdded.clear();
-                      });
-                    },
-                  )
-                ])
-              ])));
+      return Card(
+          //  height: 100,
+          color: Colors.white,
+          elevation: 25,
+          child: ElevatedButton(
+              child: Text(AppLocalizations.of(context).okay),
+              onPressed: () {
+                addIngredientAndNavigateBack(foodProductsAdded);
+              }));
     } else
       return Container();
   }
 
-  void addIngredientAndNavigateBack(FoodProduct foodProduct, int amount) {
+  void addIngredientAndNavigateBack(List<FoodProduct> foodProducts) {
     print('leave add ingredient');
-    Ingredient ingredient = Ingredient(
-      id: 0,
-      name: foodProduct.name,
-      quantityType: foodProduct.quantityType,
-      imgSrc: foodProduct.imgSrc,
-      foodProductId: foodProduct.id,
-      recipeId: 0,
-      amount: amount
-    );
-    Navigator.pop(context, ingredient);
+    List<Ingredient> ingredients = foodProducts
+        .map((foodProduct) => Ingredient(
+            id: 0,
+            name: foodProduct.name,
+            quantityType: foodProduct.quantityType,
+            imgSrc: foodProduct.imgSrc,
+            foodProductId: foodProduct.id,
+            recipeId: privateRecipe.id,
+            amount: 0))
+        .toList();
+    privateRecipe.ingredients.addAll(ingredients);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => EditIngredientsAmountPage(
+                ingredients: privateRecipe.ingredients,
+                routedFromAddIngredient: true)));
   }
 }

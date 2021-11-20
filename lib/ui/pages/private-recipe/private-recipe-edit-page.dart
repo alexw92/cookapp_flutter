@@ -94,7 +94,8 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                               ),
                               (privateRecipe.ingredients.length != 0)
                                   ? ElevatedButton(
-                                      onPressed: _openEditIngredientsAmountScreen,
+                                      onPressed:
+                                          _openEditIngredientsAmountScreen,
                                       child: Image.asset(
                                         "assets/balance.png",
                                         width: 24,
@@ -177,34 +178,42 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
 
   Future<void> _openAddIngredientScreen() async {
     print('addIngredientScreen');
-    await Navigator.push(context,
-            MaterialPageRoute(builder: (context) => AddIngredientPage()))
-        .then((ingredient) => {
-              if (ingredient is Ingredient)
-                {
-                  setState(() {
-                    privateRecipe.ingredients.add(ingredient);
-                  })
-                }
-            });
+    await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => AddIngredientPage(
+                  privateRecipe: this.privateRecipe,
+                ))).then((ingredient) => {
+          if (ingredient is Ingredient)
+            {
+              setState(() {
+                privateRecipe.ingredients.add(ingredient);
+              })
+            }
+          else
+            setState(() {})
+        });
     print('addIngredientScreen completed');
   }
 
   Future<void> _openEditIngredientsAmountScreen() async {
     print('EditIngredientsAmountScreen');
     await Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => EditIngredientsAmountPage(ingredients: privateRecipe.ingredients,)))
-        .then((ingredients) => {
-              if (ingredients != null)
-                {
-                  privateRecipe.ingredients.clear(),
-                  setState(() {
-                    privateRecipe.ingredients.addAll(ingredients);
-                  })
-                }
-            });
+        context,
+        MaterialPageRoute(
+            builder: (context) => EditIngredientsAmountPage(
+                ingredients: privateRecipe.ingredients,
+                routedFromAddIngredient: false))).then((ingredients) => {
+          print(ingredients),
+          if (ingredients != null)
+            {
+              //    privateRecipe.ingredients.clear(),
+              print(ingredients),
+              setState(() {
+                //        privateRecipe.ingredients.addAll(ingredients);
+              })
+            }
+        });
     print('EditIngredientsAmountScreen completed');
   }
 
