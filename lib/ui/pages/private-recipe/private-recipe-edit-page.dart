@@ -216,16 +216,9 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
         MaterialPageRoute(
             builder: (context) => EditIngredientsAmountPage(
                 privateRecipe: privateRecipe,
-                routedFromAddIngredient: false))).then((ingredients) => {
-          print(ingredients),
-          if (ingredients != null)
-            {
-              //    privateRecipe.ingredients.clear(),
-              print(ingredients),
+                routedFromAddIngredient: false))).then((ghj) {
               setState(() {
-                //        privateRecipe.ingredients.addAll(ingredients);
-              })
-            }
+              });
         });
     print('EditIngredientsAmountScreen completed');
   }

@@ -43,7 +43,7 @@ class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(AppLocalizations.of(context).ingredients)),
+        appBar: AppBar(title: Text(AppLocalizations.of(context).ingredientsAmount)),
         body: Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -202,11 +202,11 @@ class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
     await RecipeController.updatePrivateRecipe(privateRecipe);
     if (routedFromAddIngredient) {
       var nav = Navigator.of(context);
-      nav.pop(ingredients);
-      nav.pop(ingredients);
+      nav.pop();
+      nav.pop();
     } else {
       var nav = Navigator.of(context);
-      nav.pop(ingredients);
+      nav.pop();
     }
   }
 }
