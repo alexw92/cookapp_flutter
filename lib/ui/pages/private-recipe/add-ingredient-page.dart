@@ -139,7 +139,7 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
                 // Our existing list code
               ),
             ),
-            showIngredientUIIfSelected()
+            showContinueButtonIfSelected()
           ],
         ));
   }
@@ -148,22 +148,24 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
     apiToken = await TokenStore().getToken();
   }
 
-  Widget showIngredientUIIfSelected() {
+  Widget showContinueButtonIfSelected() {
     if (foodProductsAdded.isNotEmpty) {
       return Card(
           //  height: 100,
           color: Colors.white,
           elevation: 25,
-          child: ElevatedButton(
-              child: Text(AppLocalizations.of(context).okay),
-              onPressed: () {
-                addIngredientsAndNavigateToEditAmounts(foodProductsAdded);
-              }));
+          child: Center(
+              child: ElevatedButton(
+                  child: Text(AppLocalizations.of(context).okay),
+                  onPressed: () {
+                    addIngredientsAndNavigateToEditAmounts(foodProductsAdded);
+                  })));
     } else
       return Container();
   }
 
-  Future<void> addIngredientsAndNavigateToEditAmounts(List<FoodProduct> foodProducts) async {
+  Future<void> addIngredientsAndNavigateToEditAmounts(
+      List<FoodProduct> foodProducts) async {
     print('leave add ingredients');
     List<Ingredient> ingredients = foodProducts
         .map((foodProduct) => Ingredient(
@@ -181,7 +183,6 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
         context,
         MaterialPageRoute(
             builder: (context) => EditIngredientsAmountPage(
-                privateRecipe: privateRecipe,
-                routedFromAddIngredient: true)));
+                privateRecipe: privateRecipe, routedFromAddIngredient: true)));
   }
 }

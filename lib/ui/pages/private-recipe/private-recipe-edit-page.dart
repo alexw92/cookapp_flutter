@@ -171,7 +171,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
             ),
             SizedBox(height: 10),
             ElevatedButton(
-                onPressed: () => {},
+                onPressed: savePrivateRecipeManually,
                 child: Text(AppLocalizations.of(context).save),
                 style: ButtonStyle(
                   padding: MaterialStateProperty.all(EdgeInsets.all(20)),
@@ -357,4 +357,13 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
             }
         });
   }
+
+  savePrivateRecipeManually() async {
+    privateRecipe =  await RecipeController.updatePrivateRecipe(privateRecipe);
+    setState(() {
+
+    });
+  }
+
+
 }
