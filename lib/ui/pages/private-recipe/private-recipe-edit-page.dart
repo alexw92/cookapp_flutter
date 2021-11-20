@@ -24,6 +24,7 @@ class RecipeEditPage extends StatefulWidget {
 
 class _RecipeEditPageState extends State<RecipeEditPage> {
   List<bool> _isOpen = [false, false];
+  List<Widget> _instructionTiles = [];
   String apiToken;
   PrivateRecipe privateRecipe;
   int privateRecipeId;
@@ -43,10 +44,9 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
   }
 
   void loadPrivateRecipe(int privateRecipeId) async {
-    privateRecipe =  await RecipeController.getPrivateRecipe(privateRecipeId);
-    setState(() {
-
-    });
+    privateRecipe = await RecipeController.getPrivateRecipe(privateRecipeId);
+    getInstructionTiles();
+    setState(() {});
   }
 
   loadDailyRequiredNutrients() async {
@@ -61,125 +61,148 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
   Widget build(BuildContext context) {
     return privateRecipe == null
         ? Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: [CircularProgressIndicator()])
-        ])
-    : Scaffold(
-        appBar: AppBar(title: Text(AppLocalizations.of(context).recipeEdit)),
-        body: SingleChildScrollView(
-            child: Column(
-          children: [
-            Text(privateRecipe.name, style: TextStyle(fontSize: 26)),
-            SizedBox(
-              height: 16,
-            ),
-            ExpansionPanelList(
-              elevation: 1,
-              expandedHeaderPadding: EdgeInsets.all(4),
-              dividerColor: Colors.green,
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [CircularProgressIndicator()])
+              ])
+        : Scaffold(
+            appBar:
+                AppBar(title: Text(AppLocalizations.of(context).recipeEdit)),
+            body: SingleChildScrollView(
+                child: Column(
               children: [
-                ExpansionPanel(
-                    isExpanded: _isOpen[0],
-                    headerBuilder: (context, isOpen) {
-                      return Text(
-                        AppLocalizations.of(context).ingredients +
-                            " (" +
-                            privateRecipe.ingredients.length.toString() +
-                            ")",
-                        style: TextStyle(fontSize: 24),
-                      );
-                    },
-                    body: Column(
-                      children: [
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ElevatedButton(
-                                onPressed: _openAddIngredientScreen,
-                                child: Icon(Icons.add),
-                                style: ButtonStyle(
-                                  shape:
-                                      MaterialStateProperty.all(CircleBorder()),
-                                  padding: MaterialStateProperty.all(
-                                      EdgeInsets.all(10)),
-                                  backgroundColor: MaterialStateProperty.all(
-                                      Colors.white), // <-- Button color,
-                                ),
+                Text(privateRecipe.name, style: TextStyle(fontSize: 26)),
+                SizedBox(
+                  height: 16,
+                ),
+                ExpansionPanelList(
+                  elevation: 1,
+                  expandedHeaderPadding: EdgeInsets.all(4),
+                  dividerColor: Colors.green,
+                  children: [
+                    ExpansionPanel(
+                        canTapOnHeader: true,
+                        isExpanded: _isOpen[0],
+                        headerBuilder: (context, isOpen) {
+                          return Text(
+                            AppLocalizations.of(context).ingredients +
+                                " (" +
+                                privateRecipe.ingredients.length.toString() +
+                                ")",
+                            style: TextStyle(fontSize: 24),
+                          );
+                        },
+                        body: Column(
+                          children: [
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: _openAddIngredientScreen,
+                                    child: Icon(Icons.add),
+                                    style: ButtonStyle(
+                                      shape: MaterialStateProperty.all(
+                                          CircleBorder()),
+                                      padding: MaterialStateProperty.all(
+                                          EdgeInsets.all(10)),
+                                      backgroundColor:
+                                          MaterialStateProperty.all(Colors
+                                              .white), // <-- Button color,
+                                    ),
+                                  ),
+                                  (privateRecipe.ingredients.length != 0)
+                                      ? ElevatedButton(
+                                          onPressed:
+                                              _openEditIngredientsAmountScreen,
+                                          child: Image.asset(
+                                            "assets/balance.png",
+                                            width: 24,
+                                          ),
+                                          style: ButtonStyle(
+                                            shape: MaterialStateProperty.all(
+                                                CircleBorder()),
+                                            padding: MaterialStateProperty.all(
+                                                EdgeInsets.all(10)),
+                                            backgroundColor:
+                                                MaterialStateProperty.all(Colors
+                                                    .white), // <-- Button color,
+                                          ),
+                                        )
+                                      : Container()
+                                ]),
+                            getIngredientGridView(),
+                            getNutritionGridView()
+                          ],
+                        )),
+                    ExpansionPanel(
+                        canTapOnHeader: true,
+                        isExpanded: _isOpen[1],
+                        headerBuilder: (context, isOpen) {
+                          return Text(
+                              AppLocalizations.of(context).howToCookSteps +
+                                  " (" +
+                                  privateRecipe.instructions.length.toString() +
+                                  ")",
+                              style: TextStyle(fontSize: 24));
+                        },
+                        body: Column(
+                          children: [
+                            ElevatedButton(
+                              onPressed: openAddInstructionDialog,
+                              child: Icon(Icons.add),
+                              style: ButtonStyle(
+                                shape:
+                                    MaterialStateProperty.all(CircleBorder()),
+                                padding: MaterialStateProperty.all(
+                                    EdgeInsets.all(10)),
+                                backgroundColor: MaterialStateProperty.all(
+                                    Colors.white), // <-- Button color,
                               ),
-                              (privateRecipe.ingredients.length != 0)
-                                  ? ElevatedButton(
-                                      onPressed:
-                                          _openEditIngredientsAmountScreen,
-                                      child: Image.asset(
-                                        "assets/balance.png",
-                                        width: 24,
-                                      ),
-                                      style: ButtonStyle(
-                                        shape: MaterialStateProperty.all(
-                                            CircleBorder()),
-                                        padding: MaterialStateProperty.all(
-                                            EdgeInsets.all(10)),
-                                        backgroundColor:
-                                            MaterialStateProperty.all(Colors
-                                                .white), // <-- Button color,
-                                      ),
-                                    )
-                                  : Container()
-                            ]),
-                        getIngredientGridView(),
-                        getNutritionGridView()
-                      ],
-                    )),
-                ExpansionPanel(
-                    isExpanded: _isOpen[1],
-                    headerBuilder: (context, isOpen) {
-                      return Text(
-                          AppLocalizations.of(context).howToCookSteps +
-                              " (" +
-                              privateRecipe.instructions.length.toString() +
-                              ")",
-                          style: TextStyle(fontSize: 24));
-                    },
-                    body: Column(
-                      children: [
-                        ElevatedButton(
-                          onPressed: openAddInstructionDialog,
-                          child: Icon(Icons.add),
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all(CircleBorder()),
-                            padding:
-                                MaterialStateProperty.all(EdgeInsets.all(10)),
-                            backgroundColor: MaterialStateProperty.all(
-                                Colors.white), // <-- Button color,
-                          ),
-                        ),
-                        getInstructions()
-                      ],
-                    )),
+                            ),
+                            ReorderableListView(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                onReorder: (int oldIndex, int newIndex) {
+                                  if (oldIndex < newIndex) {
+                                    newIndex -= 1;
+                                  }
+                                  Widget oldItem =
+                                      _instructionTiles.removeAt(oldIndex);
+                                  _instructionTiles.insert(newIndex, oldItem);
+
+                                  for (int i = 0;
+                                      i < _instructionTiles.length;
+                                      i++) {
+                                    (_instructionTiles[i] as PrivateRecipeInstructionTileComponent).recipeInstruction.step = i;
+                                  }
+                                  savePrivateRecipeManually();
+                                },
+                                children: _instructionTiles)
+                          ],
+                        )),
+                  ],
+                  expansionCallback: (i, isOpen) => {
+                    setState(() {
+                      _isOpen[i] = !isOpen;
+                    })
+                  },
+                ),
+                SizedBox(height: 10),
+                ElevatedButton(
+                    onPressed: savePrivateRecipeManually,
+                    child: Text(AppLocalizations.of(context).save),
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all(EdgeInsets.all(20)),
+                      backgroundColor: MaterialStateProperty.all(
+                          Colors.white), // <-- Button color
+                    ))
               ],
-              expansionCallback: (i, isOpen) => {
-                setState(() {
-                  _isOpen[i] = !isOpen;
-                })
-              },
-            ),
-            SizedBox(height: 10),
-            ElevatedButton(
-                onPressed: savePrivateRecipeManually,
-                child: Text(AppLocalizations.of(context).save),
-                style: ButtonStyle(
-                  padding: MaterialStateProperty.all(EdgeInsets.all(20)),
-                  backgroundColor: MaterialStateProperty.all(
-                      Colors.white), // <-- Button color
-                ))
-          ],
-        )));
+            )));
   }
 
   List<Widget> getAllIngredientTiles() {
@@ -203,9 +226,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
         MaterialPageRoute(
             builder: (context) => AddIngredientPage(
                   privateRecipe: this.privateRecipe,
-                ))).then((ingredient) => {
-          loadPrivateRecipe(privateRecipeId)
-        });
+                ))).then((ingredient) => {loadPrivateRecipe(privateRecipeId)});
     print('addIngredientScreen completed');
   }
 
@@ -217,9 +238,8 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
             builder: (context) => EditIngredientsAmountPage(
                 privateRecipe: privateRecipe,
                 routedFromAddIngredient: false))).then((ghj) {
-              setState(() {
-              });
-        });
+      setState(() {});
+    });
     print('EditIngredientsAmountScreen completed');
   }
 
@@ -301,27 +321,20 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
     return myTiles;
   }
 
-  Widget getInstructions() {
-    if (privateRecipe.instructions.length == 0)
-      return Container();
-    else
-      return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: getInstructionTiles());
-  }
-
   List<Widget> getInstructionTiles() {
-    List<Widget> instructionTiles = [];
     privateRecipe.instructions.sort((RecipeInstruction a, RecipeInstruction b) {
       return a.step.compareTo(b.step);
     });
-    for (int i = 0; i < privateRecipe.instructions.length; i++) {
-      RecipeInstruction instruction = privateRecipe.instructions[i];
-      instructionTiles.add(PrivateRecipeInstructionTileComponent(
-          recipeInstruction: instruction));
-    }
-    return instructionTiles;
+    setState(() {
+      _instructionTiles = [];
+      for (int i = 0; i < privateRecipe.instructions.length; i++) {
+        RecipeInstruction instruction = privateRecipe.instructions[i];
+        print(instruction.step.toString()+" "+instruction.instructionsText);
+        _instructionTiles.add(PrivateRecipeInstructionTileComponent(
+            key: ValueKey(instruction.id), recipeInstruction: instruction));
+      }
+    });
+    return _instructionTiles;
   }
 
   Future<void> openAddInstructionDialog() async {
@@ -340,23 +353,18 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                   lastStep = element.step;
                 }
               }),
-              setState(() {
-                privateRecipe.instructions.add(RecipeInstruction(
-                    id: 0,
-                    recipeId: privateRecipe.id,
-                    step: lastStep + 1,
-                    instructionsText: value));
-              })
+              privateRecipe.instructions.add(RecipeInstruction(
+                  id: 0,
+                  recipeId: privateRecipe.id,
+                  step: lastStep + 1,
+                  instructionsText: value)),
+              savePrivateRecipeManually()
             }
         });
   }
 
   savePrivateRecipeManually() async {
-    privateRecipe =  await RecipeController.updatePrivateRecipe(privateRecipe);
-    setState(() {
-
-    });
+    privateRecipe = await RecipeController.updatePrivateRecipe(privateRecipe);
+    getInstructionTiles();
   }
-
-
 }

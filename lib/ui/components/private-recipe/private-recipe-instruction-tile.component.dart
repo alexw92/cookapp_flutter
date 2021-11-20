@@ -28,7 +28,7 @@ class _PrivateRecipeInstructionTileComponentState
   Widget build(BuildContext context) {
     return Card(
       elevation: 10,
-      margin: EdgeInsets.all(10),
+      margin: EdgeInsets.only(left: 10, right: 10, bottom: 5, top:5),
       child: Row(children: [
         Column(
           children: [
@@ -56,12 +56,6 @@ class _PrivateRecipeInstructionTileComponentState
               recipeInstruction.instructionsText,
               overflow: TextOverflow.clip,
             )),
-        Column(
-          children: [
-            IconButton(icon: Icon(Icons.arrow_upward)),
-            IconButton(icon: Icon(Icons.arrow_downward))
-          ],
-        )
       ]),
     );
   }

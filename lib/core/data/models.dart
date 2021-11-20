@@ -167,7 +167,7 @@ class RecipeDetails {
 class RecipeInstruction {
   final int id;
   final int recipeId;
-  final int step;
+  int step;
   final String instructionsText;
 
   RecipeInstruction({this.id, this.recipeId, this.step, this.instructionsText});

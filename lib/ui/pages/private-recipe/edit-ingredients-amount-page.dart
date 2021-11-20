@@ -195,10 +195,6 @@ class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
   }
 
   Future<void> saveAmountsAndContinue() async {
-    print("changed ingr:");
-    print(ingredients);
-    print("pushed object");
-    print(privateRecipe);
     await RecipeController.updatePrivateRecipe(privateRecipe);
     if (routedFromAddIngredient) {
       var nav = Navigator.of(context);

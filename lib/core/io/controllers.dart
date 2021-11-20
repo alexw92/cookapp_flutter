@@ -172,7 +172,6 @@ class RecipeController {
     // get token from token store
     var tokenStore = IOConfig.tokenStore;
     String storedToken = await tokenStore.getToken();
-    print(privateRecipe.toJson());
     var body = json.encode(privateRecipe.toJson());
     print(body);
     var response =
