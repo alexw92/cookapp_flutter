@@ -1,4 +1,5 @@
 import 'package:cookable_flutter/core/data/models.dart';
+import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/components/ingredient-tile.component.dart';
 import 'package:cookable_flutter/ui/components/nutrient-tile.component.dart';
@@ -13,31 +14,39 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'add-instruction-dialog.dart';
 
 class RecipeEditPage extends StatefulWidget {
-  final PrivateRecipe privateRecipe;
+  final int privateRecipeId;
 
-  RecipeEditPage(this.privateRecipe, {Key key}) : super(key: key);
+  RecipeEditPage(this.privateRecipeId, {Key key}) : super(key: key);
 
   @override
-  _RecipeEditPageState createState() => _RecipeEditPageState();
+  _RecipeEditPageState createState() => _RecipeEditPageState(privateRecipeId);
 }
 
 class _RecipeEditPageState extends State<RecipeEditPage> {
   List<bool> _isOpen = [false, false];
   String apiToken;
   PrivateRecipe privateRecipe;
-  int dailyCalories;
-  double dailyCarbohydrate;
-  double dailyProtein;
-  double dailyFat;
+  int privateRecipeId;
+  int dailyCalories = 0;
+  double dailyCarbohydrate = 0;
+  double dailyProtein = 0;
+  double dailyFat = 0;
 
-  _RecipeEditPageState();
+  _RecipeEditPageState(this.privateRecipeId);
 
   @override
   void initState() {
     getToken();
     loadDailyRequiredNutrients();
-    privateRecipe = widget.privateRecipe;
+    loadPrivateRecipe(privateRecipeId);
     super.initState();
+  }
+
+  void loadPrivateRecipe(int privateRecipeId) async {
+    privateRecipe =  await RecipeController.getPrivateRecipe(privateRecipeId);
+    setState(() {
+
+    });
   }
 
   loadDailyRequiredNutrients() async {
@@ -50,7 +59,18 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return privateRecipe == null
+        ? Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: [CircularProgressIndicator()])
+        ])
+    : Scaffold(
         appBar: AppBar(title: Text(AppLocalizations.of(context).recipeEdit)),
         body: SingleChildScrollView(
             child: Column(
@@ -184,14 +204,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
             builder: (context) => AddIngredientPage(
                   privateRecipe: this.privateRecipe,
                 ))).then((ingredient) => {
-          if (ingredient is Ingredient)
-            {
-              setState(() {
-                privateRecipe.ingredients.add(ingredient);
-              })
-            }
-          else
-            setState(() {})
+          loadPrivateRecipe(privateRecipeId)
         });
     print('addIngredientScreen completed');
   }
@@ -202,7 +215,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
         context,
         MaterialPageRoute(
             builder: (context) => EditIngredientsAmountPage(
-                ingredients: privateRecipe.ingredients,
+                privateRecipe: privateRecipe,
                 routedFromAddIngredient: false))).then((ingredients) => {
           print(ingredients),
           if (ingredients != null)
@@ -319,7 +332,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
   }
 
   Future<void> openAddInstructionDialog() async {
-    int lastStep = 0;
+    int lastStep = -1;
     showDialog(
       context: context,
       builder: (BuildContext context) {

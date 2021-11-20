@@ -302,22 +302,22 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
   List<Widget> getNutrientTiles() {
     List<Widget> myTiles = [];
     myTiles.addAll([
-      NutrientTileComponent(
+      NutrientTileComponent(textColor: Colors.white,
           nutrientName: AppLocalizations.of(context).calories,
           nutrientAmount: recipe.nutrients.calories.toDouble(),
           dailyRecAmount: dailyCalories.toDouble(),
           nutritionType: NutritionType.CALORIES),
-      NutrientTileComponent(
+      NutrientTileComponent(textColor: Colors.white,
           nutrientName: AppLocalizations.of(context).fat,
           nutrientAmount: recipe.nutrients.fat,
           dailyRecAmount: dailyFat,
           nutritionType: NutritionType.FAT),
-      NutrientTileComponent(
+      NutrientTileComponent(textColor: Colors.white,
           nutrientName: AppLocalizations.of(context).carbs,
           nutrientAmount: recipe.nutrients.carbohydrate,
           dailyRecAmount: dailyCarbohydrate,
           nutritionType: NutritionType.CARBOHYDRATE),
-      NutrientTileComponent(
+      NutrientTileComponent(textColor: Colors.white,
           nutrientName: AppLocalizations.of(context).protein,
           nutrientAmount: recipe.nutrients.protein,
           dailyRecAmount: dailyProtein,

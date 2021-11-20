@@ -162,7 +162,34 @@ class RecipeController {
     }
 
     throw Exception(
-        "Error requesting recipes, Code: ${response.statusCode} Message: ${response.body} ");
+        "Error creating private recipe, Code: ${response.statusCode} Message: ${response.body} ");
+  }
+
+  // @PutMapping
+  // fun updatePrivateRecipe(@RequestBody privateRecipeData: PrivateRecipeData): PrivateRecipeData
+
+  static Future<PrivateRecipe> updatePrivateRecipe(PrivateRecipe privateRecipe) async {
+    // get token from token store
+    var tokenStore = IOConfig.tokenStore;
+    String storedToken = await tokenStore.getToken();
+    print(privateRecipe.toJson());
+    var body = json.encode(privateRecipe.toJson());
+    print(body);
+    var response =
+    await http.put(Uri.parse("${IOConfig.apiUrl}/privaterecipes"), headers: {
+      "Authorization": "Bearer $storedToken",
+      'Content-Type': 'application/json',
+    }, body: body).timeout(IOConfig.timeoutDuration);
+
+    /// If the first API call is successful
+    if (response.statusCode == HttpStatus.ok) {
+      var recipeJson = json.decode(response.body);
+      PrivateRecipe recipe = PrivateRecipe.fromJson(recipeJson);
+      return recipe;
+    }
+
+    throw Exception(
+        "Error updating private recipe, Code: ${response.statusCode} Message: ${response.body} ");
   }
 }
 

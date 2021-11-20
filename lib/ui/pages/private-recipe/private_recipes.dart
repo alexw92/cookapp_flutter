@@ -197,7 +197,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
   Future<void> _openEditRecipeScreen(PrivateRecipe privateRecipe) async {
     print('editRecipeScreen');
     await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => RecipeEditPage(privateRecipe)));
+        context, MaterialPageRoute(builder: (context) => RecipeEditPage(privateRecipe.id)));
     print('editRecipeScreen completed');
   }
 }

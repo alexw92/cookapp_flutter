@@ -1,3 +1,5 @@
+
+
 class Recipe {
   final int id;
   final String imgSrc;
@@ -87,6 +89,20 @@ class PrivateRecipe {
         isPublishable: recipeJson['isPublishable'] as bool );
   }
 
+  Map<String, dynamic> toJson() =>
+      {
+        'id': id,
+        'img_src': imgSrc,
+        'name': name,
+        'uploadedBy': uploadedBy,
+        'instructions': instructions.map((instr) => instr.toJson()).toList(),
+        'ingredients': ingredients.map((ingr) => ingr.toJson()).toList(),
+         'numberOfPersons': numberOfPersons,
+         'dietIdentifier': diet.index,
+         'prepTimeMinutes': prepTimeMinutes,
+         'isPublishable': isPublishable,
+      };
+
   String toString() {
     return "private-recipe, id=$id, name=$name, ingredients=${ingredients.length} ";
   }
@@ -163,6 +179,14 @@ class RecipeInstruction {
         step: json['step'],
         instructionsText: json['instructionsText']);
   }
+
+  Map<String, dynamic> toJson() =>
+      {
+        "id": id,
+        "recipeId" : recipeId ,
+        "step" : step,
+        "instructionsText": instructionsText
+      };
 }
 
 class DefaultNutrients {
@@ -242,6 +266,17 @@ class Ingredient {
   String toString(){
     return "Ingredient: $name, amount=$amount";
   }
+
+  Map<String, dynamic> toJson() =>
+      {
+        "id": id,
+        "name": name,
+        "amount": amount,
+        "recipeId": recipeId,
+        "foodProductId": foodProductId,
+        "imgSrc": imgSrc,
+        "quantityType": quantityType.value,
+      };
 }
 
 class FoodProduct {

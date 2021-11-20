@@ -133,7 +133,7 @@ class _PrivateRecipeTileComponentState
   Future<void> _openEditRecipeScreen(PrivateRecipe privateRecipe) async {
     print('editRecipeScreen');
     await Navigator.push(context,
-        MaterialPageRoute(builder: (context) => RecipeEditPage(privateRecipe)));
+        MaterialPageRoute(builder: (context) => RecipeEditPage(privateRecipe.id)));
     print('editRecipeScreen completed');
   }
 

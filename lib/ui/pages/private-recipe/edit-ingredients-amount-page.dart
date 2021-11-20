@@ -3,6 +3,7 @@ import 'dart:core';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
 import 'package:cookable_flutter/core/data/models.dart';
+import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,26 +11,31 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditIngredientsAmountPage extends StatefulWidget {
-  EditIngredientsAmountPage({Key key, this.ingredients, this.routedFromAddIngredient}) : super(key: key);
+  EditIngredientsAmountPage(
+      {Key key, this.privateRecipe, this.routedFromAddIngredient})
+      : super(key: key);
   bool routedFromAddIngredient;
-  List<Ingredient> ingredients;
+  PrivateRecipe privateRecipe;
 
   @override
   _EditIngredientsAmountPageState createState() =>
-      _EditIngredientsAmountPageState(ingredients, routedFromAddIngredient);
+      _EditIngredientsAmountPageState(privateRecipe, routedFromAddIngredient);
 }
 
 class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
-  final List<Ingredient> ingredients;
+  final PrivateRecipe privateRecipe;
   final bool routedFromAddIngredient;
   String apiToken;
   List<FoodProduct> foodProductsAdded = [];
+  List<Ingredient> ingredients;
   final amountController = TextEditingController();
 
-  _EditIngredientsAmountPageState(this.ingredients, this.routedFromAddIngredient);
+  _EditIngredientsAmountPageState(
+      this.privateRecipe, this.routedFromAddIngredient);
 
   void initState() {
     super.initState();
+    ingredients = privateRecipe.ingredients;
     loadToken();
     setState(() {});
   }
@@ -63,18 +69,21 @@ class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
               // Our existing list code
             ),
             Container(
-              height: 50,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius:
-                  BorderRadius.vertical(top: Radius.circular(20.0))),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(primary: Colors.green),
-                  onPressed: () { saveAmountsAndContinue(); },
-                  child:Text("Save and Continue", style: TextStyle(fontSize: 20),)
-              )
-            )
+                height: 50,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    color: Colors.green,
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(20.0))),
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(primary: Colors.green),
+                    onPressed: () {
+                      saveAmountsAndContinue();
+                    },
+                    child: Text(
+                      "Save and Continue",
+                      style: TextStyle(fontSize: 20),
+                    )))
           ],
         ));
   }
@@ -126,10 +135,17 @@ class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
                             suffixText:
                                 ingredients[index].quantityType.toString(),
                             errorMaxLines: 1),
+                        onChanged: (changedValue) {
+                          if (num.tryParse(changedValue) != null)
+                            ingredients[index].amount = num.parse(changedValue);
+                        },
                         maxLength: 5,
                         maxLines: 1,
                         keyboardType: TextInputType.numberWithOptions(
                             decimal: false, signed: false),
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                        ],
                       )),
                   ElevatedButton(
                     onPressed: () => increaseAmount(ingredients[index]),
@@ -146,8 +162,6 @@ class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
           )
         ]));
   }
-
-
 
   void decreaseAmount(Ingredient ingredient) {
     if (ingredient.quantityType.value ==
@@ -180,19 +194,19 @@ class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
       });
   }
 
-  void saveAmountsAndContinue(){
-    Ingredient firstIngredient = ingredients.first;
-    // This indicates that the ingredients have just been created
-    // One could think of just submitting them before to the db
-    if(routedFromAddIngredient) {
+  Future<void> saveAmountsAndContinue() async {
+    print("changed ingr:");
+    print(ingredients);
+    print("pushed object");
+    print(privateRecipe);
+    await RecipeController.updatePrivateRecipe(privateRecipe);
+    if (routedFromAddIngredient) {
       var nav = Navigator.of(context);
       nav.pop(ingredients);
       nav.pop(ingredients);
-    }
-    else {
+    } else {
       var nav = Navigator.of(context);
       nav.pop(ingredients);
     }
   }
-
 }

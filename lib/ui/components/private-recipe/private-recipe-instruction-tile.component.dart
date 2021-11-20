@@ -42,7 +42,7 @@ class _PrivateRecipeInstructionTileComponentState
                     border: Border.all(width: 2, color: Colors.grey)),
                 child: Center(
                     child: Text(
-                  recipeInstruction.step.toString(),
+                        (recipeInstruction.step+1).toString(),
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 )))
           ],

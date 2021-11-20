@@ -157,14 +157,14 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
           child: ElevatedButton(
               child: Text(AppLocalizations.of(context).okay),
               onPressed: () {
-                addIngredientAndNavigateBack(foodProductsAdded);
+                addIngredientsAndNavigateToEditAmounts(foodProductsAdded);
               }));
     } else
       return Container();
   }
 
-  void addIngredientAndNavigateBack(List<FoodProduct> foodProducts) {
-    print('leave add ingredient');
+  Future<void> addIngredientsAndNavigateToEditAmounts(List<FoodProduct> foodProducts) async {
+    print('leave add ingredients');
     List<Ingredient> ingredients = foodProducts
         .map((foodProduct) => Ingredient(
             id: 0,
@@ -176,11 +176,12 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
             amount: 0))
         .toList();
     privateRecipe.ingredients.addAll(ingredients);
+    privateRecipe = await RecipeController.updatePrivateRecipe(privateRecipe);
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => EditIngredientsAmountPage(
-                ingredients: privateRecipe.ingredients,
+                privateRecipe: privateRecipe,
                 routedFromAddIngredient: true)));
   }
 }
