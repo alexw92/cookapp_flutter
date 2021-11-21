@@ -23,7 +23,7 @@ class RecipeEditPage extends StatefulWidget {
 }
 
 class _RecipeEditPageState extends State<RecipeEditPage> {
-  List<bool> _isOpen = [false, false];
+  List<bool> _isOpen = [true, true];
   List<Widget> _instructionTiles = [];
   String apiToken;
   PrivateRecipe privateRecipe;
