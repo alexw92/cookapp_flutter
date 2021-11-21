@@ -24,7 +24,7 @@ class RecipeController {
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
-      DefaultNutrients defaultNutrients =  DefaultNutrients.fromJson(json.decode(response.body));
+      DefaultNutrients defaultNutrients =  DefaultNutrients.fromJson(json.decode(utf8.decode(response.bodyBytes)));
       return defaultNutrients;
     }
   }
@@ -42,7 +42,7 @@ class RecipeController {
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
-      var list = json.decode(response.body) as List;
+      var list = json.decode(utf8.decode(response.bodyBytes)) as List;
       List<Recipe> recipes = list.map((it) => Recipe.fromJson(it)).toList();
       return recipes;
     }
@@ -65,7 +65,7 @@ class RecipeController {
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
-      var list = json.decode(response.body) as List;
+      var list = json.decode(utf8.decode(response.bodyBytes)) as List;
       List<Recipe> recipes = list.map((it) => Recipe.fromJson(it)).toList();
       return recipes;
     }
@@ -88,7 +88,7 @@ class RecipeController {
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
-      var recipeJson = json.decode(response.body);
+      var recipeJson = json.decode(utf8.decode(response.bodyBytes));
       RecipeDetails recipe = RecipeDetails.fromJson(recipeJson);
       return recipe;
     }
@@ -110,7 +110,7 @@ class RecipeController {
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
-      var recipeJson = json.decode(response.body);
+      var recipeJson = json.decode(utf8.decode(response.bodyBytes));
       PrivateRecipe recipe = PrivateRecipe.fromJson(recipeJson);
       return recipe;
     }
@@ -132,7 +132,7 @@ class RecipeController {
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
-      var list = json.decode(response.body) as List;
+      var list = json.decode(utf8.decode(response.bodyBytes)) as List;
       List<PrivateRecipe> recipes = list.map((it) => PrivateRecipe.fromJson(it)).toList();
       return recipes;
     }
@@ -156,7 +156,7 @@ class RecipeController {
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
-      var recipeJson = json.decode(response.body);
+      var recipeJson = json.decode(utf8.decode(response.bodyBytes));
       PrivateRecipe recipe = PrivateRecipe.fromJson(recipeJson);
       return recipe;
     }
@@ -181,7 +181,7 @@ class RecipeController {
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
-      var recipeJson = json.decode(response.body);
+      var recipeJson = json.decode(utf8.decode(response.bodyBytes));
       PrivateRecipe recipe = PrivateRecipe.fromJson(recipeJson);
       return recipe;
     }
@@ -205,7 +205,7 @@ class FoodProductController {
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
-      var list = json.decode(response.body) as List;
+      var list = json.decode(utf8.decode(response.bodyBytes)) as List;
       List<FoodProduct> foodProducts =
           list.map((it) => FoodProduct.fromJson(it)).toList();
       return foodProducts;
@@ -231,7 +231,7 @@ class UserFoodProductController {
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
-      var list = json.decode(response.body) as List;
+      var list = json.decode(utf8.decode(response.bodyBytes)) as List;
       List<UserFoodProduct> userFoodProducts =
           list.map((it) => UserFoodProduct.fromJson(it)).toList();
       return userFoodProducts;
