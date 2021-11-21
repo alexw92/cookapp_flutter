@@ -43,7 +43,8 @@ class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(AppLocalizations.of(context).ingredientsAmount)),
+        appBar:
+            AppBar(title: Text(AppLocalizations.of(context).ingredientsAmount)),
         body: Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -57,7 +58,11 @@ class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
                       padding: const EdgeInsets.all(16),
                       itemCount: ingredients.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return getIngredientAmountTile(index);
+                        return Dismissible(
+                            key: ValueKey(ingredients[index].id),
+                            onDismissed: (direction) =>
+                                _onDismissedIngredient(index, direction),
+                            child: getIngredientAmountTile(index));
                       },
                       separatorBuilder: (BuildContext context, int index) {
                         return Divider();
@@ -90,6 +95,10 @@ class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
 
   void loadToken() async {
     apiToken = await TokenStore().getToken();
+  }
+
+  _onDismissedIngredient(index, direction) {
+    privateRecipe.ingredients.removeAt(index);
   }
 
   Widget getIngredientAmountTile(int index) {
