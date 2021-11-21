@@ -170,14 +170,17 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                                     Colors.white), // <-- Button color,
                               ),
                             ),
-                            // Todo shit doesnt work properly, try https://pub.dev/packages/flutter_reorderable_list/example
                             ReorderableListView.builder(
                                 physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 onReorder: (int oldIndex, int newIndex) {
+
+                                  print("oldIndex $oldIndex newIndex $newIndex");
+
                                   if (oldIndex < newIndex) {
                                     newIndex -= 1;
                                   }
+                                  setState(() {
                                   Widget oldItem =
                                   _instructionTiles.removeAt(oldIndex);
                                   _instructionTiles.insert(newIndex, oldItem);
@@ -185,15 +188,16 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                                   for (int i = 0;
                                   i < _instructionTiles.length;
                                   i++) {
-                                    (_instructionTiles[i] as PrivateRecipeInstructionTileComponent).recipeInstruction.step=i;
+                                    var tile = _instructionTiles[i] as PrivateRecipeInstructionTileComponent;
+                                    var recipeInstruction = tile.recipeInstruction;
+                                    recipeInstruction.step = i;
+                                    tile.recipeInstruction = recipeInstruction;
                                   }
-                                  savePrivateRecipeManually();
+                                //  savePrivateRecipeManually();
+                                  });
                                 },
                                 itemBuilder: (BuildContext context, int index) {
-                                  return _instructionTiles.firstWhere((
-                                      element) =>
-                                  (element as PrivateRecipeInstructionTileComponent)
-                                      .recipeInstruction.step == index);
+                                  return _instructionTiles[index];
                                 },
                                 itemCount: _instructionTiles.length)
                           ],
@@ -351,14 +355,17 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
     privateRecipe.instructions.sort((RecipeInstruction a, RecipeInstruction b) {
       return a.step.compareTo(b.step);
     });
-    setState(() {
-      _instructionTiles = [];
+    List<Widget> updatedTiles = [];
+
+      updatedTiles = [];
       for (int i = 0; i < privateRecipe.instructions.length; i++) {
         RecipeInstruction instruction = privateRecipe.instructions[i];
         print(instruction.step.toString() + " " + instruction.instructionsText);
-        _instructionTiles.add(PrivateRecipeInstructionTileComponent(
+        updatedTiles.add(PrivateRecipeInstructionTileComponent(
             key: ValueKey(instruction.id), recipeInstruction: instruction));
       }
+    setState(() {
+      _instructionTiles = updatedTiles;
     });
     return _instructionTiles;
   }
