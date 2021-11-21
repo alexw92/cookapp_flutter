@@ -387,7 +387,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
         return new AddRecipeInstructionDialog();
       },
     ).then((value) => {
-          if (value != null)
+          if (value != null && value.toString().isNotEmpty)
             {
               print("instruction " + value),
               privateRecipe.instructions.forEach((element) {
