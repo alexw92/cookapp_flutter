@@ -58,7 +58,9 @@
     "okay": "Ok",
     "cancel": "Abbrechen",
     "save": "Speichern",
-    "saveAndContinue": "Speichern und Weiter"
+    "saveAndContinue": "Speichern und Weiter",
+    "recipeNameHint": "Dein Rezeptname",
+    "createRecipe": "Neu"
 
 
 }

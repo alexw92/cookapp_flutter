@@ -30,13 +30,13 @@ class _CreateRecipeDialogState extends State<CreateRecipeDialog> {
       title: Text(AppLocalizations.of(context).newRecipe),
       content: TextField(
         controller: _controller,
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
             border: OutlineInputBorder(),
-            hintText: 'Enter the name of your recipe'),
+            hintText: AppLocalizations.of(context).recipeNameHint),
       ),
       actions: <Widget>[
         TextButton(
-          child: Text('Create'),
+          child: Text(AppLocalizations.of(context).createRecipe),
           onPressed: () async {
             String recipeName = _controller.value.text;
             if (recipeName != null) {

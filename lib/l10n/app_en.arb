@@ -61,7 +61,9 @@
     "okay": "Ok",
     "cancel": "Cancel",
     "save": "Save",
-    "saveAndContinue": "Save and Continue"
+    "saveAndContinue": "Save and Continue",
+    "recipeNameHint": "Your recipe name",
+    "createRecipe": "Create"
 
 
 
