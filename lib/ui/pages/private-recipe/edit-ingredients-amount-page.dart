@@ -86,7 +86,7 @@ class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
                       saveAmountsAndContinue();
                     },
                     child: Text(
-                      "Save and Continue",
+                      AppLocalizations.of(context).saveAndContinue,
                       style: TextStyle(fontSize: 20),
                     )))
           ],

@@ -57,7 +57,8 @@
     "newRecipeInstructionSample": "Schneide die Zwiebeln in Würfel...",
     "okay": "Ok",
     "cancel": "Abbrechen",
-    "save": "Speichern"
+    "save": "Speichern",
+    "saveAndContinue": "Speichern und Weiter"
 
 
 }
