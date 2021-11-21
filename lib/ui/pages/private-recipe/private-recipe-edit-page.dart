@@ -193,7 +193,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                                     recipeInstruction.step = i;
                                     tile.recipeInstruction = recipeInstruction;
                                   }
-                                //  savePrivateRecipeManually();
+                                  savePrivateRecipeManually();
                                   });
                                 },
                                 itemBuilder: (BuildContext context, int index) {
@@ -360,7 +360,6 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
       updatedTiles = [];
       for (int i = 0; i < privateRecipe.instructions.length; i++) {
         RecipeInstruction instruction = privateRecipe.instructions[i];
-        print(instruction.step.toString() + " " + instruction.instructionsText);
         updatedTiles.add(PrivateRecipeInstructionTileComponent(
             key: ValueKey(instruction.id), recipeInstruction: instruction));
       }

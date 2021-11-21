@@ -25,6 +25,12 @@ class _PrivateRecipeInstructionTileComponentState
       {this.recipeInstruction, this.apiToken});
 
   @override
+  didUpdateWidget(PrivateRecipeInstructionTileComponent oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    recipeInstruction = widget.recipeInstruction;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 10,

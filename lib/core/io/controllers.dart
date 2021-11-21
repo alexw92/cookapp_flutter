@@ -173,7 +173,6 @@ class RecipeController {
     var tokenStore = IOConfig.tokenStore;
     String storedToken = await tokenStore.getToken();
     var body = json.encode(privateRecipe.toJson());
-    print(body);
     var response =
     await http.put(Uri.parse("${IOConfig.apiUrl}/privaterecipes"), headers: {
       "Authorization": "Bearer $storedToken",
