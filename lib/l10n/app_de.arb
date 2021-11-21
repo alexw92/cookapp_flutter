@@ -60,7 +60,9 @@
     "save": "Speichern",
     "saveAndContinue": "Speichern und Weiter",
     "recipeNameHint": "Dein Rezeptname",
-    "createRecipe": "Neu"
+    "createRecipe": "Neu",
+    "ingredientNotFoundQuestionMark": "Zutat nicht gefunden?",
+    "sendProposalToAddIt": "Sende uns eine Anfrage zum Hinzufügen!"
 
 
 }

@@ -77,59 +77,83 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
               child: FutureBuilder(
                 builder: (context, AsyncSnapshot<List<FoodProduct>> snapshot) {
                   if (snapshot.hasData) {
-                    return Center(
-                        child: ListView.separated(
-                      padding: const EdgeInsets.all(8),
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return snapshot.data[index].name
-                                .toLowerCase()
-                                .contains(searchString)
-                            ? CheckboxListTile(
-                                controlAffinity:
-                                    ListTileControlAffinity.trailing,
-                                secondary: CircleAvatar(
-                                  backgroundImage: CachedNetworkImageProvider(
-                                      "${snapshot.data[index].imgSrc}",
-                                      headers: {
-                                        "Authorization": "Bearer $apiToken",
-                                        "Access-Control-Allow-Headers":
-                                            "Access-Control-Allow-Origin, Accept"
-                                      },
-                                      imageRenderMethodForWeb:
-                                          ImageRenderMethodForWeb.HttpGet),
-                                  radius: 30,
-                                ),
-                                title: Text('${snapshot.data[index].name}'),
-                                subtitle: Text(
-                                    '${AppLocalizations.of(context).foodCategory}: '
-                                    '${Utility.getTranslatedFoodCategory(context, snapshot.data[index].foodCategory)}'),
-                                value: foodProductsAdded
-                                    .contains(snapshot.data[index]),
-                                onChanged: (bool value) {
-                                  if (value)
-                                    setState(() {
-                                      foodProductsAdded
-                                          .add(snapshot.data[index]);
-                                    });
-                                  else {
-                                    setState(() {
-                                      foodProductsAdded
-                                          .remove(snapshot.data[index]);
-                                    });
-                                  }
-                                },
-                              )
-                            : Container();
-                      },
-                      separatorBuilder: (BuildContext context, int index) {
-                        return snapshot.data[index].name
-                                .toLowerCase()
-                                .contains(searchString)
-                            ? Divider()
-                            : Container();
-                      },
-                    ));
+                    if (snapshot.data
+                        .where((foodProduct) => foodProduct.name
+                            .toLowerCase()
+                            .contains(searchString))
+                        .isEmpty)
+                      return Center(
+                          child: Card(
+                              elevation: 10,
+                              child: Container(
+                                  height: 100,
+                                  margin: EdgeInsets.all(10),
+                                  child: Column(children: [
+                                    Text(
+                                        AppLocalizations.of(context)
+                                            .ingredientNotFoundQuestionMark,
+                                        style: TextStyle(fontSize: 20)),
+                                    Text(AppLocalizations.of(context)
+                                        .sendProposalToAddIt),
+                                    ElevatedButton(
+                                      child: Text("Request Ingredient"),
+                                      onPressed: () => {},
+                                    )
+                                  ]))));
+                    else
+                      return Center(
+                          child: ListView.separated(
+                        padding: const EdgeInsets.all(8),
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return snapshot.data[index].name
+                                  .toLowerCase()
+                                  .contains(searchString)
+                              ? CheckboxListTile(
+                                  controlAffinity:
+                                      ListTileControlAffinity.trailing,
+                                  secondary: CircleAvatar(
+                                    backgroundImage: CachedNetworkImageProvider(
+                                        "${snapshot.data[index].imgSrc}",
+                                        headers: {
+                                          "Authorization": "Bearer $apiToken",
+                                          "Access-Control-Allow-Headers":
+                                              "Access-Control-Allow-Origin, Accept"
+                                        },
+                                        imageRenderMethodForWeb:
+                                            ImageRenderMethodForWeb.HttpGet),
+                                    radius: 30,
+                                  ),
+                                  title: Text('${snapshot.data[index].name}'),
+                                  subtitle: Text(
+                                      '${AppLocalizations.of(context).foodCategory}: '
+                                      '${Utility.getTranslatedFoodCategory(context, snapshot.data[index].foodCategory)}'),
+                                  value: foodProductsAdded
+                                      .contains(snapshot.data[index]),
+                                  onChanged: (bool value) {
+                                    if (value)
+                                      setState(() {
+                                        foodProductsAdded
+                                            .add(snapshot.data[index]);
+                                      });
+                                    else {
+                                      setState(() {
+                                        foodProductsAdded
+                                            .remove(snapshot.data[index]);
+                                      });
+                                    }
+                                  },
+                                )
+                              : Container();
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return snapshot.data[index].name
+                                  .toLowerCase()
+                                  .contains(searchString)
+                              ? Divider()
+                              : Container();
+                        },
+                      ));
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Something went wrong :('));
                   }

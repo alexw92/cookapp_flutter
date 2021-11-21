@@ -63,8 +63,9 @@
     "save": "Save",
     "saveAndContinue": "Save and Continue",
     "recipeNameHint": "Your recipe name",
-    "createRecipe": "Create"
-
+    "createRecipe": "Create",
+    "ingredientNotFoundQuestionMark": "Ingredient not found?",
+    "sendProposalToAddIt": "Send us a proposal to add it!"
 
 
 
