@@ -204,6 +204,10 @@ class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
   }
 
   Future<void> saveAmountsAndContinue() async {
+    // remove ingredients without amount
+    var ingredientsWithoutAmount = privateRecipe.ingredients.where((ingr) => ingr.amount == 0);
+    privateRecipe.ingredients.removeWhere((ingr) => ingredientsWithoutAmount.contains(ingr));
+
     await RecipeController.updatePrivateRecipe(privateRecipe);
     if (routedFromAddIngredient) {
       var nav = Navigator.of(context);
