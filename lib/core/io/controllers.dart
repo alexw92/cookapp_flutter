@@ -31,12 +31,13 @@ class RecipeController {
   }
 
   static Future<List<Recipe>> getRecipes() async {
+    var langCode = LangState().currentLang;
     // get token from token store
     var tokenStore = IOConfig.tokenStore;
     String storedToken = await tokenStore.getToken();
 
     var response =
-        await http.get(Uri.parse("${IOConfig.apiUrl}/recipes/all"), headers: {
+        await http.get(Uri.parse("${IOConfig.apiUrl}/recipes/all?langCode=$langCode"), headers: {
       "Authorization": "Bearer $storedToken",
       'Content-Type': 'application/json',
     }).timeout(IOConfig.timeoutDuration);
@@ -53,13 +54,14 @@ class RecipeController {
   }
 
   static Future<List<Recipe>> getFilteredRecipes(Diet diet) async {
+    var langCode = LangState().currentLang;
     // get token from token store
     var tokenStore = IOConfig.tokenStore;
     String storedToken = await tokenStore.getToken();
     Uri queryParams  = Uri(queryParameters: {'dietIdentifier': diet.index.toString()});
     print(diet);
     var response =
-    await http.get(Uri.parse("${IOConfig.apiUrl}/recipes?"+queryParams.query), headers: {
+    await http.get(Uri.parse("${IOConfig.apiUrl}/recipes?"+queryParams.query+"&langCode=$langCode"), headers: {
       "Authorization": "Bearer $storedToken",
       'Content-Type': 'application/json'
     }).timeout(IOConfig.timeoutDuration);
@@ -77,12 +79,13 @@ class RecipeController {
 
 
   static Future<RecipeDetails> getRecipe(int id) async {
+    var langCode = LangState().currentLang;
     // get token from token store
     var tokenStore = IOConfig.tokenStore;
     String storedToken = await tokenStore.getToken();
 
     var response =
-    await http.get(Uri.parse("${IOConfig.apiUrl}/recipes/$id"), headers: {
+    await http.get(Uri.parse("${IOConfig.apiUrl}/recipes/$id?langCode=$langCode"), headers: {
       "Authorization": "Bearer $storedToken",
       'Content-Type': 'application/json',
     }).timeout(IOConfig.timeoutDuration);
@@ -99,12 +102,13 @@ class RecipeController {
   }
 
   static Future<PrivateRecipe> getPrivateRecipe(int id) async {
+    var langCode = LangState().currentLang;
     // get token from token store
     var tokenStore = IOConfig.tokenStore;
     String storedToken = await tokenStore.getToken();
 
     var response =
-    await http.get(Uri.parse("${IOConfig.apiUrl}/privaterecipes/$id"), headers: {
+    await http.get(Uri.parse("${IOConfig.apiUrl}/privaterecipes/$id?langCode=$langCode"), headers: {
       "Authorization": "Bearer $storedToken",
       'Content-Type': 'application/json',
     }).timeout(IOConfig.timeoutDuration);
@@ -121,12 +125,13 @@ class RecipeController {
   }
 
   static Future<List<PrivateRecipe>> getPrivateRecipes() async {
+    var langCode = LangState().currentLang;
     // get token from token store
     var tokenStore = IOConfig.tokenStore;
     String storedToken = await tokenStore.getToken();
 
     var response =
-    await http.get(Uri.parse("${IOConfig.apiUrl}/privaterecipes/all"), headers: {
+    await http.get(Uri.parse("${IOConfig.apiUrl}/privaterecipes/all?langCode=$langCode"), headers: {
       "Authorization": "Bearer $storedToken",
       'Content-Type': 'application/json',
     }).timeout(IOConfig.timeoutDuration);
@@ -170,12 +175,13 @@ class RecipeController {
   // fun updatePrivateRecipe(@RequestBody privateRecipeData: PrivateRecipeData): PrivateRecipeData
 
   static Future<PrivateRecipe> updatePrivateRecipe(PrivateRecipe privateRecipe) async {
+    var langCode = LangState().currentLang;
     // get token from token store
     var tokenStore = IOConfig.tokenStore;
     String storedToken = await tokenStore.getToken();
     var body = json.encode(privateRecipe.toJson());
     var response =
-    await http.put(Uri.parse("${IOConfig.apiUrl}/privaterecipes"), headers: {
+    await http.put(Uri.parse("${IOConfig.apiUrl}/privaterecipes?langCode=$langCode"), headers: {
       "Authorization": "Bearer $storedToken",
       'Content-Type': 'application/json',
     }, body: body).timeout(IOConfig.timeoutDuration);
