@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cookable_flutter/common/LangState.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:http/http.dart' as http;
 
@@ -193,12 +194,13 @@ class RecipeController {
 
 class FoodProductController {
   static Future<List<FoodProduct>> getFoodProducts() async {
+    var langCode = LangState().currentLang;
     // get token from token store
     var tokenStore = IOConfig.tokenStore;
     String storedToken = await tokenStore.getToken();
 
     var response =
-        await http.get(Uri.parse("${IOConfig.apiUrl}/foodProducts"), headers: {
+        await http.get(Uri.parse("${IOConfig.apiUrl}/foodProducts?langCode=$langCode"), headers: {
       "Authorization": "Bearer $storedToken",
       'Content-Type': 'application/json',
     }).timeout(IOConfig.timeoutDuration);
@@ -219,12 +221,13 @@ class FoodProductController {
 class UserFoodProductController {
   static Future<List<UserFoodProduct>> getUserFoodProducts(
       bool missingFodProducts) async {
+    var langCode = LangState().currentLang;
     // get token from token store
     var tokenStore = IOConfig.tokenStore;
     String storedToken = await tokenStore.getToken();
     var endpoint = missingFodProducts ? "/missing" : "";
     var response = await http
-        .get(Uri.parse("${IOConfig.apiUrl}/userFood$endpoint"), headers: {
+        .get(Uri.parse("${IOConfig.apiUrl}/userFood$endpoint?langCode=$langCode"), headers: {
       "Authorization": "Bearer $storedToken",
       'Content-Type': 'application/json',
     }).timeout(IOConfig.timeoutDuration);

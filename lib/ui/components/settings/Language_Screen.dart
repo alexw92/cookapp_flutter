@@ -1,3 +1,4 @@
+import 'package:cookable_flutter/common/LangState.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -50,6 +51,7 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
     setState(() {
       languageIndex = index;
     });
+    LangState().currentLang = langCodes[index];
     CookableFlutter.setLocale(context, Locale(langCodes[index], ""));
     Navigator.pop(context, languages[index]);
   }
