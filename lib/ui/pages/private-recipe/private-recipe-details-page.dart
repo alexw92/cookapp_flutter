@@ -48,6 +48,7 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
     });
   }
 
+  // Todo fix bug: scale pieces to 0.5 0.25 etc -> fractions, check android proj
   void increaseNumberOfPersons() {
     if (numberOfPersonsTmp == 20) return;
     setState(() {
