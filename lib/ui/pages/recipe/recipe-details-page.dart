@@ -55,8 +55,8 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
       for (int i = 0; i < recipe.ingredients.length; i++) {
         var ingredient = recipe.ingredients[i];
         var ingredientCpy = ingredientsTmp[i];
-        ingredientCpy.amount = ((ingredient.amount / recipe.numberOfPersons) *
-                numberOfPersonsTmp);
+        ingredientCpy.amount =
+            ((ingredient.amount / recipe.numberOfPersons) * numberOfPersonsTmp);
       }
     });
   }
@@ -68,13 +68,13 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
       for (int i = 0; i < recipe.ingredients.length; i++) {
         var ingredient = recipe.ingredients[i];
         var ingredientCpy = ingredientsTmp[i];
-        ingredientCpy.amount = ((ingredient.amount / recipe.numberOfPersons) *
-                numberOfPersonsTmp);
+        ingredientCpy.amount =
+            ((ingredient.amount / recipe.numberOfPersons) * numberOfPersonsTmp);
       }
     });
   }
 
-  List<Ingredient> copyIngredients(List<Ingredient> ingredients){
+  List<Ingredient> copyIngredients(List<Ingredient> ingredients) {
     List<Ingredient> ingredientCopy = [];
     for (int i = 0; i < ingredients.length; i++) {
       var ingredient = ingredients[i];
@@ -308,7 +308,8 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                                     child: Column(
                                       children: <Widget>[
                                         Text(
-                                          "${AppLocalizations.of(context).recipeInstructionStepShort} " + instruction.step.toString(),
+                                          "${AppLocalizations.of(context).recipeInstructionStepShort} " +
+                                              instruction.step.toString(),
                                           style: TextStyle(fontSize: 16),
                                         ),
                                         Text(instruction.instructionsText)
@@ -336,25 +337,33 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
     List<Widget> myTiles = [];
     myTiles.addAll([
       NutrientTileComponent(
-          nutrientName: AppLocalizations.of(context).calories,
-          nutrientAmount: recipe.nutrients.calories.toDouble(),
-          dailyRecAmount: dailyCalories.toDouble(),
-          nutritionType: NutritionType.CALORIES),
+        nutrientName: AppLocalizations.of(context).calories,
+        nutrientAmount: recipe.nutrients.calories.toDouble(),
+        dailyRecAmount: dailyCalories.toDouble(),
+        nutritionType: NutritionType.CALORIES,
+        textColor: Colors.white,
+      ),
       NutrientTileComponent(
-          nutrientName: AppLocalizations.of(context).fat,
-          nutrientAmount: recipe.nutrients.fat,
-          dailyRecAmount: dailyFat,
-          nutritionType: NutritionType.FAT),
+        nutrientName: AppLocalizations.of(context).fat,
+        nutrientAmount: recipe.nutrients.fat,
+        dailyRecAmount: dailyFat,
+        nutritionType: NutritionType.FAT,
+        textColor: Colors.white,
+      ),
       NutrientTileComponent(
-          nutrientName: AppLocalizations.of(context).carbs,
-          nutrientAmount: recipe.nutrients.carbohydrate,
-          dailyRecAmount: dailyCarbohydrate,
-          nutritionType: NutritionType.CARBOHYDRATE),
+        nutrientName: AppLocalizations.of(context).carbs,
+        nutrientAmount: recipe.nutrients.carbohydrate,
+        dailyRecAmount: dailyCarbohydrate,
+        nutritionType: NutritionType.CARBOHYDRATE,
+        textColor: Colors.white,
+      ),
       NutrientTileComponent(
-          nutrientName: AppLocalizations.of(context).protein,
-          nutrientAmount: recipe.nutrients.protein,
-          dailyRecAmount: dailyProtein,
-          nutritionType: NutritionType.PROTEIN)
+        nutrientName: AppLocalizations.of(context).protein,
+        nutrientAmount: recipe.nutrients.protein,
+        dailyRecAmount: dailyProtein,
+        nutritionType: NutritionType.PROTEIN,
+        textColor: Colors.white,
+      )
     ]);
 
     return myTiles;
