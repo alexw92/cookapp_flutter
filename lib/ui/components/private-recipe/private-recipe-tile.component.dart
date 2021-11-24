@@ -6,6 +6,7 @@ import 'package:cookable_flutter/ui/pages/private-recipe/private-recipe-edit-pag
 import 'package:cookable_flutter/ui/util/formatters.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PrivateRecipeTileComponent extends StatefulWidget {
   PrivateRecipe privateRecipe;
@@ -78,26 +79,31 @@ class _PrivateRecipeTileComponentState
                 child: Container(
                     height: 50,
                     margin: EdgeInsets.only(left: 5),
-                    child: Row(children: [
-                      Chip(
-                        labelPadding: EdgeInsets.all(4.0),
-                        avatar: Utility.getIconForDiet(privateRecipe.diet),
-                        label: Text(
-                          Utility.getTranslatedDiet(
-                              context, privateRecipe.diet),
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.bold),
-                        ),
-                        backgroundColor: Colors.white,
-                        elevation: 6.0,
-                        shadowColor: Colors.grey[60],
-                        padding: EdgeInsets.all(8.0),
-                      ),
-                    ]))),
+                    child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Wrap(spacing: 3, children: [
+                          Chip(
+                            labelPadding: EdgeInsets.all(4.0),
+                            avatar: Utility.getIconForDiet(privateRecipe.diet),
+                            label: Text(
+                              Utility.getTranslatedDiet(
+                                  context, privateRecipe.diet),
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            backgroundColor: Colors.white,
+                            elevation: 6.0,
+                            shadowColor: Colors.grey[60],
+                            padding: EdgeInsets.all(8.0),
+                          ),
+                          getHighProteinChipIfNeeded(),
+                          getHighCarbChipIfNeeded()
+                        ])))),
             Positioned(
-                bottom: 0,
+                top: 36,
                 right: 0,
-                child: Row(children: [
+                child: Column(children: [
                   ElevatedButton(
                     onPressed: () => {_editPrivateRecipeImg(privateRecipe)},
                     child: Icon(Icons.camera_alt),
@@ -132,12 +138,54 @@ class _PrivateRecipeTileComponentState
 
   Future<void> _openEditRecipeScreen(PrivateRecipe privateRecipe) async {
     print('editRecipeScreen');
-    await Navigator.push(context,
-        MaterialPageRoute(builder: (context) => RecipeEditPage(privateRecipe.id)));
+    await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => RecipeEditPage(privateRecipe.id)));
     print('editRecipeScreen completed');
   }
 
   _editPrivateRecipeImg(PrivateRecipe privateRecipe) {
     //Todo implement
+  }
+
+  Widget getHighProteinChipIfNeeded() {
+    return (privateRecipe.nutrients.isHighProteinRecipe)
+        ? Chip(
+            labelPadding: EdgeInsets.all(4.0),
+            avatar: Icon(
+              Icons.fitness_center,
+            ),
+            label: Text(
+              AppLocalizations.of(context).highProtein,
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            ),
+            backgroundColor: Colors.white,
+            elevation: 6.0,
+            shadowColor: Colors.grey[60],
+            padding: EdgeInsets.all(8.0),
+          )
+        : Container();
+  }
+
+  Widget getHighCarbChipIfNeeded() {
+    return (privateRecipe.nutrients.isHighCarbRecipe)
+        ? Chip(
+            labelPadding: EdgeInsets.all(4.0),
+            avatar: Icon(
+              Icons.directions_bike,
+            ),
+            label: Text(
+              AppLocalizations.of(context).highCarb,
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            ),
+            backgroundColor: Colors.white,
+            elevation: 6.0,
+            shadowColor: Colors.grey[60],
+            padding: EdgeInsets.all(8.0),
+          )
+        : Container();
   }
 }
