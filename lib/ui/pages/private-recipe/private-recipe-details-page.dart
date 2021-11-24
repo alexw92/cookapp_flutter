@@ -57,8 +57,7 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
         var ingredient = recipe.ingredients[i];
         var ingredientCpy = ingredientsTmp[i];
         ingredientCpy.amount =
-            ((ingredient.amount / recipe.numberOfPersons) * numberOfPersonsTmp)
-                .toInt();
+            ((ingredient.amount / recipe.numberOfPersons) * numberOfPersonsTmp);
       }
     });
   }
@@ -71,8 +70,7 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
         var ingredient = recipe.ingredients[i];
         var ingredientCpy = ingredientsTmp[i];
         ingredientCpy.amount =
-            ((ingredient.amount / recipe.numberOfPersons) * numberOfPersonsTmp)
-                .toInt();
+            ((ingredient.amount / recipe.numberOfPersons) * numberOfPersonsTmp);
       }
     });
   }

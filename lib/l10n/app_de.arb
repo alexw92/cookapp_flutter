@@ -62,7 +62,8 @@
     "recipeNameHint": "Dein Rezeptname",
     "createRecipe": "Neu",
     "ingredientNotFoundQuestionMark": "Zutat nicht gefunden?",
-    "sendProposalToAddIt": "Sende uns eine Anfrage zum Hinzufügen!"
+    "sendProposalToAddIt": "Sende uns eine Anfrage zum Hinzufügen!",
+    "ingredientPcWrongInput": "Bsp: 1, 1.5, 1.25"
 
 
 }

@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fraction/fraction.dart';
 
 class Utility {
-  static String getFormattedAmount(UserFoodProduct userFoodProduct) {
+  static String getFormattedAmountFor(UserFoodProduct userFoodProduct) {
     if (userFoodProduct.quantityUnit.value == QuantityUnit.PIECES) {
       return "${_getFormattedFraction(userFoodProduct.amount)} ${userFoodProduct.quantityUnit.toString()}";
     } else if (userFoodProduct.quantityUnit.value == QuantityUnit.MILLILITER ||
@@ -13,6 +13,16 @@ class Utility {
       return "${toWholeNumberStringIfPossible(userFoodProduct.amount)} ${userFoodProduct.quantityUnit.toString()}";
     } else
       return "${userFoodProduct.amount} ${userFoodProduct.quantityUnit.toString()}";
+  }
+
+  static String getFormattedAmountForIngredient(Ingredient ingredient) {
+    if (ingredient.quantityType.value == QuantityUnit.PIECES) {
+      return "${_getFormattedFraction(ingredient.amount)} ${ingredient.quantityType.toString()}";
+    } else if (ingredient.quantityType.value == QuantityUnit.MILLILITER ||
+        ingredient.quantityType.value == QuantityUnit.GRAM) {
+      return "${toWholeNumberStringIfPossible(ingredient.amount)} ${ingredient.quantityType.toString()}";
+    } else
+      return "${ingredient.amount} ${ingredient.quantityType.toString()}";
   }
 
   static String getTranslatedDiet(BuildContext context, Diet diet) {

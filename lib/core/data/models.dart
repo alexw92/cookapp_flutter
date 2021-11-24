@@ -225,7 +225,7 @@ class DefaultNutrients {
 class Ingredient {
   final int id;
   final String name;
-  int amount;
+  double amount;
   final int recipeId;
   final int foodProductId;
   final String imgSrc;
