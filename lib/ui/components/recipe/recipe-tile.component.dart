@@ -5,6 +5,7 @@ import 'package:cookable_flutter/ui/pages/recipe/recipe-details-page.dart';
 import 'package:cookable_flutter/ui/util/formatters.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RecipeTileComponent extends StatefulWidget {
   Recipe recipe;
@@ -74,6 +75,8 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                         shadowColor: Colors.grey[60],
                         padding: EdgeInsets.all(8.0),
                       ),
+                      getHighProteinChipIfNeeded(),
+                      getHighCarbChipIfNeeded(),
                     ]))),
             Positioned(
                 top: 0,
@@ -92,6 +95,46 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                         textAlign: TextAlign.center)))
           ]),
         ));
+  }
+
+  Widget getHighProteinChipIfNeeded() {
+    return (recipe.nutrients.isHighProteinRecipe)
+        ? Chip(
+            labelPadding: EdgeInsets.all(4.0),
+            avatar: Icon(
+              Icons.fitness_center,
+            ),
+            label: Text(
+              AppLocalizations.of(context).highProtein,
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            ),
+            backgroundColor: Colors.white,
+            elevation: 6.0,
+            shadowColor: Colors.grey[60],
+            padding: EdgeInsets.all(8.0),
+          )
+        : Container();
+  }
+
+  Widget getHighCarbChipIfNeeded() {
+    return (recipe.nutrients.isHighCarbRecipe)
+        ? Chip(
+            labelPadding: EdgeInsets.all(4.0),
+            avatar: Icon(
+              Icons.directions_bike,
+            ),
+            label: Text(
+              AppLocalizations.of(context).highCarb,
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            ),
+            backgroundColor: Colors.white,
+            elevation: 6.0,
+            shadowColor: Colors.grey[60],
+            padding: EdgeInsets.all(8.0),
+          )
+        : Container();
   }
 
   navigateToRecipePage(int recipeId) async {

@@ -10,6 +10,7 @@ class Recipe {
   final int numberOfPersons;
   final Diet diet;
   final int prepTimeMinutes;
+  final Nutrients nutrients;
 
   Recipe(
       {this.id,
@@ -20,7 +21,8 @@ class Recipe {
       this.ingredients,
       this.numberOfPersons,
       this.diet,
-      this.prepTimeMinutes});
+      this.prepTimeMinutes,
+      this.nutrients,});
 
   factory Recipe.fromJson(Map<String, dynamic> recipeJson) {
     return Recipe(
@@ -36,7 +38,8 @@ class Recipe {
             .toList(),
         numberOfPersons: recipeJson['numberOfPersons'],
         diet: Diet.values[recipeJson['dietIdentifier'] as int],
-        prepTimeMinutes: recipeJson['prepTimeMinutes']);
+        prepTimeMinutes: recipeJson['prepTimeMinutes'],
+        nutrients: Nutrients.fromJson(recipeJson['nutrientsData']),);
   }
 
   String toString() {
@@ -416,6 +419,8 @@ class Nutrients {
   final int calories;
   final String source;
   final DateTime dateOfRetrieval;
+  final bool isHighProteinRecipe;
+  final bool isHighCarbRecipe;
 
   Nutrients(
       {this.id,
@@ -425,7 +430,9 @@ class Nutrients {
       this.protein,
       this.calories,
       this.source,
-      this.dateOfRetrieval});
+      this.dateOfRetrieval,
+      this.isHighProteinRecipe,
+      this.isHighCarbRecipe});
 
   factory Nutrients.fromJson(Map<String, dynamic> json) {
     if (json == null) return null;
@@ -437,7 +444,9 @@ class Nutrients {
         protein: json['protein'],
         calories: json['calories'],
         source: json['source'],
-        dateOfRetrieval: DateTime.parse(json['dateOfRetrieval']));
+        dateOfRetrieval: DateTime.parse(json['dateOfRetrieval']),
+        isHighProteinRecipe: json['isHighProteinRecipe'],
+        isHighCarbRecipe: json['isHighCarbRecipe']);
   }
 }
 
