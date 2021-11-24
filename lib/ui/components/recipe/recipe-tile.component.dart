@@ -61,23 +61,26 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                 child: Container(
                     height: 50,
                     margin: EdgeInsets.only(left: 5),
-                    child: Row(children: [
-                      Chip(
-                        labelPadding: EdgeInsets.all(4.0),
-                        avatar: Utility.getIconForDiet(recipe.diet),
-                        label: Text(
-                          Utility.getTranslatedDiet(context, recipe.diet),
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.bold),
-                        ),
-                        backgroundColor: Colors.white,
-                        elevation: 6.0,
-                        shadowColor: Colors.grey[60],
-                        padding: EdgeInsets.all(8.0),
-                      ),
-                      getHighProteinChipIfNeeded(),
-                      getHighCarbChipIfNeeded(),
-                    ]))),
+                    child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Wrap(spacing: 3, children: [
+                          Chip(
+                            labelPadding: EdgeInsets.all(4.0),
+                            avatar: Utility.getIconForDiet(recipe.diet),
+                            label: Text(
+                              Utility.getTranslatedDiet(context, recipe.diet),
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            backgroundColor: Colors.white,
+                            elevation: 6.0,
+                            shadowColor: Colors.grey[60],
+                            padding: EdgeInsets.all(8.0),
+                          ),
+                          getHighProteinChipIfNeeded(),
+                          getHighCarbChipIfNeeded(),
+                        ])))),
             Positioned(
                 top: 0,
                 left: 0,
