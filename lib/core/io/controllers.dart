@@ -53,13 +53,15 @@ class RecipeController {
         "Error requesting recipes, Code: ${response.statusCode} Message: ${response.body} ");
   }
 
-  static Future<List<Recipe>> getFilteredRecipes(Diet diet) async {
+  static Future<List<Recipe>> getFilteredRecipes(Diet diet, bool highProteinFilter, bool highCarbFilter) async {
     var langCode = LangState().currentLang;
     // get token from token store
     var tokenStore = IOConfig.tokenStore;
     String storedToken = await tokenStore.getToken();
-    Uri queryParams  = Uri(queryParameters: {'dietIdentifier': diet.index.toString()});
-    print(diet);
+    Uri queryParams  = Uri(queryParameters: {
+      'dietIdentifier': diet.index.toString(),
+      'highProteinOnly': highProteinFilter.toString(),
+      'highCarbOnly': highCarbFilter.toString()});
     var response =
     await http.get(Uri.parse("${IOConfig.apiUrl}/recipes?"+queryParams.query+"&langCode=$langCode"), headers: {
       "Authorization": "Bearer $storedToken",

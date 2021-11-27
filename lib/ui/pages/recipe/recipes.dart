@@ -28,11 +28,13 @@ class _RecipesComponentState extends State<RecipesComponent> {
     loading = true;
     var prefs = await SharedPreferences.getInstance();
     var dietIndex = prefs.getInt('recipeDietFilter') ?? Diet.NORMAL.index;
+    var highProteinFilter = prefs.getBool('highProteinFilter') ?? false;
+    var highCarbFilter = prefs.getBool('highCarbFilter') ?? false;
     var diet = Diet.values[dietIndex];
     setState(() {
       recipeList = [];
     });
-    recipeList = await RecipeController.getFilteredRecipes(diet);
+    recipeList = await RecipeController.getFilteredRecipes(diet,highProteinFilter,highCarbFilter);
     print(recipeList);
     apiToken = await TokenStore().getToken();
     await loadDefaultNutrition();
@@ -107,7 +109,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
               // AppLocalizations.of(context).logout
               // AppLocalizations.of(context).settings
               IconButton(
-                icon: Icon(Icons.filter_list ),
+                icon: Icon(Icons.filter_list),
                 onPressed: _showFilterDialog,
               ),
               PopupMenuButton(
@@ -151,8 +153,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
                     children: [...getAllTiles()],
                   ),
                 ),
-              )
-          ));
+              )));
   }
 
   List<Widget> getAllTiles() {
@@ -174,12 +175,31 @@ class _RecipesComponentState extends State<RecipesComponent> {
     var prefs = await SharedPreferences.getInstance();
     var dietIndex = prefs.getInt('recipeDietFilter') ?? Diet.NORMAL.index;
     var diet = Diet.values[dietIndex];
+    var highProteinFilter = prefs.getBool('highProteinFilter') ?? false;
+    var highCarbFilter = prefs.getBool('highCarbFilter') ?? false;
+
+    int dietIndexNew;
+    bool highProteinFilterNew;
+    bool highCarbFilterNew;
+    bool changedFilters;
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return new FilterRecipesDialog(diet: diet);
+        return new FilterRecipesDialog(
+          diet: diet,
+          filterHighCarb: highCarbFilter,
+          filterHighProtein: highProteinFilter,
+        );
       },
-    ).then((value) => {loadRecipes()});
+    ).then((_) => {
+          dietIndexNew = prefs.getInt('recipeDietFilter') ?? Diet.NORMAL.index,
+          highProteinFilterNew = prefs.getBool('highProteinFilter') ?? false,
+          highCarbFilterNew = prefs.getBool('highCarbFilter') ?? false,
+          changedFilters = !(dietIndexNew == dietIndex &&
+              highProteinFilterNew == highProteinFilter &&
+              highCarbFilterNew == highCarbFilter),
+          if (changedFilters) {loadRecipes()}
+        });
   }
 
   Future<void> _signOut() async {
@@ -195,6 +215,4 @@ class _RecipesComponentState extends State<RecipesComponent> {
         context, MaterialPageRoute(builder: (context) => SettingsPage()));
     print('settings completed');
   }
-
-
 }
