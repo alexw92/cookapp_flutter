@@ -202,47 +202,7 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
                       SizedBox(
                         height: 5,
                       ),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                decreaseNumberOfPersons();
-                              },
-                              child: Icon(Icons.remove),
-                              style: ButtonStyle(
-                                shape:
-                                    MaterialStateProperty.all(CircleBorder()),
-                                padding: MaterialStateProperty.all(
-                                    EdgeInsets.all(20)),
-                                backgroundColor: MaterialStateProperty.all(
-                                    Colors.white), // <-- Button color
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            CircleAvatar(
-                              radius: 30,
-                              child: Text(numberOfPersonsTmp.toString(),
-                                  style: TextStyle(
-                                      fontSize: 30, color: Colors.black)),
-                              backgroundColor: Colors.white,
-                            ),
-                            SizedBox(width: 10),
-                            ElevatedButton(
-                              onPressed: () {
-                                increaseNumberOfPersons();
-                              },
-                              child: Icon(Icons.add),
-                              style: ButtonStyle(
-                                shape:
-                                    MaterialStateProperty.all(CircleBorder()),
-                                padding: MaterialStateProperty.all(
-                                    EdgeInsets.all(20)),
-                                backgroundColor: MaterialStateProperty.all(
-                                    Colors.white), // <-- Button color
-                              ),
-                            )
-                          ]),
+                      getIngredientScalerIfNotEmpty(),
                       SizedBox(
                         height: 5,
                       ),
@@ -301,22 +261,26 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
   List<Widget> getNutrientTiles() {
     List<Widget> myTiles = [];
     myTiles.addAll([
-      NutrientTileComponent(textColor: Colors.white,
+      NutrientTileComponent(
+          textColor: Colors.white,
           nutrientName: AppLocalizations.of(context).calories,
           nutrientAmount: recipe.nutrients.calories.toDouble(),
           dailyRecAmount: dailyCalories.toDouble(),
           nutritionType: NutritionType.CALORIES),
-      NutrientTileComponent(textColor: Colors.white,
+      NutrientTileComponent(
+          textColor: Colors.white,
           nutrientName: AppLocalizations.of(context).fat,
           nutrientAmount: recipe.nutrients.fat,
           dailyRecAmount: dailyFat,
           nutritionType: NutritionType.FAT),
-      NutrientTileComponent(textColor: Colors.white,
+      NutrientTileComponent(
+          textColor: Colors.white,
           nutrientName: AppLocalizations.of(context).carbs,
           nutrientAmount: recipe.nutrients.carbohydrate,
           dailyRecAmount: dailyCarbohydrate,
           nutritionType: NutritionType.CARBOHYDRATE),
-      NutrientTileComponent(textColor: Colors.white,
+      NutrientTileComponent(
+          textColor: Colors.white,
           nutrientName: AppLocalizations.of(context).protein,
           nutrientAmount: recipe.nutrients.protein,
           dailyRecAmount: dailyProtein,
@@ -366,7 +330,8 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
                   child: Column(
                     children: <Widget>[
                       Text(
-                        "${AppLocalizations.of(context).recipeInstructionStepShort} " + instruction.step.toString(),
+                        "${AppLocalizations.of(context).recipeInstructionStepShort} " +
+                            instruction.step.toString(),
                         style: TextStyle(fontSize: 16),
                       ),
                       Text(instruction.instructionsText)
@@ -379,5 +344,43 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
         AppLocalizations.of(context).emptyInstructions,
         style: TextStyle(color: Colors.white),
       );
+  }
+
+  Widget getIngredientScalerIfNotEmpty() {
+    if (this.recipe.ingredients.isEmpty) return Container();
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      ElevatedButton(
+        onPressed: () {
+          decreaseNumberOfPersons();
+        },
+        child: Icon(Icons.remove),
+        style: ButtonStyle(
+          shape: MaterialStateProperty.all(CircleBorder()),
+          padding: MaterialStateProperty.all(EdgeInsets.all(20)),
+          backgroundColor:
+              MaterialStateProperty.all(Colors.white), // <-- Button color
+        ),
+      ),
+      SizedBox(width: 10),
+      CircleAvatar(
+        radius: 30,
+        child: Text(numberOfPersonsTmp.toString(),
+            style: TextStyle(fontSize: 30, color: Colors.black)),
+        backgroundColor: Colors.white,
+      ),
+      SizedBox(width: 10),
+      ElevatedButton(
+        onPressed: () {
+          increaseNumberOfPersons();
+        },
+        child: Icon(Icons.add),
+        style: ButtonStyle(
+          shape: MaterialStateProperty.all(CircleBorder()),
+          padding: MaterialStateProperty.all(EdgeInsets.all(20)),
+          backgroundColor:
+              MaterialStateProperty.all(Colors.white), // <-- Button color
+        ),
+      )
+    ]);
   }
 }

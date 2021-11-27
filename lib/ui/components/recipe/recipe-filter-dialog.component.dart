@@ -34,7 +34,7 @@ class _FilterRecipesDialogState extends State<FilterRecipesDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Filter Recipes'),
+      title: Text(AppLocalizations.of(context).filterRecipes),
       actions: <Widget>[
         Column(children: [
           DropdownButton<Diet>(

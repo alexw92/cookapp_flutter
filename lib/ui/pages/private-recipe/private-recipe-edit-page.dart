@@ -168,8 +168,6 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                                 physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 onReorder: (int oldIndex, int newIndex) {
-                                  print(
-                                      "oldIndex $oldIndex newIndex $newIndex");
 
                                   if (oldIndex < newIndex) {
                                     newIndex -= 1;

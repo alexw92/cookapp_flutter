@@ -68,6 +68,8 @@
     "sendProposalToAddIt": "Send us a proposal to add it!",
     "ingredientPcWrongInput": "E.g 1, 1.5, 1.25",
     "highProtein": "High Protein",
-    "highCarb": "High Carb"
+    "highCarb": "High Carb",
+    "filterRecipes": "Filter Recipes",
+    "requestIngredient": "Request new Ingredient"
 
 }

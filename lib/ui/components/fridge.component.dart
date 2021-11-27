@@ -32,25 +32,6 @@ class _FridgeComponentState extends State<FridgeComponent> {
 
   @override
   Widget build(BuildContext context) {
-    // return Container(
-    //   color: Colors.black,
-    //   child: new StaggeredGridView.countBuilder(
-    //     shrinkWrap: true,
-    //     crossAxisCount: 3,
-    //     itemCount: ingredientsList.length,
-    //     itemBuilder: (BuildContext context, int index) => new Container(
-    //       child: new Center(
-    //         child: FridgeTileComponent(
-    //           ingredient: ingredientsList[index],
-    //         ),
-    //       ),
-    //     ),
-    //     staggeredTileBuilder: (int index) => new StaggeredTile.extent(
-    //         2, (1 / 3) * MediaQuery.of(context).size.width),
-    //     mainAxisSpacing: 4.0,
-    //     crossAxisSpacing: 4.0,
-    //   ),
-
     return Container(
       color: Colors.black,
       child: Container(

@@ -96,7 +96,7 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
                                     Text(AppLocalizations.of(context)
                                         .sendProposalToAddIt),
                                     ElevatedButton(
-                                      child: Text("Request Ingredient"),
+                                      child: Text(AppLocalizations.of(context).requestIngredient),
                                       onPressed: () => {},
                                     )
                                   ]))));

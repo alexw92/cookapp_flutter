@@ -160,22 +160,18 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
   }
 
   Future<void> refreshTriggered() async {
-    print("refresh recipes");
     return loadRecipes();
   }
 
   Future<void> _signOut() async {
-    print('signout');
     await FirebaseAuth.instance.signOut();
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => LoginScreen()));
   }
 
   Future<void> _openSettings() async {
-    print('settings');
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => SettingsPage()));
-    print('settings completed');
   }
 
   Future<void> _showRecipeCreateDialog() async {
@@ -185,7 +181,6 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
         return new CreateRecipeDialog();
       },
     ).then((privateRecipe) => {
-      print("private recipe after diag: "+privateRecipe.toString()),
       if(privateRecipe != null){
         _openEditRecipeScreen(privateRecipe)
       }
@@ -195,9 +190,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
   }
 
   Future<void> _openEditRecipeScreen(PrivateRecipe privateRecipe) async {
-    print('editRecipeScreen');
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => RecipeEditPage(privateRecipe.id)));
-    print('editRecipeScreen completed');
   }
 }

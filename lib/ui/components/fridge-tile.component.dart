@@ -25,7 +25,6 @@ class _FridgeTileComponentState extends State<FridgeTileComponent> {
   _FridgeTileComponentState({this.userFoodProduct, this.apiToken});
 
   Color getGlowColorForFoodProduct(){
-   // switch(userFoodProduct.)
     return Colors.red;
   }
 
