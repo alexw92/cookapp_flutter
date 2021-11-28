@@ -67,8 +67,7 @@
     "highProtein": "High Protein",
     "highCarb": "High Carb",
     "filterRecipes": "Rezepte filtern",
-    "requestIngredient": "Neue Zutat anfragen"
-
-
+    "requestIngredient": "Neue Zutat anfragen",
+    "somethingWentWrong": "Something went wrong :("
 
 }

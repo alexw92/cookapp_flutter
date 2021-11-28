@@ -70,6 +70,7 @@
     "highProtein": "High Protein",
     "highCarb": "High Carb",
     "filterRecipes": "Filter Recipes",
-    "requestIngredient": "Request new Ingredient"
+    "requestIngredient": "Request new Ingredient",
+    "somethingWentWrong": "Something went wrong :("
 
 }
