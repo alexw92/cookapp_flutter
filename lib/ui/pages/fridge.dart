@@ -32,17 +32,18 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
   List<UserFoodProduct> missingGroceries = [];
   String apiToken;
   bool loading = false;
+  bool error = false;
   List<GroceryCheckBoxListTileModel> groceries;
   TabController _tabController;
 
   @override
   Widget build(BuildContext context) {
-    if (loading)
+    if (loading && !error)
       return CircularProgressIndicator(
         value: null,
         backgroundColor: Colors.green,
       );
-    else // AppLocalizations.of(context).settings
+    else if (!loading && !error) // AppLocalizations.of(context).settings
       return Scaffold(
           appBar: AppBar(
             title: Text(AppLocalizations.of(context).fridge),
@@ -482,6 +483,16 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                           })),
                 )
               ])));
+    else
+      return Center(
+        child: Card(
+            elevation: 10,
+            // height: 400,
+            child: Container(
+              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+              child: Text(AppLocalizations.of(context).somethingWentWrong),
+            )),
+      );
   }
 
   Future<void> refreshTriggered() async {
@@ -498,7 +509,10 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
           await UserFoodProductController.getUserFoodProducts(true);
     } catch (err) {
       print(err);
-      loading = false;
+      setState(() {
+        this.loading = false;
+        this.error = true;
+      });
     }
     apiToken = await TokenStore().getToken();
     groceries = getGroceries();

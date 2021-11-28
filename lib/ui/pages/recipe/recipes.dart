@@ -23,6 +23,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
   List<Recipe> recipeList = [];
   String apiToken;
   bool loading = false;
+  bool error = false;
 
   void loadRecipes() async {
     loading = true;
@@ -34,10 +35,23 @@ class _RecipesComponentState extends State<RecipesComponent> {
     setState(() {
       recipeList = [];
     });
-    recipeList = await RecipeController.getFilteredRecipes(diet,highProteinFilter,highCarbFilter);
+
+    recipeList = await RecipeController.getFilteredRecipes(
+            diet, highProteinFilter, highCarbFilter)
+        .catchError((error) {
+          print("filtered recipes"+ error.toString());
+      setState(() {
+        this.error = true;
+      });
+    });
     print(recipeList);
     apiToken = await TokenStore().getToken();
-    await loadDefaultNutrition();
+    await loadDefaultNutrition().catchError((error) {
+      print("default nutrition"+ error.toString());
+      setState(() {
+        this.error = true;
+      });
+    });
     setState(() {
       loading = false;
     });
@@ -61,7 +75,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
 
   @override
   Widget build(BuildContext context) {
-    if (loading)
+    if (loading && !error)
       return Scaffold(
           appBar: AppBar(
             title: Text(AppLocalizations.of(context).recipes),
@@ -101,7 +115,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
             value: null,
             backgroundColor: Colors.green,
           )));
-    else
+    else if(!error)
       return Scaffold(
           appBar: AppBar(
             title: Text(AppLocalizations.of(context).recipes),
@@ -154,6 +168,52 @@ class _RecipesComponentState extends State<RecipesComponent> {
                   ),
                 ),
               )));
+      else
+        return  Scaffold(
+        appBar: AppBar(
+          title: Text(AppLocalizations.of(context).recipes),
+          actions: [
+            // AppLocalizations.of(context).logout
+            // AppLocalizations.of(context).settings
+            IconButton(
+              icon: Icon(Icons.filter_list),
+              onPressed: _showFilterDialog,
+            ),
+            PopupMenuButton(
+              onSelected: (result) {
+                switch (result) {
+                  case 0:
+                    _openSettings();
+                    break;
+                  case 1:
+                    _signOut();
+                    break;
+                }
+              },
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                    child: Text(AppLocalizations.of(context).settings),
+                    value: 0),
+                PopupMenuItem(
+                    child: Text(AppLocalizations.of(context).logout),
+                    value: 1)
+              ],
+              icon: Icon(
+                Icons.settings,
+              ),
+            )
+          ],
+        ),
+        body: RefreshIndicator(
+            onRefresh: refreshTriggered,
+            child: Center(
+              child: Card(elevation: 10,
+                // height: 400,
+                child: Container(
+                margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: Text(AppLocalizations.of(context).somethingWentWrong),
+              )),
+            )));
   }
 
   List<Widget> getAllTiles() {
