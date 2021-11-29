@@ -49,7 +49,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
   # https://pub.dev/packages/flutter_login/install
-  flutter_login: ^2.2.1
+  flutter_login: ^3.0.0
   # picking img from gallery
   image_picker: ^0.8.4
   settings_ui: ^1.0.0
