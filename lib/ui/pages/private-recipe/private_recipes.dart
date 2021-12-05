@@ -17,7 +17,8 @@ class PrivateRecipesComponent extends StatefulWidget {
   PrivateRecipesComponent({Key key}) : super(key: key);
 
   @override
-  _PrivateRecipesComponentState createState() => _PrivateRecipesComponentState();
+  _PrivateRecipesComponentState createState() =>
+      _PrivateRecipesComponentState();
 }
 
 class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
@@ -42,11 +43,11 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
   Future<void> loadDefaultNutrition() async {
     var prefs = await SharedPreferences.getInstance();
     RecipeController.getDefaultNutrients().then((nutrients) => {
-      prefs.setInt('dailyCalories', nutrients.recDailyCalories),
-      prefs.setDouble('dailyCarbohydrate', nutrients.recDailyCarbohydrate),
-      prefs.setDouble('dailyProtein', nutrients.recDailyProtein),
-      prefs.setDouble('dailyFat', nutrients.recDailyFat)
-    });
+          prefs.setInt('dailyCalories', nutrients.recDailyCalories),
+          prefs.setDouble('dailyCarbohydrate', nutrients.recDailyCarbohydrate),
+          prefs.setDouble('dailyProtein', nutrients.recDailyProtein),
+          prefs.setDouble('dailyFat', nutrients.recDailyFat)
+        });
   }
 
   @override
@@ -92,9 +93,9 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
           ),
           body: Center(
               child: CircularProgressIndicator(
-                value: null,
-                backgroundColor: Colors.green,
-              )));
+            value: null,
+            backgroundColor: Colors.green,
+          )));
     else
       return Scaffold(
           appBar: AppBar(
@@ -136,24 +137,42 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
                 child: Container(
                   // height: 400,
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: GridView.count(
+                  child: ListView(
                     primary: true,
                     padding: const EdgeInsets.all(0),
-                    crossAxisCount: 1,
-                    mainAxisSpacing: 0,
-                    crossAxisSpacing: 0,
                     children: [...getAllTiles()],
                   ),
                 ),
-              )
-          ));
+              )));
   }
 
   List<Widget> getAllTiles() {
     List<Widget> myTiles = [];
     for (int i = 0; i < recipeList.length; i++) {
       myTiles.add(
-        PrivateRecipeTileComponent(privateRecipe: recipeList[i], apiToken: apiToken),
+        Dismissible(
+          // https://stackoverflow.com/a/65751311/11751609
+          key: UniqueKey(),
+          child: PrivateRecipeTileComponent(
+              privateRecipe: recipeList[i], apiToken: apiToken),
+          direction: DismissDirection.endToStart,
+          onDismissed: (direction) {
+            // added this block
+            PrivateRecipe deletedItem = recipeList.removeAt(i);
+            ScaffoldMessenger.of(context).removeCurrentSnackBar();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text("Deleted Recipe \"${deletedItem.name}\""),
+                action: SnackBarAction(
+                    label: "UNDO",
+                    onPressed: () => setState(
+                          () => recipeList.insert(i, deletedItem),
+                        ) // this is what you needed
+                    ),
+              ),
+            );
+          },
+        ),
       );
     }
     return myTiles;
@@ -180,17 +199,17 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
       builder: (BuildContext context) {
         return new CreateRecipeDialog();
       },
-    ).then((privateRecipe) => {
-      if(privateRecipe != null){
-        _openEditRecipeScreen(privateRecipe)
-      }
-    }, onError: (error) =>{
-      print("Error in recipes "+error)
-    });
+    ).then(
+        (privateRecipe) => {
+              if (privateRecipe != null) {_openEditRecipeScreen(privateRecipe)}
+            },
+        onError: (error) => {print("Error in recipes " + error)});
   }
 
   Future<void> _openEditRecipeScreen(PrivateRecipe privateRecipe) async {
     await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => RecipeEditPage(privateRecipe.id)));
+        context,
+        MaterialPageRoute(
+            builder: (context) => RecipeEditPage(privateRecipe.id)));
   }
 }

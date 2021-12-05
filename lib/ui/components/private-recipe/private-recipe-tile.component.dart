@@ -35,13 +35,14 @@ class _PrivateRecipeTileComponentState
         child: Container(
           alignment: Alignment.center,
           clipBehavior: Clip.hardEdge,
+          height: 300,
           margin: EdgeInsets.only(bottom: 10),
           decoration: BoxDecoration(
               border: Border.all(
                 color: Color.fromARGB(0, 0, 0, 0),
               ),
               borderRadius: BorderRadius.all(Radius.circular(20))),
-          child: Stack(fit: StackFit.expand, children: [
+          child: Stack(fit:StackFit.expand,children: [
             Container(
                 height: 300,
                 width: 300,
