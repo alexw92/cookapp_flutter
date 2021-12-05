@@ -353,10 +353,10 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
         onPressed: () {
           decreaseNumberOfPersons();
         },
-        child: Icon(Icons.remove),
+        child: Icon(Icons.remove, size:32),
         style: ButtonStyle(
           shape: MaterialStateProperty.all(CircleBorder()),
-          padding: MaterialStateProperty.all(EdgeInsets.all(20)),
+          padding: MaterialStateProperty.all(EdgeInsets.all(10)),
           backgroundColor:
               MaterialStateProperty.all(Colors.white), // <-- Button color
         ),
@@ -373,10 +373,10 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
         onPressed: () {
           increaseNumberOfPersons();
         },
-        child: Icon(Icons.add),
+        child: Icon(Icons.add, size:32),
         style: ButtonStyle(
           shape: MaterialStateProperty.all(CircleBorder()),
-          padding: MaterialStateProperty.all(EdgeInsets.all(20)),
+          padding: MaterialStateProperty.all(EdgeInsets.all(10)),
           backgroundColor:
               MaterialStateProperty.all(Colors.white), // <-- Button color
         ),

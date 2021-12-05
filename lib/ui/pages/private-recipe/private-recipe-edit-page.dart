@@ -104,7 +104,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                                 children: [
                                   ElevatedButton(
                                     onPressed: _openAddIngredientScreen,
-                                    child: Icon(Icons.add),
+                                    child: Icon(Icons.add, size:32),
                                     style: ButtonStyle(
                                       shape: MaterialStateProperty.all(
                                           CircleBorder()),
@@ -121,7 +121,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                                               _openEditIngredientsAmountScreen,
                                           child: Image.asset(
                                             "assets/balance.png",
-                                            width: 24,
+                                            width: 32,
                                           ),
                                           style: ButtonStyle(
                                             shape: MaterialStateProperty.all(
@@ -154,7 +154,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                           children: [
                             ElevatedButton(
                               onPressed: openAddInstructionDialog,
-                              child: Icon(Icons.add),
+                              child: Icon(Icons.add, size: 32,),
                               style: ButtonStyle(
                                 shape:
                                     MaterialStateProperty.all(CircleBorder()),
