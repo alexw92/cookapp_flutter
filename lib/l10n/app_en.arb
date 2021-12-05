@@ -71,6 +71,8 @@
     "highCarb": "High Carb",
     "filterRecipes": "Filter Recipes",
     "requestIngredient": "Request new Ingredient",
-    "somethingWentWrong": "Something went wrong :("
+    "somethingWentWrong": "Something went wrong :(",
+    "deletedRecipe":  "Deleted Recipe",
+    "undo": "UNDO"
 
 }

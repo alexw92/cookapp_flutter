@@ -162,9 +162,9 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
             ScaffoldMessenger.of(context).removeCurrentSnackBar();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text("Deleted Recipe \"${deletedItem.name}\""),
+                content: Text("${AppLocalizations.of(context).deletedRecipe} \"${deletedItem.name}\""),
                 action: SnackBarAction(
-                    label: "UNDO",
+                    label: AppLocalizations.of(context).undo,
                     onPressed: () => setState(
                           () => recipeList.insert(i, deletedItem),
                         ) // this is what you needed
