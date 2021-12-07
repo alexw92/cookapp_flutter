@@ -54,6 +54,7 @@ class RecipeController {
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
       var list = json.decode(utf8.decode(response.data)) as List;
+      print(list);
       List<Recipe> recipes = list.map((it) => Recipe.fromJson(it)).toList();
       return recipes;
     }

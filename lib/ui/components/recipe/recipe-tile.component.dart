@@ -95,6 +95,21 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                         borderRadius: BorderRadius.all(Radius.circular(20))),
                     child: Text(this.recipe.name,
                         style: TextStyle(fontSize: 20),
+                        textAlign: TextAlign.center))),
+            Positioned(
+                top: 35,
+                left: 0,
+                right: 0,
+                child: Container(
+                    height: 30,
+                    decoration: BoxDecoration(
+                        color: Color.fromARGB(200, 255, 255, 255),
+                        border: Border.all(
+                          color: Color.fromARGB(0, 0, 0, 0),
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    child: Text("${this.recipe.numberMissingIngredients} missing ingredients",
+                        style: TextStyle(fontSize: 20),
                         textAlign: TextAlign.center)))
           ]),
         ));
