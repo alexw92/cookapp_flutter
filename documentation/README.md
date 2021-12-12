@@ -27,6 +27,11 @@ flutter run --release
 (cookable-flutter)$ mv cors.js cors.json
 (cookable-flutter)$ gsutil cors set cors.json gs://cookable-flutter.appspot.com
 ```
+## Hive
+Possible solution for storing data from api
+[Hive docs](https://docs.hivedb.dev/#/basics/hive_in_flutter)
+[Hive pub.dev](https://pub.dev/packages/hive)
+
 
 # UI Ideas
 Most notes are written directly in the image
