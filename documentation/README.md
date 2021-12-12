@@ -13,6 +13,12 @@ The port is important. Localhost:5000 is currently configured as Google's oauth 
 **Generate Android/IOS icons**
 ```flutter pub run flutter_launcher_icons:main```
 
+**Build release**
+This will also fix some annoying issues occurring in debug build like laggy scrolling in lists
+```
+flutter run --release
+```
+
 **Cors Config on Firebase Bucket to load imgs from flutter web while Testing:**
 
 ```
