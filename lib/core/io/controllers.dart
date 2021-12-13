@@ -252,6 +252,51 @@ class RecipeController {
     throw Exception(
         "Error updating private recipe, Code: ${response.statusCode} Message: ${response.data} ");
   }
+
+
+  // todo implement
+  static Future<PrivateRecipe> updatePrivateRecipeImage(
+      PrivateRecipe privateRecipe) async {
+    var langCode = LangState().currentLang;
+    // get token from token store
+    var tokenStore = IOConfig.tokenStore;
+    String storedToken = await tokenStore.getToken();
+    var body = json.encode(privateRecipe.toJson());
+
+    BaseOptions options = new BaseOptions(
+        baseUrl: IOConfig.apiUrl,
+        connectTimeout: 2000, //10 seconds
+        receiveTimeout: 10000,
+        headers: {
+          "Authorization": "Bearer $storedToken",
+          'Content-Type': 'application/json',
+        });
+
+    Dio dio = new Dio(options);
+    var response = await dio
+        .post("/storage/recipe/' + id + '/image", data: body)
+        .timeout(IOConfig.timeoutDuration);
+
+    /// If the first API call is successful
+    if (response.statusCode == HttpStatus.ok) {
+      var recipeJson = response.data;
+      PrivateRecipe recipe = PrivateRecipe.fromJson(recipeJson);
+      return recipe;
+    }
+
+    throw Exception(
+        "Error updating private recipe, Code: ${response.statusCode} Message: ${response.data} ");
+  }
+
+//   public updateRecipeImage(file: any, id: number): Observable<void>  {
+//   const queryParamsList: { name: string, value: string }[] = [];
+//   queryParamsList.push({name: 'file', value: file});
+//   let params = new FormData();
+//   for (const queryParam of queryParamsList) {
+//   params.append(queryParam.name, queryParam.value);
+//   }
+//   return this.httpService.post<void>('/storage/recipe/' + id + '/image',params);
+// }
 }
 
 class FoodProductController {
