@@ -83,7 +83,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
               // AppLocalizations.of(context).logout
               // AppLocalizations.of(context).settings
               IconButton(
-                icon: ImageIcon(AssetImage("assets/filter_icon.jpg")),
+                icon: Icon(Icons.filter_list),
               ),
               PopupMenuButton(
                 onSelected: (result) {
