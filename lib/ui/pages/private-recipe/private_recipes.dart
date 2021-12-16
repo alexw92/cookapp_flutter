@@ -64,7 +64,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
             title: Text(AppLocalizations.of(context).yourRecipes),
             actions: [
               IconButton(
-                icon: Icon(Icons.add),
+                icon: Icon(Icons.add, size: 32),
               ),
               PopupMenuButton(
                 onSelected: (result) {
