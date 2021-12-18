@@ -530,20 +530,25 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                   ],
                 ),
               ),
-              body: RefreshIndicator(
-                  onRefresh: refreshTriggered,
-                  child: SingleChildScrollView(
-                      physics: AlwaysScrollableScrollPhysics(),
-                      child: Container( child:Center(
-                        child: Card(
-                            elevation: 10,
-                            // height: 400,
-                            child: Container(
-                              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                              child: Text(AppLocalizations.of(context)
-                                  .somethingWentWrong),
-                            )),
-                      ))))));
+              body: Center(
+                  child: Container(
+                height: 100,
+                child: Card(
+                    elevation: 10,
+                    // height: 400,
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                          child: Text(
+                              AppLocalizations.of(context).somethingWentWrong),
+                        ),
+                        ElevatedButton(
+                            onPressed: refreshTriggered,
+                            child: Text("Try again"))
+                      ],
+                    )),
+              ))));
   }
 
   Future<void> refreshTriggered() async {
