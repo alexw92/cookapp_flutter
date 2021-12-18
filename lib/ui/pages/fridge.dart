@@ -484,15 +484,66 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                 )
               ])));
     else
-      return Center(
-        child: Card(
-            elevation: 10,
-            // height: 400,
-            child: Container(
-              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-              child: Text(AppLocalizations.of(context).somethingWentWrong),
-            )),
-      );
+      return Scaffold(
+          appBar: AppBar(
+            title: Text(AppLocalizations.of(context).fridge),
+            actions: [
+              PopupMenuButton(
+                onSelected: (result) {
+                  switch (result) {
+                    case 0:
+                      _openSettings();
+                      break;
+                    case 1:
+                      _signOut();
+                      break;
+                  }
+                },
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                      child: Text(AppLocalizations.of(context).settings),
+                      value: 0),
+                  PopupMenuItem(
+                      child: Text(AppLocalizations.of(context).logout),
+                      value: 1)
+                ],
+                icon: Icon(
+                  Icons.settings,
+                ),
+              )
+            ],
+          ),
+          body: Scaffold(
+              appBar: AppBar(
+                toolbarHeight: 0,
+                bottom: TabBar(
+                  controller: _tabController,
+                  isScrollable: true,
+                  tabs: [
+                    Tab(text: AppLocalizations.of(context).tab_fruits),
+                    Tab(text: AppLocalizations.of(context).tab_vegetables),
+                    Tab(text: AppLocalizations.of(context).tab_spices),
+                    Tab(text: AppLocalizations.of(context).tab_pantry),
+                    Tab(text: AppLocalizations.of(context).tab_dairy),
+                    Tab(text: AppLocalizations.of(context).tab_meat),
+                    Tab(text: AppLocalizations.of(context).tab_fish),
+                  ],
+                ),
+              ),
+              body: RefreshIndicator(
+                  onRefresh: refreshTriggered,
+                  child: SingleChildScrollView(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      child: Container( child:Center(
+                        child: Card(
+                            elevation: 10,
+                            // height: 400,
+                            child: Container(
+                              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              child: Text(AppLocalizations.of(context)
+                                  .somethingWentWrong),
+                            )),
+                      ))))));
   }
 
   Future<void> refreshTriggered() async {
@@ -501,7 +552,10 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
   }
 
   void loadFoodProducts() async {
-    loading = true;
+    setState(() {
+      loading = true;
+      error = false;
+    });
     try {
       ownedGroceries =
           await UserFoodProductController.getUserFoodProducts(false);
