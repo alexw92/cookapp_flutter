@@ -15,7 +15,7 @@ class RecipeController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 2000, //10 seconds
+        connectTimeout: 3000, //10 seconds
         receiveTimeout: 10000,
         headers: {
           "Authorization": "Bearer $storedToken",
@@ -43,7 +43,7 @@ class RecipeController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 2000, //10 seconds
+        connectTimeout: 3000, //10 seconds
         receiveTimeout: 10000,
         headers: {
           "Authorization": "Bearer $storedToken",
@@ -78,7 +78,7 @@ class RecipeController {
     };
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 2000, //10 seconds
+        connectTimeout: 3000, //10 seconds
         receiveTimeout: 10000,
         headers: {
           "Authorization": "Bearer $storedToken",
@@ -109,7 +109,7 @@ class RecipeController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 2000, //10 seconds
+        connectTimeout: 3000, //10 seconds
         receiveTimeout: 10000,
         headers: {
           "Authorization": "Bearer $storedToken",
@@ -139,7 +139,7 @@ class RecipeController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 2000, //10 seconds
+        connectTimeout: 3000, //10 seconds
         receiveTimeout: 10000,
         headers: {
           "Authorization": "Bearer $storedToken",
@@ -170,7 +170,7 @@ class RecipeController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 2000, //10 seconds
+        connectTimeout: 3000, //10 seconds
         receiveTimeout: 10000,
         headers: {
           "Authorization": "Bearer $storedToken",
@@ -201,7 +201,7 @@ class RecipeController {
     var body = json.encode({"name": recipeName});
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 2000, //10 seconds
+        connectTimeout: 3000, //10 seconds
         receiveTimeout: 10000,
         headers: {
           "Authorization": "Bearer $storedToken",
@@ -237,7 +237,7 @@ class RecipeController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 2000, //10 seconds
+        connectTimeout: 3000, //10 seconds
         receiveTimeout: 10000,
         headers: {
           "Authorization": "Bearer $storedToken",
@@ -274,7 +274,7 @@ class RecipeController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 2000, //10 seconds
+        connectTimeout: 3000, //10 seconds
         receiveTimeout: 10000,
         headers: {
           "Authorization": "Bearer $storedToken",
@@ -319,7 +319,7 @@ class FoodProductController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 2000, //10 seconds
+        connectTimeout: 3000, //10 seconds
         receiveTimeout: 10000,
         headers: {
           "Authorization": "Bearer $storedToken",
@@ -356,7 +356,7 @@ class UserFoodProductController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 2000, //10 seconds
+        connectTimeout: 3000, //10 seconds
         receiveTimeout: 10000,
         headers: {
           "Authorization": "Bearer $storedToken",
@@ -388,7 +388,7 @@ class UserFoodProductController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 2000, //10 seconds
+        connectTimeout: 3000, //10 seconds
         receiveTimeout: 10000,
         headers: {
           "Authorization": "Bearer $storedToken",
