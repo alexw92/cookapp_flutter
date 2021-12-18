@@ -39,10 +39,40 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
   @override
   Widget build(BuildContext context) {
     if (loading && !error)
-      return CircularProgressIndicator(
-        value: null,
-        backgroundColor: Colors.green,
-      );
+      return Scaffold(
+          appBar: AppBar(
+            title: Text(AppLocalizations.of(context).fridge),
+            actions: [
+              PopupMenuButton(
+                onSelected: (result) {
+                  switch (result) {
+                    case 0:
+                      _openSettings();
+                      break;
+                    case 1:
+                      _signOut();
+                      break;
+                  }
+                },
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                      child: Text(AppLocalizations.of(context).settings),
+                      value: 0),
+                  PopupMenuItem(
+                      child: Text(AppLocalizations.of(context).logout),
+                      value: 1)
+                ],
+                icon: Icon(
+                  Icons.settings,
+                ),
+              )
+            ],
+          ),
+          body: Center(
+              child: CircularProgressIndicator(
+            value: null,
+            backgroundColor: Colors.green,
+          )));
     else if (!loading && !error) // AppLocalizations.of(context).settings
       return Scaffold(
           appBar: AppBar(

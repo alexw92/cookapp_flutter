@@ -26,7 +26,10 @@ class _RecipesComponentState extends State<RecipesComponent> {
   bool error = false;
 
   void loadRecipes() async {
-    loading = true;
+    setState(() {
+      error = false;
+      loading = true;
+    });
     var prefs = await SharedPreferences.getInstance();
     var dietIndex = prefs.getInt('recipeDietFilter') ?? Diet.NORMAL.index;
     var highProteinFilter = prefs.getBool('highProteinFilter') ?? false;
@@ -204,15 +207,24 @@ class _RecipesComponentState extends State<RecipesComponent> {
             )
           ],
         ),
-        body: RefreshIndicator(
-            onRefresh: refreshTriggered,
-            child: Center(
-              child: Card(elevation: 10,
-                // height: 400,
-                child: Container(
-                margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                child: Text(AppLocalizations.of(context).somethingWentWrong),
-              )),
+        body: Center(
+            child: Container(
+              height: 100,
+              child: Card(
+                  elevation: 10,
+                  // height: 400,
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                        child: Text(
+                            AppLocalizations.of(context).somethingWentWrong),
+                      ),
+                      ElevatedButton(
+                          onPressed: refreshTriggered,
+                          child: Text("Try again"))
+                    ],
+                  )),
             )));
   }
 

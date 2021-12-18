@@ -25,13 +25,22 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
   List<PrivateRecipe> recipeList = [];
   String apiToken;
   bool loading = false;
+  bool error = false;
 
   void loadRecipes() async {
-    loading = true;
+    setState(() {
+      this.error = false;
+      this.loading = true;
+    });
     setState(() {
       recipeList = [];
     });
-    recipeList = await RecipeController.getPrivateRecipes();
+    recipeList = await RecipeController.getPrivateRecipes().catchError((error) {
+      print("private recipes "+ error.toString());
+      setState(() {
+        this.error = true;
+      });
+    });
     apiToken = await TokenStore().getToken();
     await loadDefaultNutrition();
     setState(() {
@@ -95,7 +104,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
             value: null,
             backgroundColor: Colors.green,
           )));
-    else
+    else if (!error)
       return Scaffold(
           appBar: AppBar(
             title: Text(AppLocalizations.of(context).yourRecipes),
@@ -143,6 +152,58 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
                   ),
                 ),
               )));
+    else
+      return Scaffold(
+          appBar: AppBar(
+            title: Text(AppLocalizations.of(context).yourRecipes),
+            actions: [
+              IconButton(
+                icon: Icon(Icons.add, size: 32),
+              ),
+              PopupMenuButton(
+                onSelected: (result) {
+                  switch (result) {
+                    case 0:
+                      _openSettings();
+                      break;
+                    case 1:
+                      _signOut();
+                      break;
+                  }
+                },
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                      child: Text(AppLocalizations.of(context).settings),
+                      value: 0),
+                  PopupMenuItem(
+                      child: Text(AppLocalizations.of(context).logout),
+                      value: 1)
+                ],
+                icon: Icon(
+                  Icons.settings,
+                ),
+              )
+            ],
+          ),
+          body: Center(
+              child: Container(
+                height: 100,
+                child: Card(
+                    elevation: 10,
+                    // height: 400,
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                          child: Text(
+                              AppLocalizations.of(context).somethingWentWrong),
+                        ),
+                        ElevatedButton(
+                            onPressed: refreshTriggered,
+                            child: Text("Try again"))
+                      ],
+                    )),
+              )));
   }
 
   List<Widget> getAllTiles() {
@@ -161,7 +222,8 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
             ScaffoldMessenger.of(context).removeCurrentSnackBar();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text("${AppLocalizations.of(context).deletedRecipe} \"${deletedItem.name}\""),
+                content: Text(
+                    "${AppLocalizations.of(context).deletedRecipe} \"${deletedItem.name}\""),
                 action: SnackBarAction(
                     label: AppLocalizations.of(context).undo,
                     onPressed: () => setState(
