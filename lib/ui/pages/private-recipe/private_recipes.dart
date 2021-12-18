@@ -32,7 +32,6 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
       recipeList = [];
     });
     recipeList = await RecipeController.getPrivateRecipes();
-    print(recipeList);
     apiToken = await TokenStore().getToken();
     await loadDefaultNutrition();
     setState(() {
