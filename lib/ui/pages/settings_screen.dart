@@ -68,30 +68,30 @@ class _SettingsPageState extends State<SettingsPage> {
                   });
                 },
               ),
-              SettingsTile.switchTile(
-                title: AppLocalizations.of(context).useSystemTheme,
-                leading: Icon(Icons.phone_android),
-                switchValue: isSwitched,
-                onToggle: (value) {
-                  setState(() {
-                    isSwitched = value;
-                  });
-                },
-              ),
+              // SettingsTile.switchTile(
+              //   title: AppLocalizations.of(context).useSystemTheme,
+              //   leading: Icon(Icons.phone_android),
+              //   switchValue: isSwitched,
+              //   onToggle: (value) {
+              //     setState(() {
+              //       isSwitched = value;
+              //     });
+              //   },
+              // ),
             ],
           ),
-          SettingsSection(
-            titlePadding: EdgeInsets.all(20),
-            title: AppLocalizations.of(context).security,
-            tiles: [
-              SettingsTile.switchTile(
-                title: AppLocalizations.of(context).useFingerprint,
-                leading: Icon(Icons.fingerprint),
-                switchValue: true,
-                onToggle: (value) {},
-              ),
-            ],
-          ),
+          // SettingsSection(
+          //   titlePadding: EdgeInsets.all(20),
+          //   title: AppLocalizations.of(context).security,
+          //   tiles: [
+          //     SettingsTile.switchTile(
+          //       title: AppLocalizations.of(context).useFingerprint,
+          //       leading: Icon(Icons.fingerprint),
+          //       switchValue: true,
+          //       onToggle: (value) {},
+          //     ),
+          //   ],
+          // ),
           SettingsSection(
             titlePadding: EdgeInsets.all(20),
             title: AppLocalizations.of(context).account,
