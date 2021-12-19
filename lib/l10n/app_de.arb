@@ -71,6 +71,7 @@
     "somethingWentWrong": "Something went wrong :(",
     "deletedRecipe":  "Rezept gelöscht:",
     "undo": "RÜCKGÄNGIG",
-    "tryAgain":  "Nochmal probieren"
+    "tryAgain":  "Nochmal probieren",
+    "recipeDeletionError": "Rezept konnte nicht gelöscht werden"
 
 }

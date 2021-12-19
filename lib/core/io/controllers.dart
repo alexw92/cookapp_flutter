@@ -159,7 +159,35 @@ class RecipeController {
     }
 
     throw Exception(
-        "Error requesting recipes, Code: ${response.statusCode} Message: ${response.data} ");
+        "Error requesting private recipe, Code: ${response.statusCode} Message: ${response.data} ");
+  }
+
+  static Future<void> deletePrivateRecipe(int id) async {
+    // get token from token store
+    var tokenStore = IOConfig.tokenStore;
+    String storedToken = await tokenStore.getToken();
+
+    BaseOptions options = new BaseOptions(
+        baseUrl: IOConfig.apiUrl,
+        connectTimeout: 3000, //10 seconds
+        receiveTimeout: 10000,
+        headers: {
+          "Authorization": "Bearer $storedToken",
+          'Content-Type': 'application/json',
+        });
+
+    Dio dio = new Dio(options);
+    final stopwatch = Stopwatch()..start();
+    var response = await dio.delete("/privaterecipes/$id");
+    print('deletePrivateRecipe api req executed in ${stopwatch.elapsed.inMilliseconds}');
+
+    /// If the first API call is successful
+    if (response.statusCode == HttpStatus.ok) {
+      return;
+    }
+
+    throw Exception(
+        "Error deleting private recipe, Code: ${response.statusCode} Message: ${response.data} ");
   }
 
   static Future<List<PrivateRecipe>> getPrivateRecipes() async {

@@ -36,7 +36,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
       recipeList = [];
     });
     recipeList = await RecipeController.getPrivateRecipes().catchError((error) {
-      print("private recipes "+ error.toString());
+      print("private recipes " + error.toString());
       setState(() {
         this.error = true;
       });
@@ -187,23 +187,23 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
           ),
           body: Center(
               child: Container(
-                height: 100,
-                child: Card(
-                    elevation: 10,
-                    // height: 400,
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                          child: Text(
-                              AppLocalizations.of(context).somethingWentWrong),
-                        ),
-                        ElevatedButton(
-                            onPressed: refreshTriggered,
-                            child: Text(AppLocalizations.of(context).tryAgain))
-                      ],
-                    )),
-              )));
+            height: 100,
+            child: Card(
+                elevation: 10,
+                // height: 400,
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      child:
+                          Text(AppLocalizations.of(context).somethingWentWrong),
+                    ),
+                    ElevatedButton(
+                        onPressed: refreshTriggered,
+                        child: Text(AppLocalizations.of(context).tryAgain))
+                  ],
+                )),
+          )));
   }
 
   List<Widget> getAllTiles() {
@@ -217,21 +217,46 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
               privateRecipe: recipeList[i], apiToken: apiToken),
           direction: DismissDirection.endToStart,
           onDismissed: (direction) {
-            // added this block
+            bool withdrawDeletion = false;
             PrivateRecipe deletedItem = recipeList.removeAt(i);
             ScaffoldMessenger.of(context).removeCurrentSnackBar();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                    "${AppLocalizations.of(context).deletedRecipe} \"${deletedItem.name}\""),
-                action: SnackBarAction(
-                    label: AppLocalizations.of(context).undo,
-                    onPressed: () => setState(
-                          () => recipeList.insert(i, deletedItem),
-                        ) // this is what you needed
-                    ),
-              ),
-            );
+            ScaffoldMessenger.of(context)
+                .showSnackBar(
+                  SnackBar(
+                    content: Text(
+                        "${AppLocalizations.of(context).deletedRecipe} \"${deletedItem.name}\""),
+                    action: SnackBarAction(
+                        label: AppLocalizations.of(context).undo,
+                        onPressed: () => {
+                              withdrawDeletion = true,
+                              setState(
+                                () => recipeList.insert(i, deletedItem),
+                              )
+                            }),
+                  ),
+                )
+                .closed
+                .then((value) => {
+                      if (!withdrawDeletion)
+                        RecipeController.deletePrivateRecipe(deletedItem.id)
+                            .then(
+                                (value) => {
+                                      // everything ok
+                                    },
+                                onError: (error) => {
+                                      // if deletion failed we assume recipe still exists
+                                      setState(
+                                        () => recipeList.insert(i, deletedItem),
+                                      ),
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                              "${AppLocalizations.of(context).recipeDeletionError}"),
+                                        ),
+                                      )
+                                    })
+                    });
           },
         ),
       );
