@@ -32,6 +32,13 @@ Possible solution for storing data from api
 [Hive docs](https://docs.hivedb.dev/#/basics/hive_in_flutter)
 [Hive pub.dev](https://pub.dev/packages/hive)
 
+## Ingredient Recognition TFLite
+Looks pretty promising! Let's add this if there is time
+Check the [google automl docs](https://cloud.google.com/vision/automl/object-detection/docs), 
+[Tensorflow Lite docs](https://www.tensorflow.org/lite/examples/object_detection/overview#example_applications_and_guides)
+and [Flutter TFlite module](https://pub.dev/packages/tflite_flutter)
+![sample](https://cloud.google.com/vision/automl/object-detection/docs/images/index_test_image.png)
+
 
 # UI Ideas
 Most notes are written directly in the image
