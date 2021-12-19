@@ -575,7 +575,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                         ),
                         ElevatedButton(
                             onPressed: refreshTriggered,
-                            child: Text("Try again"))
+                            child: Text(AppLocalizations.of(context).tryAgain))
                       ],
                     )),
               ))));

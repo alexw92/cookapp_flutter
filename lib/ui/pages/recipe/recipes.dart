@@ -222,7 +222,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
                       ),
                       ElevatedButton(
                           onPressed: refreshTriggered,
-                          child: Text("Try again"))
+                          child: Text(AppLocalizations.of(context).tryAgain))
                     ],
                   )),
             )));

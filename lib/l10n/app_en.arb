@@ -73,6 +73,7 @@
     "requestIngredient": "Request new Ingredient",
     "somethingWentWrong": "Something went wrong :(",
     "deletedRecipe":  "Deleted Recipe",
-    "undo": "UNDO"
+    "undo": "UNDO",
+    "tryAgain":  "Try Again"
 
 }
