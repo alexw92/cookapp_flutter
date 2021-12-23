@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:cookable_flutter/common/LangState.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:dio/dio.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:mime_type/mime_type.dart';
 
 import 'io-config.dart';
 
@@ -25,7 +27,8 @@ class RecipeController {
     Dio dio = new Dio(options);
     final stopwatch = Stopwatch()..start();
     var response = await dio.get("/constants/defaultNutrients");
-    print('getDefaultNutrients api req executed in ${stopwatch.elapsed.inMilliseconds}');
+    print(
+        'getDefaultNutrients api req executed in ${stopwatch.elapsed.inMilliseconds}');
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
@@ -88,7 +91,8 @@ class RecipeController {
     Dio dio = new Dio(options);
     final stopwatch = Stopwatch()..start();
     var response = await dio.get("/recipes", queryParameters: queryParameters);
-    print('getFilteredRecipes api req executed in ${stopwatch.elapsed.inMilliseconds}');
+    print(
+        'getFilteredRecipes api req executed in ${stopwatch.elapsed.inMilliseconds}');
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
@@ -120,6 +124,7 @@ class RecipeController {
     final stopwatch = Stopwatch()..start();
     var response = await dio.get("/recipes/$id?langCode=$langCode");
     print('getRecipe api req executed in ${stopwatch.elapsed.inMilliseconds}');
+
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
       var recipeJson = response.data;
@@ -149,7 +154,8 @@ class RecipeController {
     Dio dio = new Dio(options);
     final stopwatch = Stopwatch()..start();
     var response = await dio.get("/privaterecipes/$id?langCode=$langCode");
-    print('getPrivateRecipe api req executed in ${stopwatch.elapsed.inMilliseconds}');
+    print(
+        'getPrivateRecipe api req executed in ${stopwatch.elapsed.inMilliseconds}');
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
@@ -179,7 +185,8 @@ class RecipeController {
     Dio dio = new Dio(options);
     final stopwatch = Stopwatch()..start();
     var response = await dio.delete("/privaterecipes/$id");
-    print('deletePrivateRecipe api req executed in ${stopwatch.elapsed.inMilliseconds}');
+    print(
+        'deletePrivateRecipe api req executed in ${stopwatch.elapsed.inMilliseconds}');
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
@@ -208,7 +215,8 @@ class RecipeController {
     Dio dio = new Dio(options);
     final stopwatch = Stopwatch()..start();
     var response = await dio.get("/privaterecipes/all?langCode=$langCode");
-    print('getPrivateRecipes api req executed in ${stopwatch.elapsed.inMilliseconds}');
+    print(
+        'getPrivateRecipes api req executed in ${stopwatch.elapsed.inMilliseconds}');
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
@@ -277,7 +285,8 @@ class RecipeController {
     var response = await dio
         .put("/privaterecipes?langCode=$langCode", data: body)
         .timeout(IOConfig.timeoutDuration);
-    print('updatePrivateRecipe api req executed in ${stopwatch.elapsed.inMilliseconds}');
+    print(
+        'updatePrivateRecipe api req executed in ${stopwatch.elapsed.inMilliseconds}');
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
@@ -290,41 +299,46 @@ class RecipeController {
         "Error updating private recipe, Code: ${response.statusCode} Message: ${response.data} ");
   }
 
-
   // todo implement
-  static Future<PrivateRecipe> updatePrivateRecipeImage(
-      PrivateRecipe privateRecipe) async {
-    var langCode = LangState().currentLang;
+  static Future<void> updatePrivateRecipeImage(
+      PrivateRecipe privateRecipe, File image) async {
     // get token from token store
     var tokenStore = IOConfig.tokenStore;
     String storedToken = await tokenStore.getToken();
-    var body = json.encode(privateRecipe.toJson());
+
+
+    String mimeType = mime(image.path);
+    String mimee = mimeType.split('/')[0];
+    String type = mimeType.split('/')[1];
+
+    FormData formData =
+        FormData.fromMap({'file': await MultipartFile.fromFile(image.path, contentType: MediaType(mimee, type))});
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 3000, //10 seconds
+        connectTimeout: 10000, //10 seconds
         receiveTimeout: 10000,
         headers: {
           "Authorization": "Bearer $storedToken",
-          'Content-Type': 'application/json',
+          "Content-Type": "multipart/form-data"
         });
 
     Dio dio = new Dio(options);
     final stopwatch = Stopwatch()..start();
     var response = await dio
-        .post("/storage/recipe/' + id + '/image", data: body)
+        .post("/storage/privaterecipe/${privateRecipe.id}/image",
+              data: formData )
         .timeout(IOConfig.timeoutDuration);
-    print('updatePrivateImg api req executed in ${stopwatch.elapsed.inMilliseconds}');
+    print(
+        'updatePrivateImg api req executed in ${stopwatch.elapsed.inMilliseconds}');
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
-      var recipeJson = response.data;
-      PrivateRecipe recipe = PrivateRecipe.fromJson(recipeJson);
-      return recipe;
+      return;
     }
 
     throw Exception(
-        "Error updating private recipe, Code: ${response.statusCode} Message: ${response.data} ");
+        "Error updating private recipe image, Code: ${response.statusCode} Message: ${response.data} ");
   }
 
 //   public updateRecipeImage(file: any, id: number): Observable<void>  {
@@ -357,8 +371,8 @@ class FoodProductController {
     Dio dio = new Dio(options);
     final stopwatch = Stopwatch()..start();
     var response = await dio.get("/foodProducts?langCode=$langCode");
-    print('getFoodProducts api req executed in ${stopwatch.elapsed.inMilliseconds}');
-
+    print(
+        'getFoodProducts api req executed in ${stopwatch.elapsed.inMilliseconds}');
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
@@ -394,7 +408,8 @@ class UserFoodProductController {
     Dio dio = new Dio(options);
     final stopwatch = Stopwatch()..start();
     var response = await dio.get("/userFood$endpoint?langCode=$langCode");
-    print('getUserFoodProducts $endpoint api req executed in ${stopwatch.elapsed.inMilliseconds}');
+    print(
+        'getUserFoodProducts $endpoint api req executed in ${stopwatch.elapsed.inMilliseconds}');
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
@@ -427,7 +442,9 @@ class UserFoodProductController {
     final stopwatch = Stopwatch()..start();
     var response = await dio.post(
         "/userFood/update?foodProductId=$foodProductId&isAdded=$addFoodProduct");
-    print('toggleUserFoodProduct api req executed in ${stopwatch.elapsed.inMilliseconds}');
+    print(
+        'toggleUserFoodProduct api req executed in ${stopwatch.elapsed.inMilliseconds}');
+
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
       return;

@@ -1,12 +1,16 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
 import 'package:cookable_flutter/core/data/models.dart';
+import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/private-recipe-details-page.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/private-recipe-edit-page.dart';
 import 'package:cookable_flutter/ui/util/formatters.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PrivateRecipeTileComponent extends StatefulWidget {
   PrivateRecipe privateRecipe;
@@ -25,6 +29,7 @@ class _PrivateRecipeTileComponentState
     extends State<PrivateRecipeTileComponent> {
   PrivateRecipe privateRecipe;
   String apiToken;
+  final picker = ImagePicker();
 
   _PrivateRecipeTileComponentState({this.privateRecipe, this.apiToken});
 
@@ -146,8 +151,15 @@ class _PrivateRecipeTileComponentState
     print('editRecipeScreen completed');
   }
 
-  _editPrivateRecipeImg(PrivateRecipe privateRecipe) {
-    //Todo implement
+  _editPrivateRecipeImg(PrivateRecipe privateRecipe) async {
+    var image = await pickImage();
+    RecipeController.updatePrivateRecipeImage(privateRecipe, image);
+  }
+
+  Future<File> pickImage({bool fromGallery = true}) async {
+    final pickedFile = await picker.pickImage(
+        source: fromGallery ? ImageSource.gallery : ImageSource.camera);
+      return File(pickedFile.path);
   }
 
   Widget getHighProteinChipIfNeeded() {
