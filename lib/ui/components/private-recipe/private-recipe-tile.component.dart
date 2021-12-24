@@ -6,6 +6,7 @@ import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/private-recipe-details-page.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/private-recipe-edit-page.dart';
+import 'package:cookable_flutter/ui/util/fb_storage_utils.dart';
 import 'package:cookable_flutter/ui/util/formatters.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,12 +30,36 @@ class _PrivateRecipeTileComponentState
     extends State<PrivateRecipeTileComponent> {
   PrivateRecipe privateRecipe;
   String apiToken;
+  String recipeImgUrl;
+  bool defaultImg = false;
   final picker = ImagePicker();
 
   _PrivateRecipeTileComponentState({this.privateRecipe, this.apiToken});
 
   @override
+  void initState() {
+    getImageUrl();
+    super.initState();
+  }
+
+  getImageUrl() async {
+    print(privateRecipe.imgSrc);
+    if (privateRecipe.imgSrc.contains("food.png")) {
+      setState(() {
+        defaultImg = true;
+      });
+      return;
+    }
+    var imgUrl = await FBStorage.getPrivateRecipeImgDownloadUrl(privateRecipe.imgSrc);
+    setState(() {
+      defaultImg = false;
+      recipeImgUrl = imgUrl;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (!defaultImg && recipeImgUrl == null) return Container();
     return GestureDetector(
         onTap: () => navigatePrivateToRecipePage(privateRecipe.id),
         child: Container(
@@ -47,7 +72,7 @@ class _PrivateRecipeTileComponentState
                 color: Color.fromARGB(0, 0, 0, 0),
               ),
               borderRadius: BorderRadius.all(Radius.circular(20))),
-          child: Stack(fit:StackFit.expand,children: [
+          child: Stack(fit: StackFit.expand, children: [
             Container(
                 height: 300,
                 width: 300,
@@ -58,7 +83,9 @@ class _PrivateRecipeTileComponentState
                       borderRadius: BorderRadius.circular(20),
                       child: Image(
                         // needs --web-renderer html
-                        image: CachedNetworkImageProvider(privateRecipe.imgSrc,
+                        image: CachedNetworkImageProvider(
+                            (defaultImg) ? privateRecipe.imgSrc : recipeImgUrl,
+                            //privateRecipe.imgSrc,
                             imageRenderMethodForWeb:
                                 ImageRenderMethodForWeb.HttpGet),
                       ),
@@ -159,7 +186,7 @@ class _PrivateRecipeTileComponentState
   Future<File> pickImage({bool fromGallery = true}) async {
     final pickedFile = await picker.pickImage(
         source: fromGallery ? ImageSource.gallery : ImageSource.camera);
-      return File(pickedFile.path);
+    return File(pickedFile.path);
   }
 
   Widget getHighProteinChipIfNeeded() {
