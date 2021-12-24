@@ -32,6 +32,7 @@ class _PrivateRecipeTileComponentState
   String apiToken;
   String recipeImgUrl;
   bool defaultImg = false;
+  bool showProgressIndicatorImage = false;
   final picker = ImagePicker();
 
   _PrivateRecipeTileComponentState({this.privateRecipe, this.apiToken});
@@ -50,7 +51,8 @@ class _PrivateRecipeTileComponentState
       });
       return;
     }
-    var imgUrl = await FBStorage.getPrivateRecipeImgDownloadUrl(privateRecipe.imgSrc);
+    var imgUrl =
+        await FBStorage.getPrivateRecipeImgDownloadUrl(privateRecipe.imgSrc);
     setState(() {
       defaultImg = false;
       recipeImgUrl = imgUrl;
@@ -90,6 +92,17 @@ class _PrivateRecipeTileComponentState
                                 ImageRenderMethodForWeb.HttpGet),
                       ),
                     ))),
+            (showProgressIndicatorImage)
+                ? Positioned(
+                    top: 120,
+                    bottom: 120,
+                    left: 130,
+                    right: 130,
+                    child: SizedBox(
+                        width: 10,
+                        height: 10,
+                        child: CircularProgressIndicator()))
+                : Container(),
             Positioned(
                 top: 0,
                 left: 0,
@@ -180,12 +193,49 @@ class _PrivateRecipeTileComponentState
 
   _editPrivateRecipeImg(PrivateRecipe privateRecipe) async {
     var image = await pickImage();
-    RecipeController.updatePrivateRecipeImage(privateRecipe, image);
+    setState(() {
+      showProgressIndicatorImage = true;
+    });
+    var updatedPrivateRecipe;
+    RecipeController.updatePrivateRecipeImage(privateRecipe, image).then(
+        (value) async => {
+              updatedPrivateRecipe =
+                  await RecipeController.getPrivateRecipe(privateRecipe.id),
+              setState(() {
+                this.privateRecipe = updatedPrivateRecipe;
+              }),
+              getImageUrl(),
+              setState(() {
+                showProgressIndicatorImage = false;
+              }),
+              ScaffoldMessenger.of(context).removeCurrentSnackBar(),
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                      "${AppLocalizations.of(context).recipeImageUpdated}"),
+                ),
+              )
+            },
+        onError: (error) => {
+              setState(() {
+                showProgressIndicatorImage = false;
+              }),
+              ScaffoldMessenger.of(context).removeCurrentSnackBar(),
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                      "${AppLocalizations.of(context).errorDuringImageUpload}"),
+                ),
+              )
+            });
   }
 
   Future<File> pickImage({bool fromGallery = true}) async {
     final pickedFile = await picker.pickImage(
-        source: fromGallery ? ImageSource.gallery : ImageSource.camera);
+        source: fromGallery ? ImageSource.gallery : ImageSource.camera,
+        maxHeight: 480,
+        maxWidth: 640,
+        imageQuality: 80);
     return File(pickedFile.path);
   }
 

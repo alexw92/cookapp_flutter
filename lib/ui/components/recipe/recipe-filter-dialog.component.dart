@@ -115,7 +115,6 @@ class _FilterNutritionWidgetState extends State<FilterNutritionWidget> {
           SharedPreferences.getInstance()
               .then((prefs) => {
                 prefs.setBool('highProteinFilter', newValue),
-                print("highProteinFilter after set "+prefs.getBool('highProteinFilter').toString())
               });
           setState(() {
             _isSelectedHighProtein = newValue;
@@ -129,7 +128,6 @@ class _FilterNutritionWidgetState extends State<FilterNutritionWidget> {
           SharedPreferences.getInstance()
               .then((prefs) => {
                 prefs.setBool('highCarbFilter', newValue),
-                print("highCarbFilter after set "+prefs.getBool('highCarbFilter').toString())
           });
           setState(() {
             _isSelectedHighCarb = newValue;
