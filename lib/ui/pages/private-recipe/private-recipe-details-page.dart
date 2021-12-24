@@ -5,6 +5,7 @@ import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/components/ingredient-tile.component.dart';
 import 'package:cookable_flutter/ui/components/nutrient-tile.component.dart';
+import 'package:cookable_flutter/ui/util/fb_storage_utils.dart';
 import 'package:cookable_flutter/ui/util/formatters.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,9 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
   double dailyProtein;
   double dailyFat;
   int numberOfPersonsTmp;
+  bool defaultImg = false;
+  bool showProgressIndicatorImage;
+  String recipeImgUrl;
   List<Ingredient> ingredientsTmp;
 
   _PrivateRecipeDetailsPageState();
@@ -41,10 +45,27 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
     dailyProtein = prefs.getDouble('dailyProtein');
     dailyFat = prefs.getDouble('dailyFat');
     this.recipe = await RecipeController.getPrivateRecipe(this.widget.recipeId);
+    await getImageUrl();
     var ingredientsCopy = copyIngredients(recipe.ingredients);
     setState(() {
       numberOfPersonsTmp = recipe.numberOfPersons;
       ingredientsTmp = ingredientsCopy;
+      showProgressIndicatorImage = false;
+    });
+  }
+
+  getImageUrl() async {
+    print(recipe.imgSrc);
+    if (recipe.imgSrc.contains("food.png")) {
+      setState(() {
+        defaultImg = true;
+      });
+      return;
+    }
+    var imgUrl = await FBStorage.getPrivateRecipeImgDownloadUrl(recipe.imgSrc);
+    setState(() {
+      defaultImg = false;
+      recipeImgUrl = imgUrl;
     });
   }
 
@@ -87,6 +108,9 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
   @override
   void initState() {
     super.initState();
+    setState(() {
+      showProgressIndicatorImage = true;
+    });
     loadRecipe();
   }
 
@@ -116,16 +140,24 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
                         height: 400,
                         color: Colors.grey,
                         width: double.infinity,
-                        child: FittedBox(
-                            fit: BoxFit.fill,
-                            child: Image(
-                              // needs --web-renderer html
-                              image: CachedNetworkImageProvider(recipe.imgSrc,
-                                  imageRenderMethodForWeb:
-                                      ImageRenderMethodForWeb.HttpGet),
-                              // backgroundColor: Colors.transparent,
-                              //  radius: 40,
-                            ))),
+                        child: (showProgressIndicatorImage)
+                            ? SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator())
+                            : FittedBox(
+                                fit: BoxFit.fill,
+                                child: Image(
+                                  // needs --web-renderer html
+                                  image: CachedNetworkImageProvider(
+                                      (defaultImg)
+                                          ? recipe.imgSrc
+                                          : recipeImgUrl,
+                                      imageRenderMethodForWeb:
+                                          ImageRenderMethodForWeb.HttpGet),
+                                  // backgroundColor: Colors.transparent,
+                                  //  radius: 40,
+                                ))),
                     Positioned(
                       bottom: 0,
                       left: 0,
@@ -353,7 +385,7 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
         onPressed: () {
           decreaseNumberOfPersons();
         },
-        child: Icon(Icons.remove, size:32),
+        child: Icon(Icons.remove, size: 32),
         style: ButtonStyle(
           shape: MaterialStateProperty.all(CircleBorder()),
           padding: MaterialStateProperty.all(EdgeInsets.all(10)),
@@ -373,7 +405,7 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
         onPressed: () {
           increaseNumberOfPersons();
         },
-        child: Icon(Icons.add, size:32),
+        child: Icon(Icons.add, size: 32),
         style: ButtonStyle(
           shape: MaterialStateProperty.all(CircleBorder()),
           padding: MaterialStateProperty.all(EdgeInsets.all(10)),
