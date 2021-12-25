@@ -198,6 +198,12 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                                       key: ValueKey(
                                         instructionTile.recipeInstruction.id,
                                       ),
+                                      background: Container(
+                                          color: Colors.red,
+                                          child: Icon(
+                                            Icons.delete,
+                                            size: 48,
+                                          )),
                                       onDismissed: (direction) =>
                                           _onRecipeInstructionDismissed(
                                               index, direction),

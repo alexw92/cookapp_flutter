@@ -64,6 +64,12 @@ class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
                       itemBuilder: (BuildContext context, int index) {
                         return Dismissible(
                             key: ValueKey(ingredients[index].id),
+                            background: Container(
+                                color: Colors.red,
+                                child: Icon(
+                                  Icons.delete,
+                                  size: 64,
+                                )),
                             onDismissed: (direction) =>
                                 _onDismissedIngredient(index, direction),
                             child: getIngredientAmountTile(index));

@@ -213,6 +213,12 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
         Dismissible(
           // https://stackoverflow.com/a/65751311/11751609
           key: UniqueKey(),
+          background: Container(
+              color: Colors.red,
+              child: Icon(
+                Icons.delete,
+                size: 256,
+              )),
           child: PrivateRecipeTileComponent(
               privateRecipe: recipeList[i], apiToken: apiToken),
           direction: DismissDirection.endToStart,
