@@ -103,19 +103,6 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                             Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  ElevatedButton(
-                                    onPressed: _openAddIngredientScreen,
-                                    child: Icon(Icons.add, size: 32),
-                                    style: ButtonStyle(
-                                      shape: MaterialStateProperty.all(
-                                          CircleBorder()),
-                                      padding: MaterialStateProperty.all(
-                                          EdgeInsets.all(10)),
-                                      backgroundColor:
-                                          MaterialStateProperty.all(Colors
-                                              .white), // <-- Button color,
-                                    ),
-                                  ),
                                   (privateRecipe.ingredients.length != 0)
                                       ? ElevatedButton(
                                           onPressed:
@@ -154,21 +141,6 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                         },
                         body: Column(
                           children: [
-                            ElevatedButton(
-                              onPressed: openAddInstructionDialog,
-                              child: Icon(
-                                Icons.add,
-                                size: 32,
-                              ),
-                              style: ButtonStyle(
-                                shape:
-                                    MaterialStateProperty.all(CircleBorder()),
-                                padding: MaterialStateProperty.all(
-                                    EdgeInsets.all(10)),
-                                backgroundColor: MaterialStateProperty.all(
-                                    Colors.white), // <-- Button color,
-                              ),
-                            ),
                             ReorderableListView.builder(
                                 physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
@@ -213,7 +185,22 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                                               index, direction),
                                       child: instructionTile);
                                 },
-                                itemCount: _instructionTiles.length)
+                                itemCount: _instructionTiles.length),
+                            ElevatedButton(
+                              onPressed: openAddInstructionDialog,
+                              child: Icon(
+                                Icons.add,
+                                size: 32,
+                              ),
+                              style: ButtonStyle(
+                                shape:
+                                    MaterialStateProperty.all(CircleBorder()),
+                                padding: MaterialStateProperty.all(
+                                    EdgeInsets.all(10)),
+                                backgroundColor: MaterialStateProperty.all(
+                                    Colors.white), // <-- Button color,
+                              ),
+                            )
                           ],
                         )),
                   ],
@@ -296,9 +283,6 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
   }
 
   Widget getIngredientGridView() {
-    if (privateRecipe.ingredients.length == 0)
-      return Container();
-    else
       return Card(
           elevation: 10,
           margin: EdgeInsets.all(10),
@@ -312,7 +296,25 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
             padding: EdgeInsets.all(10),
             crossAxisSpacing: 10,
             children: [
-              ...getAllIngredientTiles()
+              ...getAllIngredientTiles(),
+              Padding( child:SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: ElevatedButton(
+                    onPressed: _openAddIngredientScreen,
+                    child: Icon(Icons.add, size: 36),
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all(CircleBorder()),
+                      padding: MaterialStateProperty.all(EdgeInsets.all(2)),
+                      backgroundColor: MaterialStateProperty.all(
+                          Colors.white), // <-- Button color,
+                    ),
+                  )), padding:EdgeInsets.only(
+                left:16,
+                right:16,
+                bottom:16,
+                top:0
+              )),
               //
             ],
           ));
