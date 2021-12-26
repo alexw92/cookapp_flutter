@@ -34,35 +34,38 @@ class _PrivateRecipeInstructionTileComponentState
   Widget build(BuildContext context) {
     return Card(
       elevation: 10,
-      margin: EdgeInsets.only(left: 10, right: 10, bottom: 5, top:5),
-      child: Row(children: [
-        Column(
-          children: [
-            Container(
-                height: 36,
-                width: 36,
-                padding: const EdgeInsets.all(6),
-                margin: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
-                    border: Border.all(width: 2, color: Colors.grey)),
-                child: Center(
-                    child: Text(
-                        (recipeInstruction.step+1).toString(),
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                )))
-          ],
-        ),
-        SizedBox(
-          width: 10,
-        ),
-        SizedBox(
-            width: 225,
-            child: Text(
-              recipeInstruction.instructionsText,
-              overflow: TextOverflow.clip,
-            )),
-      ]),
+      margin: EdgeInsets.only(left: 10, right: 10, bottom: 5, top: 5),
+      child: Padding(
+          padding: EdgeInsets.only(top: 8, bottom: 8),
+          child: Row(children: [
+            Column(
+              children: [
+                Container(
+                    height: 36,
+                    width: 36,
+                    padding: const EdgeInsets.all(6),
+                    margin: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        border: Border.all(width: 2, color: Colors.grey)),
+                    child: Center(
+                        child: Text(
+                      (recipeInstruction.step + 1).toString(),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                    )))
+              ],
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            SizedBox(
+                width: 260,
+                child: Text(
+                  recipeInstruction.instructionsText,
+                  overflow: TextOverflow.clip,
+                )),
+          ])),
     );
   }
 
