@@ -83,22 +83,17 @@ class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
                       : Center(child: CircularProgressIndicator()),
               // Our existing list code
             ),
-            Container(
+            SizedBox(
                 height: 50,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(20.0))),
-                child: ElevatedButton(
+                child: Center( child:ElevatedButton(
                     style: ElevatedButton.styleFrom(primary: Colors.green),
                     onPressed: () {
                       saveAmountsAndContinue();
                     },
                     child: Text(
                       AppLocalizations.of(context).saveAndContinue,
-                      style: TextStyle(fontSize: 20),
-                    )))
+                      style: TextStyle(fontSize: 16),
+                    ))))
           ],
         ));
   }
