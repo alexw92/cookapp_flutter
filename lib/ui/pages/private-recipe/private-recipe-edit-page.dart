@@ -95,6 +95,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                                 privateRecipe.ingredients.length.toString() +
                                 ")",
                             style: TextStyle(fontSize: 24),
+                            textAlign: TextAlign.center,
                           );
                         },
                         body: Column(
@@ -104,7 +105,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                                 children: [
                                   ElevatedButton(
                                     onPressed: _openAddIngredientScreen,
-                                    child: Icon(Icons.add, size:32),
+                                    child: Icon(Icons.add, size: 32),
                                     style: ButtonStyle(
                                       shape: MaterialStateProperty.all(
                                           CircleBorder()),
@@ -148,13 +149,17 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                                   " (" +
                                   privateRecipe.instructions.length.toString() +
                                   ")",
-                              style: TextStyle(fontSize: 24));
+                              style: TextStyle(fontSize: 24),
+                              textAlign: TextAlign.center);
                         },
                         body: Column(
                           children: [
                             ElevatedButton(
                               onPressed: openAddInstructionDialog,
-                              child: Icon(Icons.add, size: 32,),
+                              child: Icon(
+                                Icons.add,
+                                size: 32,
+                              ),
                               style: ButtonStyle(
                                 shape:
                                     MaterialStateProperty.all(CircleBorder()),
@@ -168,7 +173,6 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                                 physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 onReorder: (int oldIndex, int newIndex) {
-
                                   if (oldIndex < newIndex) {
                                     newIndex -= 1;
                                   }
