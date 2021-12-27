@@ -31,6 +31,7 @@ flutter run --release
 Possible solution for storing data from api
 [Hive docs](https://docs.hivedb.dev/#/basics/hive_in_flutter)
 [Hive pub.dev](https://pub.dev/packages/hive)
+[Hive with rest](https://medium.com/flutter-community/flutter-cache-with-hive-410c3283280c)
 
 ## Ingredient Recognition TFLite
 Looks pretty promising! Let's add this if there is time
