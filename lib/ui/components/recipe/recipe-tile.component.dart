@@ -6,6 +6,7 @@ import 'package:cookable_flutter/ui/util/formatters.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 
 class RecipeTileComponent extends StatefulWidget {
   Recipe recipe;
@@ -108,7 +109,11 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                           color: Color.fromARGB(0, 0, 0, 0),
                         ),
                         borderRadius: BorderRadius.all(Radius.circular(20))),
-                    child: Text("${this.recipe.numberMissingIngredients} missing ingredients",
+                    child: Text("${Intl.plural(this.recipe.numberMissingIngredients,
+                    zero: "${AppLocalizations.of(context).noMissingIngredients}",
+                    one: "${this.recipe.numberMissingIngredients} ${AppLocalizations.of(context).missingIngredient}",
+                    other: "${this.recipe.numberMissingIngredients} ${AppLocalizations.of(context).missingIngredients}"
+                    )}",
                         style: TextStyle(fontSize: 20),
                         textAlign: TextAlign.center)))
           ]),
