@@ -77,6 +77,8 @@
     "tryAgain":  "Nochmal probieren",
     "recipeDeletionError": "Rezept konnte nicht gelöscht werden",
     "recipeImageUpdated" : "Rezeptbild erfolgreich aktualisiert",
-    "errorDuringImageUpload" : "Bild konnte nicht aktualisiert werden"
+    "errorDuringImageUpload" : "Bild konnte nicht aktualisiert werden",
+    "imageFromGallery": "Foto aus Gallery",
+    "takeImage": "Foto aufnehmen"
 
 }

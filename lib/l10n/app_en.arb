@@ -80,6 +80,8 @@
     "tryAgain":  "Try Again",
     "recipeDeletionError": "Recipe could not be deleted",
     "recipeImageUpdated" : "Recipe Image successfully updated",
-    "errorDuringImageUpload" : "Image could not be updated"
+    "errorDuringImageUpload" : "Image could not be updated",
+    "imageFromGallery": "Photo from Gallery",
+    "takeImage": "Take picture"
 
 }
