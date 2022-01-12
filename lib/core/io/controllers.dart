@@ -352,6 +352,80 @@ class RecipeController {
 // }
 }
 
+class UserController{
+  static Future<ReducedUser> getUser() async {
+    // get token from token store
+    var tokenStore = IOConfig.tokenStore;
+    String storedToken = await tokenStore.getToken();
+
+    BaseOptions options = new BaseOptions(
+        baseUrl: IOConfig.apiUrl,
+        connectTimeout: 3000, //10 seconds
+        receiveTimeout: 10000,
+        headers: {
+          "Authorization": "Bearer $storedToken",
+          'Content-Type': 'application/json',
+        });
+
+    Dio dio = new Dio(options);
+    final stopwatch = Stopwatch()..start();
+    var response = await dio.get("/user");
+    print(
+        'getUser api req executed in ${stopwatch.elapsed.inMilliseconds}');
+
+    /// If the first API call is successful
+    if (response.statusCode == HttpStatus.ok) {
+      ReducedUser reducedUser = ReducedUser.fromJson(response.data);
+      return reducedUser;
+    }
+
+    throw Exception(
+        "Error requesting user, Code: ${response.statusCode} Message: ${response.data} ");
+  }
+
+  static Future<void> updateProfileImage(
+      File image) async {
+    // get token from token store
+    var tokenStore = IOConfig.tokenStore;
+    String storedToken = await tokenStore.getToken();
+
+    String mimeType = mime(image.path);
+    String mimee = mimeType.split('/')[0];
+    String type = mimeType.split('/')[1];
+
+    FormData formData =
+    FormData.fromMap({'file': await MultipartFile.fromFile(image.path, contentType: MediaType(mimee, type))});
+
+    BaseOptions options = new BaseOptions(
+        baseUrl: IOConfig.apiUrl,
+        connectTimeout: 10000, //10 seconds
+        receiveTimeout: 10000,
+        headers: {
+          "Authorization": "Bearer $storedToken",
+          "Content-Type": "multipart/form-data"
+        });
+
+    Dio dio = new Dio(options);
+    final stopwatch = Stopwatch()..start();
+    var response = await dio
+        .post("/storage/user/image",
+        data: formData )
+        .timeout(IOConfig.timeoutDuration);
+    print(
+        'updateProfileImage api req executed in ${stopwatch.elapsed.inMilliseconds}');
+
+    /// If the first API call is successful
+    if (response.statusCode == HttpStatus.ok) {
+      return;
+    }
+    throw Exception(
+        "Error updating private recipe image, Code: ${response.statusCode} Message: ${response.data} ");
+  }
+
+  //
+  }
+
+
 class FoodProductController {
   static Future<List<FoodProduct>> getFoodProducts() async {
     var langCode = LangState().currentLang;

@@ -147,6 +147,21 @@ class _PrivateRecipeTileComponentState
                           getHighCarbChipIfNeeded()
                         ])))),
             Positioned(
+                bottom: 0,
+                right: 0,
+                child: Stack(children: [
+                  CircleAvatar(
+                    backgroundImage: CachedNetworkImageProvider(
+                        (privateRecipe.uploadedBy.fbUploadedPhoto == null)
+                            ? privateRecipe.uploadedBy.providerPhoto
+                            : privateRecipe.uploadedBy.fbUploadedPhoto,
+                        imageRenderMethodForWeb:
+                            ImageRenderMethodForWeb.HttpGet),
+                    // backgroundColor: Colors.transparent,
+                    radius: 40,
+                  ),
+                ])),
+            Positioned(
                 top: 36,
                 right: 0,
                 child: Column(children: [
@@ -154,16 +169,17 @@ class _PrivateRecipeTileComponentState
                     onSelected: (result) {
                       switch (result) {
                         case 0:
-                          _editPrivateRecipeImg(privateRecipe,true);
+                          _editPrivateRecipeImg(privateRecipe, true);
                           break;
                         case 1:
-                          _editPrivateRecipeImg(privateRecipe,false);
+                          _editPrivateRecipeImg(privateRecipe, false);
                           break;
                       }
                     },
                     itemBuilder: (context) => [
                       PopupMenuItem(
-                          child: Text(AppLocalizations.of(context).imageFromGallery),
+                          child: Text(
+                              AppLocalizations.of(context).imageFromGallery),
                           value: 0),
                       PopupMenuItem(
                           child: Text(AppLocalizations.of(context).takeImage),

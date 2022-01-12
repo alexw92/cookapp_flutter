@@ -82,6 +82,7 @@
     "recipeImageUpdated" : "Recipe Image successfully updated",
     "errorDuringImageUpload" : "Image could not be updated",
     "imageFromGallery": "Photo from Gallery",
-    "takeImage": "Take picture"
+    "takeImage": "Take picture",
+    "profileImageUpdated": "Profile updated"
 
 }

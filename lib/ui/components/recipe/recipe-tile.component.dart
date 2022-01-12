@@ -97,6 +97,23 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                     child: Text(this.recipe.name,
                         style: TextStyle(fontSize: 20),
                         textAlign: TextAlign.center))),
+            recipe.uploadedBy != null
+                ? Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Stack(children: [
+                      CircleAvatar(
+                        backgroundImage: CachedNetworkImageProvider(
+                            (recipe.uploadedBy.fbUploadedPhoto == null)
+                                ? recipe.uploadedBy.providerPhoto
+                                : recipe.uploadedBy.fbUploadedPhoto,
+                            imageRenderMethodForWeb:
+                                ImageRenderMethodForWeb.HttpGet),
+                        // backgroundColor: Colors.transparent,
+                        radius: 40,
+                      ),
+                    ]))
+                : Container(),
             Positioned(
                 top: 35,
                 left: 0,
@@ -109,11 +126,8 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                           color: Color.fromARGB(0, 0, 0, 0),
                         ),
                         borderRadius: BorderRadius.all(Radius.circular(20))),
-                    child: Text("${Intl.plural(this.recipe.numberMissingIngredients,
-                    zero: "${AppLocalizations.of(context).noMissingIngredients}",
-                    one: "${this.recipe.numberMissingIngredients} ${AppLocalizations.of(context).missingIngredient}",
-                    other: "${this.recipe.numberMissingIngredients} ${AppLocalizations.of(context).missingIngredients}"
-                    )}",
+                    child: Text(
+                        "${Intl.plural(this.recipe.numberMissingIngredients, zero: "${AppLocalizations.of(context).noMissingIngredients}", one: "${this.recipe.numberMissingIngredients} ${AppLocalizations.of(context).missingIngredient}", other: "${this.recipe.numberMissingIngredients} ${AppLocalizations.of(context).missingIngredients}")}",
                         style: TextStyle(fontSize: 20),
                         textAlign: TextAlign.center)))
           ]),
