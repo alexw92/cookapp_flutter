@@ -158,41 +158,151 @@ class _ProfilePageState extends State<ProfilePage> {
                       )
                     ],
                   ),
-                  body: Column( children:[Container(
-                      margin: EdgeInsets.only(top: 20, right: 0, left: 0),
-                      child: Row(
-                        children: [
-                          Stack(children: [
-                            CircleAvatar(
-                              backgroundImage: CachedNetworkImageProvider(
-                                  (snapshot.data.fbUploadedPhoto == null)
-                                      ? snapshot.data.providerPhoto
-                                      : snapshot.data.fbUploadedPhoto,
-                                  imageRenderMethodForWeb:
-                                      ImageRenderMethodForWeb.HttpGet),
-                              // backgroundColor: Colors.transparent,
-                              radius: 72,
-                            ),
-                            Positioned(
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    shape: CircleBorder(),
-                                    padding: EdgeInsets.all(8)),
-                                child: const Icon(
-                                  Icons.camera_alt,
-                                  size: 30,
-                                  color: Colors.white,
+                  body: Column(children: [
+                    Container(
+                        margin: EdgeInsets.only(top: 20, right: 0, left: 0),
+                        child: Row(
+                          children: [
+                            Stack(children: [
+                              showProgressIndicatorImage
+                                  ? Container( width: 144, height: 144, child:CircularProgressIndicator())
+                                  : CircleAvatar(
+                                      backgroundImage:
+                                          CachedNetworkImageProvider(
+                                              (snapshot.data.fbUploadedPhoto ==
+                                                      null)
+                                                  ? snapshot.data.providerPhoto
+                                                  : snapshot
+                                                      .data.fbUploadedPhoto,
+                                              imageRenderMethodForWeb:
+                                                  ImageRenderMethodForWeb
+                                                      .HttpGet),
+                                      // backgroundColor: Colors.transparent,
+                                      radius: 72,
+                                    ),
+                              Positioned(
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      shape: CircleBorder(),
+                                      padding: EdgeInsets.all(8)),
+                                  child: const Icon(
+                                    Icons.camera_alt,
+                                    size: 30,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () => showModalBottomSheet<void>(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Container(
+                                        height: 150,
+                                        color: Colors.white,
+                                        margin: EdgeInsets.all(20),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: <Widget>[
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  AppLocalizations.of(context)
+                                                      .profileImage,
+                                                  style:
+                                                      TextStyle(fontSize: 24),
+                                                )
+                                              ],
+                                            ),
+                                            Spacer(),
+                                            Row(
+                                              children: [
+                                                Wrap(
+                                                    crossAxisAlignment:
+                                                        WrapCrossAlignment
+                                                            .center,
+                                                    direction: Axis.vertical,
+                                                    children: [
+                                                      ElevatedButton(
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                            primary:
+                                                                Colors.white,
+                                                            shape:
+                                                                CircleBorder(),
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    14),
+                                                          ),
+                                                          onPressed: () {
+                                                            _editProfileImg(
+                                                                false);
+                                                          },
+                                                          child: const Icon(
+                                                            Icons.camera_alt,
+                                                            size: 26,
+                                                            color: Colors.green,
+                                                          )),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Text(AppLocalizations.of(
+                                                              context)
+                                                          .camera)
+                                                    ]),
+                                                SizedBox(
+                                                  width: 20,
+                                                ),
+                                                Wrap(
+                                                    crossAxisAlignment:
+                                                        WrapCrossAlignment
+                                                            .center,
+                                                    direction: Axis.vertical,
+                                                    children: [
+                                                      ElevatedButton(
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                                  primary: Colors
+                                                                      .white,
+                                                                  shape:
+                                                                      CircleBorder(),
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              14)),
+                                                          onPressed: () {
+                                                            _editProfileImg(
+                                                                true);
+                                                          },
+                                                          child: const Icon(
+                                                            Icons.image,
+                                                            size: 26,
+                                                            color: Colors.green,
+                                                          )),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Text(AppLocalizations.of(
+                                                              context)
+                                                          .gallery)
+                                                    ])
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
-                                onPressed: () => _editProfileImg(false),
-                              ),
-                              bottom: 0,
-                              right: -8,
-                            )
-                          ])
-                        ],
-                        mainAxisAlignment: MainAxisAlignment.center,
-                      )),
-                  Text(snapshot.data.displayName,style: TextStyle(fontSize: 24),)
+                                bottom: 0,
+                                right: -8,
+                              )
+                            ])
+                          ],
+                          mainAxisAlignment: MainAxisAlignment.center,
+                        )),
+                    Text(
+                      snapshot.data.displayName,
+                      style: TextStyle(fontSize: 24),
+                    )
                   ]));
             }
           } else
@@ -205,9 +315,10 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() {
       showProgressIndicatorImage = true;
     });
-    var updatedPrivateRecipe;
+
     UserController.updateProfileImage(image).then(
         (value) async => {
+              Navigator.pop(context),
               setState(() {
                 showProgressIndicatorImage = false;
               }),

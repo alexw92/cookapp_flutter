@@ -83,6 +83,9 @@
     "errorDuringImageUpload" : "Image could not be updated",
     "imageFromGallery": "Photo from Gallery",
     "takeImage": "Take picture",
-    "profileImageUpdated": "Profile updated"
+    "profileImageUpdated": "Profile updated",
+    "profileImage": "Profile Image",
+    "gallery": "Gallery",
+    "camera": "Camera"
 
 }
