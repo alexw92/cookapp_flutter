@@ -9,6 +9,7 @@ import 'package:cookable_flutter/ui/util/formatters.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:like_button/like_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RecipesDetailsPage extends StatefulWidget {
@@ -106,7 +107,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
             body: SafeArea(
             child: Container(
                 height: double.infinity,
-                color: Colors.black,
+                color: Colors.black54,
                 child: SingleChildScrollView(
                     //  padding: EdgeInsets.only(bottom: 15),
                     child: Column(children: [
@@ -125,16 +126,46 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                               //  radius: 40,
                             ))),
                     Positioned(
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      child: Text(this.recipe.name,
-                          style: TextStyle(fontSize: 30, color: Colors.white),
-                          textAlign: TextAlign.center),
-                    )
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Row(
+                          children: [
+                            Text(this.recipe.name,
+                                style: TextStyle(
+                                    fontSize: 30, color: Colors.white),
+                                textAlign: TextAlign.center),
+                            LikeButton(
+                              size: 40,
+                              circleColor: CircleColor(
+                                  start: Color(0xff00ddff),
+                                  end: Color(0xff0099cc)),
+                              likeCount: 0,
+                              countBuilder:
+                                  (int count, bool isLiked, String text) {
+                                var color = isLiked
+                                    ? Colors.white
+                                    : Colors.grey;
+                                Widget result;
+                                if (count == 0) {
+                                  result = Text(
+                                    "love",
+                                    style: TextStyle(color: color),
+                                  );
+                                } else
+                                  result = Text(
+                                    text,
+                                    style: TextStyle(color: color),
+                                  );
+                                return result;
+                              },
+                            )
+                          ],
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        ))
                   ]),
                   Container(
-                    color: Colors.black,
+                    color: Colors.black54,
                     width: double.infinity,
                     child: Column(
                       children: [
@@ -148,7 +179,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                                 label: Text(
                                   "${recipe.prepTimeMinutes} min",
                                   style: TextStyle(
-                                      color: Colors.black,
+                                      color: Colors.black54,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 backgroundColor: Colors.white,
@@ -163,7 +194,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                                   Utility.getTranslatedDiet(
                                       context, recipe.diet),
                                   style: TextStyle(
-                                      color: Colors.black,
+                                      color: Colors.black54,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 backgroundColor: Colors.white,
@@ -190,7 +221,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                     ),
                   ),
                   Container(
-                    color: Colors.black,
+                    color: Colors.black54,
                     width: double.infinity,
                     child: Column(children: [
                       Text(
@@ -207,7 +238,10 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                               onPressed: () {
                                 decreaseNumberOfPersons();
                               },
-                              child: Icon(Icons.remove, size: 32,),
+                              child: Icon(
+                                Icons.remove,
+                                size: 32,
+                              ),
                               style: ButtonStyle(
                                 shape:
                                     MaterialStateProperty.all(CircleBorder()),
@@ -230,7 +264,10 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                               onPressed: () {
                                 increaseNumberOfPersons();
                               },
-                              child: Icon(Icons.add, size: 32,),
+                              child: Icon(
+                                Icons.add,
+                                size: 32,
+                              ),
                               style: ButtonStyle(
                                 shape:
                                     MaterialStateProperty.all(CircleBorder()),
@@ -263,7 +300,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                     ]),
                   ),
                   Container(
-                      color: Colors.black,
+                      color: Colors.black54,
                       width: double.infinity,
                       child: Column(children: [
                         Text(
@@ -287,7 +324,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                             ))
                       ])),
                   Container(
-                      color: Colors.black,
+                      color: Colors.black54,
                       width: double.infinity,
                       child: Column(children: [
                         Text(
