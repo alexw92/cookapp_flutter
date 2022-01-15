@@ -55,212 +55,152 @@ class _ProfilePageState extends State<ProfilePage> {
     return FutureBuilder(
         future: userFuture,
         builder: (context, AsyncSnapshot<ReducedUser> snapshot) {
-          if (snapshot.hasData) {
-            print(snapshot.data.fbUploadedPhoto);
-            if (user.isAnonymous) {
-              return Scaffold(
-                  appBar: AppBar(
-                    title: Text(AppLocalizations.of(context).profile),
-                    actions: [
-                      // AppLocalizations.of(context).logout
-                      // AppLocalizations.of(context).settings
-                      PopupMenuButton(
-                        onSelected: (result) {
-                          switch (result) {
-                            case 0:
-                              _openSettings();
-                              break;
-                            case 1:
-                              _signOut();
-                              break;
-                          }
-                        },
-                        itemBuilder: (context) => [
-                          PopupMenuItem(
-                              child:
-                                  Text(AppLocalizations.of(context).settings),
-                              value: 0),
-                          PopupMenuItem(
-                              child: Text(AppLocalizations.of(context).logout),
-                              value: 1)
-                        ],
-                        icon: Icon(
-                          Icons.settings,
-                        ),
-                      )
+          return Scaffold(
+              appBar: AppBar(
+                title: Text(AppLocalizations.of(context).profile),
+                actions: [
+                  // AppLocalizations.of(context).logout
+                  // AppLocalizations.of(context).settings
+                  PopupMenuButton(
+                    onSelected: (result) {
+                      switch (result) {
+                        case 0:
+                          _openSettings();
+                          break;
+                        case 1:
+                          _signOut();
+                          break;
+                      }
+                    },
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                          child: Text(AppLocalizations.of(context).settings),
+                          value: 0),
+                      PopupMenuItem(
+                          child: Text(AppLocalizations.of(context).logout),
+                          value: 1)
                     ],
-                  ),
-                  body: Container(
-                      margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              AppLocalizations.of(context)
-                                  .loginToAccessThisPage,
-                            ),
-                            SignInButton(
-                              Buttons.Facebook,
-                              text: AppLocalizations.of(context)
-                                  .continueWithFacebook,
-                              onPressed: () {},
-                            ),
-                            SignInButton(
-                              Buttons.Google,
-                              text: AppLocalizations.of(context)
-                                  .continueWithGoogle,
-                              onPressed: () {
-                                convertAnonymousToGoogle();
-                              },
-                            ),
-                            SignInButton(
-                              Buttons.Email,
-                              text: AppLocalizations.of(context).createAccount,
-                              onPressed: () {},
-                            ),
-                            Text("or"),
-                            SignInButton(
-                              Buttons.Email,
-                              text:
-                                  AppLocalizations.of(context).loginWithAccount,
-                              onPressed: () {},
-                            ),
-                          ])));
-            } else {
-              return Scaffold(
-                  appBar: AppBar(
-                    title: Text(AppLocalizations.of(context).profile),
-                    actions: [
-                      // AppLocalizations.of(context).logout
-                      // AppLocalizations.of(context).settings
-                      PopupMenuButton(
-                        onSelected: (result) {
-                          switch (result) {
-                            case 0:
-                              _openSettings();
-                              break;
-                            case 1:
-                              _signOut();
-                              break;
-                          }
-                        },
-                        itemBuilder: (context) => [
-                          PopupMenuItem(
-                              child:
-                                  Text(AppLocalizations.of(context).settings),
-                              value: 0),
-                          PopupMenuItem(
-                              child: Text(AppLocalizations.of(context).logout),
-                              value: 1)
-                        ],
-                        icon: Icon(
-                          Icons.settings,
-                        ),
-                      )
-                    ],
-                  ),
-                  body: Column(children: [
-                    Container(
-                        margin: EdgeInsets.only(top: 20, right: 0, left: 0),
-                        child: Row(
-                          children: [
-                            Stack(children: [
-                              showProgressIndicatorImage
-                                  ? Container( width: 144, height: 144, child:CircularProgressIndicator())
-                                  : CircleAvatar(
-                                      backgroundImage:
-                                          CachedNetworkImageProvider(
-                                              (snapshot.data.fbUploadedPhoto ==
-                                                      null)
-                                                  ? snapshot.data.providerPhoto
-                                                  : snapshot
-                                                      .data.fbUploadedPhoto,
-                                              imageRenderMethodForWeb:
-                                                  ImageRenderMethodForWeb
-                                                      .HttpGet),
-                                      // backgroundColor: Colors.transparent,
-                                      radius: 72,
-                                    ),
-                              Positioned(
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      shape: CircleBorder(),
-                                      padding: EdgeInsets.all(8)),
-                                  child: const Icon(
-                                    Icons.camera_alt,
-                                    size: 30,
-                                    color: Colors.white,
-                                  ),
-                                  onPressed: () => showModalBottomSheet<void>(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return Container(
-                                        height: 150,
-                                        color: Colors.white,
-                                        margin: EdgeInsets.all(20),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: <Widget>[
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  AppLocalizations.of(context)
-                                                      .profileImage,
-                                                  style:
-                                                      TextStyle(fontSize: 24),
-                                                )
-                                              ],
-                                            ),
-                                            Spacer(),
-                                            Row(
-                                              children: [
-                                                Wrap(
-                                                    crossAxisAlignment:
-                                                        WrapCrossAlignment
-                                                            .center,
-                                                    direction: Axis.vertical,
+                    icon: Icon(
+                      Icons.settings,
+                    ),
+                  )
+                ],
+              ),
+              body: (!snapshot.hasData)
+                  ? Container()
+                  : user.isAnonymous
+                      ? Container(
+                          margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)
+                                      .loginToAccessThisPage,
+                                ),
+                                SignInButton(
+                                  Buttons.Facebook,
+                                  text: AppLocalizations.of(context)
+                                      .continueWithFacebook,
+                                  onPressed: () {},
+                                ),
+                                SignInButton(
+                                  Buttons.Google,
+                                  text: AppLocalizations.of(context)
+                                      .continueWithGoogle,
+                                  onPressed: () {
+                                    convertAnonymousToGoogle();
+                                  },
+                                ),
+                                SignInButton(
+                                  Buttons.Email,
+                                  text: AppLocalizations.of(context)
+                                      .createAccount,
+                                  onPressed: () {},
+                                ),
+                                Text("or"),
+                                SignInButton(
+                                  Buttons.Email,
+                                  text: AppLocalizations.of(context)
+                                      .loginWithAccount,
+                                  onPressed: () {},
+                                ),
+                              ]))
+                      : Column(children: [
+                          Container(
+                              margin:
+                                  EdgeInsets.only(top: 20, right: 0, left: 0),
+                              child: Row(
+                                children: [
+                                  Stack(children: [
+                                    showProgressIndicatorImage
+                                        ? Container(
+                                            width: 144,
+                                            height: 144,
+                                            child: CircularProgressIndicator())
+                                        : CircleAvatar(
+                                            backgroundImage:
+                                                CachedNetworkImageProvider(
+                                                    (snapshot.data
+                                                                .fbUploadedPhoto ==
+                                                            null)
+                                                        ? snapshot
+                                                            .data.providerPhoto
+                                                        : snapshot.data
+                                                            .fbUploadedPhoto,
+                                                    imageRenderMethodForWeb:
+                                                        ImageRenderMethodForWeb
+                                                            .HttpGet),
+                                            // backgroundColor: Colors.transparent,
+                                            radius: 72,
+                                          ),
+                                    Positioned(
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            shape: CircleBorder(),
+                                            padding: EdgeInsets.all(8)),
+                                        child: const Icon(
+                                          Icons.camera_alt,
+                                          size: 30,
+                                          color: Colors.white,
+                                        ),
+                                        onPressed: () =>
+                                            showModalBottomSheet<void>(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return Container(
+                                              height: 150,
+                                              color: Colors.white,
+                                              margin: EdgeInsets.all(20),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: <Widget>[
+                                                  Row(
                                                     children: [
-                                                      ElevatedButton(
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                            primary:
-                                                                Colors.white,
-                                                            shape:
-                                                                CircleBorder(),
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    14),
-                                                          ),
-                                                          onPressed: () {
-                                                            _editProfileImg(
-                                                                false);
-                                                          },
-                                                          child: const Icon(
-                                                            Icons.camera_alt,
-                                                            size: 26,
-                                                            color: Colors.green,
-                                                          )),
-                                                      SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      Text(AppLocalizations.of(
-                                                              context)
-                                                          .camera)
-                                                    ]),
-                                                SizedBox(
-                                                  width: 20,
-                                                ),
-                                                Wrap(
-                                                    crossAxisAlignment:
-                                                        WrapCrossAlignment
-                                                            .center,
-                                                    direction: Axis.vertical,
+                                                      Text(
+                                                        AppLocalizations.of(
+                                                                context)
+                                                            .profileImage,
+                                                        style: TextStyle(
+                                                            fontSize: 24),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  Spacer(),
+                                                  Row(
                                                     children: [
-                                                      ElevatedButton(
-                                                          style: ElevatedButton
-                                                              .styleFrom(
+                                                      Wrap(
+                                                          crossAxisAlignment:
+                                                              WrapCrossAlignment
+                                                                  .center,
+                                                          direction:
+                                                              Axis.vertical,
+                                                          children: [
+                                                            ElevatedButton(
+                                                                style: ElevatedButton
+                                                                    .styleFrom(
                                                                   primary: Colors
                                                                       .white,
                                                                   shape:
@@ -268,46 +208,84 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                   padding:
                                                                       EdgeInsets
                                                                           .all(
-                                                                              14)),
-                                                          onPressed: () {
-                                                            _editProfileImg(
-                                                                true);
-                                                          },
-                                                          child: const Icon(
-                                                            Icons.image,
-                                                            size: 26,
-                                                            color: Colors.green,
-                                                          )),
+                                                                              14),
+                                                                ),
+                                                                onPressed: () {
+                                                                  _editProfileImg(
+                                                                      false);
+                                                                },
+                                                                child:
+                                                                    const Icon(
+                                                                  Icons
+                                                                      .camera_alt,
+                                                                  size: 26,
+                                                                  color: Colors
+                                                                      .green,
+                                                                )),
+                                                            SizedBox(
+                                                              height: 10,
+                                                            ),
+                                                            Text(AppLocalizations
+                                                                    .of(context)
+                                                                .camera)
+                                                          ]),
                                                       SizedBox(
-                                                        height: 10,
+                                                        width: 20,
                                                       ),
-                                                      Text(AppLocalizations.of(
-                                                              context)
-                                                          .gallery)
-                                                    ])
-                                              ],
-                                            ),
-                                          ],
+                                                      Wrap(
+                                                          crossAxisAlignment:
+                                                              WrapCrossAlignment
+                                                                  .center,
+                                                          direction:
+                                                              Axis.vertical,
+                                                          children: [
+                                                            ElevatedButton(
+                                                                style: ElevatedButton.styleFrom(
+                                                                    primary: Colors
+                                                                        .white,
+                                                                    shape:
+                                                                        CircleBorder(),
+                                                                    padding:
+                                                                        EdgeInsets.all(
+                                                                            14)),
+                                                                onPressed: () {
+                                                                  _editProfileImg(
+                                                                      true);
+                                                                },
+                                                                child:
+                                                                    const Icon(
+                                                                  Icons.image,
+                                                                  size: 26,
+                                                                  color: Colors
+                                                                      .green,
+                                                                )),
+                                                            SizedBox(
+                                                              height: 10,
+                                                            ),
+                                                            Text(AppLocalizations
+                                                                    .of(context)
+                                                                .gallery)
+                                                          ])
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
                                         ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                                bottom: 0,
-                                right: -8,
-                              )
-                            ])
-                          ],
-                          mainAxisAlignment: MainAxisAlignment.center,
-                        )),
-                    Text(
-                      snapshot.data.displayName,
-                      style: TextStyle(fontSize: 24),
-                    )
-                  ]));
-            }
-          } else
-            return Container();
+                                      ),
+                                      bottom: 0,
+                                      right: -8,
+                                    )
+                                  ])
+                                ],
+                                mainAxisAlignment: MainAxisAlignment.center,
+                              )),
+                          Text(
+                            snapshot.data.displayName,
+                            style: TextStyle(fontSize: 24),
+                          )
+                        ]));
         });
   }
 
