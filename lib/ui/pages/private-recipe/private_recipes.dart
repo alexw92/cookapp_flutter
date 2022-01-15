@@ -273,7 +273,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
   }
 
   Future<void> refreshTriggered() async {
-    return loadRecipes();
+    return loadRecipes(reload: true);
   }
 
   Future<void> _signOut() async {
