@@ -28,6 +28,9 @@
     "tab_meat": "Fleisch",
     "tab_fish": "Fisch",
     "ingredients":  "Zutaten",
+    "missingIngredient": "fehlende Zutat",
+    "missingIngredients": "fehlende Zutaten",
+    "noMissingIngredients": "Keine Zutat fehlt",
     "nutrients": "Nährwerte",
     "calories": "Kalorien",
     "fat": "Fett",
@@ -74,6 +77,12 @@
     "tryAgain":  "Nochmal probieren",
     "recipeDeletionError": "Rezept konnte nicht gelöscht werden",
     "recipeImageUpdated" : "Rezeptbild erfolgreich aktualisiert",
-    "errorDuringImageUpload" : "Bild konnte nicht aktualisiert werden"
+    "errorDuringImageUpload" : "Bild konnte nicht aktualisiert werden",
+    "imageFromGallery": "Foto aus Gallery",
+    "takeImage": "Foto aufnehmen",
+    "profileImageUpdated": "Profilbild aktualisiert",
+    "profileImage": "Profilbild",
+    "gallery": "Gallerie",
+    "camera": "Kamera"
 
 }

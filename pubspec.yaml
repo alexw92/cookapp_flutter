@@ -52,9 +52,10 @@ dependencies:
   flutter_login: ^3.0.0
   # picking img from gallery
   image_picker: ^0.8.4
-  settings_ui: ^1.0.0
+  flutter_settings_ui: ^2.0.1
   percent_indicator: ^3.4.0
   mime_type: ^1.0.0
+  like_button: ^2.0.4
   hive: ^2.0.5
   hive_flutter: ^1.1.0
 

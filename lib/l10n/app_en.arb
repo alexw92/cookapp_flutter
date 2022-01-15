@@ -31,6 +31,9 @@
     "tab_meat": "Meat",
     "tab_fish": "Fish",
     "ingredients":  "Ingredients",
+    "missingIngredient": "missing ingredient",
+    "missingIngredients": "missing ingredients",
+    "noMissingIngredients": "No ingredient missing",
     "nutrients": "Nutrients",
     "calories": "Calories",
     "fat": "Fat",
@@ -77,6 +80,12 @@
     "tryAgain":  "Try Again",
     "recipeDeletionError": "Recipe could not be deleted",
     "recipeImageUpdated" : "Recipe Image successfully updated",
-    "errorDuringImageUpload" : "Image could not be updated"
+    "errorDuringImageUpload" : "Image could not be updated",
+    "imageFromGallery": "Photo from Gallery",
+    "takeImage": "Take picture",
+    "profileImageUpdated": "Profile updated",
+    "profileImage": "Profile Image",
+    "gallery": "Gallery",
+    "camera": "Camera"
 
 }

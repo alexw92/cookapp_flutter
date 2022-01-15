@@ -147,18 +147,49 @@ class _PrivateRecipeTileComponentState
                           getHighCarbChipIfNeeded()
                         ])))),
             Positioned(
+                bottom: 0,
+                right: 0,
+                child: Stack(children: [
+                  CircleAvatar(
+                    backgroundImage: CachedNetworkImageProvider(
+                        (privateRecipe.uploadedBy.fbUploadedPhoto == null)
+                            ? privateRecipe.uploadedBy.providerPhoto
+                            : privateRecipe.uploadedBy.fbUploadedPhoto,
+                        imageRenderMethodForWeb:
+                            ImageRenderMethodForWeb.HttpGet),
+                    // backgroundColor: Colors.transparent,
+                    radius: 40,
+                  ),
+                ])),
+            Positioned(
                 top: 36,
                 right: 0,
                 child: Column(children: [
-                  ElevatedButton(
-                    onPressed: () => {_editPrivateRecipeImg(privateRecipe)},
-                    child: Icon(Icons.camera_alt),
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all(CircleBorder()),
-                      padding: MaterialStateProperty.all(EdgeInsets.all(10)),
-                      backgroundColor: MaterialStateProperty.all(
-                          Colors.white), // <-- Button color,
-                    ),
+                  PopupMenuButton(
+                    onSelected: (result) {
+                      switch (result) {
+                        case 0:
+                          _editPrivateRecipeImg(privateRecipe, true);
+                          break;
+                        case 1:
+                          _editPrivateRecipeImg(privateRecipe, false);
+                          break;
+                      }
+                    },
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                          child: Text(
+                              AppLocalizations.of(context).imageFromGallery),
+                          value: 0),
+                      PopupMenuItem(
+                          child: Text(AppLocalizations.of(context).takeImage),
+                          value: 1)
+                    ],
+                    child: Container(
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle, color: Colors.white),
+                        padding: EdgeInsets.all(10),
+                        child: Icon(Icons.camera_alt)),
                   ),
                   ElevatedButton(
                     onPressed: () => {_openEditRecipeScreen(privateRecipe)},
@@ -191,8 +222,8 @@ class _PrivateRecipeTileComponentState
     print('editRecipeScreen completed');
   }
 
-  _editPrivateRecipeImg(PrivateRecipe privateRecipe) async {
-    var image = await pickImage();
+  _editPrivateRecipeImg(PrivateRecipe privateRecipe, bool fromGallery) async {
+    var image = await pickImage(fromGallery: fromGallery);
     setState(() {
       showProgressIndicatorImage = true;
     });
