@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
+import 'package:cookable_flutter/core/caching/userfood_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
@@ -30,6 +31,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
   List<GroceryCheckBoxListTileModel> checkBoxListTileModelFish = [];
   List<UserFoodProduct> ownedGroceries = [];
   List<UserFoodProduct> missingGroceries = [];
+  UserFoodService userFoodService = UserFoodService();
   String apiToken;
   bool loading = false;
   bool error = false;
@@ -583,19 +585,19 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
 
   Future<void> refreshTriggered() async {
     print("refresh triggered");
-    return loadFoodProducts();
+    return loadFoodProducts(reload: true);
   }
 
-  void loadFoodProducts() async {
+  void loadFoodProducts({reload=false}) async {
     setState(() {
       loading = true;
       error = false;
     });
     try {
       ownedGroceries =
-          await UserFoodProductController.getUserFoodProducts(false);
+          await userFoodService.getUserFood(false, reload: reload);
       missingGroceries =
-          await UserFoodProductController.getUserFoodProducts(true);
+          await userFoodService.getUserFood(true, reload: reload);
     } catch (err) {
       print(err);
       setState(() {

@@ -27,7 +27,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
   bool loading = false;
   bool error = false;
 
-  void loadRecipes() async {
+  void loadRecipes({reload = false}) async {
     setState(() {
       error = false;
       loading = true;
@@ -41,18 +41,19 @@ class _RecipesComponentState extends State<RecipesComponent> {
       recipeList = [];
     });
 
-    recipeList = await recipeService.getFilteredRecipes(
-            diet, highProteinFilter, highCarbFilter);
-    //     .catchError((error) {
-    //       print("filtered recipes "+ error.toString());
-    //   setState(() {
-    //     this.error = true;
-    //   });
-    // });
+    recipeList = await recipeService
+        .getFilteredRecipes(diet, highProteinFilter, highCarbFilter,
+            reload: reload)
+        .catchError((error) {
+      print("filtered recipes " + error.toString());
+      setState(() {
+        this.error = true;
+      });
+    });
     print(recipeList);
     apiToken = await TokenStore().getToken();
     await loadDefaultNutrition().catchError((error) {
-      print("default nutrition"+ error.toString());
+      print("default nutrition" + error.toString());
       setState(() {
         this.error = true;
       });
@@ -120,7 +121,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
             value: null,
             backgroundColor: Colors.green,
           )));
-    else if(!error)
+    else if (!error)
       return Scaffold(
           appBar: AppBar(
             title: Text(AppLocalizations.of(context).recipes),
@@ -173,61 +174,61 @@ class _RecipesComponentState extends State<RecipesComponent> {
                   ),
                 ),
               )));
-      else
-        return  Scaffold(
-        appBar: AppBar(
-          title: Text(AppLocalizations.of(context).recipes),
-          actions: [
-            // AppLocalizations.of(context).logout
-            // AppLocalizations.of(context).settings
-            IconButton(
-              icon: Icon(Icons.filter_list),
-              onPressed: _showFilterDialog,
-            ),
-            PopupMenuButton(
-              onSelected: (result) {
-                switch (result) {
-                  case 0:
-                    _openSettings();
-                    break;
-                  case 1:
-                    _signOut();
-                    break;
-                }
-              },
-              itemBuilder: (context) => [
-                PopupMenuItem(
-                    child: Text(AppLocalizations.of(context).settings),
-                    value: 0),
-                PopupMenuItem(
-                    child: Text(AppLocalizations.of(context).logout),
-                    value: 1)
-              ],
-              icon: Icon(
-                Icons.settings,
+    else
+      return Scaffold(
+          appBar: AppBar(
+            title: Text(AppLocalizations.of(context).recipes),
+            actions: [
+              // AppLocalizations.of(context).logout
+              // AppLocalizations.of(context).settings
+              IconButton(
+                icon: Icon(Icons.filter_list),
+                onPressed: _showFilterDialog,
               ),
-            )
-          ],
-        ),
-        body: Center(
-            child: Container(
-              height: 100,
-              child: Card(
-                  elevation: 10,
-                  // height: 400,
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                        child: Text(
-                            AppLocalizations.of(context).somethingWentWrong),
-                      ),
-                      ElevatedButton(
-                          onPressed: refreshTriggered,
-                          child: Text(AppLocalizations.of(context).tryAgain))
-                    ],
-                  )),
-            )));
+              PopupMenuButton(
+                onSelected: (result) {
+                  switch (result) {
+                    case 0:
+                      _openSettings();
+                      break;
+                    case 1:
+                      _signOut();
+                      break;
+                  }
+                },
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                      child: Text(AppLocalizations.of(context).settings),
+                      value: 0),
+                  PopupMenuItem(
+                      child: Text(AppLocalizations.of(context).logout),
+                      value: 1)
+                ],
+                icon: Icon(
+                  Icons.settings,
+                ),
+              )
+            ],
+          ),
+          body: Center(
+              child: Container(
+            height: 100,
+            child: Card(
+                elevation: 10,
+                // height: 400,
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      child:
+                          Text(AppLocalizations.of(context).somethingWentWrong),
+                    ),
+                    ElevatedButton(
+                        onPressed: refreshTriggered,
+                        child: Text(AppLocalizations.of(context).tryAgain))
+                  ],
+                )),
+          )));
   }
 
   List<Widget> getAllTiles() {
@@ -242,7 +243,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
 
   Future<void> refreshTriggered() async {
     print("refresh recipes");
-    return loadRecipes();
+    return loadRecipes(reload: true);
   }
 
   Future<void> _showFilterDialog() async {
@@ -272,7 +273,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
           changedFilters = !(dietIndexNew == dietIndex &&
               highProteinFilterNew == highProteinFilter &&
               highCarbFilterNew == highCarbFilter),
-          if (changedFilters) {loadRecipes()}
+          if (changedFilters) {loadRecipes(reload: true)}
         });
   }
 

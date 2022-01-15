@@ -362,14 +362,23 @@ class FoodProduct {
   }
 }
 
+@HiveType(typeId: 6)
 class UserFoodProduct {
+  @HiveField(0)
   final int foodProductId;
+  @HiveField(1)
   final String name;
+  @HiveField(2)
   final double amount;
+  @HiveField(3)
   final String description;
+  @HiveField(4)
   final QuantityUnit quantityUnit;
+  @HiveField(5)
   final String imgSrc;
+  @HiveField(6)
   final Nutrients nutrients;
+  @HiveField(7)
   final FoodCategory foodCategory;
 
   UserFoodProduct(
@@ -445,9 +454,13 @@ class QuantityUnit {
   const QuantityUnit(this.value);
 }
 
+@HiveType(typeId: 7)
 class FoodCategory {
+  @HiveField(0)
   final int id;
+  @HiveField(1)
   final String name;
+  @HiveField(2)
   final String iconURL;
 
   FoodCategory({this.id, this.name, this.iconURL});

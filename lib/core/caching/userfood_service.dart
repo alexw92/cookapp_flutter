@@ -3,31 +3,31 @@ import 'package:cookable_flutter/core/io/controllers.dart';
 
 import 'hive_service.dart';
 
-class RecipeService {
+class UserFoodService {
   final HiveService hiveService = HiveService();
 
-  List<Recipe> _recipeList = [];
   String _text = "";
 
   String get text => _text;
 
-  Future<List<Recipe>> getFilteredRecipes(Diet diet, bool highProteinFilter, bool highCarbFilter, {bool reload=false}) async {
+  Future<List<UserFoodProduct>> getUserFood(bool missingUserFood, {bool reload=false}) async {
+    List<UserFoodProduct> _recipeList = [];
     print("Entered get Data()");
     _text = "Fetching data";
-    bool exists = await hiveService.exists(boxName: "Recipes");
+    String foodBoxName = missingUserFood?"MissingUserFood":"UserFood";
+    bool exists = await hiveService.exists(boxName: foodBoxName);
     if (exists && !reload) {
       _text = "Fetching from hive";
       print("Getting data from Hive");
-      _recipeList = (await hiveService.getBoxElements("Recipes")).cast<Recipe>();
+      _recipeList = (await hiveService.getBoxElements(foodBoxName)).cast<UserFoodProduct>();
       return _recipeList;
     } else {
       _text = "Fetching from hive";
       print("Getting data from Api");
-      var result = await RecipeController.getFilteredRecipes(
-          diet, highProteinFilter, highCarbFilter);
+      var result = await UserFoodProductController.getUserFoodProducts(missingUserFood);
       _recipeList.addAll(result);
       _text = "Caching data";
-      await hiveService.addBox(_recipeList, "Recipes");
+      await hiveService.addBox(_recipeList, foodBoxName);
       return _recipeList;
     }
   }

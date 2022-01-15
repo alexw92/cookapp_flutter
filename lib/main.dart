@@ -23,6 +23,8 @@ void main() async {
   Hive.registerAdapter(QuantityUnitAdapter());
   Hive.registerAdapter(DietAdapter());
   Hive.registerAdapter(NutrientsAdapter());
+  Hive.registerAdapter(UserFoodProductAdapter());
+  Hive.registerAdapter(FoodCategoryAdapter());
   await Firebase.initializeApp();
   runApp(CookableFlutter());
 }

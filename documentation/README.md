@@ -33,6 +33,13 @@ Possible solution for storing data from api
 [Hive pub.dev](https://pub.dev/packages/hive)
 [Hive with rest](https://medium.com/flutter-community/flutter-cache-with-hive-410c3283280c)
 
+To create model/adapter
+```
+flutter pub run build_runner build
+```
+
+Then import adapter
+
 ## Ingredient Recognition TFLite
 Looks pretty promising! Let's add this if there is time
 Check the [google automl docs](https://cloud.google.com/vision/automl/object-detection/docs), 
