@@ -42,13 +42,13 @@ class _RecipesComponentState extends State<RecipesComponent> {
     });
 
     recipeList = await recipeService.getFilteredRecipes(
-            diet, highProteinFilter, highCarbFilter)
-        .catchError((error) {
-          print("filtered recipes"+ error.toString());
-      setState(() {
-        this.error = true;
-      });
-    });
+            diet, highProteinFilter, highCarbFilter);
+    //     .catchError((error) {
+    //       print("filtered recipes "+ error.toString());
+    //   setState(() {
+    //     this.error = true;
+    //   });
+    // });
     print(recipeList);
     apiToken = await TokenStore().getToken();
     await loadDefaultNutrition().catchError((error) {

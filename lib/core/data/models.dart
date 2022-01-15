@@ -2,31 +2,23 @@ import 'package:hive/hive.dart';
 
 part 'models.g.dart';
 
-class ReducedUser{
+class ReducedUser {
   final String id;
   final String displayName;
   final String providerPhoto;
   final String fbUploadedPhoto;
 
-  ReducedUser({
-    this.id,
-    this.displayName,
-    this.providerPhoto,
-    this.fbUploadedPhoto
-  });
+  ReducedUser(
+      {this.id, this.displayName, this.providerPhoto, this.fbUploadedPhoto});
 
   factory ReducedUser.fromJson(Map<String, dynamic> userJson) {
     return ReducedUser(
-      id: userJson['id'],
-      displayName: userJson['displayName'],
-      providerPhoto: userJson['providerPhoto'],
-      fbUploadedPhoto: userJson['fbUploadedPhoto']
-    );
+        id: userJson['id'],
+        displayName: userJson['displayName'],
+        providerPhoto: userJson['providerPhoto'],
+        fbUploadedPhoto: userJson['fbUploadedPhoto']);
   }
-
 }
-
-
 
 @HiveType(typeId: 0)
 class Recipe {
@@ -71,7 +63,9 @@ class Recipe {
         id: recipeJson['id'],
         imgSrc: recipeJson['img_src'],
         name: recipeJson['name'],
-        uploadedBy: recipeJson['uploadedBy']==null?null:ReducedUser.fromJson(recipeJson['uploadedBy']),
+        uploadedBy: recipeJson['uploadedBy'] == null
+            ? null
+            : ReducedUser.fromJson(recipeJson['uploadedBy']),
         instructions: (recipeJson['instructions'] as List)
             .map((it) => RecipeInstruction.fromJson(it))
             .toList(),
@@ -105,16 +99,16 @@ class PrivateRecipe {
 
   PrivateRecipe(
       {this.id,
-        this.imgSrc,
-        this.name,
-        this.uploadedBy,
-        this.instructions,
-        this.ingredients,
-        this.nutrients,
-        this.numberOfPersons,
-        this.diet,
-        this.prepTimeMinutes,
-        this.isPublishable});
+      this.imgSrc,
+      this.name,
+      this.uploadedBy,
+      this.instructions,
+      this.ingredients,
+      this.nutrients,
+      this.numberOfPersons,
+      this.diet,
+      this.prepTimeMinutes,
+      this.isPublishable});
 
   factory PrivateRecipe.fromJson(Map<String, dynamic> recipeJson) {
     return PrivateRecipe(
@@ -132,21 +126,20 @@ class PrivateRecipe {
         numberOfPersons: recipeJson['numberOfPersons'],
         diet: Diet.values[recipeJson['dietIdentifier'] as int],
         prepTimeMinutes: recipeJson['prepTimeMinutes'],
-        isPublishable: recipeJson['isPublishable'] as bool );
+        isPublishable: recipeJson['isPublishable'] as bool);
   }
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'id': id,
         'img_src': imgSrc,
         'name': name,
         'uploadedBy': uploadedBy,
         'instructions': instructions.map((instr) => instr.toJson()).toList(),
         'ingredients': ingredients.map((ingr) => ingr.toJson()).toList(),
-         'numberOfPersons': numberOfPersons,
-         'dietIdentifier': diet.index,
-         'prepTimeMinutes': prepTimeMinutes,
-         'isPublishable': isPublishable,
+        'numberOfPersons': numberOfPersons,
+        'dietIdentifier': diet.index,
+        'prepTimeMinutes': prepTimeMinutes,
+        'isPublishable': isPublishable,
       };
 
   String toString() {
@@ -210,10 +203,15 @@ class RecipeDetails {
   }
 }
 
+@HiveType(typeId: 1)
 class RecipeInstruction {
+  @HiveField(0)
   final int id;
+  @HiveField(1)
   final int recipeId;
+  @HiveField(2)
   int step;
+  @HiveField(3)
   final String instructionsText;
 
   RecipeInstruction({this.id, this.recipeId, this.step, this.instructionsText});
@@ -226,11 +224,10 @@ class RecipeInstruction {
         instructionsText: json['instructionsText']);
   }
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "id": id,
-        "recipeId" : recipeId ,
-        "step" : step,
+        "recipeId": recipeId,
+        "step": step,
         "instructionsText": instructionsText
       };
 }
@@ -268,13 +265,21 @@ class DefaultNutrients {
   }
 }
 
+@HiveType(typeId: 2)
 class Ingredient {
+  @HiveField(0)
   final int id;
+  @HiveField(1)
   final String name;
+  @HiveField(2)
   double amount;
+  @HiveField(3)
   final int recipeId;
+  @HiveField(4)
   final int foodProductId;
+  @HiveField(5)
   final String imgSrc;
+  @HiveField(6)
   final QuantityUnit quantityType;
 
   Ingredient(
@@ -309,12 +314,11 @@ class Ingredient {
         quantityType: this.quantityType);
   }
 
-  String toString(){
+  String toString() {
     return "Ingredient: $name, amount=$amount";
   }
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
         "amount": amount,
@@ -391,12 +395,14 @@ class UserFoodProduct {
   }
 }
 
+@HiveType(typeId: 3)
 class QuantityUnit {
   static const MILLILITER = 0;
   static const GRAM = 1;
   static const PIECES = 2;
 
   static get values => [MILLILITER, GRAM, PIECES];
+  @HiveField(0)
   final int value;
 
   factory QuantityUnit.fromInt(int quantityType) {
@@ -453,16 +459,27 @@ class FoodCategory {
   }
 }
 
+@HiveType(typeId: 5)
 class Nutrients {
+  @HiveField(0)
   final int id;
+  @HiveField(1)
   final double fat;
+  @HiveField(2)
   final double carbohydrate;
+  @HiveField(3)
   final double sugar;
+  @HiveField(4)
   final double protein;
+  @HiveField(5)
   final int calories;
+  @HiveField(6)
   final String source;
+  @HiveField(7)
   final DateTime dateOfRetrieval;
+  @HiveField(8)
   final bool isHighProteinRecipe;
+  @HiveField(9)
   final bool isHighCarbRecipe;
 
   Nutrients(
@@ -493,6 +510,16 @@ class Nutrients {
   }
 }
 
-enum Diet { VEGAN, PESCATARIAN, VEGETARIAN, NORMAL }
+@HiveType(typeId: 4)
+enum Diet {
+  @HiveField(0)
+  VEGAN,
+  @HiveField(1)
+  PESCATARIAN,
+  @HiveField(2)
+  VEGETARIAN,
+  @HiveField(3)
+  NORMAL
+}
 
 enum NutritionType { CALORIES, CARBOHYDRATE, FAT, PROTEIN, SUGAR }

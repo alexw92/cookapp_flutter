@@ -18,6 +18,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(RecipeAdapter());
+  Hive.registerAdapter(RecipeInstructionAdapter());
+  Hive.registerAdapter(IngredientAdapter());
+  Hive.registerAdapter(QuantityUnitAdapter());
+  Hive.registerAdapter(DietAdapter());
+  Hive.registerAdapter(NutrientsAdapter());
   await Firebase.initializeApp();
   runApp(CookableFlutter());
 }
