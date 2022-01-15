@@ -27,6 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
   String apiToken;
   final picker = ImagePicker();
   bool showProgressIndicatorImage = false;
+  Future<ReducedUser> userFuture;
 
   _ProfilePageState();
 
@@ -43,8 +44,8 @@ class _ProfilePageState extends State<ProfilePage> {
     getUser();
   }
 
-  Future<ReducedUser> getUser() {
-    return UserController.getUser();
+  getUser() {
+    userFuture = UserController.getUser();
   }
 
   @override
@@ -52,7 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
     var user = FirebaseAuth.instance.currentUser;
 
     return FutureBuilder(
-        future: getUser(),
+        future: userFuture,
         builder: (context, AsyncSnapshot<ReducedUser> snapshot) {
           if (snapshot.hasData) {
             print(snapshot.data.fbUploadedPhoto);
