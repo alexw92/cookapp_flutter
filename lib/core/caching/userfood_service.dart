@@ -10,27 +10,37 @@ class UserFoodService {
 
   String get text => _text;
 
-  Future<List<UserFoodProduct>> getUserFood(bool missingUserFood, {bool reload=false}) async {
+  Future<List<UserFoodProduct>> getUserFood(bool missingUserFood,
+      {bool reload = false}) async {
     List<UserFoodProduct> _recipeList = [];
     print("Entered get Data()");
     _text = "Fetching data";
-    String foodBoxName = missingUserFood?"MissingUserFood":"UserFood";
+    String foodBoxName = missingUserFood ? "MissingUserFood" : "UserFood";
     bool exists = await hiveService.exists(boxName: foodBoxName);
     if (exists && !reload) {
       _text = "Fetching from hive";
       print("Getting data from Hive");
-      _recipeList = (await hiveService.getBoxElements(foodBoxName)).cast<UserFoodProduct>();
+      _recipeList = (await hiveService.getBoxElements(foodBoxName))
+          .cast<UserFoodProduct>();
       return _recipeList;
     } else {
       _text = "Fetching from hive";
       print("Getting data from Api");
-      var result = await UserFoodProductController.getUserFoodProducts(missingUserFood);
+      var result =
+          await UserFoodProductController.getUserFoodProducts(missingUserFood);
       _recipeList.addAll(result);
       _text = "Caching data";
-      if(reload)
-        await hiveService.clearBox(boxName: foodBoxName);
+      if (reload) await hiveService.clearBox(boxName: foodBoxName);
       await hiveService.addBox(_recipeList, foodBoxName);
       return _recipeList;
     }
   }
+
+  updateBoxValues(
+      bool missingUserFood, List<UserFoodProduct> foodProducts) async {
+    String foodBoxName = missingUserFood ? "MissingUserFood" : "UserFood";
+    await hiveService.clearBox(boxName: foodBoxName);
+    await hiveService.addBox(foodProducts, foodBoxName);
+  }
+
 }

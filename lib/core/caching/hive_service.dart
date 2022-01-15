@@ -26,7 +26,6 @@ class HiveService {
     List boxList = [];
 
     final openBox = await Hive.openBox(boxName);
-
     int length = openBox.length;
 
     for (int i = 0; i < length; i++) {
@@ -35,5 +34,6 @@ class HiveService {
 
     return boxList;
   }
+
 
 }
