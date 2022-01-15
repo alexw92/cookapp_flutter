@@ -2,10 +2,15 @@ import 'package:hive/hive.dart';
 
 part 'models.g.dart';
 
+@HiveType(typeId: 9)
 class ReducedUser {
+  @HiveField(0)
   final String id;
+  @HiveField(1)
   final String displayName;
+  @HiveField(2)
   final String providerPhoto;
+  @HiveField(3)
   final String fbUploadedPhoto;
 
   ReducedUser(
@@ -84,17 +89,29 @@ class Recipe {
   }
 }
 
+@HiveType(typeId: 8)
 class PrivateRecipe {
+  @HiveField(0)
   final int id;
+  @HiveField(1)
   final String imgSrc;
+  @HiveField(2)
   final String name;
+  @HiveField(3)
   final ReducedUser uploadedBy;
+  @HiveField(4)
   final List<RecipeInstruction> instructions;
+  @HiveField(5)
   final List<Ingredient> ingredients;
+  @HiveField(6)
   final Nutrients nutrients;
+  @HiveField(7)
   final int numberOfPersons;
+  @HiveField(8)
   final Diet diet;
+  @HiveField(9)
   final int prepTimeMinutes;
+  @HiveField(10)
   final bool isPublishable;
 
   PrivateRecipe(

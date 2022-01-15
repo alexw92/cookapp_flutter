@@ -6,6 +6,49 @@ part of 'models.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
+class ReducedUserAdapter extends TypeAdapter<ReducedUser> {
+  @override
+  final int typeId = 9;
+
+  @override
+  ReducedUser read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return ReducedUser(
+      id: fields[0] as String,
+      displayName: fields[1] as String,
+      providerPhoto: fields[2] as String,
+      fbUploadedPhoto: fields[3] as String,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, ReducedUser obj) {
+    writer
+      ..writeByte(4)
+      ..writeByte(0)
+      ..write(obj.id)
+      ..writeByte(1)
+      ..write(obj.displayName)
+      ..writeByte(2)
+      ..write(obj.providerPhoto)
+      ..writeByte(3)
+      ..write(obj.fbUploadedPhoto);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ReducedUserAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
 class RecipeAdapter extends TypeAdapter<Recipe> {
   @override
   final int typeId = 0;
@@ -66,6 +109,70 @@ class RecipeAdapter extends TypeAdapter<Recipe> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is RecipeAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class PrivateRecipeAdapter extends TypeAdapter<PrivateRecipe> {
+  @override
+  final int typeId = 8;
+
+  @override
+  PrivateRecipe read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return PrivateRecipe(
+      id: fields[0] as int,
+      imgSrc: fields[1] as String,
+      name: fields[2] as String,
+      uploadedBy: fields[3] as ReducedUser,
+      instructions: (fields[4] as List)?.cast<RecipeInstruction>(),
+      ingredients: (fields[5] as List)?.cast<Ingredient>(),
+      nutrients: fields[6] as Nutrients,
+      numberOfPersons: fields[7] as int,
+      diet: fields[8] as Diet,
+      prepTimeMinutes: fields[9] as int,
+      isPublishable: fields[10] as bool,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, PrivateRecipe obj) {
+    writer
+      ..writeByte(11)
+      ..writeByte(0)
+      ..write(obj.id)
+      ..writeByte(1)
+      ..write(obj.imgSrc)
+      ..writeByte(2)
+      ..write(obj.name)
+      ..writeByte(3)
+      ..write(obj.uploadedBy)
+      ..writeByte(4)
+      ..write(obj.instructions)
+      ..writeByte(5)
+      ..write(obj.ingredients)
+      ..writeByte(6)
+      ..write(obj.nutrients)
+      ..writeByte(7)
+      ..write(obj.numberOfPersons)
+      ..writeByte(8)
+      ..write(obj.diet)
+      ..writeByte(9)
+      ..write(obj.prepTimeMinutes)
+      ..writeByte(10)
+      ..write(obj.isPublishable);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PrivateRecipeAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

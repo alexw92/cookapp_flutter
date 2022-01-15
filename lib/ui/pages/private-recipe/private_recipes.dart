@@ -1,3 +1,4 @@
+import 'package:cookable_flutter/core/caching/private_recipe_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
@@ -23,11 +24,12 @@ class PrivateRecipesComponent extends StatefulWidget {
 
 class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
   List<PrivateRecipe> recipeList = [];
+  PrivateRecipeService privateRecipeService = PrivateRecipeService();
   String apiToken;
   bool loading = false;
   bool error = false;
 
-  void loadRecipes() async {
+  void loadRecipes({reload = false}) async {
     setState(() {
       this.error = false;
       this.loading = true;
@@ -35,7 +37,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
     setState(() {
       recipeList = [];
     });
-    recipeList = await RecipeController.getPrivateRecipes().catchError((error) {
+    recipeList = await privateRecipeService.getPrivateRecipes(reload: reload).catchError((error) {
       print("private recipes " + error.toString());
       setState(() {
         this.error = true;
