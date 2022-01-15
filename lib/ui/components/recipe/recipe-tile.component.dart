@@ -101,17 +101,23 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                 ? Positioned(
                     bottom: 0,
                     right: 0,
-                    child: Stack(children: [
-                      CircleAvatar(
-                        backgroundImage: CachedNetworkImageProvider(
-                            (recipe.uploadedBy.fbUploadedPhoto == null)
-                                ? recipe.uploadedBy.providerPhoto
-                                : recipe.uploadedBy.fbUploadedPhoto,
-                            imageRenderMethodForWeb:
-                                ImageRenderMethodForWeb.HttpGet),
-                        // backgroundColor: Colors.transparent,
-                        radius: 40,
-                      ),
+                    child: Column(children: [
+                      Stack(children: [
+                        CircleAvatar(
+                          backgroundImage: CachedNetworkImageProvider(
+                              (recipe.uploadedBy.fbUploadedPhoto == null)
+                                  ? recipe.uploadedBy.providerPhoto
+                                  : recipe.uploadedBy.fbUploadedPhoto,
+                              imageRenderMethodForWeb:
+                                  ImageRenderMethodForWeb.HttpGet),
+                          // backgroundColor: Colors.transparent,
+                          radius: 40,
+                        ),
+                      ]),
+                      Text(
+                        recipe.uploadedBy.displayName,
+                        style: TextStyle(fontSize: 12, color: Colors.white),
+                      )
                     ]))
                 : Container(),
             Positioned(
