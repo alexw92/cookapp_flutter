@@ -1,3 +1,4 @@
+import 'package:cookable_flutter/core/caching/recipe_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
@@ -21,6 +22,7 @@ class RecipesComponent extends StatefulWidget {
 
 class _RecipesComponentState extends State<RecipesComponent> {
   List<Recipe> recipeList = [];
+  RecipeService recipeService = RecipeService();
   String apiToken;
   bool loading = false;
   bool error = false;
@@ -39,7 +41,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
       recipeList = [];
     });
 
-    recipeList = await RecipeController.getFilteredRecipes(
+    recipeList = await recipeService.getFilteredRecipes(
             diet, highProteinFilter, highCarbFilter)
         .catchError((error) {
           print("filtered recipes"+ error.toString());

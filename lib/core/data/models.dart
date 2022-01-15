@@ -1,4 +1,6 @@
+import 'package:hive/hive.dart';
 
+part 'models.g.dart';
 
 class ReducedUser{
   final String id;
@@ -25,17 +27,30 @@ class ReducedUser{
 }
 
 
+
+@HiveType(typeId: 0)
 class Recipe {
+  @HiveField(0)
   final int id;
+  @HiveField(1)
   final String imgSrc;
+  @HiveField(2)
   final String name;
+  @HiveField(3)
   final ReducedUser uploadedBy;
+  @HiveField(4)
   final List<RecipeInstruction> instructions;
+  @HiveField(5)
   final List<Ingredient> ingredients;
+  @HiveField(6)
   final int numberOfPersons;
+  @HiveField(7)
   final Diet diet;
+  @HiveField(8)
   final int prepTimeMinutes;
+  @HiveField(9)
   final Nutrients nutrients;
+  @HiveField(10)
   final int numberMissingIngredients;
 
   Recipe(
