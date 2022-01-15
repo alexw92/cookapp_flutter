@@ -17,6 +17,11 @@ class HiveService {
     }
   }
 
+  clearBox({String boxName}) async {
+    final openBox = await Hive.openBox(boxName);
+    return openBox.clear();
+  }
+
   getBoxElements(String boxName) async {
     List boxList = [];
 

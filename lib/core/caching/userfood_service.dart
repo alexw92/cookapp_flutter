@@ -27,6 +27,8 @@ class UserFoodService {
       var result = await UserFoodProductController.getUserFoodProducts(missingUserFood);
       _recipeList.addAll(result);
       _text = "Caching data";
+      if(reload)
+        await hiveService.clearBox(boxName: foodBoxName);
       await hiveService.addBox(_recipeList, foodBoxName);
       return _recipeList;
     }

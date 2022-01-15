@@ -6,12 +6,13 @@ import 'hive_service.dart';
 class RecipeService {
   final HiveService hiveService = HiveService();
 
-  List<Recipe> _recipeList = [];
+
   String _text = "";
 
   String get text => _text;
 
   Future<List<Recipe>> getFilteredRecipes(Diet diet, bool highProteinFilter, bool highCarbFilter, {bool reload=false}) async {
+    List<Recipe> _recipeList = [];
     print("Entered get Data()");
     _text = "Fetching data";
     bool exists = await hiveService.exists(boxName: "Recipes");
@@ -27,6 +28,8 @@ class RecipeService {
           diet, highProteinFilter, highCarbFilter);
       _recipeList.addAll(result);
       _text = "Caching data";
+      if(reload)
+        await hiveService.clearBox(boxName: "Recipes");
       await hiveService.addBox(_recipeList, "Recipes");
       return _recipeList;
     }
