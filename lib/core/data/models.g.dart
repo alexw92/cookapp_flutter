@@ -220,6 +220,61 @@ class RecipeInstructionAdapter extends TypeAdapter<RecipeInstruction> {
           typeId == other.typeId;
 }
 
+class DefaultNutrientsAdapter extends TypeAdapter<DefaultNutrients> {
+  @override
+  final int typeId = 10;
+
+  @override
+  DefaultNutrients read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return DefaultNutrients(
+      id: fields[0] as int,
+      recDailyFat: fields[1] as double,
+      recDailySaturatedFat: fields[2] as double,
+      recDailyCarbohydrate: fields[3] as double,
+      recDailySugar: fields[4] as double,
+      recDailyProtein: fields[5] as double,
+      recDailyCalories: fields[6] as int,
+      source: fields[7] as String,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, DefaultNutrients obj) {
+    writer
+      ..writeByte(8)
+      ..writeByte(0)
+      ..write(obj.id)
+      ..writeByte(1)
+      ..write(obj.recDailyFat)
+      ..writeByte(2)
+      ..write(obj.recDailySaturatedFat)
+      ..writeByte(3)
+      ..write(obj.recDailyCarbohydrate)
+      ..writeByte(4)
+      ..write(obj.recDailySugar)
+      ..writeByte(5)
+      ..write(obj.recDailyProtein)
+      ..writeByte(6)
+      ..write(obj.recDailyCalories)
+      ..writeByte(7)
+      ..write(obj.source);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DefaultNutrientsAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
 class IngredientAdapter extends TypeAdapter<Ingredient> {
   @override
   final int typeId = 2;

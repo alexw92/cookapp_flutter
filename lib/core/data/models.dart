@@ -249,14 +249,23 @@ class RecipeInstruction {
       };
 }
 
+@HiveType(typeId: 10)
 class DefaultNutrients {
+  @HiveField(0)
   final int id;
+  @HiveField(1)
   final double recDailyFat;
+  @HiveField(2)
   final double recDailySaturatedFat;
+  @HiveField(3)
   final double recDailyCarbohydrate;
+  @HiveField(4)
   final double recDailySugar;
+  @HiveField(5)
   final double recDailyProtein;
+  @HiveField(6)
   final int recDailyCalories;
+  @HiveField(7)
   final String source;
 
   DefaultNutrients(

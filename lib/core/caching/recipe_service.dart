@@ -34,4 +34,24 @@ class RecipeService {
       return _recipeList;
     }
   }
+
+  Future<DefaultNutrients> getDefaultNutrients({bool reload=false}) async {
+    print("Entered get Data()");
+    _text = "Fetching data";
+    bool exists = await hiveService.exists(boxName: "DefaultNutrients");
+    if (exists && !reload) {
+      _text = "Fetching from hive";
+      print("Getting data from Hive");
+      return (await hiveService.getBoxElements("DefaultNutrients")).cast<DefaultNutrients>()[0];
+    } else {
+      _text = "Fetching from hive";
+      print("Getting data from Api");
+      var result = await RecipeController.getDefaultNutrients();
+      _text = "Caching data";
+      if(reload)
+        await hiveService.clearBox(boxName: "DefaultNutrients");
+      await hiveService.addBox([result], "DefaultNutrients");
+      return result;
+    }
+  }
 }

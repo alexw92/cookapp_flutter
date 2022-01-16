@@ -23,6 +23,7 @@ class RecipesComponent extends StatefulWidget {
 class _RecipesComponentState extends State<RecipesComponent> {
   List<Recipe> recipeList = [];
   RecipeService recipeService = RecipeService();
+  DefaultNutrients defaultNutrients;
   String apiToken;
   bool loading = false;
   bool error = false;
@@ -64,12 +65,8 @@ class _RecipesComponentState extends State<RecipesComponent> {
   }
 
   Future<void> loadDefaultNutrition() async {
-    var prefs = await SharedPreferences.getInstance();
     RecipeController.getDefaultNutrients().then((nutrients) => {
-          prefs.setInt('dailyCalories', nutrients.recDailyCalories),
-          prefs.setDouble('dailyCarbohydrate', nutrients.recDailyCarbohydrate),
-          prefs.setDouble('dailyProtein', nutrients.recDailyProtein),
-          prefs.setDouble('dailyFat', nutrients.recDailyFat)
+      defaultNutrients = nutrients
         });
   }
 

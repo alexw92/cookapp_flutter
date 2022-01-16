@@ -1,4 +1,5 @@
 import 'package:cookable_flutter/core/caching/private_recipe_service.dart';
+import 'package:cookable_flutter/core/caching/recipe_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
@@ -10,7 +11,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../login_screen.dart';
 
@@ -25,6 +25,8 @@ class PrivateRecipesComponent extends StatefulWidget {
 class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
   List<PrivateRecipe> recipeList = [];
   PrivateRecipeService privateRecipeService = PrivateRecipeService();
+  RecipeService recipeService = RecipeService();
+  DefaultNutrients defaultNutrients;
   String apiToken;
   bool loading = false;
   bool error = false;
@@ -37,7 +39,9 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
     setState(() {
       recipeList = [];
     });
-    recipeList = await privateRecipeService.getPrivateRecipes(reload: reload).catchError((error) {
+    recipeList = await privateRecipeService
+        .getPrivateRecipes(reload: reload)
+        .catchError((error) {
       print("private recipes " + error.toString());
       setState(() {
         this.error = true;
@@ -51,13 +55,9 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
   }
 
   Future<void> loadDefaultNutrition() async {
-    var prefs = await SharedPreferences.getInstance();
-    RecipeController.getDefaultNutrients().then((nutrients) => {
-          prefs.setInt('dailyCalories', nutrients.recDailyCalories),
-          prefs.setDouble('dailyCarbohydrate', nutrients.recDailyCarbohydrate),
-          prefs.setDouble('dailyProtein', nutrients.recDailyProtein),
-          prefs.setDouble('dailyFat', nutrients.recDailyFat)
-        });
+    recipeService
+        .getDefaultNutrients()
+        .then((nutrients) => {defaultNutrients = nutrients});
   }
 
   @override

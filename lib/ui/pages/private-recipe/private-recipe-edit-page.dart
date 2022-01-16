@@ -1,3 +1,4 @@
+import 'package:cookable_flutter/core/caching/recipe_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
@@ -9,7 +10,6 @@ import 'package:cookable_flutter/ui/pages/private-recipe/edit-ingredients-amount
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'add-instruction-dialog.dart';
 
@@ -25,6 +25,8 @@ class RecipeEditPage extends StatefulWidget {
 class _RecipeEditPageState extends State<RecipeEditPage> {
   List<bool> _isOpen = [true, true];
   List<Widget> _instructionTiles = [];
+  DefaultNutrients defaultNutrients;
+  RecipeService recipeService = RecipeService();
   String apiToken;
   PrivateRecipe privateRecipe;
   int privateRecipeId;
@@ -50,11 +52,11 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
   }
 
   loadDailyRequiredNutrients() async {
-    var prefs = await SharedPreferences.getInstance();
-    dailyCalories = prefs.getInt('dailyCalories');
-    dailyCarbohydrate = prefs.getDouble('dailyCarbohydrate');
-    dailyProtein = prefs.getDouble('dailyProtein');
-    dailyFat = prefs.getDouble('dailyFat');
+    defaultNutrients = await recipeService.getDefaultNutrients();
+    dailyCalories = defaultNutrients.recDailyCalories;
+    dailyCarbohydrate = defaultNutrients.recDailyCarbohydrate;
+    dailyProtein = defaultNutrients.recDailyProtein;
+    dailyFat = defaultNutrients.recDailyFat;
   }
 
   @override
