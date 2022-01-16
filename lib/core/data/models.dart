@@ -553,3 +553,14 @@ enum Diet {
 }
 
 enum NutritionType { CALORIES, CARBOHYDRATE, FAT, PROTEIN, SUGAR }
+
+class UserDataEdit {
+  final String displayName;
+
+  UserDataEdit({this.displayName});
+
+  Map<String, dynamic> toJson() => {
+    'displayName': displayName,
+
+  };
+}

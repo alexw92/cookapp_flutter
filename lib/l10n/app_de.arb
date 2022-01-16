@@ -81,8 +81,10 @@
     "imageFromGallery": "Foto aus Gallery",
     "takeImage": "Foto aufnehmen",
     "profileImageUpdated": "Profilbild aktualisiert",
+    "profileNameUpdated": "Profil aktualisiert",
     "profileImage": "Profilbild",
     "gallery": "Gallerie",
-    "camera": "Kamera"
+    "camera": "Kamera",
+    "displayedName": "Sichtbarer Name"
 
 }

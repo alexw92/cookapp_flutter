@@ -383,6 +383,36 @@ class UserController{
         "Error requesting user, Code: ${response.statusCode} Message: ${response.data} ");
   }
 
+  static Future<ReducedUser> updateUserData(UserDataEdit userDataEdit) async{
+    // get token from token store
+    var tokenStore = IOConfig.tokenStore;
+    String storedToken = await tokenStore.getToken();
+
+    BaseOptions options = new BaseOptions(
+        baseUrl: IOConfig.apiUrl,
+        connectTimeout: 3000, //10 seconds
+        receiveTimeout: 10000,
+        headers: {
+          "Authorization": "Bearer $storedToken",
+          'Content-Type': 'application/json',
+        });
+    var body = json.encode(userDataEdit.toJson());
+    Dio dio = new Dio(options);
+    final stopwatch = Stopwatch()..start();
+    var response = await dio.put("/user", data: body);
+    print(
+        'updateUserData api req executed in ${stopwatch.elapsed.inMilliseconds}');
+
+    /// If the first API call is successful
+    if (response.statusCode == HttpStatus.ok) {
+      ReducedUser reducedUser = ReducedUser.fromJson(response.data);
+      return reducedUser;
+    }
+
+    throw Exception(
+        "Error requesting user, Code: ${response.statusCode} Message: ${response.data} ");
+  }
+
   static Future<void> updateProfileImage(
       File image) async {
     // get token from token store
