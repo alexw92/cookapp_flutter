@@ -23,6 +23,15 @@ class ReducedUser {
         providerPhoto: userJson['providerPhoto'],
         fbUploadedPhoto: userJson['fbUploadedPhoto']);
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'displayName': displayName,
+      'providerPhoto': providerPhoto,
+      'fbUploadedPhoto': fbUploadedPhoto,
+    };
+  }
 }
 
 @HiveType(typeId: 0)
@@ -150,7 +159,7 @@ class PrivateRecipe {
         'id': id,
         'img_src': imgSrc,
         'name': name,
-        'uploadedBy': uploadedBy,
+        'uploadedBy': uploadedBy.toJson(),
         'instructions': instructions.map((instr) => instr.toJson()).toList(),
         'ingredients': ingredients.map((ingr) => ingr.toJson()).toList(),
         'numberOfPersons': numberOfPersons,
@@ -569,7 +578,6 @@ class UserDataEdit {
   UserDataEdit({this.displayName});
 
   Map<String, dynamic> toJson() => {
-    'displayName': displayName,
-
-  };
+        'displayName': displayName,
+      };
 }

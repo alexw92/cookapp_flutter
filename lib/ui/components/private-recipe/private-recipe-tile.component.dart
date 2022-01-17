@@ -80,7 +80,7 @@ class _PrivateRecipeTileComponentState
                 width: 300,
                 color: Colors.grey,
                 child: FittedBox(
-                    fit: BoxFit.fill,
+                   // fit: BoxFit.fill,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Image(
@@ -91,7 +91,7 @@ class _PrivateRecipeTileComponentState
                             imageRenderMethodForWeb:
                                 ImageRenderMethodForWeb.HttpGet),
                       ),
-                    ))),
+                    ),),),
             (showProgressIndicatorImage)
                 ? Positioned(
                     top: 120,
@@ -251,8 +251,8 @@ class _PrivateRecipeTileComponentState
               setState(() {
                 showProgressIndicatorImage = false;
               }),
-              ScaffoldMessenger.of(context).removeCurrentSnackBar(),
-              ScaffoldMessenger.of(context).showSnackBar(
+             ScaffoldMessenger.of(context).removeCurrentSnackBar(),
+             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
                       "${AppLocalizations.of(context).errorDuringImageUpload}"),

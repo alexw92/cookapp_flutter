@@ -282,17 +282,17 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                       SizedBox(
                         height: 5,
                       ),
+                      // todo replace grid by multiple rows
                       Container(
-                          margin: const EdgeInsets.only(left: 5, right: 5),
                           child: new GridView.count(
                             //     primary: true,
                             //    padding: const EdgeInsets.all(0),
                             physics: NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             crossAxisCount: 3,
-                            mainAxisSpacing: 3,
-                            padding: EdgeInsets.only(left: 10, right: 10),
-                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 0,
+                          //  padding: EdgeInsets.only(left: 5, right: 5),
+                            crossAxisSpacing: 0,
                             children: [
                               ...getAllIngredientTiles()
                               //

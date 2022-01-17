@@ -31,14 +31,14 @@ class _IngredientTileComponentState extends State<IngredientTileComponent> {
   Widget build(BuildContext context) {
     return Container(
         height: 100,
-        width: 50,
+        width: 40,
         color: Colors.transparent,
         child: Column(children: [
           CircleAvatar(
             backgroundImage: CachedNetworkImageProvider(ingredient.imgSrc,
                 imageRenderMethodForWeb: ImageRenderMethodForWeb.HttpGet),
             // backgroundColor: Colors.transparent,
-            radius: 34,
+            radius: 44,
           ),
           Text(
             ingredient.name,
