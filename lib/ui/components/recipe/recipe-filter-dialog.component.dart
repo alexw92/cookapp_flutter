@@ -219,7 +219,7 @@ class HighCarbCheckbox extends StatelessWidget {
                 child: Chip(
               labelPadding: EdgeInsets.all(4.0),
               avatar: Icon(
-                Icons.fitness_center,
+                Icons.directions_bike,
               ),
               label: Text(
                 AppLocalizations.of(context).highCarb,
