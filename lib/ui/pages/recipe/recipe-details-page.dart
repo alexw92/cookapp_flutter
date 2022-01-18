@@ -23,7 +23,7 @@ class RecipesDetailsPage extends StatefulWidget {
 
 class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
   RecipeDetails recipe;
-  RecipeService recipeService =  RecipeService();
+  RecipeService recipeService = RecipeService();
   DefaultNutrients defaultNutrients;
   String apiToken;
   int dailyCalories;
@@ -282,22 +282,37 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                       SizedBox(
                         height: 5,
                       ),
-                      // todo replace grid by multiple rows
-                      Container(
-                          child: new GridView.count(
-                            //     primary: true,
-                            //    padding: const EdgeInsets.all(0),
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            crossAxisCount: 3,
-                            mainAxisSpacing: 0,
-                          //  padding: EdgeInsets.only(left: 5, right: 5),
-                            crossAxisSpacing: 0,
-                            children: [
-                              ...getAllIngredientTiles()
-                              //
-                            ],
-                          ))
+                      Column(
+                        children: <Widget>[
+                          for (int i = 0;
+                              i <= getAllIngredientTiles().length / 3;
+                              i++)
+                            new Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            //  crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                (i*3+0<getAllIngredientTiles().length)?getAllIngredientTiles()[i*3+0]:Container(),
+                                (i*3+1<getAllIngredientTiles().length)?getAllIngredientTiles()[i*3+1]:Container(width: 92,),
+                                (i*3+2<getAllIngredientTiles().length)?getAllIngredientTiles()[i*3+2]:Container(width: 92,)
+                              ],
+                            )
+                        ],
+                      ),
+                      // Container(
+                      //     child: new GridView.count(
+                      //       //     primary: true,
+                      //       //    padding: const EdgeInsets.all(0),
+                      //       physics: NeverScrollableScrollPhysics(),
+                      //       shrinkWrap: true,
+                      //       crossAxisCount: 3,
+                      //       mainAxisSpacing: 0,
+                      //     //  padding: EdgeInsets.only(left: 5, right: 5),
+                      //       crossAxisSpacing: 0,
+                      //       children: [
+                      //         ...getAllIngredientTiles()
+                      //         //
+                      //       ],
+                      //     ))
                     ]),
                   ),
                   Container(
