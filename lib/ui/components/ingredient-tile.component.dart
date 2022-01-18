@@ -9,23 +9,25 @@ class IngredientTileComponent extends StatefulWidget {
   Ingredient ingredient;
   String apiToken;
   Color textColor;
+  double radius;
 
   IngredientTileComponent(
-      {Key key, this.ingredient, this.apiToken, this.textColor = Colors.white})
+      {Key key, this.ingredient, this.apiToken, this.textColor = Colors.white, this.radius = 46.0})
       : super(key: key);
 
   @override
   _IngredientTileComponentState createState() => _IngredientTileComponentState(
-      ingredient: ingredient, apiToken: apiToken, textColor: textColor);
+      ingredient: ingredient, apiToken: apiToken, textColor: textColor, radius: radius);
 }
 
 class _IngredientTileComponentState extends State<IngredientTileComponent> {
   Ingredient ingredient;
   String apiToken;
   Color textColor;
+  double radius;
 
   _IngredientTileComponentState(
-      {this.ingredient, this.apiToken, this.textColor});
+      {this.ingredient, this.apiToken, this.textColor, this.radius});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class _IngredientTileComponentState extends State<IngredientTileComponent> {
             backgroundImage: CachedNetworkImageProvider(ingredient.imgSrc,
                 imageRenderMethodForWeb: ImageRenderMethodForWeb.HttpGet),
             // backgroundColor: Colors.transparent,
-            radius: 46,
+            radius: radius,
           ),
           Text(
             ingredient.name,

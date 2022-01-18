@@ -325,24 +325,31 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
   }
 
   Widget showIngredientsIfNotEmpty() {
-    if (recipe.ingredients.length != 0)
-      return Container(
-          margin: const EdgeInsets.only(left: 5, right: 5),
-          child: new GridView.count(
-            //     primary: true,
-            //    padding: const EdgeInsets.all(0),
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            crossAxisCount: 3,
-            mainAxisSpacing: 3,
-            padding: EdgeInsets.only(left: 10, right: 10),
-            crossAxisSpacing: 10,
-            children: [
-              ...getAllIngredientTiles()
-              //
-            ],
-          ));
-    else
+    if (recipe.ingredients.length != 0) {
+      List<Widget> tiles = getAllIngredientTiles();
+      return Column(
+        children: <Widget>[
+          for (int i = 0; i <= tiles.length / 3; i++)
+            new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //  crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                (i * 3 + 0 < tiles.length) ? tiles[i * 3 + 0] : Container(),
+                (i * 3 + 1 < tiles.length)
+                    ? tiles[i * 3 + 1]
+                    : Container(
+                        width: 92,
+                      ),
+                (i * 3 + 2 < tiles.length)
+                    ? tiles[i * 3 + 2]
+                    : Container(
+                        width: 92,
+                      )
+              ],
+            )
+        ],
+      );
+    } else
       return Text(
         AppLocalizations.of(context).emptyIngredients,
         style: TextStyle(color: Colors.white),
