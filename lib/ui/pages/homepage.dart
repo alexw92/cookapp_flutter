@@ -6,8 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'image_upload_test.dart';
-
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
 
@@ -24,7 +22,6 @@ class _HomePageState extends State<HomePage> {
     RecipesComponent(),
     PrivateRecipesComponent(),
     ProfilePage(),
-    ImageUploadPage()
   ];
 
   void _onItemTapped(int index) {
@@ -59,10 +56,6 @@ class _HomePageState extends State<HomePage> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),
                 label: AppLocalizations.of(context).profile,
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.image),
-                label: 'ImageTest',
               ),
             ],
             currentIndex: _selectedIndex,
