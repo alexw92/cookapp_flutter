@@ -155,7 +155,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 height: 144,
                                                 child:
                                                     CircularProgressIndicator())
-                                            : CircleAvatar(
+                                            :                   (snapshot.data.fbUploadedPhoto==null
+                                            && snapshot.data.providerPhoto==null)?
+                                        CircleAvatar(child: Icon(Icons.person, size: 92,), radius: 72,)
+                                            :
+                                        CircleAvatar(
                                                 backgroundImage:
                                                     CachedNetworkImageProvider(
                                                         (snapshot.data

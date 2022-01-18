@@ -149,7 +149,12 @@ class _PrivateRecipeTileComponentState
             Positioned(
                 bottom: 0,
                 right: 0,
-                child: Stack(children: [
+                child: Stack(
+                    children: [
+                  (privateRecipe.uploadedBy.fbUploadedPhoto==null
+                      && privateRecipe.uploadedBy.providerPhoto==null)?
+                      CircleAvatar(child: Icon(Icons.person, size: 74,), radius: 40,)
+                      :
                   CircleAvatar(
                     backgroundImage: CachedNetworkImageProvider(
                         (privateRecipe.uploadedBy.fbUploadedPhoto == null)
