@@ -48,8 +48,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   getUser() {
     userFuture = UserController.getUser();
-    userFuture
-        .then((value) => {
+    userFuture.then((value) => {
           _profileNameTextController.text = value.displayName,
           usernameOrig = value.displayName
         });
@@ -105,43 +104,45 @@ class _ProfilePageState extends State<ProfilePage> {
                   body: (!snapshot.hasData)
                       ? Container()
                       : user.isAnonymous
-                          ? Container(
-                              margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      AppLocalizations.of(context)
-                                          .loginToAccessThisPage,
-                                    ),
-                                    SignInButton(
-                                      Buttons.Facebook,
-                                      text: AppLocalizations.of(context)
-                                          .continueWithFacebook,
-                                      onPressed: () {},
-                                    ),
-                                    SignInButton(
-                                      Buttons.Google,
-                                      text: AppLocalizations.of(context)
-                                          .continueWithGoogle,
-                                      onPressed: () {
-                                        convertAnonymousToGoogle();
-                                      },
-                                    ),
-                                    SignInButton(
-                                      Buttons.Email,
-                                      text: AppLocalizations.of(context)
-                                          .createAccount,
-                                      onPressed: () {},
-                                    ),
-                                    Text("or"),
-                                    SignInButton(
-                                      Buttons.Email,
-                                      text: AppLocalizations.of(context)
-                                          .loginWithAccount,
-                                      onPressed: () {},
-                                    ),
-                                  ]))
+                          ? Center(
+                              child: Container(
+                                  margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          AppLocalizations.of(context)
+                                              .loginToAccessThisPage,
+                                        ),
+                                        SignInButton(
+                                          Buttons.Facebook,
+                                          text: AppLocalizations.of(context)
+                                              .continueWithFacebook,
+                                          onPressed: () {},
+                                        ),
+                                        SignInButton(
+                                          Buttons.Google,
+                                          text: AppLocalizations.of(context)
+                                              .continueWithGoogle,
+                                          onPressed: () {
+                                            convertAnonymousToGoogle();
+                                          },
+                                        ),
+                                        SignInButton(
+                                          Buttons.Email,
+                                          text: AppLocalizations.of(context)
+                                              .createAccount,
+                                          onPressed: () {},
+                                        ),
+                                        Text("or"),
+                                        SignInButton(
+                                          Buttons.Email,
+                                          text: AppLocalizations.of(context)
+                                              .loginWithAccount,
+                                          onPressed: () {},
+                                        ),
+                                      ])))
                           : Column(children: [
                               Container(
                                   margin: EdgeInsets.only(
@@ -155,13 +156,20 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 height: 144,
                                                 child:
                                                     CircularProgressIndicator())
-                                            :                   (snapshot.data.fbUploadedPhoto==null
-                                            && snapshot.data.providerPhoto==null)?
-                                        CircleAvatar(child: Icon(Icons.person, size: 92,), radius: 72,)
-                                            :
-                                        CircleAvatar(
-                                                backgroundImage:
-                                                    CachedNetworkImageProvider(
+                                            : (snapshot.data.fbUploadedPhoto ==
+                                                        null &&
+                                                    snapshot.data
+                                                            .providerPhoto ==
+                                                        null)
+                                                ? CircleAvatar(
+                                                    child: Icon(
+                                                      Icons.person,
+                                                      size: 92,
+                                                    ),
+                                                    radius: 72,
+                                                  )
+                                                : CircleAvatar(
+                                                    backgroundImage: CachedNetworkImageProvider(
                                                         (snapshot.data
                                                                     .fbUploadedPhoto ==
                                                                 null)
@@ -172,9 +180,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                                         imageRenderMethodForWeb:
                                                             ImageRenderMethodForWeb
                                                                 .HttpGet),
-                                                // backgroundColor: Colors.transparent,
-                                                radius: 72,
-                                              ),
+                                                    // backgroundColor: Colors.transparent,
+                                                    radius: 72,
+                                                  ),
                                         Positioned(
                                           child: ElevatedButton(
                                             style: ElevatedButton.styleFrom(
@@ -322,24 +330,25 @@ class _ProfilePageState extends State<ProfilePage> {
         });
   }
 
-  revertInputs(){
+  revertInputs() {
     _profileNameTextController.text = usernameOrig;
   }
 
-  updateUserName(){
+  updateUserName() {
     var userName = _profileNameTextController.text;
     FocusManager.instance.primaryFocus?.unfocus();
-    UserController.updateUserData(UserDataEdit(displayName: userName)).then((value) => {
-      _profileNameTextController.text = value.displayName,
-      usernameOrig = value.displayName,
-      ScaffoldMessenger.of(context).removeCurrentSnackBar(),
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-              "${AppLocalizations.of(context).profileNameUpdated}"),
-        ),
-      )
-    });
+    UserController.updateUserData(UserDataEdit(displayName: userName))
+        .then((value) => {
+              _profileNameTextController.text = value.displayName,
+              usernameOrig = value.displayName,
+              ScaffoldMessenger.of(context).removeCurrentSnackBar(),
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                      "${AppLocalizations.of(context).profileNameUpdated}"),
+                ),
+              )
+            });
   }
 
   _editProfileImg(bool fromGallery) async {
@@ -409,8 +418,12 @@ class _ProfilePageState extends State<ProfilePage> {
               print(
                   "Anonymous account successfully upgraded: " + user.toString())
             },
-        onError: (error) =>
-            {print("Error while upgrading user: " + error.toString())});
+        onError: (error) async =>
+            {
+              await GoogleSignIn().signOut(),
+              print("Error while upgrading user: " + error.toString())
+
+            });
   }
 
   Future<void> _signOut() async {
