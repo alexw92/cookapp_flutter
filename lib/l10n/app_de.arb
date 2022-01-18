@@ -85,6 +85,8 @@
     "profileImage": "Profilbild",
     "gallery": "Gallerie",
     "camera": "Kamera",
-    "displayedName": "Sichtbarer Name"
+    "displayedName": "Sichtbarer Name",
+    "prettyEmptyHere": "Ziemlich leer hier...",
+    "likeOrCreateRecipeToAdd": "Like Rezepte um sie zu dieser Liste hinzuzufügen oder erstelle dein eigenes Rezept!"
 
 }

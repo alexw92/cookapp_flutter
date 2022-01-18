@@ -88,6 +88,8 @@
     "profileImage": "Profile Image",
     "gallery": "Gallery",
     "camera": "Camera",
-    "displayedName": "Public Name"
+    "displayedName": "Public Name",
+    "prettyEmptyHere": "Pretty empty here...",
+    "likeOrCreateRecipeToAdd": "Like some recipes to add them to this list or create your own recipes!"
 
 }

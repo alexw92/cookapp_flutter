@@ -145,11 +145,25 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
                 child: Container(
                   // height: 400,
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: ListView(
-                    primary: true,
-                    padding: const EdgeInsets.all(0),
-                    children: [...getAllTiles()],
-                  ),
+                  child: getAllTiles().isNotEmpty
+                      ? ListView(
+                          primary: true,
+                          padding: const EdgeInsets.all(0),
+                          children: [...getAllTiles()],
+                        )
+                      : Center(
+                          child: Card(
+                              child: Padding( padding: EdgeInsets.all(10),
+                              child:Wrap(children: [
+                          Text(
+                            AppLocalizations.of(context).prettyEmptyHere,
+                            style: TextStyle(fontSize: 26),
+                          ),
+                          Text(
+                            AppLocalizations.of(context).likeOrCreateRecipeToAdd,
+                            style: TextStyle(fontSize: 16),
+                          )
+                        ])))),
                 ),
               )));
     else
