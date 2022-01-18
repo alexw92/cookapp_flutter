@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                 label: AppLocalizations.of(context).recipes,
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.archive),
+                icon: Icon(Icons.favorite),
                 label: AppLocalizations.of(context).yourRecipes,
               ),
               BottomNavigationBarItem(
