@@ -43,4 +43,9 @@ class UserFoodService {
     await hiveService.addBox(foodProducts, foodBoxName);
   }
 
+  clearUserFood() async {
+   await hiveService.clearBox(boxName: "MissingUserFood");
+    return hiveService.clearBox(boxName: "UserFood");
+  }
+
 }

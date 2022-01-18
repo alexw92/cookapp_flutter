@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
+import 'package:cookable_flutter/core/io/signin_signout.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/pages/settings_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,8 +14,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
-
-import 'login_screen.dart';
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({Key key}) : super(key: key);
@@ -411,11 +410,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _signOut() async {
-    print('signout');
-    await FirebaseAuth.instance.signOut();
-    await GoogleSignIn().signOut();
-    await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    signOut(context);
   }
 
   Future<void> _openSettings() async {

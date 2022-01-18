@@ -54,4 +54,13 @@ class RecipeService {
       return result;
     }
   }
+
+  clearDefaultNutrients() async {
+    return hiveService.clearBox(boxName: "DefaultNutrients");
+  }
+
+  clearPrivateRecipes() async {
+    return hiveService.clearBox(boxName: "Recipes");
+  }
+
 }

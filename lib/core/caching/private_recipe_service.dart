@@ -33,4 +33,9 @@ class PrivateRecipeService {
       return _recipeList;
     }
   }
+
+  clearPrivateRecipes() async {
+    return hiveService.clearBox(boxName: "PrivateRecipes");
+  }
+
 }

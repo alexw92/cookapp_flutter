@@ -4,15 +4,12 @@ import 'package:collection/src/iterable_extensions.dart';
 import 'package:cookable_flutter/core/caching/userfood_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
+import 'package:cookable_flutter/core/io/signin_signout.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/pages/settings_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-
-import 'login_screen.dart';
 
 class ToggleFridgeWidget extends StatefulWidget {
   ToggleFridgeWidget({Key key}) : super(key: key);
@@ -778,11 +775,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
   }
 
   Future<void> _signOut() async {
-    print('signout');
-    await FirebaseAuth.instance.signOut();
-    await GoogleSignIn().signOut();
-    await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    signOut(context);
   }
 
   Future<void> _openSettings() async {

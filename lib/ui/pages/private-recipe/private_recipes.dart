@@ -2,18 +2,15 @@ import 'package:cookable_flutter/core/caching/private_recipe_service.dart';
 import 'package:cookable_flutter/core/caching/recipe_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
+import 'package:cookable_flutter/core/io/signin_signout.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/components/private-recipe/private-recipe-tile.component.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/private-recipe-creation-dialog.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/private-recipe-edit-page.dart';
 import 'package:cookable_flutter/ui/pages/settings_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-
-import '../login_screen.dart';
 
 class PrivateRecipesComponent extends StatefulWidget {
   PrivateRecipesComponent({Key key}) : super(key: key);
@@ -278,10 +275,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
   }
 
   Future<void> _signOut() async {
-    await FirebaseAuth.instance.signOut();
-    await GoogleSignIn().signOut();
-    await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    signOut(context);
   }
 
   Future<void> _openSettings() async {
