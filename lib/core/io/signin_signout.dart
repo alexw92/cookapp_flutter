@@ -11,13 +11,19 @@ Future<void> signOut(BuildContext context) async {
   await FirebaseAuth.instance.signOut();
   await GoogleSignIn().signOut();
   // clear user specific data
-  var userFoodService = UserFoodService();
-  var recipeService = RecipeService();
-  var privateService = PrivateRecipeService();
-  userFoodService.clearUserFood();
-  recipeService.clearPrivateRecipes();
-  privateService.clearPrivateRecipes();
+  clearUserSpecificData();
 
   await Navigator.push(
       context, MaterialPageRoute(builder: (context) => LoginScreen()));
 }
+
+Future<void> clearUserSpecificData() async {
+  // clear user specific data
+  var userFoodService = UserFoodService();
+  var recipeService = RecipeService();
+  var privateService = PrivateRecipeService();
+  await userFoodService.clearUserFood();
+  await recipeService.clearPrivateRecipes();
+  await privateService.clearPrivateRecipes();
+}
+

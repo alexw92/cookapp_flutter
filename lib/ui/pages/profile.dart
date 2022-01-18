@@ -420,9 +420,12 @@ class _ProfilePageState extends State<ProfilePage> {
             },
         onError: (error) async =>
             {
-              await GoogleSignIn().signOut(),
-              print("Error while upgrading user: " + error.toString())
-
+              // linking to google did not work because registered acc already exists with this google account
+              // so just log in and assume the user wanted to login
+              await FirebaseAuth.instance.signInWithCredential(credential),
+              clearUserSpecificData(),
+              getUser(),
+              getToken()
             });
   }
 
