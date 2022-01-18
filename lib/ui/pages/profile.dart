@@ -413,6 +413,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> _signOut() async {
     print('signout');
     await FirebaseAuth.instance.signOut();
+    await GoogleSignIn().signOut();
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => LoginScreen()));
   }

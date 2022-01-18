@@ -11,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../login_screen.dart';
 
@@ -278,6 +279,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
 
   Future<void> _signOut() async {
     await FirebaseAuth.instance.signOut();
+    await GoogleSignIn().signOut();
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => LoginScreen()));
   }
