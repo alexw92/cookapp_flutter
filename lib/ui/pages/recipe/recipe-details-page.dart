@@ -86,6 +86,19 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
     return ingredientCopy;
   }
 
+  Future<bool> onLikeButtonTapped(bool isLiked) async{
+    /// send your request here
+     final int likes = await RecipeController.toggleRecipeLike(recipe.id);
+     setState(() {
+       recipe.userLiked = !recipe.userLiked;
+       recipe.likes = likes;
+     });
+    /// if failed, you can do nothing
+    // return success? !isLiked:isLiked;
+
+    return !isLiked;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -142,7 +155,9 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                               circleColor: CircleColor(
                                   start: Color(0xff00ddff),
                                   end: Color(0xff0099cc)),
-                              likeCount: 0,
+                              likeCount: recipe.likes,
+                              isLiked: recipe.userLiked,
+                              onTap: onLikeButtonTapped,
                               countBuilder:
                                   (int count, bool isLiked, String text) {
                                 var color =

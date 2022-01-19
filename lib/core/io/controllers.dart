@@ -38,6 +38,34 @@ class RecipeController {
     }
   }
 
+  static Future<int> toggleRecipeLike(int recipeId) async {
+    // get token from token store
+    var tokenStore = IOConfig.tokenStore;
+    String storedToken = await tokenStore.getToken();
+    BaseOptions options = new BaseOptions(
+        baseUrl: IOConfig.apiUrl,
+        connectTimeout: 3000, //10 seconds
+        receiveTimeout: 10000,
+        headers: {
+          "Authorization": "Bearer $storedToken",
+          'Content-Type': 'application/json',
+        });
+
+    Dio dio = new Dio(options);
+    var response = await dio
+        .post("/like/recipe/$recipeId")
+        .timeout(IOConfig.timeoutDuration);
+
+    /// If the first API call is successful
+    if (response.statusCode == HttpStatus.ok) {
+      var updatedRecipeLikes = response.data as int;
+      return updatedRecipeLikes;
+    }
+
+    throw Exception(
+        "Error toggling like recipe, Code: ${response.statusCode} Message: ${response.data} ");
+  }
+
   static Future<List<Recipe>> getRecipes() async {
     var langCode = LangState().currentLang;
     // get token from token store

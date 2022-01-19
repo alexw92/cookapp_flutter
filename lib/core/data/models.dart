@@ -197,6 +197,8 @@ class RecipeDetails {
   final Nutrients nutrients;
   final Diet diet;
   final int prepTimeMinutes;
+  bool userLiked;
+  int likes;
 
   RecipeDetails(
       {this.id,
@@ -208,7 +210,9 @@ class RecipeDetails {
       this.numberOfPersons,
       this.nutrients,
       this.diet,
-      this.prepTimeMinutes});
+      this.prepTimeMinutes,
+      this.userLiked,
+      this.likes});
 
   factory RecipeDetails.fromJson(Map<String, dynamic> recipeJson) {
     return RecipeDetails(
@@ -225,7 +229,9 @@ class RecipeDetails {
         nutrients: Nutrients.fromJson(recipeJson['nutrientsData']),
         numberOfPersons: recipeJson['numberOfPersons'],
         diet: Diet.values[recipeJson['dietIdentifier'] as int],
-        prepTimeMinutes: recipeJson['prepTimeMinutes']);
+        prepTimeMinutes: recipeJson['prepTimeMinutes'],
+        userLiked: recipeJson['userLiked'],
+        likes: recipeJson['likes']);
   }
 }
 
