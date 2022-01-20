@@ -145,7 +145,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
                 child: Container(
                   // height: 400,
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: getAllTiles().isNotEmpty
+                  child: recipeList.isNotEmpty
                       ? ListView(
                           primary: true,
                           padding: const EdgeInsets.all(0),
