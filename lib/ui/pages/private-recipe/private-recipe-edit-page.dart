@@ -231,7 +231,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
     List<Widget> myTiles = [];
     for (int i = 0; i < privateRecipe.ingredients.length; i++) {
       myTiles.add(
-        IngredientTileComponent(
+        IngredientEditTileComponent(
           ingredient: privateRecipe.ingredients[i],
           apiToken: apiToken,
           textColor: Colors.black,
