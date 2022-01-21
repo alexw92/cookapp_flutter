@@ -1,3 +1,4 @@
+import 'package:cookable_flutter/core/caching/private_recipe_service.dart';
 import 'package:cookable_flutter/core/caching/recipe_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
@@ -27,6 +28,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
   List<Widget> _instructionTiles = [];
   DefaultNutrients defaultNutrients;
   RecipeService recipeService = RecipeService();
+  PrivateRecipeService privateRecipeService = PrivateRecipeService();
   String apiToken;
   PrivateRecipe privateRecipe;
   int privateRecipeId;
@@ -47,6 +49,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
 
   void loadPrivateRecipe(int privateRecipeId) async {
     privateRecipe = await RecipeController.getPrivateRecipe(privateRecipeId);
+    privateRecipeService.addOrUpdatePrivateRecipe(privateRecipe);
     getInstructionTiles();
     setState(() {});
   }
@@ -421,6 +424,8 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
 
   savePrivateRecipeManually() async {
     privateRecipe = await RecipeController.updatePrivateRecipe(privateRecipe);
+    // update recipe in the box
+    privateRecipeService.addOrUpdatePrivateRecipe(privateRecipe);
     getInstructionTiles();
   }
 }

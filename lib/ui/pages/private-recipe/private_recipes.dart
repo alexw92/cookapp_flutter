@@ -52,6 +52,17 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
     });
   }
 
+  Future<void> reloadRecipesFromBox() async {
+    recipeList = await privateRecipeService
+        .getPrivateRecipes(reload: false)
+        .catchError((error) {
+      print("private recipes " + error.toString());
+      setState(() {
+        this.error = true;
+      });
+    });
+  }
+
   Future<void> loadDefaultNutrition() async {
     recipeService
         .getDefaultNutrients()
@@ -153,17 +164,20 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
                         )
                       : Center(
                           child: Card(
-                              child: Padding( padding: EdgeInsets.all(10),
-                              child:Wrap(children: [
-                          Text(
-                            AppLocalizations.of(context).prettyEmptyHere,
-                            style: TextStyle(fontSize: 26),
-                          ),
-                          Text(
-                            AppLocalizations.of(context).likeOrCreateRecipeToAdd,
-                            style: TextStyle(fontSize: 16),
-                          )
-                        ])))),
+                              child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Wrap(children: [
+                                    Text(
+                                      AppLocalizations.of(context)
+                                          .prettyEmptyHere,
+                                      style: TextStyle(fontSize: 26),
+                                    ),
+                                    Text(
+                                      AppLocalizations.of(context)
+                                          .likeOrCreateRecipeToAdd,
+                                      style: TextStyle(fontSize: 16),
+                                    )
+                                  ])))),
                 ),
               )));
     else
@@ -305,7 +319,12 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
       },
     ).then(
         (privateRecipe) => {
-              if (privateRecipe != null) {_openEditRecipeScreen(privateRecipe)}
+              if (privateRecipe != null)
+                {
+                  privateRecipeService.addOrUpdatePrivateRecipe(privateRecipe),
+                  reloadRecipesFromBox(),
+                  _openEditRecipeScreen(privateRecipe)
+                }
             },
         onError: (error) => {print("Error in recipes " + error)});
   }
@@ -315,5 +334,6 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
         context,
         MaterialPageRoute(
             builder: (context) => RecipeEditPage(privateRecipe.id)));
+    await reloadRecipesFromBox();
   }
 }
