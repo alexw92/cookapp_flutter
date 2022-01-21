@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
 import 'package:cookable_flutter/core/caching/recipe_service.dart';
+import 'package:cookable_flutter/core/caching/userfood_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
@@ -26,6 +27,8 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
   PrivateRecipe recipe;
   String apiToken;
   RecipeService recipeService = RecipeService();
+  UserFoodService userFoodService = UserFoodService();
+  List<UserFoodProduct> userOwnedFood;
   DefaultNutrients defaultNutrients;
   int dailyCalories;
   double dailyCarbohydrate;
@@ -46,6 +49,7 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
     dailyCarbohydrate = defaultNutrients.recDailyCarbohydrate;
     dailyProtein = defaultNutrients.recDailyProtein;
     dailyFat = defaultNutrients.recDailyFat;
+    userOwnedFood = await userFoodService.getUserFood(false);
     this.recipe = await RecipeController.getPrivateRecipe(this.widget.recipeId);
     await getImageUrl();
     var ingredientsCopy = copyIngredients(recipe.ingredients);
@@ -282,13 +286,24 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
   }
 
   List<Widget> getAllIngredientTiles() {
-    List<Widget> myTiles = [];
+    List<IngredientTileComponent> myTiles = [];
     for (int i = 0; i < ingredientsTmp.length; i++) {
+      var ingredient = ingredientsTmp[i];
+      var hasIngredient = userOwnedFood
+          .any((element) => element.foodProductId == ingredient.foodProductId);
       myTiles.add(
         IngredientTileComponent(
-            ingredient: ingredientsTmp[i], apiToken: apiToken),
+            ingredient: ingredient,
+            apiToken: apiToken,
+            userOwns: hasIngredient),
       );
     }
+    myTiles.sort((a, b) {
+      if (b.userOwns) {
+        return 1;
+      }
+      return -1;
+    });
     return myTiles;
   }
 

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
 import 'package:cookable_flutter/core/caching/recipe_service.dart';
+import 'package:cookable_flutter/core/caching/userfood_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
@@ -24,6 +25,8 @@ class RecipesDetailsPage extends StatefulWidget {
 class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
   RecipeDetails recipe;
   RecipeService recipeService = RecipeService();
+  UserFoodService userFoodService = UserFoodService();
+  List<UserFoodProduct> userOwnedFood;
   DefaultNutrients defaultNutrients;
   String apiToken;
   int dailyCalories;
@@ -43,6 +46,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
     dailyCarbohydrate = defaultNutrients.recDailyCarbohydrate;
     dailyProtein = defaultNutrients.recDailyProtein;
     dailyFat = defaultNutrients.recDailyFat;
+    userOwnedFood = await userFoodService.getUserFood(false);
     this.recipe = await RecipeController.getRecipe(this.widget.recipeId);
     var ingredientsCopy = copyIngredients(recipe.ingredients);
     setState(() {
@@ -86,13 +90,14 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
     return ingredientCopy;
   }
 
-  Future<bool> onLikeButtonTapped(bool isLiked) async{
+  Future<bool> onLikeButtonTapped(bool isLiked) async {
     /// send your request here
-     final int likes = await RecipeController.toggleRecipeLike(recipe.id);
-     setState(() {
-       recipe.userLiked = !recipe.userLiked;
-       recipe.likes = likes;
-     });
+    final int likes = await RecipeController.toggleRecipeLike(recipe.id);
+    setState(() {
+      recipe.userLiked = !recipe.userLiked;
+      recipe.likes = likes;
+    });
+
     /// if failed, you can do nothing
     // return success? !isLiked:isLiked;
 
@@ -304,11 +309,21 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                               i++)
                             new Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            //  crossAxisAlignment: CrossAxisAlignment.center,
+                              //  crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                (i*3+0<getAllIngredientTiles().length)?getAllIngredientTiles()[i*3+0]:Container(),
-                                (i*3+1<getAllIngredientTiles().length)?getAllIngredientTiles()[i*3+1]:Container(width: 92,),
-                                (i*3+2<getAllIngredientTiles().length)?getAllIngredientTiles()[i*3+2]:Container(width: 92,)
+                                (i * 3 + 0 < getAllIngredientTiles().length)
+                                    ? getAllIngredientTiles()[i * 3 + 0]
+                                    : Container(),
+                                (i * 3 + 1 < getAllIngredientTiles().length)
+                                    ? getAllIngredientTiles()[i * 3 + 1]
+                                    : Container(
+                                        width: 92,
+                                      ),
+                                (i * 3 + 2 < getAllIngredientTiles().length)
+                                    ? getAllIngredientTiles()[i * 3 + 2]
+                                    : Container(
+                                        width: 92,
+                                      )
                               ],
                             )
                         ],
@@ -391,13 +406,23 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
   }
 
   List<Widget> getAllIngredientTiles() {
-    List<Widget> myTiles = [];
+    List<IngredientTileComponent> myTiles = [];
     for (int i = 0; i < ingredientsTmp.length; i++) {
-      myTiles.add(
-        IngredientTileComponent(
-            ingredient: ingredientsTmp[i], apiToken: apiToken),
-      );
+      var ingredient = ingredientsTmp[i];
+      var hasIngredient = userOwnedFood
+          .any((element) => element.foodProductId == ingredient.foodProductId);
+      myTiles.add(IngredientTileComponent(
+        ingredient: ingredient,
+        apiToken: apiToken,
+        userOwns: hasIngredient,
+      ));
     }
+    myTiles.sort((a, b) {
+      if (b.userOwns) {
+        return 1;
+      }
+      return -1;
+    });
     return myTiles;
   }
 
