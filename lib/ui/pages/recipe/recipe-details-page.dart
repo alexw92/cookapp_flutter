@@ -303,21 +303,6 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                         height: 5,
                       ),
                       showIngredientsIfNotEmpty(),
-                      // Container(
-                      //     child: new GridView.count(
-                      //       //     primary: true,
-                      //       //    padding: const EdgeInsets.all(0),
-                      //       physics: NeverScrollableScrollPhysics(),
-                      //       shrinkWrap: true,
-                      //       crossAxisCount: 3,
-                      //       mainAxisSpacing: 0,
-                      //     //  padding: EdgeInsets.only(left: 5, right: 5),
-                      //       crossAxisSpacing: 0,
-                      //       children: [
-                      //         ...getAllIngredientTiles()
-                      //         //
-                      //       ],
-                      //     ))
                     ]),
                   ),
                   Container(
@@ -394,13 +379,13 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                 (i * 3 + 1 < tiles.length)
                     ? tiles[i * 3 + 1]
                     : Container(
-                  width: 92,
-                ),
+                        width: 92,
+                      ),
                 (i * 3 + 2 < tiles.length)
                     ? tiles[i * 3 + 2]
                     : Container(
-                  width: 92,
-                )
+                        width: 92,
+                      )
               ],
             )
         ],
