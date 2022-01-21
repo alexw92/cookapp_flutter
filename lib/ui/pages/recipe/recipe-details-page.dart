@@ -302,32 +302,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                       SizedBox(
                         height: 5,
                       ),
-                      Column(
-                        children: <Widget>[
-                          for (int i = 0;
-                              i <= getAllIngredientTiles().length / 3;
-                              i++)
-                            new Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              //  crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                (i * 3 + 0 < getAllIngredientTiles().length)
-                                    ? getAllIngredientTiles()[i * 3 + 0]
-                                    : Container(),
-                                (i * 3 + 1 < getAllIngredientTiles().length)
-                                    ? getAllIngredientTiles()[i * 3 + 1]
-                                    : Container(
-                                        width: 92,
-                                      ),
-                                (i * 3 + 2 < getAllIngredientTiles().length)
-                                    ? getAllIngredientTiles()[i * 3 + 2]
-                                    : Container(
-                                        width: 92,
-                                      )
-                              ],
-                            )
-                        ],
-                      ),
+                      showIngredientsIfNotEmpty(),
                       // Container(
                       //     child: new GridView.count(
                       //       //     primary: true,
@@ -403,6 +378,38 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                       ])),
                 ]))),
           ));
+  }
+
+  Widget showIngredientsIfNotEmpty() {
+    if (recipe.ingredients.length != 0) {
+      List<Widget> tiles = getAllIngredientTiles();
+      return Column(
+        children: <Widget>[
+          for (int i = 0; i <= tiles.length / 3; i++)
+            new Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //  crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                (i * 3 + 0 < tiles.length) ? tiles[i * 3 + 0] : Container(),
+                (i * 3 + 1 < tiles.length)
+                    ? tiles[i * 3 + 1]
+                    : Container(
+                  width: 92,
+                ),
+                (i * 3 + 2 < tiles.length)
+                    ? tiles[i * 3 + 2]
+                    : Container(
+                  width: 92,
+                )
+              ],
+            )
+        ],
+      );
+    } else
+      return Text(
+        AppLocalizations.of(context).emptyIngredients,
+        style: TextStyle(color: Colors.white),
+      );
   }
 
   List<Widget> getAllIngredientTiles() {
