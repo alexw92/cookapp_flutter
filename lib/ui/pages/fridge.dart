@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
 import 'package:collection/src/iterable_extensions.dart';
+import 'package:cookable_flutter/common/NeedsRecipeUpdateState.dart';
 import 'package:cookable_flutter/core/caching/userfood_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
@@ -681,6 +682,8 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     }
     userFoodService.updateBoxValues(true, missingGroceries);
     userFoodService.updateBoxValues(false, ownedGroceries);
+    // changing grocery stock requires reloading of recipes
+    NeedsRecipeUpdateState().recipesUpdateNeeded = true;
   }
 
   void itemChangeFruits(bool val, int index) {
@@ -706,7 +709,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
               tileModel.isCheck = val;
               tileModel.isLoading = false;
               toggleItem(tileModel.groceryId, val);
-    }));
+            }));
   }
 
   void itemChangeSpices(bool val, int index) {
@@ -719,7 +722,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
               tileModel.isCheck = val;
               tileModel.isLoading = false;
               toggleItem(tileModel.groceryId, val);
-    }));
+            }));
   }
 
   void itemChangePantry(bool val, int index) {
@@ -732,7 +735,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
               tileModel.isCheck = val;
               tileModel.isLoading = false;
               toggleItem(tileModel.groceryId, val);
-    }));
+            }));
   }
 
   void itemChangeDairy(bool val, int index) {
@@ -745,7 +748,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
               tileModel.isCheck = val;
               tileModel.isLoading = false;
               toggleItem(tileModel.groceryId, val);
-    }));
+            }));
   }
 
   void itemChangeMeat(bool val, int index) {
@@ -758,7 +761,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
               tileModel.isCheck = val;
               tileModel.isLoading = false;
               toggleItem(tileModel.groceryId, val);
-    }));
+            }));
   }
 
   void itemChangeFish(bool val, int index) {
@@ -771,7 +774,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
               tileModel.isCheck = val;
               tileModel.isLoading = false;
               toggleItem(tileModel.groceryId, val);
-    }));
+            }));
   }
 
   Future<void> _signOut() async {

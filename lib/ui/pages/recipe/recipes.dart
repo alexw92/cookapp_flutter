@@ -1,3 +1,4 @@
+import 'package:cookable_flutter/common/NeedsRecipeUpdateState.dart';
 import 'package:cookable_flutter/core/caching/recipe_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
@@ -49,7 +50,10 @@ class _RecipesComponentState extends State<RecipesComponent> {
         this.error = true;
       });
     });
-    print(recipeList);
+    // reset reload flag after loading
+    if(reload){
+      NeedsRecipeUpdateState().recipesUpdateNeeded = false;
+    }
     apiToken = await TokenStore().getToken();
     await loadDefaultNutrition().catchError((error) {
       print("default nutrition" + error.toString());
@@ -71,7 +75,8 @@ class _RecipesComponentState extends State<RecipesComponent> {
   @override
   void initState() {
     super.initState();
-    loadRecipes();
+    var reload = NeedsRecipeUpdateState().recipesUpdateNeeded;
+    loadRecipes(reload: reload);
   }
 
   @override
