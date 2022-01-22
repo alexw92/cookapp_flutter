@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +70,7 @@ class _NutrientTileComponentState extends State<NutrientTileComponent> {
       lineWidth: 4.0,
       backgroundWidth: 2.0,
       animation: true,
-      percent: (nutrientAmount.round()) / dailyRecAmount,
+      percent: min(1.0, (nutrientAmount.round()) / dailyRecAmount),
       center: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         new Text(
           nutrientName,
