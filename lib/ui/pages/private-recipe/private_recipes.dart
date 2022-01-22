@@ -53,13 +53,16 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
   }
 
   Future<void> reloadRecipesFromBox() async {
-    recipeList = await privateRecipeService
+    var recipes = await privateRecipeService
         .getPrivateRecipes(reload: false)
         .catchError((error) {
       print("private recipes " + error.toString());
       setState(() {
         this.error = true;
       });
+    });
+    setState(() {
+      recipeList = recipes;
     });
   }
 
@@ -323,11 +326,10 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
         return new CreateRecipeDialog();
       },
     ).then(
-        (privateRecipe) => {
+        (privateRecipe) async => {
               if (privateRecipe != null)
                 {
-                  privateRecipeService.addOrUpdatePrivateRecipe(privateRecipe),
-                  reloadRecipesFromBox(),
+                  await privateRecipeService.addOrUpdatePrivateRecipe(privateRecipe),
                   _openEditRecipeScreen(privateRecipe)
                 }
             },
@@ -339,6 +341,8 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
         context,
         MaterialPageRoute(
             builder: (context) => RecipeEditPage(privateRecipe.id)));
+    print("after navigate to recipeEditPage called");
     await reloadRecipesFromBox();
+    print("reload after navigate to recipeEditPage");
   }
 }
