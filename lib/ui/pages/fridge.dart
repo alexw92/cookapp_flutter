@@ -686,17 +686,21 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     NeedsRecipeUpdateState().recipesUpdateNeeded = true;
   }
 
-  void itemChangeFruits(bool val, int index) {
-    var tileModel = checkBoxListTileModelFruits[index];
-    setState(() {
-      tileModel.isLoading = true;
-    });
+  void updateUserFoodState(GroceryCheckBoxListTileModel tileModel, bool val) {
     UserFoodProductController.toggleUserFoodProduct(tileModel.groceryId, val)
         .then((value) => setState(() {
               tileModel.isCheck = val;
               tileModel.isLoading = false;
               toggleItem(tileModel.groceryId, val);
             }));
+  }
+
+  void itemChangeFruits(bool val, int index) {
+    var tileModel = checkBoxListTileModelFruits[index];
+    setState(() {
+      tileModel.isLoading = true;
+    });
+    updateUserFoodState(tileModel, val);
   }
 
   void itemChangeVegetables(bool val, int index) {
@@ -704,12 +708,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     setState(() {
       tileModel.isLoading = true;
     });
-    UserFoodProductController.toggleUserFoodProduct(tileModel.groceryId, val)
-        .then((value) => setState(() {
-              tileModel.isCheck = val;
-              tileModel.isLoading = false;
-              toggleItem(tileModel.groceryId, val);
-            }));
+    updateUserFoodState(tileModel, val);
   }
 
   void itemChangeSpices(bool val, int index) {
@@ -717,12 +716,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     setState(() {
       tileModel.isLoading = true;
     });
-    UserFoodProductController.toggleUserFoodProduct(tileModel.groceryId, val)
-        .then((value) => setState(() {
-              tileModel.isCheck = val;
-              tileModel.isLoading = false;
-              toggleItem(tileModel.groceryId, val);
-            }));
+    updateUserFoodState(tileModel, val);
   }
 
   void itemChangePantry(bool val, int index) {
@@ -730,12 +724,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     setState(() {
       tileModel.isLoading = true;
     });
-    UserFoodProductController.toggleUserFoodProduct(tileModel.groceryId, val)
-        .then((value) => setState(() {
-              tileModel.isCheck = val;
-              tileModel.isLoading = false;
-              toggleItem(tileModel.groceryId, val);
-            }));
+    updateUserFoodState(tileModel, val);
   }
 
   void itemChangeDairy(bool val, int index) {
@@ -743,12 +732,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     setState(() {
       tileModel.isLoading = true;
     });
-    UserFoodProductController.toggleUserFoodProduct(tileModel.groceryId, val)
-        .then((value) => setState(() {
-              tileModel.isCheck = val;
-              tileModel.isLoading = false;
-              toggleItem(tileModel.groceryId, val);
-            }));
+    updateUserFoodState(tileModel, val);
   }
 
   void itemChangeMeat(bool val, int index) {
@@ -756,12 +740,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     setState(() {
       tileModel.isLoading = true;
     });
-    UserFoodProductController.toggleUserFoodProduct(tileModel.groceryId, val)
-        .then((value) => setState(() {
-              tileModel.isCheck = val;
-              tileModel.isLoading = false;
-              toggleItem(tileModel.groceryId, val);
-            }));
+    updateUserFoodState(tileModel, val);
   }
 
   void itemChangeFish(bool val, int index) {
@@ -769,12 +748,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     setState(() {
       tileModel.isLoading = true;
     });
-    UserFoodProductController.toggleUserFoodProduct(tileModel.groceryId, val)
-        .then((value) => setState(() {
-              tileModel.isCheck = val;
-              tileModel.isLoading = false;
-              toggleItem(tileModel.groceryId, val);
-            }));
+    updateUserFoodState(tileModel, val);
   }
 
   Future<void> _signOut() async {
