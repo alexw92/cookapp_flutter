@@ -238,7 +238,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
           ingredient: privateRecipe.ingredients[i],
           apiToken: apiToken,
           textColor: Colors.black,
-          radius: 36.0,
+          radius: 34.0,
         ),
       );
     }
@@ -293,7 +293,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
   Widget getIngredientGridView() {
       return Card(
           elevation: 10,
-          margin: EdgeInsets.all(4),
+          margin: EdgeInsets.all(10),
           child: new GridView.count(
             //     primary: true,
             //    padding: const EdgeInsets.all(0),
@@ -317,9 +317,9 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                           Colors.white), // <-- Button color,
                     ),
                   )), padding:EdgeInsets.only(
-                left:16,
-                right:16,
-                bottom:16,
+                left:22,
+                right:22,
+                bottom:22,
                 top:0
               )),
               //
