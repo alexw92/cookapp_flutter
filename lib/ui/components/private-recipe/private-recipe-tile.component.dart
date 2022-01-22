@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
+import 'package:cookable_flutter/common/constants.dart';
 import 'package:cookable_flutter/core/caching/firebase_image_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
@@ -46,7 +47,7 @@ class _PrivateRecipeTileComponentState
 
   getImageUrl() async {
     print(privateRecipe.imgSrc);
-    if (privateRecipe.imgSrc.contains("food.png")) {
+    if (privateRecipe.imgSrc.contains(Constants.DEFAULT_RECIPE_IMG)) {
       setState(() {
         defaultImg = true;
       });

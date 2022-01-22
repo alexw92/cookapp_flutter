@@ -3,6 +3,8 @@ class Constants {
   static const String FRIDGE_PAGE = '/fridge_page';
   static const String FAVOURITE_RECIPES_PAGE = '/favourite_recipes_page';
 
+  static const String DEFAULT_RECIPE_IMG = "food.png";
+
 
 
   static const int UserHasIngredient = 0;
