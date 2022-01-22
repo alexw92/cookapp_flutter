@@ -32,6 +32,11 @@ class ReducedUser {
       'fbUploadedPhoto': fbUploadedPhoto,
     };
   }
+
+  String toString() {
+    return "id=$id, displayName=$displayName, providerPhoto=$providerPhoto, fbUploadedPhoto=$fbUploadedPhoto  ";
+  }
+
 }
 
 @HiveType(typeId: 0)
@@ -169,7 +174,7 @@ class PrivateRecipe {
       };
 
   String toString() {
-    return "private-recipe, id=$id, name=$name, ingredients=${ingredients.length} ";
+    return "private-recipe, id=$id, name=$name, ingredients=${ingredients.length}, imgSrc=$imgSrc, uploadedBy=${uploadedBy.toString()} ";
   }
 }
 
