@@ -7,6 +7,7 @@ import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/components/ingredient-tile.component.dart';
 import 'package:cookable_flutter/ui/components/nutrient-tile.component.dart';
+import 'package:cookable_flutter/ui/pages/recipe/recipe-missing-ingredient-dialog.dart';
 import 'package:cookable_flutter/ui/util/formatters.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -398,22 +399,35 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
   }
 
   List<Widget> getAllIngredientTiles() {
-    List<IngredientTileComponent> myTiles = [];
+    List<Widget> myTiles = [];
+    List<IngredientTileComponent> myIngredientTiles = [];
     for (int i = 0; i < ingredientsTmp.length; i++) {
       var ingredient = ingredientsTmp[i];
       var hasIngredient = userOwnedFood
           .any((element) => element.foodProductId == ingredient.foodProductId);
-      myTiles.add(IngredientTileComponent(
+      myIngredientTiles.add(IngredientTileComponent(
         ingredient: ingredient,
         apiToken: apiToken,
         userOwns: hasIngredient,
       ));
     }
-    myTiles.sort((a, b) {
+    myIngredientTiles.sort((a, b) {
       if (b.userOwns) {
         return 1;
       }
       return -1;
+    });
+    myIngredientTiles.forEach((ingredientTile) {
+      myTiles.add(InkWell(
+          child: ingredientTile,
+          onTap: () => {
+                print("tap on " +
+                    ingredientTile.ingredient.name +
+                    " " +
+                    ingredientTile.userOwns.toString()),
+                if (!ingredientTile.userOwns)
+                  _showMissingIngredientDialog(ingredientTile.ingredient)
+              }));
     });
     return myTiles;
   }
@@ -452,5 +466,16 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
     ]);
 
     return myTiles;
+  }
+
+  Future<void> _showMissingIngredientDialog(Ingredient ingredient) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return new MissingIngredientDialog(ingredient: ingredient);
+      },
+    ).then((bool) async => {},
+        onError: (error) =>
+            {print("Error in missingIngredientDialog " + error)});
   }
 }
