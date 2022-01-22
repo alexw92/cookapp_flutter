@@ -38,6 +38,10 @@ class PrivateRecipeService {
   }
 
   addOrUpdatePrivateRecipe(PrivateRecipe privateRecipe) async {
-    await hiveService.addBox([privateRecipe], "PrivateRecipes");
+    await hiveService.addOrUpdateElementInBoxById(privateRecipe, "PrivateRecipes");
+  }
+
+  clearPrivateRecipe(PrivateRecipe deletedItem) {
+    hiveService.clearElementFromBoxById(deletedItem, "PrivateRecipes");
   }
 }

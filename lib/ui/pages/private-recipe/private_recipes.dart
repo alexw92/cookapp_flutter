@@ -252,7 +252,10 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
           direction: DismissDirection.endToStart,
           onDismissed: (direction) {
             bool withdrawDeletion = false;
-            PrivateRecipe deletedItem = recipeList.removeAt(i);
+            PrivateRecipe deletedItem;
+            setState(() {
+              deletedItem = recipeList.removeAt(i);
+            });
             ScaffoldMessenger.of(context).removeCurrentSnackBar();
             ScaffoldMessenger.of(context)
                 .showSnackBar(
@@ -275,7 +278,9 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
                         RecipeController.deletePrivateRecipe(deletedItem.id)
                             .then(
                                 (value) => {
-                                      // everything ok
+                                      // remove also from box
+                                      privateRecipeService
+                                          .clearPrivateRecipe(deletedItem)
                                     },
                                 onError: (error) => {
                                       // if deletion failed we assume recipe still exists

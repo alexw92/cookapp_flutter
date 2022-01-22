@@ -37,12 +37,13 @@ class HiveService {
     final openBox = await Hive.openBox(boxName);
 
     var isInBox = openBox.values.any((element) => element.id == item.id);
-    if (!isInBox) return openBox.add(item);
+    if (!isInBox)
+      return openBox.add(item);
     else {
       var index = -1;
       for (int i = 0; i < openBox.length; i++) {
         index = i;
-        if(openBox.getAt(i).id == item.id){
+        if (openBox.getAt(i).id == item.id) {
           break;
         }
       }
@@ -51,4 +52,15 @@ class HiveService {
     }
   }
 
+  void clearElementFromBoxById(dynamic item, String boxName) async {
+    final openBox = await Hive.openBox(boxName);
+    var index = -1;
+    for (int i = 0; i < openBox.length; i++) {
+      index = i;
+      if (openBox.getAt(i).id == item.id) {
+        break;
+      }
+    }
+    await openBox.deleteAt(index);
+  }
 }
