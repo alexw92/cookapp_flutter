@@ -1,5 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
+import 'package:collection/src/iterable_extensions.dart';
+import 'package:cookable_flutter/common/NeedsRecipeUpdateState.dart';
+import 'package:cookable_flutter/common/constants.dart';
 import 'package:cookable_flutter/core/caching/recipe_service.dart';
 import 'package:cookable_flutter/core/caching/userfood_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
@@ -36,6 +39,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
   double dailyFat;
   int numberOfPersonsTmp;
   List<Ingredient> ingredientsTmp;
+  int updateIngredientsKey = 1;
 
   _RecipesDetailsPageState();
 
@@ -370,6 +374,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
     if (recipe.ingredients.length != 0) {
       List<Widget> tiles = getAllIngredientTiles();
       return Column(
+        key: ValueKey(updateIngredientsKey),
         children: <Widget>[
           for (int i = 0; i <= tiles.length / 3; i++)
             new Row(
@@ -474,8 +479,47 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
       builder: (BuildContext context) {
         return new MissingIngredientDialog(ingredient: ingredient);
       },
-    ).then((bool) async => {},
+    ).then(
+        (res) async => {
+              if (res == Constants.UserHasIngredient)
+                {
+                  UserFoodProductController.toggleUserFoodProduct(
+                          ingredient.foodProductId, true)
+                      .then((value) => {
+                            // update hive box and ui
+                            toggleIngredientState(
+                                ingredient.foodProductId, true),
+                          })
+                }
+              else if (res == Constants.UserLacksIngredientAndWantsToAddToList)
+                {}
+            },
         onError: (error) =>
             {print("Error in missingIngredientDialog " + error)});
+  }
+
+  Future<void> toggleIngredientState(int groceryId, bool setTo) async {
+    List<UserFoodProduct> ownedGroceries = userOwnedFood;
+    List<UserFoodProduct> missingGroceries =
+        await userFoodService.getUserFood(true);
+    if (setTo == true) {
+      var item = missingGroceries
+          .firstWhereOrNull((item) => item.foodProductId == groceryId);
+      missingGroceries.remove(item);
+      ownedGroceries.add(item);
+    } else {
+      var item = ownedGroceries
+          .firstWhereOrNull((item) => item.foodProductId == groceryId);
+      ownedGroceries.remove(item);
+      missingGroceries.add(item);
+    }
+    setState(() {
+      userOwnedFood = ownedGroceries;
+      updateIngredientsKey++;
+    });
+    userFoodService.updateBoxValues(true, missingGroceries);
+    userFoodService.updateBoxValues(false, ownedGroceries);
+    // changing grocery stock requires reloading of recipes
+    NeedsRecipeUpdateState().recipesUpdateNeeded = true;
   }
 }

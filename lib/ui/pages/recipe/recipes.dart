@@ -1,7 +1,6 @@
 import 'package:cookable_flutter/common/NeedsRecipeUpdateState.dart';
 import 'package:cookable_flutter/core/caching/recipe_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
-import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/signin_signout.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/components/recipe/recipe-filter-dialog.component.dart';
@@ -51,7 +50,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
       });
     });
     // reset reload flag after loading
-    if(reload){
+    if (reload) {
       NeedsRecipeUpdateState().recipesUpdateNeeded = false;
     }
     apiToken = await TokenStore().getToken();
@@ -67,9 +66,8 @@ class _RecipesComponentState extends State<RecipesComponent> {
   }
 
   Future<void> loadDefaultNutrition() async {
-    RecipeController.getDefaultNutrients().then((nutrients) => {
-      defaultNutrients = nutrients
-        });
+    recipeService.getDefaultNutrients()
+        .then((nutrients) => {defaultNutrients = nutrients});
   }
 
   @override
@@ -235,10 +233,17 @@ class _RecipesComponentState extends State<RecipesComponent> {
     List<Widget> myTiles = [];
     for (int i = 0; i < recipeList.length; i++) {
       myTiles.add(
-        RecipeTileComponent(recipe: recipeList[i], apiToken: apiToken),
+        RecipeTileComponent(
+            recipe: recipeList[i],
+            apiToken: apiToken,
+            userFoodUpdatedCallback: reloadRecipes),
       );
     }
     return myTiles;
+  }
+
+  reloadRecipes() {
+    loadRecipes(reload: true);
   }
 
   Future<void> refreshTriggered() async {

@@ -87,6 +87,11 @@
     "camera": "Kamera",
     "displayedName": "Sichtbarer Name",
     "prettyEmptyHere": "Ziemlich leer hier...",
-    "likeOrCreateRecipeToAdd": "Like Rezepte um sie zu dieser Liste hinzuzufügen oder erstelle dein eigenes Rezept!"
+    "likeOrCreateRecipeToAdd": "Like Rezepte um sie zu dieser Liste hinzuzufügen oder erstelle dein eigenes Rezept!",
+    "doYouHave": "Hast du",
+    "inStock": "auf Vorrat",
+    "addToShoppingList": "Zur Einkaufsliste hinzufügen",
+    "yes": "Ja",
+    "no":  "Nein"
 
 }

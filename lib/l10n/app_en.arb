@@ -90,6 +90,11 @@
     "camera": "Camera",
     "displayedName": "Public Name",
     "prettyEmptyHere": "Pretty empty here...",
-    "likeOrCreateRecipeToAdd": "Like some recipes to add them to this list or create your own recipes!"
+    "likeOrCreateRecipeToAdd": "Like some recipes to add them to this list or create your own recipes!",
+    "doYouHave": "Do you have",
+    "inStock": "in stock",
+    "addToShoppingList": "Add to shopping list",
+    "yes": "Yes",
+    "no":  "No"
 
 }
