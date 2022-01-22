@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
+import 'package:cookable_flutter/core/caching/firebase_image_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/private-recipe-details-page.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/private-recipe-edit-page.dart';
-import 'package:cookable_flutter/ui/util/fb_storage_utils.dart';
 import 'package:cookable_flutter/ui/util/formatters.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +29,7 @@ class PrivateRecipeTileComponent extends StatefulWidget {
 class _PrivateRecipeTileComponentState
     extends State<PrivateRecipeTileComponent> {
   PrivateRecipe privateRecipe;
+  FirebaseImageService firebaseImageService = FirebaseImageService();
   String apiToken;
   String recipeImgUrl;
   bool defaultImg = false;
@@ -52,7 +53,7 @@ class _PrivateRecipeTileComponentState
       return;
     }
     var imgUrl =
-        await FBStorage.getPrivateRecipeImgDownloadUrl(privateRecipe.imgSrc);
+        await firebaseImageService.getFirebaseImage(privateRecipe.imgSrc);
     setState(() {
       defaultImg = false;
       recipeImgUrl = imgUrl;

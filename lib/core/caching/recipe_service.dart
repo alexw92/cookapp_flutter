@@ -30,7 +30,7 @@ class RecipeService {
       _text = "Caching data";
       if(reload)
         await hiveService.clearBox(boxName: "Recipes");
-      await hiveService.addBox(_recipeList, "Recipes");
+      await hiveService.addElementsToBox(_recipeList, "Recipes");
       return _recipeList;
     }
   }
@@ -50,7 +50,7 @@ class RecipeService {
       _text = "Caching data";
       if(reload)
         await hiveService.clearBox(boxName: "DefaultNutrients");
-      await hiveService.addBox([result], "DefaultNutrients");
+      await hiveService.addElementsToBox([result], "DefaultNutrients");
       return result;
     }
   }

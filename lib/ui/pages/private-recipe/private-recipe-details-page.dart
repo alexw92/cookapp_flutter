@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
+import 'package:cookable_flutter/core/caching/firebase_image_service.dart';
 import 'package:cookable_flutter/core/caching/recipe_service.dart';
 import 'package:cookable_flutter/core/caching/userfood_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
@@ -7,7 +8,6 @@ import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/components/ingredient-tile.component.dart';
 import 'package:cookable_flutter/ui/components/nutrient-tile.component.dart';
-import 'package:cookable_flutter/ui/util/fb_storage_utils.dart';
 import 'package:cookable_flutter/ui/util/formatters.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +28,7 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
   String apiToken;
   RecipeService recipeService = RecipeService();
   UserFoodService userFoodService = UserFoodService();
+  FirebaseImageService firebaseImageService = FirebaseImageService();
   List<UserFoodProduct> userOwnedFood;
   DefaultNutrients defaultNutrients;
   int dailyCalories;
@@ -68,7 +69,7 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
       });
       return;
     }
-    var imgUrl = await FBStorage.getPrivateRecipeImgDownloadUrl(recipe.imgSrc);
+    var imgUrl = await firebaseImageService.getFirebaseImage(recipe.imgSrc);
     setState(() {
       defaultImg = false;
       recipeImgUrl = imgUrl;

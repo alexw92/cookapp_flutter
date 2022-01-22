@@ -31,7 +31,7 @@ class UserFoodService {
       _recipeList.addAll(result);
       _text = "Caching data";
       if (reload) await hiveService.clearBox(boxName: foodBoxName);
-      await hiveService.addBox(_recipeList, foodBoxName);
+      await hiveService.addElementsToBox(_recipeList, foodBoxName);
       return _recipeList;
     }
   }
@@ -40,7 +40,7 @@ class UserFoodService {
       bool missingUserFood, List<UserFoodProduct> foodProducts) async {
     String foodBoxName = missingUserFood ? "MissingUserFood" : "UserFood";
     await hiveService.clearBox(boxName: foodBoxName);
-    await hiveService.addBox(foodProducts, foodBoxName);
+    await hiveService.addElementsToBox(foodProducts, foodBoxName);
   }
 
   clearUserFood() async {

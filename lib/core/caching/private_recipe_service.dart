@@ -28,7 +28,7 @@ class PrivateRecipeService {
       _recipeList.addAll(result);
       _text = "Caching data";
       if (reload) await hiveService.clearBox(boxName: "PrivateRecipes");
-      await hiveService.addBox(_recipeList, "PrivateRecipes");
+      await hiveService.addElementsToBox(_recipeList, "PrivateRecipes");
       return _recipeList;
     }
   }

@@ -7,13 +7,23 @@ class HiveService {
     return length != 0;
   }
 
-  addBox<T>(List<T> items, String boxName) async {
+  addElementsToBox<T>(List<T> items, String boxName) async {
     print("adding box");
     final openBox = await Hive.openBox(boxName);
 
     for (var item in items) {
       openBox.add(item);
     }
+  }
+
+  putElement(dynamic key, dynamic value, String boxName) async {
+    final openBox = await Hive.openBox(boxName);
+    return openBox.put(key, value);
+  }
+
+  getElement(dynamic key, String boxName) async {
+    final openBox = await Hive.openBox(boxName);
+    return openBox.get(key);
   }
 
   clearBox({String boxName}) async {
