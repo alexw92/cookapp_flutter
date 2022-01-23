@@ -222,16 +222,6 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                     })
                   },
                 ),
-                SizedBox(height: 10),
-                SizedBox(
-                    child:ElevatedButton(
-                    onPressed: savePrivateRecipeManually,
-                    child: Text(AppLocalizations.of(context).save),
-                    style: ButtonStyle(
-                      padding: MaterialStateProperty.all(EdgeInsets.all(10)),
-                      backgroundColor: MaterialStateProperty.all(
-                          Colors.white), // <-- Button color
-                    ))),
               ],
             )));
   }
