@@ -163,8 +163,8 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                             LikeButton(
                               size: 40,
                               circleColor: CircleColor(
-                                  start: Color(0xff00ddff),
-                                  end: Color(0xff0099cc)),
+                                  start: Color(0xffdd6666),
+                                  end: Color(0xffff3600)),
                               likeCount: recipe.likes,
                               isLiked: recipe.userLiked,
                               onTap: onLikeButtonTapped,
