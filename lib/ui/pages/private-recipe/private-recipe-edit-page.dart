@@ -111,29 +111,6 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                         },
                         body: Column(
                           children: [
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  (privateRecipe.ingredients.length != 0)
-                                      ? ElevatedButton(
-                                          onPressed:
-                                              _openEditIngredientsAmountScreen,
-                                          child: Image.asset(
-                                            "assets/balance.png",
-                                            width: 32,
-                                          ),
-                                          style: ButtonStyle(
-                                            shape: MaterialStateProperty.all(
-                                                CircleBorder()),
-                                            padding: MaterialStateProperty.all(
-                                                EdgeInsets.all(10)),
-                                            backgroundColor:
-                                                MaterialStateProperty.all(Colors
-                                                    .white), // <-- Button color,
-                                          ),
-                                        )
-                                      : Container()
-                                ]),
                             getIngredientGridView(),
                             getNutritionGridView()
                           ],
@@ -235,6 +212,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
           apiToken: apiToken,
           textColor: Colors.black,
           radius: 34.0,
+          onTap: _openEditIngredientsAmountScreen
         ),
       );
     }

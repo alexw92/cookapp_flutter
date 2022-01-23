@@ -135,13 +135,15 @@ class IngredientEditTileComponent extends StatefulWidget {
   String apiToken;
   Color textColor;
   double radius;
+  VoidCallback onTap;
 
   IngredientEditTileComponent(
       {Key key,
       this.ingredient,
       this.apiToken,
       this.textColor = Colors.white,
-      this.radius = 46.0})
+      this.radius = 46.0,
+      this.onTap})
       : super(key: key);
 
   @override
@@ -169,11 +171,14 @@ class _IngredientEditTileComponentState
         margin: EdgeInsets.only(top: 5, bottom: 5),
         color: Colors.transparent,
         child: Column(children: [
-          CircleAvatar(
-            backgroundImage: CachedNetworkImageProvider(ingredient.imgSrc,
-                imageRenderMethodForWeb: ImageRenderMethodForWeb.HttpGet),
-            // backgroundColor: Colors.transparent,
-            radius: radius,
+          InkWell(
+            child: CircleAvatar(
+              backgroundImage: CachedNetworkImageProvider(ingredient.imgSrc,
+                  imageRenderMethodForWeb: ImageRenderMethodForWeb.HttpGet),
+              // backgroundColor: Colors.transparent,
+              radius: radius,
+            ),
+            onTap: widget.onTap,
           ),
           Text(
             ingredient.name,
