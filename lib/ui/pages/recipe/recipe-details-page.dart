@@ -31,6 +31,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
   RecipeService recipeService = RecipeService();
   UserFoodService userFoodService = UserFoodService();
   List<UserFoodProduct> userOwnedFood;
+  List<UserFoodProduct> missingUserFood;
   DefaultNutrients defaultNutrients;
   String apiToken;
   int dailyCalories;
@@ -52,6 +53,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
     dailyProtein = defaultNutrients.recDailyProtein;
     dailyFat = defaultNutrients.recDailyFat;
     userOwnedFood = await userFoodService.getUserFood(false);
+    missingUserFood = await userFoodService.getUserFood(true);
     this.recipe = await RecipeController.getRecipe(this.widget.recipeId);
     var ingredientsCopy = copyIngredients(recipe.ingredients);
     setState(() {

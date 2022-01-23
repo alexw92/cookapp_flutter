@@ -448,6 +448,10 @@ class UserFoodProduct {
         nutrients: Nutrients.fromJson(json['nutrientsData']),
         foodCategory: FoodCategory.fromJson(json['foodCategoryData']));
   }
+
+  String toString(){
+    return "foodProductId:$foodProductId, name:$name";
+  }
 }
 
 @HiveType(typeId: 3)
