@@ -168,6 +168,19 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                               likeCount: recipe.likes,
                               isLiked: recipe.userLiked,
                               onTap: onLikeButtonTapped,
+                              likeBuilder: (bool isLiked) {
+                                return isLiked
+                                    ? Icon(
+                                        Icons.favorite,
+                                        color: Colors.red,
+                                        size: 40,
+                                      )
+                                    : Icon(
+                                        Icons.favorite_outline_sharp,
+                                        color: Colors.grey,
+                                        size: 40,
+                                      );
+                              },
                               countBuilder:
                                   (int count, bool isLiked, String text) {
                                 var color =
