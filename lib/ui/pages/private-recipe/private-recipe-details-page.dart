@@ -138,7 +138,7 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
             body: SafeArea(
             child: Container(
                 height: double.infinity,
-                color: Colors.black,
+                color: Colors.black54,
                 child: SingleChildScrollView(
                     //  padding: EdgeInsets.only(bottom: 15),
                     child: Column(children: [
@@ -175,7 +175,7 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
                     )
                   ]),
                   Container(
-                    color: Colors.black,
+                    color: Colors.black54,
                     width: double.infinity,
                     child: Column(
                       children: [
@@ -231,7 +231,7 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
                     ),
                   ),
                   Container(
-                    color: Colors.black,
+                    color: Colors.black54,
                     width: double.infinity,
                     child: Column(children: [
                       Text(
@@ -249,7 +249,7 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
                     ]),
                   ),
                   Container(
-                      color: Colors.black,
+                      color: Colors.black54,
                       width: double.infinity,
                       child: Column(children: [
                         Text(
@@ -273,7 +273,7 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
                             ))
                       ])),
                   Container(
-                      color: Colors.black,
+                      color: Colors.black54,
                       width: double.infinity,
                       child: Column(children: [
                         Text(
