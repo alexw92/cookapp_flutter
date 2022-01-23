@@ -86,7 +86,7 @@ class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
             SizedBox(
                 height: 50,
                 child: Center( child:ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: Colors.green),
+                    style: ElevatedButton.styleFrom(primary: Colors.lightGreen),
                     onPressed: () {
                       saveAmountsAndContinue();
                     },

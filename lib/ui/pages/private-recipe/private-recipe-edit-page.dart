@@ -36,6 +36,8 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
   double dailyCarbohydrate = 0;
   double dailyProtein = 0;
   double dailyFat = 0;
+  int updateNutrientsKey = 0;
+  int updateIngredientsKey = 1000;
 
   _RecipeEditPageState(this.privateRecipeId);
 
@@ -48,10 +50,14 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
   }
 
   void loadPrivateRecipe(int privateRecipeId) async {
-    privateRecipe = await RecipeController.getPrivateRecipe(privateRecipeId);
-    privateRecipeService.addOrUpdatePrivateRecipe(privateRecipe);
+    var updatedPrivateRecipe = await RecipeController.getPrivateRecipe(privateRecipeId);
+    privateRecipeService.addOrUpdatePrivateRecipe(updatedPrivateRecipe);
+    setState(() {
+      privateRecipe = updatedPrivateRecipe;
+      updateNutrientsKey++;
+      updateIngredientsKey++;
+    });
     getInstructionTiles();
-    setState(() {});
   }
 
   loadDailyRequiredNutrients() async {
@@ -281,7 +287,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
             builder: (context) => EditIngredientsAmountPage(
                 privateRecipe: privateRecipe,
                 routedFromAddIngredient: false))).then((ghj) {
-      setState(() {});
+      loadPrivateRecipe(privateRecipeId);
     });
     print('EditIngredientsAmountScreen completed');
   }
@@ -292,6 +298,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
 
   Widget getIngredientGridView() {
       return Card(
+          key: ValueKey(updateIngredientsKey),
           elevation: 10,
           margin: EdgeInsets.all(10),
           child: new GridView.count(
@@ -332,6 +339,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
       return Container();
     else
       return Card(
+          key: ValueKey(updateNutrientsKey),
           elevation: 10,
           margin: EdgeInsets.all(10),
           child: new GridView.count(
