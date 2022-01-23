@@ -404,17 +404,22 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
   }
 
   List<Widget> getAllIngredientTiles() {
-    List<Widget> myTiles = [];
     List<IngredientTileComponent> myIngredientTiles = [];
     for (int i = 0; i < ingredientsTmp.length; i++) {
       var ingredient = ingredientsTmp[i];
       var hasIngredient = userOwnedFood
           .any((element) => element.foodProductId == ingredient.foodProductId);
       myIngredientTiles.add(IngredientTileComponent(
-        ingredient: ingredient,
-        apiToken: apiToken,
-        userOwns: hasIngredient,
-      ));
+          ingredient: ingredient,
+          apiToken: apiToken,
+          userOwns: hasIngredient,
+          onTap: () => {
+                print("tap on " +
+                    ingredient.name +
+                    " " +
+                    hasIngredient.toString()),
+                if (!hasIngredient) _showMissingIngredientDialog(ingredient)
+              }));
     }
     myIngredientTiles.sort((a, b) {
       if (b.userOwns) {
@@ -422,19 +427,8 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
       }
       return -1;
     });
-    myIngredientTiles.forEach((ingredientTile) {
-      myTiles.add(InkWell(
-          child: ingredientTile,
-          onTap: () => {
-                print("tap on " +
-                    ingredientTile.ingredient.name +
-                    " " +
-                    ingredientTile.userOwns.toString()),
-                if (!ingredientTile.userOwns)
-                  _showMissingIngredientDialog(ingredientTile.ingredient)
-              }));
-    });
-    return myTiles;
+
+    return myIngredientTiles;
   }
 
   List<Widget> getNutrientTiles() {

@@ -13,6 +13,7 @@ class IngredientTileComponent extends StatefulWidget {
   Color textColor;
   double radius;
   bool userOwns;
+  VoidCallback onTap;
 
   IngredientTileComponent(
       {Key key,
@@ -20,7 +21,8 @@ class IngredientTileComponent extends StatefulWidget {
       this.apiToken,
       this.textColor = Colors.white,
       this.radius = 46.0,
-      this.userOwns = true})
+      this.userOwns = true,
+      this.onTap})
       : super(key: key);
 
   @override
@@ -70,18 +72,24 @@ class _IngredientTileComponentState extends State<IngredientTileComponent> {
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.white,
+                            color: Colors.transparent,
                             blurRadius: 4,
                             spreadRadius: 2,
                             offset: Offset(0, 0), // Shadow position
                           ),
                         ],
                       ),
-                child: CircleAvatar(
-                  backgroundImage: CachedNetworkImageProvider(ingredient.imgSrc,
-                      imageRenderMethodForWeb: ImageRenderMethodForWeb.HttpGet),
-                  backgroundColor: Colors.black87,
-                  radius: radius,
+                child: InkWell(
+                  child: CircleAvatar(
+                    backgroundImage: CachedNetworkImageProvider(
+                        ingredient.imgSrc,
+                        imageRenderMethodForWeb:
+                            ImageRenderMethodForWeb.HttpGet),
+                    backgroundColor: Colors.black87,
+                    radius: radius,
+                  ),
+                  onTap: widget.onTap,
+                  splashColor: Colors.white,
                 )),
             userOwns
                 ? Positioned(
@@ -101,6 +109,12 @@ class _IngredientTileComponentState extends State<IngredientTileComponent> {
                       size: 26,
                     ))
           ]),
+          // bit of extra space to compensate for the blur
+          userOwns
+              ? SizedBox(
+                  height: 4,
+                )
+              : Container(),
           Text(
             ingredient.name,
             style: TextStyle(color: textColor),
