@@ -437,7 +437,6 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
       }
       return -1;
     });
-
     return myIngredientTiles;
   }
 
@@ -521,12 +520,8 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
     } else {
       var item = ownedGroceries
           .firstWhereOrNull((item) => item.foodProductId == groceryId);
-      if (item == null)
-        print("LOOOL was null");
-      else {
-        ownedGroceries.remove(item);
-        missingGroceries.add(item);
-      }
+      ownedGroceries.remove(item);
+      missingGroceries.add(item);
     }
     setState(() {
       userOwnedFood = ownedGroceries;
