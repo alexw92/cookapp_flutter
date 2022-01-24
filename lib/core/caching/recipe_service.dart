@@ -10,7 +10,6 @@ class RecipeService {
       Diet diet, bool highProteinFilter, bool highCarbFilter,
       {bool reload = false}) async {
     List<Recipe> _recipeList = [];
-    print("Entered get Data()");
     bool exists = await hiveService.exists(boxName: "Recipes");
     if (exists && !reload) {
       print("Getting data from Hive");
@@ -29,7 +28,6 @@ class RecipeService {
   }
 
   Future<DefaultNutrients> getDefaultNutrients({bool reload = false}) async {
-    print("Entered get Data()");
     bool exists = await hiveService.exists(boxName: "DefaultNutrients");
     if (exists && !reload) {
       print("Getting data from Hive");

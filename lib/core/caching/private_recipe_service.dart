@@ -8,7 +8,6 @@ class PrivateRecipeService {
 
   Future<List<PrivateRecipe>> getPrivateRecipes({bool reload = false}) async {
     List<PrivateRecipe> _recipeList = [];
-    print("Entered get Data()");
     bool exists = await hiveService.exists(boxName: "PrivateRecipes");
     if (exists && !reload) {
       print("Getting data from Hive");

@@ -9,7 +9,6 @@ class UserFoodService {
   Future<List<UserFoodProduct>> getUserFood(bool missingUserFood,
       {bool reload = false}) async {
     List<UserFoodProduct> _recipeList = [];
-    print("Entered get Data()");
     String foodBoxName = missingUserFood ? "MissingUserFood" : "UserFood";
     bool exists = await hiveService.exists(boxName: foodBoxName);
     if (exists && !reload) {
