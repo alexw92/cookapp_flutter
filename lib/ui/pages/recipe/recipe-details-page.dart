@@ -75,7 +75,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
   void increaseNumberOfPersons() {
     if (numberOfPersonsTmp == 20) return;
     setState(() {
-      controller.forward();
+      //c controller.forward();
       numberOfPersonsTmp = numberOfPersonsTmp + 1;
       for (int i = 0; i < recipe.ingredients.length; i++) {
         var ingredient = recipe.ingredients[i];
@@ -89,7 +89,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
   void decreaseNumberOfPersons() {
     if (numberOfPersonsTmp == 1) return;
     setState(() {
-      controller.forward();
+      //controller.forward();
       numberOfPersonsTmp = numberOfPersonsTmp - 1;
       for (int i = 0; i < recipe.ingredients.length; i++) {
         var ingredient = recipe.ingredients[i];
@@ -128,11 +128,13 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
     super.initState();
     loadRecipe();
     controller = AnimationController(
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: 120),
       vsync: this,
     );
     animation = Tween<double>(begin: 40, end: 50).animate(controller)
-      ..addListener(() {});
+      ..addListener(() {
+        setState(() {});
+      });
     controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         print("anim status completed");
@@ -550,13 +552,23 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
     if (setTo == true) {
       var item = missingGroceries
           .firstWhereOrNull((item) => item.foodProductId == groceryId);
-      missingGroceries.remove(item);
-      ownedGroceries.add(item);
+      if (item == null) {
+        // unfortunately this happens sometimes, needs to be debugged
+        print("ERROR: $groceryId not found in missingGroceries!");
+      } else {
+        missingGroceries.remove(item);
+        ownedGroceries.add(item);
+      }
     } else {
       var item = ownedGroceries
           .firstWhereOrNull((item) => item.foodProductId == groceryId);
-      ownedGroceries.remove(item);
-      missingGroceries.add(item);
+      if (item == null) {
+        // unfortunately this happens sometimes, needs to be debugged
+        print("ERROR: $groceryId not found in ownedGroceries!");
+      } else {
+        ownedGroceries.remove(item);
+        missingGroceries.add(item);
+      }
     }
     setState(() {
       _toggledGroceryId = groceryId;
