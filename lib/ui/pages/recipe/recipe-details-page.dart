@@ -42,6 +42,11 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
   List<Ingredient> ingredientsTmp;
   int updateIngredientsKey = 1;
 
+  // internal list to keep ingredient display order after initial sorting
+  List<IngredientTileComponent> _myIngredientTiles = [];
+  int _toggledGroceryId;
+  bool _toggledGroceryNewState;
+
   _RecipesDetailsPageState();
 
   void loadRecipe() async {
@@ -420,24 +425,34 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
   }
 
   List<Widget> getAllIngredientTiles() {
-    List<IngredientTileComponent> myIngredientTiles = [];
-    for (int i = 0; i < ingredientsTmp.length; i++) {
-      var ingredient = ingredientsTmp[i];
-      var hasIngredient = userOwnedFood
-          .any((element) => element.foodProductId == ingredient.foodProductId);
-      myIngredientTiles.add(IngredientTileComponent(
-          ingredient: ingredient,
-          apiToken: apiToken,
-          userOwns: hasIngredient,
-          onTap: () => {_showMissingIngredientDialog(ingredient)}));
-    }
-    myIngredientTiles.sort((a, b) {
-      if (b.userOwns) {
-        return 1;
+    if (_myIngredientTiles.isEmpty) {
+      for (int i = 0; i < ingredientsTmp.length; i++) {
+        var ingredient = ingredientsTmp[i];
+        var hasIngredient = userOwnedFood.any(
+            (element) => element.foodProductId == ingredient.foodProductId);
+        _myIngredientTiles.add(IngredientTileComponent(
+            ingredient: ingredient,
+            apiToken: apiToken,
+            userOwns: hasIngredient,
+            onTap: () => {_showMissingIngredientDialog(ingredient)}));
       }
-      return -1;
-    });
-    return myIngredientTiles;
+      _myIngredientTiles.sort((a, b) {
+        if (b.userOwns) {
+          return 1;
+        }
+        return -1;
+      });
+    }
+    // check if user switched ingredient manually
+    else if (_toggledGroceryId != null) {
+      var toggledIngredientTile = _myIngredientTiles.firstWhereOrNull(
+              (element) => element.ingredient.foodProductId == _toggledGroceryId);
+      if(toggledIngredientTile==null)
+        print("Error: $_toggledGroceryId not found in IngredientTiles!");
+      else
+        toggledIngredientTile.userOwns = _toggledGroceryNewState;
+    }
+    return _myIngredientTiles;
   }
 
   List<Widget> getNutrientTiles() {
@@ -524,6 +539,8 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
       missingGroceries.add(item);
     }
     setState(() {
+      _toggledGroceryId = groceryId;
+      _toggledGroceryNewState = setTo;
       userOwnedFood = ownedGroceries;
       updateIngredientsKey++;
     });
