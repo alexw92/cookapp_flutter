@@ -26,7 +26,8 @@ class RecipesDetailsPage extends StatefulWidget {
   _RecipesDetailsPageState createState() => _RecipesDetailsPageState();
 }
 
-class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
+class _RecipesDetailsPageState extends State<RecipesDetailsPage>
+    with SingleTickerProviderStateMixin {
   RecipeDetails recipe;
   RecipeService recipeService = RecipeService();
   UserFoodService userFoodService = UserFoodService();
@@ -39,6 +40,9 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
   double dailyProtein;
   double dailyFat;
   int numberOfPersonsTmp;
+  double _personsFontSize = 40;
+  Animation<double> animation;
+  AnimationController controller;
   List<Ingredient> ingredientsTmp;
   int updateIngredientsKey = 1;
 
@@ -71,6 +75,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
   void increaseNumberOfPersons() {
     if (numberOfPersonsTmp == 20) return;
     setState(() {
+      controller.forward();
       numberOfPersonsTmp = numberOfPersonsTmp + 1;
       for (int i = 0; i < recipe.ingredients.length; i++) {
         var ingredient = recipe.ingredients[i];
@@ -84,6 +89,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
   void decreaseNumberOfPersons() {
     if (numberOfPersonsTmp == 1) return;
     setState(() {
+      controller.forward();
       numberOfPersonsTmp = numberOfPersonsTmp - 1;
       for (int i = 0; i < recipe.ingredients.length; i++) {
         var ingredient = recipe.ingredients[i];
@@ -121,6 +127,18 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
   void initState() {
     super.initState();
     loadRecipe();
+    controller = AnimationController(
+      duration: const Duration(milliseconds: 150),
+      vsync: this,
+    );
+    animation = Tween<double>(begin: 40, end: 50).animate(controller)
+      ..addListener(() {});
+    controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        print("anim status completed");
+        controller.reverse();
+      }
+    });
   }
 
   @override
@@ -299,13 +317,15 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                               ),
                             ),
                             SizedBox(width: 10),
-                            CircleAvatar(
-                              radius: 30,
-                              child: Text(numberOfPersonsTmp.toString(),
-                                  style: TextStyle(
-                                      fontSize: 30, color: Colors.black)),
-                              backgroundColor: Colors.white,
-                            ),
+                            SizedBox(
+                                height: 50,
+                                width: numberOfPersonsTmp >= 10 ? 60 : 30,
+                                child: Text(numberOfPersonsTmp.toString(),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: animation.value,
+                                      color: Colors.white,
+                                    ))),
                             SizedBox(width: 10),
                             ElevatedButton(
                               onPressed: () {
@@ -446,8 +466,8 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
     // check if user switched ingredient manually
     else if (_toggledGroceryId != null) {
       var toggledIngredientTile = _myIngredientTiles.firstWhereOrNull(
-              (element) => element.ingredient.foodProductId == _toggledGroceryId);
-      if(toggledIngredientTile==null)
+          (element) => element.ingredient.foodProductId == _toggledGroceryId);
+      if (toggledIngredientTile == null)
         print("Error: $_toggledGroceryId not found in IngredientTiles!");
       else
         toggledIngredientTile.userOwns = _toggledGroceryNewState;
