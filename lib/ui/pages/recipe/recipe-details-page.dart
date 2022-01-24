@@ -53,6 +53,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
     dailyProtein = defaultNutrients.recDailyProtein;
     dailyFat = defaultNutrients.recDailyFat;
     userOwnedFood = await userFoodService.getUserFood(false);
+    // this loading is just to initially fill the hive box, can be removed if it was done before already
     missingUserFood = await userFoodService.getUserFood(true);
     this.recipe = await RecipeController.getRecipe(this.widget.recipeId);
     var ingredientsCopy = copyIngredients(recipe.ingredients);
@@ -428,13 +429,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
           ingredient: ingredient,
           apiToken: apiToken,
           userOwns: hasIngredient,
-          onTap: () => {
-                print("tap on " +
-                    ingredient.name +
-                    " " +
-                    hasIngredient.toString()),
-                if (!hasIngredient) _showMissingIngredientDialog(ingredient)
-              }));
+          onTap: () => {_showMissingIngredientDialog(ingredient)}));
     }
     myIngredientTiles.sort((a, b) {
       if (b.userOwns) {
@@ -500,7 +495,13 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
                                 ingredient.foodProductId, true),
                           })
                 }
-              else if (res == Constants.UserLacksIngredientAndWantsToAddToList)
+              else if (res == Constants.UserLacksIngredient)
+                {
+                  UserFoodProductController.toggleUserFoodProduct(
+                      ingredient.foodProductId, false),
+                  toggleIngredientState(ingredient.foodProductId, false)
+                }
+              else
                 {}
             },
         onError: (error) =>
@@ -508,7 +509,8 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
   }
 
   Future<void> toggleIngredientState(int groceryId, bool setTo) async {
-    List<UserFoodProduct> ownedGroceries = userOwnedFood;
+    List<UserFoodProduct> ownedGroceries =
+        await userFoodService.getUserFood(false);
     List<UserFoodProduct> missingGroceries =
         await userFoodService.getUserFood(true);
     if (setTo == true) {
@@ -519,8 +521,12 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage> {
     } else {
       var item = ownedGroceries
           .firstWhereOrNull((item) => item.foodProductId == groceryId);
-      ownedGroceries.remove(item);
-      missingGroceries.add(item);
+      if (item == null)
+        print("LOOOL was null");
+      else {
+        ownedGroceries.remove(item);
+        missingGroceries.add(item);
+      }
     }
     setState(() {
       userOwnedFood = ownedGroceries;
