@@ -14,7 +14,9 @@ class RecipeTileComponent extends StatefulWidget {
   String apiToken;
   final VoidCallback userFoodUpdatedCallback;
 
-  RecipeTileComponent({Key key, this.recipe, this.apiToken, this.userFoodUpdatedCallback}) : super(key: key);
+  RecipeTileComponent(
+      {Key key, this.recipe, this.apiToken, this.userFoodUpdatedCallback})
+      : super(key: key);
 
   @override
   _RecipeTileComponentState createState() =>
@@ -74,7 +76,8 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                               Utility.getTranslatedDiet(context, recipe.diet),
                               style: TextStyle(
                                   color: Colors.black,
-                                  fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12.0),
                             ),
                             backgroundColor: Colors.white,
                             elevation: 6.0,
@@ -151,8 +154,10 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
             ),
             label: Text(
               AppLocalizations.of(context).highProtein,
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12.0),
             ),
             backgroundColor: Colors.white,
             elevation: 6.0,
@@ -171,8 +176,10 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
             ),
             label: Text(
               AppLocalizations.of(context).highCarb,
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12.0),
             ),
             backgroundColor: Colors.white,
             elevation: 6.0,
@@ -189,7 +196,6 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
     // recipes must be reloaded to reflect correct missing ingredient numbers
     // Todo find less expensive solution for this
     bool needsRecipesUpdate = NeedsRecipeUpdateState().recipesUpdateNeeded;
-    if(needsRecipesUpdate)
-      widget.userFoodUpdatedCallback();
+    if (needsRecipesUpdate) widget.userFoodUpdatedCallback();
   }
 }

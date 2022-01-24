@@ -78,22 +78,24 @@ class _PrivateRecipeTileComponentState
               borderRadius: BorderRadius.all(Radius.circular(20))),
           child: Stack(fit: StackFit.expand, children: [
             Container(
-                height: 300,
-                width: 300,
-                color: Colors.grey,
-                child: FittedBox(
-                   // fit: BoxFit.fill,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image(
-                        // needs --web-renderer html
-                        image: CachedNetworkImageProvider(
-                            (defaultImg) ? privateRecipe.imgSrc : recipeImgUrl,
-                            //privateRecipe.imgSrc,
-                            imageRenderMethodForWeb:
-                                ImageRenderMethodForWeb.HttpGet),
-                      ),
-                    ),),),
+              height: 300,
+              width: 300,
+              color: Colors.grey,
+              child: FittedBox(
+                // fit: BoxFit.fill,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image(
+                    // needs --web-renderer html
+                    image: CachedNetworkImageProvider(
+                        (defaultImg) ? privateRecipe.imgSrc : recipeImgUrl,
+                        //privateRecipe.imgSrc,
+                        imageRenderMethodForWeb:
+                            ImageRenderMethodForWeb.HttpGet),
+                  ),
+                ),
+              ),
+            ),
             (showProgressIndicatorImage)
                 ? Positioned(
                     top: 120,
@@ -138,7 +140,8 @@ class _PrivateRecipeTileComponentState
                                   context, privateRecipe.diet),
                               style: TextStyle(
                                   color: Colors.black,
-                                  fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12.0),
                             ),
                             backgroundColor: Colors.white,
                             elevation: 6.0,
@@ -151,22 +154,26 @@ class _PrivateRecipeTileComponentState
             Positioned(
                 bottom: 0,
                 right: 0,
-                child: Stack(
-                    children: [
-                  (privateRecipe.uploadedBy.fbUploadedPhoto==null
-                      && privateRecipe.uploadedBy.providerPhoto==null)?
-                      CircleAvatar(child: Icon(Icons.person, size: 74,), radius: 40,)
-                      :
-                  CircleAvatar(
-                    backgroundImage: CachedNetworkImageProvider(
-                        (privateRecipe.uploadedBy.fbUploadedPhoto == null)
-                            ? privateRecipe.uploadedBy.providerPhoto
-                            : privateRecipe.uploadedBy.fbUploadedPhoto,
-                        imageRenderMethodForWeb:
-                            ImageRenderMethodForWeb.HttpGet),
-                    // backgroundColor: Colors.transparent,
-                    radius: 40,
-                  ),
+                child: Stack(children: [
+                  (privateRecipe.uploadedBy.fbUploadedPhoto == null &&
+                          privateRecipe.uploadedBy.providerPhoto == null)
+                      ? CircleAvatar(
+                          child: Icon(
+                            Icons.person,
+                            size: 74,
+                          ),
+                          radius: 40,
+                        )
+                      : CircleAvatar(
+                          backgroundImage: CachedNetworkImageProvider(
+                              (privateRecipe.uploadedBy.fbUploadedPhoto == null)
+                                  ? privateRecipe.uploadedBy.providerPhoto
+                                  : privateRecipe.uploadedBy.fbUploadedPhoto,
+                              imageRenderMethodForWeb:
+                                  ImageRenderMethodForWeb.HttpGet),
+                          // backgroundColor: Colors.transparent,
+                          radius: 40,
+                        ),
                 ])),
             Positioned(
                 top: 36,
@@ -258,8 +265,8 @@ class _PrivateRecipeTileComponentState
               setState(() {
                 showProgressIndicatorImage = false;
               }),
-             ScaffoldMessenger.of(context).removeCurrentSnackBar(),
-             ScaffoldMessenger.of(context).showSnackBar(
+              ScaffoldMessenger.of(context).removeCurrentSnackBar(),
+              ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
                       "${AppLocalizations.of(context).errorDuringImageUpload}"),
@@ -286,8 +293,10 @@ class _PrivateRecipeTileComponentState
             ),
             label: Text(
               AppLocalizations.of(context).highProtein,
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12.0),
             ),
             backgroundColor: Colors.white,
             elevation: 6.0,
@@ -306,8 +315,10 @@ class _PrivateRecipeTileComponentState
             ),
             label: Text(
               AppLocalizations.of(context).highCarb,
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12.0),
             ),
             backgroundColor: Colors.white,
             elevation: 6.0,
