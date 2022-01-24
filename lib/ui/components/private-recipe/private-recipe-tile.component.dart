@@ -179,31 +179,124 @@ class _PrivateRecipeTileComponentState
                 top: 36,
                 right: 0,
                 child: Column(children: [
-                  PopupMenuButton(
-                    onSelected: (result) {
-                      switch (result) {
-                        case 0:
-                          _editPrivateRecipeImg(privateRecipe, true);
-                          break;
-                        case 1:
-                          _editPrivateRecipeImg(privateRecipe, false);
-                          break;
-                      }
-                    },
-                    itemBuilder: (context) => [
-                      PopupMenuItem(
-                          child: Text(
-                              AppLocalizations.of(context).imageFromGallery),
-                          value: 0),
-                      PopupMenuItem(
-                          child: Text(AppLocalizations.of(context).takeImage),
-                          value: 1)
-                    ],
-                    child: Container(
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.white),
-                        padding: EdgeInsets.all(10),
-                        child: Icon(Icons.camera_alt)),
+                  // PopupMenuButton(
+                  //   onSelected: (result) {
+                  //     switch (result) {
+                  //       case 0:
+                  //         _editPrivateRecipeImg(privateRecipe, true);
+                  //         break;
+                  //       case 1:
+                  //         _editPrivateRecipeImg(privateRecipe, false);
+                  //         break;
+                  //     }
+                  //   },
+                  //   itemBuilder: (context) => [
+                  //     PopupMenuItem(
+                  //         child: Text(
+                  //             AppLocalizations.of(context).imageFromGallery),
+                  //         value: 0),
+                  //     PopupMenuItem(
+                  //         child: Text(AppLocalizations.of(context).takeImage),
+                  //         value: 1)
+                  //   ],
+                  //   child: Container(
+                  //       decoration: BoxDecoration(
+                  //           shape: BoxShape.circle, color: Colors.white),
+                  //       padding: EdgeInsets.all(10),
+                  //       child: Icon(Icons.camera_alt)),
+                  // ),
+                  ElevatedButton(
+                    style: ButtonStyle(
+                        shape: MaterialStateProperty.all(CircleBorder()),
+                        padding: MaterialStateProperty.all(EdgeInsets.all(10)),
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.white)),
+                    child: const Icon(
+                      Icons.camera_alt,
+                    ),
+                    onPressed: () => showModalBottomSheet<void>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Container(
+                          height: 150,
+                          color: Colors.white,
+                          margin: EdgeInsets.all(20),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              Row(
+                                children: [
+                                  Text(
+                                    AppLocalizations.of(context).recipeImage,
+                                    style: TextStyle(fontSize: 24),
+                                  )
+                                ],
+                              ),
+                              Spacer(),
+                              Row(
+                                children: [
+                                  Wrap(
+                                      crossAxisAlignment:
+                                          WrapCrossAlignment.center,
+                                      direction: Axis.vertical,
+                                      children: [
+                                        ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Colors.white,
+                                              shape: CircleBorder(),
+                                              padding: EdgeInsets.all(14),
+                                            ),
+                                            onPressed: () {
+                                              _editPrivateRecipeImg(
+                                                  privateRecipe, false);
+                                            },
+                                            child: const Icon(
+                                              Icons.camera_alt,
+                                              size: 26,
+                                              color: Colors.green,
+                                            )),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                            AppLocalizations.of(context).camera)
+                                      ]),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Wrap(
+                                      crossAxisAlignment:
+                                          WrapCrossAlignment.center,
+                                      direction: Axis.vertical,
+                                      children: [
+                                        ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                                primary: Colors.white,
+                                                shape: CircleBorder(),
+                                                padding: EdgeInsets.all(14)),
+                                            onPressed: () {
+                                              _editPrivateRecipeImg(
+                                                  privateRecipe, true);
+                                            },
+                                            child: const Icon(
+                                              Icons.image,
+                                              size: 26,
+                                              color: Colors.green,
+                                            )),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(AppLocalizations.of(context)
+                                            .gallery)
+                                      ])
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   ),
                   ElevatedButton(
                     onPressed: () => {_openEditRecipeScreen(privateRecipe)},
