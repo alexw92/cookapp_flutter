@@ -426,6 +426,8 @@ class UserFoodProduct {
   final Nutrients nutrients;
   @HiveField(7)
   final FoodCategory foodCategory;
+  @HiveField(8)
+  bool onShoppingList;
 
   UserFoodProduct(
       {this.foodProductId,
@@ -435,7 +437,8 @@ class UserFoodProduct {
       this.quantityUnit,
       this.imgSrc,
       this.nutrients,
-      this.foodCategory});
+      this.foodCategory,
+      this.onShoppingList});
 
   factory UserFoodProduct.fromJson(Map<String, dynamic> json) {
     return UserFoodProduct(
@@ -446,11 +449,12 @@ class UserFoodProduct {
         quantityUnit: QuantityUnit.fromInt(json['quantityUnit']),
         imgSrc: json['img_src'],
         nutrients: Nutrients.fromJson(json['nutrientsData']),
-        foodCategory: FoodCategory.fromJson(json['foodCategoryData']));
+        foodCategory: FoodCategory.fromJson(json['foodCategoryData']),
+        onShoppingList: json['onShoppingList']);
   }
 
   String toString(){
-    return "foodProductId:$foodProductId, name:$name";
+    return "foodProductId:$foodProductId, name:$name onShoppingList:$onShoppingList";
   }
 }
 

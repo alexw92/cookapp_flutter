@@ -51,7 +51,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
   List<IngredientTileComponent> _myIngredientTiles = [];
   int _toggledGroceryId;
   bool _toggledGroceryNewState;
-  bool _toggledGroceryNewStateOnShoppingList;
+  bool _toggledGroceryNewStateOnShoppingList = false;
 
   _RecipesDetailsPageState();
 
@@ -461,8 +461,9 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
         var ingredient = ingredientsTmp[i];
         var hasIngredient = userOwnedFood.any(
             (element) => element.foodProductId == ingredient.foodProductId);
-        var onShoppingList = groceriesOnShoppingList.any(
-            (element) => element.foodProductId == ingredient.foodProductId);
+        var onShoppingList = missingUserFood.any((element) =>
+            element.foodProductId == ingredient.foodProductId &&
+            element.onShoppingList);
         _myIngredientTiles.add(IngredientTileComponent(
             ingredient: ingredient,
             apiToken: apiToken,
@@ -488,6 +489,8 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
         toggledIngredientTile.onShoppingList =
             _toggledGroceryNewStateOnShoppingList;
       }
+      // reset
+      _toggledGroceryId = null;
     }
     return _myIngredientTiles;
   }
@@ -539,29 +542,34 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
               if (res == Constants.UserHasIngredient)
                 {
                   UserFoodProductController.toggleUserFoodProduct(
-                          ingredient.foodProductId, true)
+                          ingredient.foodProductId, true, null)
                       .then((value) => {
                             // update hive box and ui
                             toggleIngredientState(
                                 ingredient.foodProductId, true),
-                            toggleIngredientToShoppingList(ingredient.foodProductId, false)
                           })
                 }
               else if (res == Constants.UserLacksIngredient)
                 {
                   UserFoodProductController.toggleUserFoodProduct(
-                      ingredient.foodProductId, false).then((value)=>{
-                    toggleIngredientState(ingredient.foodProductId, false),
-                    toggleIngredientToShoppingList(ingredient.foodProductId, false)
-                  }),
-
+                          ingredient.foodProductId, false, null)
+                      .then((value) => {
+                            toggleIngredientState(
+                                ingredient.foodProductId, false),
+                          }),
+                }
+              else if (res ==
+                  Constants
+                      .UserLacksIngredientAndWantsToAddToList) // add to shopping list
+                {
+                  UserFoodProductController.toggleUserFoodProduct(
+                          ingredient.foodProductId, null, true)
+                      .then((value) => toggleIngredientToShoppingList(
+                          ingredient.foodProductId)),
                 }
               else
                 {
-                  // Todo implement backend endpoint
-                  toggleIngredientState(ingredient.foodProductId, false),
-                  toggleIngredientToShoppingList(ingredient.foodProductId, true)
-
+                  // Dialog was closed, do nothing!
                 }
             },
         onError: (error) =>
@@ -576,28 +584,64 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
     if (setTo == true) {
       var item = missingGroceries
           .firstWhereOrNull((item) => item.foodProductId == groceryId);
+      var itemOwned = ownedGroceries
+          .firstWhereOrNull((item) => item.foodProductId == groceryId);
+      // check if item had the same state before
+      if (itemOwned != null) {
+        if (itemOwned.onShoppingList) {
+          print("Error: Item owned was on shopping list!");
+        }
+        print("Item set to owned which was already owned. Nothing to do");
+        return;
+      }
       if (item == null) {
-        // unfortunately this happens sometimes, needs to be debugged
-        print("ERROR: $groceryId not found in missingGroceries!");
+        print("ERROR: $groceryId not found in missingGroceries");
+        return;
       } else {
+        item.onShoppingList = false;
         missingGroceries.remove(item);
         ownedGroceries.add(item);
       }
     } else {
-      var item = ownedGroceries
+      var item = missingGroceries
           .firstWhereOrNull((item) => item.foodProductId == groceryId);
-      if (item == null) {
-        // unfortunately this happens sometimes, needs to be debugged
-        print("ERROR: $groceryId not found in ownedGroceries!");
+      // check if item had the same state before
+      if (item != null) {
+        if (item.onShoppingList == false) {
+          print("Item was missing is set to missing, nothing todo.");
+          return;
+        } // item was in shopping list -> remove it
+        else {
+          setState(() {
+            item.onShoppingList = false;
+          });
+        }
       } else {
-        ownedGroceries.remove(item);
-        missingGroceries.add(item);
+        // item was not in missing list
+        item = ownedGroceries
+            .firstWhereOrNull((item) => item.foodProductId == groceryId);
+        if (item == null) {
+          print("ERROR: $groceryId not found in ownedGroceries!");
+          //debug
+          item = missingGroceries
+        .firstWhereOrNull((item) => item.foodProductId == groceryId);
+          if(item!=null)
+            print("But now found in missing food products!");
+
+          //debug end
+          return;
+        } else {
+          ownedGroceries.remove(item);
+          missingGroceries.add(item);
+        }
       }
     }
     setState(() {
       _toggledGroceryId = groceryId;
       _toggledGroceryNewState = setTo;
+      _toggledGroceryNewStateOnShoppingList = false;
       userOwnedFood = ownedGroceries;
+      missingUserFood = missingGroceries;
       updateIngredientsKey++;
     });
     userFoodService.updateBoxValues(true, missingGroceries);
@@ -606,19 +650,48 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
     NeedsRecipeUpdateState().recipesUpdateNeeded = true;
   }
 
-  toggleIngredientToShoppingList(int groceryId, bool setTo) async {
-    _toggledGroceryNewStateOnShoppingList = setTo;
-
+  toggleIngredientToShoppingList(int groceryId) async {
     List<UserFoodProduct> missingGroceries =
         await userFoodService.getUserFood(true);
+    // item was missing before
     var item = missingGroceries
         .firstWhereOrNull((item) => item.foodProductId == groceryId);
     if (item != null) {
-      if (setTo) {
-        groceriesOnShoppingList.add(item);
-      } else {
-        groceriesOnShoppingList.remove(item);
+      //check if it was on shopping list before
+      if (item.onShoppingList) {
+        print("was on shopping list before, nothing to do");
+        return;
       }
+      setState(() {
+        item.onShoppingList = true;
+        _toggledGroceryNewStateOnShoppingList = true;
+        _toggledGroceryNewState = false;
+        _toggledGroceryId = groceryId;
+        updateIngredientsKey++;
+      });
+      userFoodService.updateBoxValues(true, missingGroceries);
+      NeedsRecipeUpdateState().recipesUpdateNeeded = true;
+      return;
+    }
+    // item was owned before
+    item = userOwnedFood
+        .firstWhereOrNull((item) => item.foodProductId == groceryId);
+    if (item != null) {
+      setState(() {
+        item.onShoppingList = true;
+        _toggledGroceryNewStateOnShoppingList = true;
+        _toggledGroceryNewState = false;
+        _toggledGroceryId = groceryId;
+        userOwnedFood.remove(item);
+        missingUserFood.add(item);
+        updateIngredientsKey++;
+      });
+      userFoodService.updateBoxValues(true, missingGroceries);
+      userFoodService.updateBoxValues(false, userOwnedFood);
+      // changing grocery stock requires reloading of recipes
+      NeedsRecipeUpdateState().recipesUpdateNeeded = true;
+    } else {
+      print("Error: Item to set on shopping list was not found!");
     }
   }
 }

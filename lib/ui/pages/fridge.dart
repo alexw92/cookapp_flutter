@@ -687,7 +687,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
   }
 
   void updateUserFoodState(GroceryCheckBoxListTileModel tileModel, bool val) {
-    UserFoodProductController.toggleUserFoodProduct(tileModel.groceryId, val)
+    UserFoodProductController.toggleUserFoodProduct(tileModel.groceryId, val, null)
         .then((value) => setState(() {
               tileModel.isCheck = val;
               tileModel.isLoading = false;

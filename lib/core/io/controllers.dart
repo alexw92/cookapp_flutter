@@ -556,7 +556,7 @@ class UserFoodProductController {
   }
 
   static Future<void> toggleUserFoodProduct(
-      int foodProductId, bool addFoodProduct) async {
+      int foodProductId, bool addFoodProduct, bool toShoppingList) async {
     // get token from token store
     var tokenStore = IOConfig.tokenStore;
     String storedToken = await tokenStore.getToken();
@@ -569,11 +569,12 @@ class UserFoodProductController {
           "Authorization": "Bearer $storedToken",
           'Content-Type': 'application/json',
         });
-
+    var isAddedParam = addFoodProduct==null?"":addFoodProduct==true?"&isAdded=true":"&isAdded=false";
+    var toShoppingListParam = toShoppingList==null?"":toShoppingList==true?"&toShoppingList=true":"&toShoppingList=false";
     Dio dio = new Dio(options);
     final stopwatch = Stopwatch()..start();
     var response = await dio.post(
-        "/userFood/update?foodProductId=$foodProductId&isAdded=$addFoodProduct");
+        "/userFood/update?foodProductId=$foodProductId$isAddedParam$toShoppingListParam");
     print(
         'toggleUserFoodProduct api req executed in ${stopwatch.elapsed.inMilliseconds}');
 
@@ -583,6 +584,6 @@ class UserFoodProductController {
     }
 
     throw Exception(
-        "Error requesting user food products, Code: ${response.statusCode} Message: ${response.data} ");
+        "Error toggling user food product, Code: ${response.statusCode} Message: ${response.data} ");
   }
 }
