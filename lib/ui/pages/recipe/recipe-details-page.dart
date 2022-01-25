@@ -532,6 +532,10 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
   }
 
   Future<void> _showMissingIngredientDialog(Ingredient ingredient) async {
+    var ownedGroceries = await userFoodService.getUserFood(false);
+    var missingGroceries = await userFoodService.getUserFood(true);
+    print("items in cache: ${ownedGroceries.length+missingGroceries.length}");
+    print("items in widget memory: ${userOwnedFood.length+missingUserFood.length}");
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -677,17 +681,17 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
     item = userOwnedFood
         .firstWhereOrNull((item) => item.foodProductId == groceryId);
     if (item != null) {
+      userOwnedFood.remove(item);
+      userOwnedFood.add(item);
+      userFoodService.updateBoxValues(true, missingGroceries);
+      userFoodService.updateBoxValues(false, userOwnedFood);
       setState(() {
         item.onShoppingList = true;
         _toggledGroceryNewStateOnShoppingList = true;
         _toggledGroceryNewState = false;
         _toggledGroceryId = groceryId;
-        userOwnedFood.remove(item);
-        missingUserFood.add(item);
         updateIngredientsKey++;
       });
-      userFoodService.updateBoxValues(true, missingGroceries);
-      userFoodService.updateBoxValues(false, userOwnedFood);
       // changing grocery stock requires reloading of recipes
       NeedsRecipeUpdateState().recipesUpdateNeeded = true;
     } else {
