@@ -13,6 +13,7 @@ class IngredientTileComponent extends StatefulWidget {
   Color textColor;
   double radius;
   bool userOwns;
+  bool onShoppingList;
   VoidCallback onTap;
 
   IngredientTileComponent(
@@ -22,6 +23,7 @@ class IngredientTileComponent extends StatefulWidget {
       this.textColor = Colors.white,
       this.radius = 46.0,
       this.userOwns = true,
+      this.onShoppingList = false,
       this.onTap})
       : super(key: key);
 
@@ -31,7 +33,8 @@ class IngredientTileComponent extends StatefulWidget {
       apiToken: apiToken,
       textColor: textColor,
       radius: radius,
-      userOwns: userOwns);
+      userOwns: userOwns,
+      onShoppingList: onShoppingList);
 }
 
 class _IngredientTileComponentState extends State<IngredientTileComponent> {
@@ -40,13 +43,15 @@ class _IngredientTileComponentState extends State<IngredientTileComponent> {
   Color textColor;
   double radius;
   bool userOwns;
+  bool onShoppingList;
 
   _IngredientTileComponentState(
       {this.ingredient,
       this.apiToken,
       this.textColor,
       this.radius,
-      this.userOwns});
+      this.userOwns,
+      this.onShoppingList});
 
   @override
   Widget build(BuildContext context) {
@@ -56,29 +61,41 @@ class _IngredientTileComponentState extends State<IngredientTileComponent> {
         child: Column(children: [
           Stack(children: [
             Container(
-                decoration: userOwns
+                decoration: onShoppingList
                     ? BoxDecoration(
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.green,
+                            color: Colors.yellow,
                             blurRadius: 4,
                             spreadRadius: 2,
                             offset: Offset(0, 0), // Shadow position
                           ),
                         ],
                       )
-                    : BoxDecoration(
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.transparent,
-                            blurRadius: 4,
-                            spreadRadius: 2,
-                            offset: Offset(0, 0), // Shadow position
+                    : userOwns
+                        ? BoxDecoration(
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.green,
+                                blurRadius: 4,
+                                spreadRadius: 2,
+                                offset: Offset(0, 0), // Shadow position
+                              ),
+                            ],
+                          )
+                        : BoxDecoration(
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.transparent,
+                                blurRadius: 4,
+                                spreadRadius: 2,
+                                offset: Offset(0, 0), // Shadow position
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
                 child: InkWell(
                   child: CircleAvatar(
                     backgroundImage: CachedNetworkImageProvider(
@@ -91,23 +108,32 @@ class _IngredientTileComponentState extends State<IngredientTileComponent> {
                   onTap: widget.onTap,
                   splashColor: Colors.white,
                 )),
-            userOwns
+            onShoppingList
                 ? Positioned(
                     bottom: 0,
                     right: 0,
                     child: FaIcon(
-                      FontAwesomeIcons.check,
-                      color: Colors.lightGreen,
+                      FontAwesomeIcons.listAlt,
+                      color: Colors.yellow,
                       size: 26,
                     ))
-                : Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: FaIcon(
-                      FontAwesomeIcons.times,
-                      color: Colors.redAccent,
-                      size: 26,
-                    ))
+                : userOwns
+                    ? Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: FaIcon(
+                          FontAwesomeIcons.check,
+                          color: Colors.lightGreen,
+                          size: 26,
+                        ))
+                    : Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: FaIcon(
+                          FontAwesomeIcons.times,
+                          color: Colors.redAccent,
+                          size: 26,
+                        ))
           ]),
           // bit of extra space to compensate for the blur
           userOwns

@@ -33,6 +33,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
   UserFoodService userFoodService = UserFoodService();
   List<UserFoodProduct> userOwnedFood;
   List<UserFoodProduct> missingUserFood;
+  List<UserFoodProduct> groceriesOnShoppingList;
   DefaultNutrients defaultNutrients;
   String apiToken;
   int dailyCalories;
@@ -50,6 +51,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
   List<IngredientTileComponent> _myIngredientTiles = [];
   int _toggledGroceryId;
   bool _toggledGroceryNewState;
+  bool _toggledGroceryNewStateOnShoppingList;
 
   _RecipesDetailsPageState();
 
@@ -64,6 +66,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
     userOwnedFood = await userFoodService.getUserFood(false);
     // this loading is just to initially fill the hive box, can be removed if it was done before already
     missingUserFood = await userFoodService.getUserFood(true);
+    groceriesOnShoppingList = [];
     this.recipe = await RecipeController.getRecipe(this.widget.recipeId);
     var ingredientsCopy = copyIngredients(recipe.ingredients);
     setState(() {
@@ -458,10 +461,13 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
         var ingredient = ingredientsTmp[i];
         var hasIngredient = userOwnedFood.any(
             (element) => element.foodProductId == ingredient.foodProductId);
+        var onShoppingList = groceriesOnShoppingList.any(
+            (element) => element.foodProductId == ingredient.foodProductId);
         _myIngredientTiles.add(IngredientTileComponent(
             ingredient: ingredient,
             apiToken: apiToken,
             userOwns: hasIngredient,
+            onShoppingList: onShoppingList == null ? false : onShoppingList,
             onTap: () => {_showMissingIngredientDialog(ingredient)}));
       }
       _myIngredientTiles.sort((a, b) {
@@ -477,8 +483,11 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
           (element) => element.ingredient.foodProductId == _toggledGroceryId);
       if (toggledIngredientTile == null)
         print("Error: $_toggledGroceryId not found in IngredientTiles!");
-      else
+      else {
         toggledIngredientTile.userOwns = _toggledGroceryNewState;
+        toggledIngredientTile.onShoppingList =
+            _toggledGroceryNewStateOnShoppingList;
+      }
     }
     return _myIngredientTiles;
   }
@@ -535,16 +544,25 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
                             // update hive box and ui
                             toggleIngredientState(
                                 ingredient.foodProductId, true),
+                            toggleIngredientToShoppingList(ingredient.foodProductId, false)
                           })
                 }
               else if (res == Constants.UserLacksIngredient)
                 {
                   UserFoodProductController.toggleUserFoodProduct(
-                      ingredient.foodProductId, false),
-                  toggleIngredientState(ingredient.foodProductId, false)
+                      ingredient.foodProductId, false).then((value)=>{
+                    toggleIngredientState(ingredient.foodProductId, false),
+                    toggleIngredientToShoppingList(ingredient.foodProductId, false)
+                  }),
+
                 }
               else
-                {}
+                {
+                  // Todo implement backend endpoint
+                  toggleIngredientState(ingredient.foodProductId, false),
+                  toggleIngredientToShoppingList(ingredient.foodProductId, true)
+
+                }
             },
         onError: (error) =>
             {print("Error in missingIngredientDialog " + error)});
@@ -586,5 +604,21 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
     userFoodService.updateBoxValues(false, ownedGroceries);
     // changing grocery stock requires reloading of recipes
     NeedsRecipeUpdateState().recipesUpdateNeeded = true;
+  }
+
+  toggleIngredientToShoppingList(int groceryId, bool setTo) async {
+    _toggledGroceryNewStateOnShoppingList = setTo;
+
+    List<UserFoodProduct> missingGroceries =
+        await userFoodService.getUserFood(true);
+    var item = missingGroceries
+        .firstWhereOrNull((item) => item.foodProductId == groceryId);
+    if (item != null) {
+      if (setTo) {
+        groceriesOnShoppingList.add(item);
+      } else {
+        groceriesOnShoppingList.remove(item);
+      }
+    }
   }
 }
