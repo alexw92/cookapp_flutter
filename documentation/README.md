@@ -33,7 +33,7 @@ Possible solution for storing data from api
 [Hive pub.dev](https://pub.dev/packages/hive)
 [Hive with rest](https://medium.com/flutter-community/flutter-cache-with-hive-410c3283280c)
 
-To create model/adapter
+To create model/adapter (and also to update it after making changes to it!)
 ```
 flutter pub run build_runner build
 ```

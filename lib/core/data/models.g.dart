@@ -346,13 +346,14 @@ class UserFoodProductAdapter extends TypeAdapter<UserFoodProduct> {
       imgSrc: fields[5] as String,
       nutrients: fields[6] as Nutrients,
       foodCategory: fields[7] as FoodCategory,
+      onShoppingList: fields[8] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserFoodProduct obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.foodProductId)
       ..writeByte(1)
@@ -368,7 +369,9 @@ class UserFoodProductAdapter extends TypeAdapter<UserFoodProduct> {
       ..writeByte(6)
       ..write(obj.nutrients)
       ..writeByte(7)
-      ..write(obj.foodCategory);
+      ..write(obj.foodCategory)
+      ..writeByte(8)
+      ..write(obj.onShoppingList);
   }
 
   @override
