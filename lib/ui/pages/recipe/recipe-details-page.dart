@@ -41,7 +41,6 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
   double dailyProtein;
   double dailyFat;
   int numberOfPersonsTmp;
-  double _personsFontSize = 40;
   Animation<double> animation;
   AnimationController controller;
   List<Ingredient> ingredientsTmp;
