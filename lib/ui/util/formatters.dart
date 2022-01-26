@@ -10,7 +10,7 @@ class Utility {
       return "${_getFormattedFraction(userFoodProduct.amount)} ${userFoodProduct.quantityUnit.toString()}";
     } else if (userFoodProduct.quantityUnit.value == QuantityUnit.MILLILITER ||
         userFoodProduct.quantityUnit.value == QuantityUnit.GRAM) {
-      return "${toWholeNumberStringIfPossible(userFoodProduct.amount)} ${userFoodProduct.quantityUnit.toString()}";
+      return "${toWholeNumberStringIfPossible(userFoodProduct.amount, true)} ${userFoodProduct.quantityUnit.toString()}";
     } else
       return "${userFoodProduct.amount} ${userFoodProduct.quantityUnit.toString()}";
   }
@@ -20,7 +20,7 @@ class Utility {
       return "${_getFormattedFraction(ingredient.amount)} ${ingredient.quantityType.toString()}";
     } else if (ingredient.quantityType.value == QuantityUnit.MILLILITER ||
         ingredient.quantityType.value == QuantityUnit.GRAM) {
-      return "${toWholeNumberStringIfPossible(ingredient.amount)} ${ingredient.quantityType.toString()}";
+      return "${toWholeNumberStringIfPossible(ingredient.amount, true)} ${ingredient.quantityType.toString()}";
     } else
       return "${ingredient.amount} ${ingredient.quantityType.toString()}";
   }
@@ -154,8 +154,10 @@ class Utility {
       return "$formattedFraction";
   }
 
-  static String toWholeNumberStringIfPossible(num value) {
+  static String toWholeNumberStringIfPossible(num value, bool isGramOrMl) {
     if (value.isInt) return (value).round().toString();
+    // gram or ml is always rounded
+    return value.round().toString();
     return (value).toString();
   }
 }
