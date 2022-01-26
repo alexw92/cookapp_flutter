@@ -471,10 +471,16 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
             onTap: () => {_showMissingIngredientDialog(ingredient)}));
       }
       _myIngredientTiles.sort((a, b) {
-        if (b.userOwns) {
+        if (!a.userOwns && b.userOwns) {
           return 1;
+        } else if (a.userOwns && !b.userOwns) {
+          return -1;
+        } else {
+          if (!a.onShoppingList && b.onShoppingList)
+            return 1;
+          else if (a.onShoppingList && !b.onShoppingList) return -1;
+          return 0;
         }
-        return -1;
       });
     }
     // check if user switched ingredient manually
@@ -533,8 +539,9 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
   Future<void> _showMissingIngredientDialog(Ingredient ingredient) async {
     var ownedGroceries = await userFoodService.getUserFood(false);
     var missingGroceries = await userFoodService.getUserFood(true);
-    print("items in cache: ${ownedGroceries.length+missingGroceries.length}");
-    print("items in widget memory: ${userOwnedFood.length+missingUserFood.length}");
+    print("items in cache: ${ownedGroceries.length + missingGroceries.length}");
+    print(
+        "items in widget memory: ${userOwnedFood.length + missingUserFood.length}");
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -627,9 +634,8 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
           print("ERROR: $groceryId not found in ownedGroceries!");
           //debug
           item = missingGroceries
-        .firstWhereOrNull((item) => item.foodProductId == groceryId);
-          if(item!=null)
-            print("But now found in missing food products!");
+              .firstWhereOrNull((item) => item.foodProductId == groceryId);
+          if (item != null) print("But now found in missing food products!");
 
           //debug end
           return;
