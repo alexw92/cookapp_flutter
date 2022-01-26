@@ -537,11 +537,18 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
   }
 
   Future<void> _showMissingIngredientDialog(Ingredient ingredient) async {
-    var ownedGroceries = await userFoodService.getUserFood(false);
-    var missingGroceries = await userFoodService.getUserFood(true);
-    print("items in cache: ${ownedGroceries.length + missingGroceries.length}");
-    print(
-        "items in widget memory: ${userOwnedFood.length + missingUserFood.length}");
+    // var ownedGroceries = await userFoodService.getUserFood(false);
+    // var missingGroceries = await userFoodService.getUserFood(true);
+    // print(
+    //     "items in cache missing: ${missingGroceries.where((element) => element.onShoppingList == false).length}");
+    // print("items in cache owned: ${ownedGroceries.length}");
+    // print(
+    //     "items in cache shoppingList: ${missingGroceries.where((element) => element.onShoppingList == true).length}");
+    // print(
+    //     "items in widget missing: ${missingUserFood.where((element) => element.onShoppingList == false).length}");
+    // print("items in widget owned: ${userOwnedFood.length}");
+    // print(
+    //     "items in widget shoppingList: ${missingUserFood.where((element) => element.onShoppingList == true).length}");
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -645,23 +652,24 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
         }
       }
     }
-    setState(() {
-      _toggledGroceryId = groceryId;
-      _toggledGroceryNewState = setTo;
-      _toggledGroceryNewStateOnShoppingList = false;
-      userOwnedFood = ownedGroceries;
-      missingUserFood = missingGroceries;
-      updateIngredientsKey++;
-    });
-    userFoodService.updateBoxValues(true, missingGroceries);
-    userFoodService.updateBoxValues(false, ownedGroceries);
+
+    userOwnedFood = ownedGroceries;
+    missingUserFood = missingGroceries;
+    await userFoodService.updateBoxValues(true, missingUserFood);
+    await userFoodService.updateBoxValues(false, userOwnedFood);
+    _toggledGroceryId = groceryId;
+    _toggledGroceryNewState = setTo;
+    _toggledGroceryNewStateOnShoppingList = false;
+    updateIngredientsKey++;
     // changing grocery stock requires reloading of recipes
     NeedsRecipeUpdateState().recipesUpdateNeeded = true;
+    setState(() {});
   }
 
   toggleIngredientToShoppingList(int groceryId) async {
     List<UserFoodProduct> missingGroceries =
         await userFoodService.getUserFood(true);
+    missingUserFood = missingGroceries;
     // item was missing before
     var item = missingGroceries
         .firstWhereOrNull((item) => item.foodProductId == groceryId);
@@ -678,7 +686,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
         _toggledGroceryId = groceryId;
         updateIngredientsKey++;
       });
-      userFoodService.updateBoxValues(true, missingGroceries);
+      await userFoodService.updateBoxValues(true, missingGroceries);
       NeedsRecipeUpdateState().recipesUpdateNeeded = true;
       return;
     }
@@ -686,17 +694,16 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
     item = userOwnedFood
         .firstWhereOrNull((item) => item.foodProductId == groceryId);
     if (item != null) {
+      item.onShoppingList = true;
       userOwnedFood.remove(item);
-      userOwnedFood.add(item);
-      userFoodService.updateBoxValues(true, missingGroceries);
-      userFoodService.updateBoxValues(false, userOwnedFood);
-      setState(() {
-        item.onShoppingList = true;
-        _toggledGroceryNewStateOnShoppingList = true;
-        _toggledGroceryNewState = false;
-        _toggledGroceryId = groceryId;
-        updateIngredientsKey++;
-      });
+      missingGroceries.add(item);
+      await userFoodService.updateBoxValues(true, missingGroceries);
+      await userFoodService.updateBoxValues(false, userOwnedFood);
+      _toggledGroceryNewStateOnShoppingList = true;
+      _toggledGroceryNewState = false;
+      _toggledGroceryId = groceryId;
+      updateIngredientsKey++;
+      setState(() {});
       // changing grocery stock requires reloading of recipes
       NeedsRecipeUpdateState().recipesUpdateNeeded = true;
     } else {
