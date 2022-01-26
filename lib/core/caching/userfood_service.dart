@@ -9,7 +9,7 @@ class UserFoodService {
   Future<List<UserFoodProduct>> getUserFood(bool missingUserFood,
       {bool reload = false}) async {
     List<UserFoodProduct> _recipeList = [];
-    String foodBoxName = missingUserFood ? "MissingUserFood" : "UserFood";
+    String foodBoxName = missingUserFood ? "MissingUserFoodPlusShoppingList" : "UserFood";
     bool exists = await hiveService.exists(boxName: foodBoxName);
     if (exists && !reload) {
       print("Getting data from Hive");
@@ -29,13 +29,13 @@ class UserFoodService {
 
   updateBoxValues(
       bool missingUserFood, List<UserFoodProduct> foodProducts) async {
-    String foodBoxName = missingUserFood ? "MissingUserFood" : "UserFood";
+    String foodBoxName = missingUserFood ? "MissingUserFoodPlusShoppingList" : "UserFood";
     await hiveService.clearBox(boxName: foodBoxName);
     await hiveService.addElementsToBox(foodProducts, foodBoxName);
   }
 
   clearUserFood() async {
-    await hiveService.clearBox(boxName: "MissingUserFood");
+    await hiveService.clearBox(boxName: "MissingUserFoodPlusShoppingList");
     return hiveService.clearBox(boxName: "UserFood");
   }
 }

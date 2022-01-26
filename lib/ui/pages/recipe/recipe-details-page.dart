@@ -32,8 +32,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
   RecipeService recipeService = RecipeService();
   UserFoodService userFoodService = UserFoodService();
   List<UserFoodProduct> userOwnedFood;
-  List<UserFoodProduct> missingUserFood;
-  List<UserFoodProduct> groceriesOnShoppingList;
+  List<UserFoodProduct> missingUserFoodAndShoppingList;
   DefaultNutrients defaultNutrients;
   String apiToken;
   int dailyCalories;
@@ -64,8 +63,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
     dailyFat = defaultNutrients.recDailyFat;
     userOwnedFood = await userFoodService.getUserFood(false);
     // this loading is just to initially fill the hive box, can be removed if it was done before already
-    missingUserFood = await userFoodService.getUserFood(true);
-    groceriesOnShoppingList = [];
+    missingUserFoodAndShoppingList = await userFoodService.getUserFood(true);
     this.recipe = await RecipeController.getRecipe(this.widget.recipeId);
     var ingredientsCopy = copyIngredients(recipe.ingredients);
     setState(() {
@@ -460,7 +458,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
         var ingredient = ingredientsTmp[i];
         var hasIngredient = userOwnedFood.any(
             (element) => element.foodProductId == ingredient.foodProductId);
-        var onShoppingList = missingUserFood.any((element) =>
+        var onShoppingList = missingUserFoodAndShoppingList.any((element) =>
             element.foodProductId == ingredient.foodProductId &&
             element.onShoppingList);
         _myIngredientTiles.add(IngredientTileComponent(
@@ -538,17 +536,17 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
 
   Future<void> _showMissingIngredientDialog(Ingredient ingredient) async {
     // var ownedGroceries = await userFoodService.getUserFood(false);
-    // var missingGroceries = await userFoodService.getUserFood(true);
+    // var missingGroceriesAndShoppingList = await userFoodService.getUserFood(true);
     // print(
-    //     "items in cache missing: ${missingGroceries.where((element) => element.onShoppingList == false).length}");
+    //     "items in cache missing: ${missingGroceriesAndShoppingList.where((element) => element.onShoppingList == false).length}");
     // print("items in cache owned: ${ownedGroceries.length}");
     // print(
-    //     "items in cache shoppingList: ${missingGroceries.where((element) => element.onShoppingList == true).length}");
+    //     "items in cache shoppingList: ${missingGroceriesAndShoppingList.where((element) => element.onShoppingList == true).length}");
     // print(
-    //     "items in widget missing: ${missingUserFood.where((element) => element.onShoppingList == false).length}");
+    //     "items in widget missing: ${missingUserFoodAndShoppingList.where((element) => element.onShoppingList == false).length}");
     // print("items in widget owned: ${userOwnedFood.length}");
     // print(
-    //     "items in widget shoppingList: ${missingUserFood.where((element) => element.onShoppingList == true).length}");
+    //     "items in widget shoppingList: ${missingUserFoodAndShoppingList.where((element) => element.onShoppingList == true).length}");
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -596,10 +594,10 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
   Future<void> toggleIngredientState(int groceryId, bool setTo) async {
     List<UserFoodProduct> ownedGroceries =
         await userFoodService.getUserFood(false);
-    List<UserFoodProduct> missingGroceries =
+    List<UserFoodProduct> missingGroceriesAndShoppingList =
         await userFoodService.getUserFood(true);
     if (setTo == true) {
-      var item = missingGroceries
+      var item = missingGroceriesAndShoppingList
           .firstWhereOrNull((item) => item.foodProductId == groceryId);
       var itemOwned = ownedGroceries
           .firstWhereOrNull((item) => item.foodProductId == groceryId);
@@ -616,11 +614,11 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
         return;
       } else {
         item.onShoppingList = false;
-        missingGroceries.remove(item);
+        missingGroceriesAndShoppingList.remove(item);
         ownedGroceries.add(item);
       }
     } else {
-      var item = missingGroceries
+      var item = missingGroceriesAndShoppingList
           .firstWhereOrNull((item) => item.foodProductId == groceryId);
       // check if item had the same state before
       if (item != null) {
@@ -640,7 +638,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
         if (item == null) {
           print("ERROR: $groceryId not found in ownedGroceries!");
           //debug
-          item = missingGroceries
+          item = missingGroceriesAndShoppingList
               .firstWhereOrNull((item) => item.foodProductId == groceryId);
           if (item != null) print("But now found in missing food products!");
 
@@ -648,14 +646,14 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
           return;
         } else {
           ownedGroceries.remove(item);
-          missingGroceries.add(item);
+          missingGroceriesAndShoppingList.add(item);
         }
       }
     }
 
     userOwnedFood = ownedGroceries;
-    missingUserFood = missingGroceries;
-    await userFoodService.updateBoxValues(true, missingUserFood);
+    missingUserFoodAndShoppingList = missingGroceriesAndShoppingList;
+    await userFoodService.updateBoxValues(true, missingUserFoodAndShoppingList);
     await userFoodService.updateBoxValues(false, userOwnedFood);
     _toggledGroceryId = groceryId;
     _toggledGroceryNewState = setTo;
@@ -667,11 +665,11 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
   }
 
   toggleIngredientToShoppingList(int groceryId) async {
-    List<UserFoodProduct> missingGroceries =
+    List<UserFoodProduct> missingGroceriesAndShoppingList =
         await userFoodService.getUserFood(true);
-    missingUserFood = missingGroceries;
+    missingUserFoodAndShoppingList = missingGroceriesAndShoppingList;
     // item was missing before
-    var item = missingGroceries
+    var item = missingGroceriesAndShoppingList
         .firstWhereOrNull((item) => item.foodProductId == groceryId);
     if (item != null) {
       //check if it was on shopping list before
@@ -686,7 +684,8 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
         _toggledGroceryId = groceryId;
         updateIngredientsKey++;
       });
-      await userFoodService.updateBoxValues(true, missingGroceries);
+      await userFoodService.updateBoxValues(
+          true, missingGroceriesAndShoppingList);
       NeedsRecipeUpdateState().recipesUpdateNeeded = true;
       return;
     }
@@ -696,8 +695,9 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
     if (item != null) {
       item.onShoppingList = true;
       userOwnedFood.remove(item);
-      missingGroceries.add(item);
-      await userFoodService.updateBoxValues(true, missingGroceries);
+      missingGroceriesAndShoppingList.add(item);
+      await userFoodService.updateBoxValues(
+          true, missingGroceriesAndShoppingList);
       await userFoodService.updateBoxValues(false, userOwnedFood);
       _toggledGroceryNewStateOnShoppingList = true;
       _toggledGroceryNewState = false;
