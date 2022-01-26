@@ -23,7 +23,8 @@ class PrivateRecipeDetailsPage extends StatefulWidget {
       _PrivateRecipeDetailsPageState();
 }
 
-class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
+class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
+    with SingleTickerProviderStateMixin {
   PrivateRecipe recipe;
   String apiToken;
   RecipeService recipeService = RecipeService();
@@ -40,6 +41,8 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
   bool showProgressIndicatorImage;
   String recipeImgUrl;
   List<Ingredient> ingredientsTmp;
+  Animation<double> animation;
+  AnimationController controller;
 
   _PrivateRecipeDetailsPageState();
 
@@ -78,6 +81,9 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
 
   // Todo fix bug: scale pieces to 0.5 0.25 etc -> fractions, check android proj
   void increaseNumberOfPersons() {
+    setState(() {
+      controller.forward();
+    });
     if (numberOfPersonsTmp == 20) return;
     setState(() {
       numberOfPersonsTmp = numberOfPersonsTmp + 1;
@@ -91,6 +97,9 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
   }
 
   void decreaseNumberOfPersons() {
+    setState(() {
+      controller.forward();
+    });
     if (numberOfPersonsTmp == 1) return;
     setState(() {
       numberOfPersonsTmp = numberOfPersonsTmp - 1;
@@ -117,6 +126,20 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
     super.initState();
     setState(() {
       showProgressIndicatorImage = true;
+    });
+    controller = AnimationController(
+      duration: const Duration(milliseconds: 120),
+      vsync: this,
+    );
+    animation = Tween<double>(begin: 40, end: 50).animate(controller)
+      ..addListener(() {
+        setState(() {});
+      });
+    controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        print("anim status completed");
+        controller.reverse();
+      }
     });
     loadRecipe();
   }
@@ -419,12 +442,15 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage> {
         ),
       ),
       SizedBox(width: 10),
-      CircleAvatar(
-        radius: 30,
-        child: Text(numberOfPersonsTmp.toString(),
-            style: TextStyle(fontSize: 30, color: Colors.black)),
-        backgroundColor: Colors.white,
-      ),
+      SizedBox(
+          height: 50,
+          width: numberOfPersonsTmp >= 10 ? 60 : 30,
+          child: Text(numberOfPersonsTmp.toString(),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: animation.value,
+                color: Colors.white,
+              ))),
       SizedBox(width: 10),
       ElevatedButton(
         onPressed: () {

@@ -73,9 +73,11 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
   }
 
   void increaseNumberOfPersons() {
-    if (numberOfPersonsTmp == 20) return;
     setState(() {
       controller.forward();
+    });
+    if (numberOfPersonsTmp == 20) return;
+    setState(() {
       numberOfPersonsTmp = numberOfPersonsTmp + 1;
     });
     for (int i = 0; i < recipe.ingredients.length; i++) {
@@ -90,9 +92,11 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
   }
 
   void decreaseNumberOfPersons() {
-    if (numberOfPersonsTmp == 1) return;
     setState(() {
       controller.forward();
+    });
+    if (numberOfPersonsTmp == 1) return;
+    setState(() {
       numberOfPersonsTmp = numberOfPersonsTmp - 1;
     });
     for (int i = 0; i < recipe.ingredients.length; i++) {
