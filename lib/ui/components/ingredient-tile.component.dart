@@ -136,11 +136,9 @@ class _IngredientTileComponentState extends State<IngredientTileComponent> {
                         ))
           ]),
           // bit of extra space to compensate for the blur
-          userOwns
-              ? SizedBox(
-                  height: 4,
-                )
-              : Container(),
+          SizedBox(
+            height: 4,
+          ),
           Text(
             ingredient.name,
             style: TextStyle(color: textColor),
