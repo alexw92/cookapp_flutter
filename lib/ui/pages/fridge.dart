@@ -31,8 +31,6 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
   List<GroceryCheckBoxListTileModel> checkBoxListTileModelMeat = [];
   List<GroceryCheckBoxListTileModel> checkBoxListTileModelFish = [];
   List<List<GroceryCheckBoxListTileModel>> tileLists = [];
-  List<void Function(bool val, int index, bool onShoppingList)>
-      itemChangedFunctions = [];
   List<UserFoodProduct> ownedGroceries = [];
   List<UserFoodProduct> missingGroceries = [];
   UserFoodService userFoodService = UserFoodService();
@@ -241,8 +239,8 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                                                                   .HttpGet)),
                                                 ),
                                       onChanged: (bool val) {
-                                        (itemChangedFunctions[categoryIndex])(
-                                            val, index, null);
+                                        itemChange(
+                                            categoryIndex, val, index, null);
                                       }),
                                 ),
                                 InkWell(
@@ -255,7 +253,8 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                                       size: 36,
                                     ),
                                     onTap: () {
-                                      itemChangedFunctions[categoryIndex](
+                                      itemChange(
+                                          categoryIndex,
                                           null,
                                           index,
                                           !(tileLists[categoryIndex])[index]
@@ -374,15 +373,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
       checkBoxListTileModelMeat,
       checkBoxListTileModelFish
     ]);
-    itemChangedFunctions.addAll([
-      itemChangeFruits,
-      itemChangeVegetables,
-      itemChangeSpices,
-      itemChangePantry,
-      itemChangeDairy,
-      itemChangeMeat,
-      itemChangeFish
-    ]);
+
     loadFoodProducts();
     _tabController = new TabController(length: 7, vsync: this);
   }
@@ -414,7 +405,8 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
       ScaffoldMessenger.of(context).removeCurrentSnackBar();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("${AppLocalizations.of(context).addedToShoppingList} ${item.name}"),
+          content: Text(
+              "${AppLocalizations.of(context).addedToShoppingList} ${item.name}"),
         ),
       );
       return;
@@ -496,56 +488,8 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
             }));
   }
 
-  void itemChangeFruits(bool val, int index, bool onShoppingList) {
-    var tileModel = checkBoxListTileModelFruits[index];
-    setState(() {
-      tileModel.isLoading = true;
-    });
-    updateUserFoodState(tileModel, val, onShoppingList);
-  }
-
-  void itemChangeVegetables(bool val, int index, bool onShoppingList) {
-    var tileModel = checkBoxListTileModelVegetables[index];
-    setState(() {
-      tileModel.isLoading = true;
-    });
-    updateUserFoodState(tileModel, val, onShoppingList);
-  }
-
-  void itemChangeSpices(bool val, int index, bool onShoppingList) {
-    var tileModel = checkBoxListTileModelSpices[index];
-    setState(() {
-      tileModel.isLoading = true;
-    });
-    updateUserFoodState(tileModel, val, onShoppingList);
-  }
-
-  void itemChangePantry(bool val, int index, bool onShoppingList) {
-    var tileModel = checkBoxListTileModelPantry[index];
-    setState(() {
-      tileModel.isLoading = true;
-    });
-    updateUserFoodState(tileModel, val, onShoppingList);
-  }
-
-  void itemChangeDairy(bool val, int index, bool onShoppingList) {
-    var tileModel = checkBoxListTileModelDairy[index];
-    setState(() {
-      tileModel.isLoading = true;
-    });
-    updateUserFoodState(tileModel, val, onShoppingList);
-  }
-
-  void itemChangeMeat(bool val, int index, bool onShoppingList) {
-    var tileModel = checkBoxListTileModelMeat[index];
-    setState(() {
-      tileModel.isLoading = true;
-    });
-    updateUserFoodState(tileModel, val, onShoppingList);
-  }
-
-  void itemChangeFish(bool val, int index, bool onShoppingList) {
-    var tileModel = checkBoxListTileModelFish[index];
+  void itemChange(int categoryIndex, bool val, int index, bool onShoppingList) {
+    var tileModel = (tileLists[categoryIndex])[index];
     setState(() {
       tileModel.isLoading = true;
     });

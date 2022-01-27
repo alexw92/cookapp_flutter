@@ -14,7 +14,6 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool isSwitched = false;
   String language = 'English';
 
   _SettingsPageState() {
