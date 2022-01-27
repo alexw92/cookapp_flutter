@@ -402,7 +402,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
         // changing grocery stock requires reloading of recipes
         NeedsRecipeUpdateState().recipesUpdateNeeded = true;
       } else {
-        var item = missingGroceries
+        item = missingGroceries
             .firstWhereOrNull((item) => item.foodProductId == groceryId);
         item.onShoppingList = true;
         await userFoodService.updateBoxValues(true, missingGroceries);
@@ -410,6 +410,13 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
         // item was missing before
         // item was on shopping List before -> cant happen i think
       }
+      // show snackBar if added to shopping list
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("${AppLocalizations.of(context).addedToShoppingList} ${item.name}"),
+        ),
+      );
       return;
     } else if (onShoppingList == false) {
       // item was in stock before

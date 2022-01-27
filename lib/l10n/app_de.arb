@@ -93,6 +93,7 @@
     "inStock": "auf Vorrat",
     "addToShoppingList": "Zur Einkaufsliste hinzufügen",
     "yes": "Ja",
-    "no":  "Nein"
+    "no":  "Nein",
+    "addedToShoppingList": "Zur Einkaufsliste hinzugefügt:"
 
 }

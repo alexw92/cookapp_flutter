@@ -96,6 +96,7 @@
     "inStock": "in stock",
     "addToShoppingList": "Add to shopping list",
     "yes": "Yes",
-    "no":  "No"
+    "no":  "No",
+    "addedToShoppingList": "Added to shopping list:"
 
 }
