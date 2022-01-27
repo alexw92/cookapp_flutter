@@ -8,6 +8,7 @@ import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/signin_signout.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/pages/settings_screen.dart';
+import 'package:cookable_flutter/ui/pages/shopping_list.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -47,6 +48,10 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
           appBar: AppBar(
             title: Text(AppLocalizations.of(context).fridge),
             actions: [
+              IconButton(
+                icon: FaIcon(FontAwesomeIcons.listAlt),
+                onPressed: _openShoppingList,
+              ),
               PopupMenuButton(
                 onSelected: (result) {
                   switch (result) {
@@ -82,6 +87,10 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
           appBar: AppBar(
             title: Text(AppLocalizations.of(context).fridge),
             actions: [
+              IconButton(
+                icon: FaIcon(FontAwesomeIcons.listAlt),
+                onPressed: _openShoppingList,
+              ),
               PopupMenuButton(
                 onSelected: (result) {
                   switch (result) {
@@ -505,6 +514,13 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => SettingsPage()));
     print('settings completed');
+  }
+
+  Future<void> _openShoppingList() async {
+    print('shopping list');
+    await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ShoppingListPage()));
+    print('shopping list completed');
   }
 }
 

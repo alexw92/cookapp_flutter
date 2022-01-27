@@ -94,6 +94,7 @@
     "addToShoppingList": "Zur Einkaufsliste hinzufügen",
     "yes": "Ja",
     "no":  "Nein",
-    "addedToShoppingList": "Zur Einkaufsliste hinzugefügt:"
+    "addedToShoppingList": "Zur Einkaufsliste hinzugefügt:",
+    "shoppingList": "Einkaufsliste"
 
 }

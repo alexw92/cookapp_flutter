@@ -97,6 +97,7 @@
     "addToShoppingList": "Add to shopping list",
     "yes": "Yes",
     "no":  "No",
-    "addedToShoppingList": "Added to shopping list:"
+    "addedToShoppingList": "Added to shopping list:",
+    "shoppingList": "Shopping List"
 
 }
