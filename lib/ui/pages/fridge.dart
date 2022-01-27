@@ -402,6 +402,8 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
         // changing grocery stock requires reloading of recipes
         NeedsRecipeUpdateState().recipesUpdateNeeded = true;
       } else {
+        var item = missingGroceries
+            .firstWhereOrNull((item) => item.foodProductId == groceryId);
         item.onShoppingList = true;
         await userFoodService.updateBoxValues(true, missingGroceries);
         NeedsRecipeUpdateState().recipesUpdateNeeded = true;
