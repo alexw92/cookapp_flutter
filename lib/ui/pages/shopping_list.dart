@@ -26,6 +26,7 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
   List<ShoppingListTileModel> tiles = [];
   List<UserFoodProduct> missingGroceries = [];
   final animatedListKey = GlobalKey<AnimatedListState>();
+  bool busy = false;
 
   @override
   void initState() {
@@ -202,6 +203,11 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
 
   _removeFromShoppingList(int groceryId, int index, bool addToOwned) async {
     try {
+      if(busy)
+        return;
+      setState(() {
+        busy = true;
+      });
       if (addToOwned) {
         print("Add $groceryId to owned groceries");
         await UserFoodProductController.toggleUserFoodProduct(
@@ -230,7 +236,10 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
           index,
           (context, animation) =>
               buildAnimatedTile(removedItem, animation, isAdded: addToOwned),
-          duration: Duration(milliseconds: 300));
+          duration: Duration(milliseconds: 200));
+      setState(() {
+        busy = false;
+      });
     } catch (err) {
       print(err);
       setState(() {
