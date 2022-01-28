@@ -203,8 +203,7 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
 
   _removeFromShoppingList(int groceryId, int index, bool addToOwned) async {
     try {
-      if(busy)
-        return;
+      if (busy) return;
       setState(() {
         busy = true;
       });
@@ -235,7 +234,7 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
       animatedListKey.currentState.removeItem(
           index,
           (context, animation) =>
-              buildAnimatedTile(removedItem, animation, isAdded: addToOwned),
+              buildAnimatedTile(removedItem, animation, isAdded: addToOwned, buttonOffline: true),
           duration: Duration(milliseconds: 200));
       setState(() {
         busy = false;
@@ -249,7 +248,7 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
   }
 
   Widget buildAnimatedTile(ShoppingListTileModel model, animation,
-      {bool isAdded: true}) {
+      {bool isAdded: true, bool buttonOffline = false}) {
     final index =
         tiles.indexWhere((element) => element.groceryId == model.groceryId);
     return SlideTransition(
@@ -294,8 +293,9 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                         padding: EdgeInsets.all(10),
                       ),
                       onPressed: () => {
-                            _removeFromShoppingList(
-                                model.groceryId, index, false)
+                            if (!buttonOffline)
+                              _removeFromShoppingList(
+                                  model.groceryId, index, false)
                           },
                       child: const FaIcon(
                         FontAwesomeIcons.times,
@@ -309,8 +309,9 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                         padding: EdgeInsets.all(10),
                       ),
                       onPressed: () => {
-                            _removeFromShoppingList(
-                                model.groceryId, index, true)
+                            if (!buttonOffline)
+                              _removeFromShoppingList(
+                                  model.groceryId, index, true)
                           },
                       child: const FaIcon(
                         FontAwesomeIcons.check,
