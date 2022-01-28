@@ -53,54 +53,83 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
           body: RefreshIndicator(
               onRefresh: refreshTriggered,
               child: tiles.isNotEmpty
-                  ? ListView.builder(
-                      itemCount: tiles.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return new Card(
-                            color: Colors.grey,
-                            child: Row(children: [
-                              new Flexible(
-                                child: new SwitchListTile(
-                                    activeColor: Colors.black,
-                                    dense: true,
-                                    title: new Text(
-                                      tiles[index].title,
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                          letterSpacing: 0.5),
-                                    ),
-                                    value: true,
-                                    secondary: tiles[index].isLoading
-                                        ? CircularProgressIndicator(
-                                            value: null,
-                                            backgroundColor: Colors.orange,
-                                          )
-                                        : Container(
-                                            height: 50,
-                                            width: 50,
-                                            child: Image(
-                                                image: CachedNetworkImageProvider(
-                                                    tiles[index].img,
-                                                    imageRenderMethodForWeb:
-                                                        ImageRenderMethodForWeb
-                                                            .HttpGet)),
+                  ? Column(children: [
+                      Flexible(
+                          child: ListView.builder(
+                              itemCount: tiles.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return new Card(
+                                    color: Colors.grey,
+                                    child: Row(children: [
+                                      new Flexible(
+                                        child: new SwitchListTile(
+                                            activeColor: Colors.black,
+                                            dense: true,
+                                            title: new Text(
+                                              tiles[index].title,
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w600,
+                                                  letterSpacing: 0.5),
+                                            ),
+                                            value: true,
+                                            secondary: tiles[index].isLoading
+                                                ? CircularProgressIndicator(
+                                                    value: null,
+                                                    backgroundColor:
+                                                        Colors.orange,
+                                                  )
+                                                : Container(
+                                                    height: 50,
+                                                    width: 50,
+                                                    child: Image(
+                                                        image: CachedNetworkImageProvider(
+                                                            tiles[index].img,
+                                                            imageRenderMethodForWeb:
+                                                                ImageRenderMethodForWeb
+                                                                    .HttpGet)),
+                                                  ),
+                                            onChanged: (bool val) {}),
+                                      ),
+                                      InkWell(
+                                          child: FaIcon(
+                                            FontAwesomeIcons.listAlt,
+                                            color: Colors.yellow,
+                                            size: 36,
                                           ),
-                                    onChanged: (bool val) {}),
-                              ),
-                              InkWell(
-                                  child: FaIcon(
-                                    FontAwesomeIcons.listAlt,
-                                    color: Colors.yellow,
-                                    size: 36,
-                                  ),
-                                  onTap: () {}),
-                              SizedBox(
-                                width: 10,
-                                height: 60,
-                              )
-                            ]));
-                      })
+                                          onTap: () {}),
+                                      SizedBox(
+                                        width: 10,
+                                        height: 60,
+                                      )
+                                    ]));
+                              })),
+                      tiles.isNotEmpty
+                          ? Container(
+                              margin: EdgeInsets.only(bottom: 10, top: 10, left: 20, right: 20),
+                              child: Card(
+                                  elevation: 20,
+                                  child: Row(
+                                      // mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        ElevatedButton(
+                                          child: Text("Clear List"),
+                                          onPressed: () =>
+                                              {print("Clear List")},
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        ElevatedButton(
+                                          child: Text("Order groceries"),
+                                          onPressed: () =>
+                                              {print("Order groceries")},
+                                        )
+                                      ])))
+                          : Container()
+                    ])
                   : Center(
                       child: Card(
                           child: Padding(
