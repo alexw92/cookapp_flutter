@@ -334,13 +334,14 @@ class RecipeController {
     var tokenStore = IOConfig.tokenStore;
     String storedToken = await tokenStore.getToken();
 
-
     String mimeType = mime(image.path);
     String mimee = mimeType.split('/')[0];
     String type = mimeType.split('/')[1];
 
-    FormData formData =
-        FormData.fromMap({'file': await MultipartFile.fromFile(image.path, contentType: MediaType(mimee, type))});
+    FormData formData = FormData.fromMap({
+      'file': await MultipartFile.fromFile(image.path,
+          contentType: MediaType(mimee, type))
+    });
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
@@ -355,7 +356,7 @@ class RecipeController {
     final stopwatch = Stopwatch()..start();
     var response = await dio
         .post("/storage/privaterecipe/${privateRecipe.id}/image",
-              data: formData )
+            data: formData)
         .timeout(IOConfig.timeoutDuration);
     print(
         'updatePrivateImg api req executed in ${stopwatch.elapsed.inMilliseconds}');
@@ -380,7 +381,7 @@ class RecipeController {
 // }
 }
 
-class UserController{
+class UserController {
   static Future<ReducedUser> getUser() async {
     // get token from token store
     var tokenStore = IOConfig.tokenStore;
@@ -398,8 +399,7 @@ class UserController{
     Dio dio = new Dio(options);
     final stopwatch = Stopwatch()..start();
     var response = await dio.get("/user");
-    print(
-        'getUser api req executed in ${stopwatch.elapsed.inMilliseconds}');
+    print('getUser api req executed in ${stopwatch.elapsed.inMilliseconds}');
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
@@ -411,7 +411,7 @@ class UserController{
         "Error requesting user, Code: ${response.statusCode} Message: ${response.data} ");
   }
 
-  static Future<ReducedUser> updateUserData(UserDataEdit userDataEdit) async{
+  static Future<ReducedUser> updateUserData(UserDataEdit userDataEdit) async {
     // get token from token store
     var tokenStore = IOConfig.tokenStore;
     String storedToken = await tokenStore.getToken();
@@ -441,8 +441,7 @@ class UserController{
         "Error requesting user, Code: ${response.statusCode} Message: ${response.data} ");
   }
 
-  static Future<void> updateProfileImage(
-      File image) async {
+  static Future<void> updateProfileImage(File image) async {
     // get token from token store
     var tokenStore = IOConfig.tokenStore;
     String storedToken = await tokenStore.getToken();
@@ -451,8 +450,10 @@ class UserController{
     String mimee = mimeType.split('/')[0];
     String type = mimeType.split('/')[1];
 
-    FormData formData =
-    FormData.fromMap({'file': await MultipartFile.fromFile(image.path, contentType: MediaType(mimee, type))});
+    FormData formData = FormData.fromMap({
+      'file': await MultipartFile.fromFile(image.path,
+          contentType: MediaType(mimee, type))
+    });
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
@@ -466,8 +467,7 @@ class UserController{
     Dio dio = new Dio(options);
     final stopwatch = Stopwatch()..start();
     var response = await dio
-        .post("/storage/user/image",
-        data: formData )
+        .post("/storage/user/image", data: formData)
         .timeout(IOConfig.timeoutDuration);
     print(
         'updateProfileImage api req executed in ${stopwatch.elapsed.inMilliseconds}');
@@ -480,9 +480,8 @@ class UserController{
         "Error updating private recipe image, Code: ${response.statusCode} Message: ${response.data} ");
   }
 
-  //
-  }
-
+//
+}
 
 class FoodProductController {
   static Future<List<FoodProduct>> getFoodProducts() async {
@@ -569,8 +568,16 @@ class UserFoodProductController {
           "Authorization": "Bearer $storedToken",
           'Content-Type': 'application/json',
         });
-    var isAddedParam = addFoodProduct==null?"":addFoodProduct==true?"&isAdded=true":"&isAdded=false";
-    var toShoppingListParam = toShoppingList==null?"":toShoppingList==true?"&toShoppingList=true":"&toShoppingList=false";
+    var isAddedParam = addFoodProduct == null
+        ? ""
+        : addFoodProduct == true
+            ? "&isAdded=true"
+            : "&isAdded=false";
+    var toShoppingListParam = toShoppingList == null
+        ? ""
+        : toShoppingList == true
+            ? "&toShoppingList=true"
+            : "&toShoppingList=false";
     Dio dio = new Dio(options);
     final stopwatch = Stopwatch()..start();
     var response = await dio.post(
@@ -585,5 +592,33 @@ class UserFoodProductController {
 
     throw Exception(
         "Error toggling user food product, Code: ${response.statusCode} Message: ${response.data} ");
+  }
+
+  static Future<void> clearShoppingList() async {
+    // get token from token store
+    var tokenStore = IOConfig.tokenStore;
+    String storedToken = await tokenStore.getToken();
+
+    BaseOptions options = new BaseOptions(
+        baseUrl: IOConfig.apiUrl,
+        connectTimeout: 3000, //10 seconds
+        receiveTimeout: 10000,
+        headers: {
+          "Authorization": "Bearer $storedToken",
+          'Content-Type': 'application/json',
+        });
+    Dio dio = new Dio(options);
+    final stopwatch = Stopwatch()..start();
+    var response = await dio.post("/userFood/clearShoppingList");
+    print(
+        'clear shopping list api req executed in ${stopwatch.elapsed.inMilliseconds}');
+
+    /// If the first API call is successful
+    if (response.statusCode == HttpStatus.ok) {
+      return;
+    }
+
+    throw Exception(
+        "Error clearing shopping list, Code: ${response.statusCode} Message: ${response.data} ");
   }
 }

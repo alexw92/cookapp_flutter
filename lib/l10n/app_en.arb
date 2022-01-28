@@ -99,6 +99,8 @@
     "no":  "No",
     "addedToShoppingList": "Added to shopping list:",
     "shoppingList": "Shopping List",
-    "itemsAddedToShoppingListAreHere": "Groceries you plan to buy will be listed here"
+    "itemsAddedToShoppingListAreHere": "Groceries you plan to buy will be listed here",
+    "clearList" : "Clear list",
+    "orderGroceries" : "Order groceries"
 
 }

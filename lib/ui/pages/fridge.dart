@@ -23,7 +23,6 @@ class ToggleFridgeWidget extends StatefulWidget {
 
 class CheckBoxListTileState extends State<ToggleFridgeWidget>
     with SingleTickerProviderStateMixin {
-  List<GroceryCheckBoxListTileModel> checkBoxListTileModel = [];
   List<GroceryCheckBoxListTileModel> checkBoxListTileModelFruits = [];
   List<GroceryCheckBoxListTileModel> checkBoxListTileModelVegetables = [];
   List<GroceryCheckBoxListTileModel> checkBoxListTileModelSpices = [];
@@ -303,7 +302,6 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     apiToken = await TokenStore().getToken();
     groceries = getGroceries();
     setState(() {
-      this.checkBoxListTileModel = groceries;
       this.checkBoxListTileModelFruits.clear();
       this.checkBoxListTileModelFruits.addAll(groceries
           .where((element) => element.foodCategory.name.contains("fruits"))
@@ -517,10 +515,47 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
   }
 
   Future<void> _openShoppingList() async {
-    print('shopping list');
+    // remove snackBar because it would overlap with next screen
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => ShoppingListPage()));
-    print('shopping list completed');
+    print("closed shopping list");
+    this.missingGroceries = await userFoodService.getUserFood(true);
+    this.ownedGroceries = await userFoodService.getUserFood(false);
+    groceries.clear();
+    groceries.addAll(getGroceries());
+    print("grocery tiles length: ${groceries.length}");
+    print("missingGroceries length: ${missingGroceries.length}");
+    print("ownedGroceries length: ${ownedGroceries.length}");
+    this.checkBoxListTileModelFruits.clear();
+    this.checkBoxListTileModelFruits.addAll(groceries
+        .where((element) => element.foodCategory.name.contains("fruits"))
+        .toList());
+    this.checkBoxListTileModelVegetables.clear();
+    this.checkBoxListTileModelVegetables.addAll(groceries
+        .where((element) => element.foodCategory.name.contains("vegetables"))
+        .toList());
+    this.checkBoxListTileModelSpices.clear();
+    this.checkBoxListTileModelSpices.addAll(groceries
+        .where((element) => element.foodCategory.name.contains("spices"))
+        .toList());
+    this.checkBoxListTileModelPantry.clear();
+    this.checkBoxListTileModelPantry.addAll(groceries
+        .where((element) => element.foodCategory.name.contains("pantry"))
+        .toList());
+    this.checkBoxListTileModelDairy.clear();
+    this.checkBoxListTileModelDairy.addAll(groceries
+        .where((element) => element.foodCategory.name.contains("dairy"))
+        .toList());
+    this.checkBoxListTileModelMeat.clear();
+    this.checkBoxListTileModelMeat.addAll(groceries
+        .where((element) => element.foodCategory.name.contains("meat"))
+        .toList());
+    this.checkBoxListTileModelFish.clear();
+    this.checkBoxListTileModelFish.addAll(groceries
+        .where((element) => element.foodCategory.name.contains("fish"))
+        .toList());
+    setState(() {});
   }
 }
 

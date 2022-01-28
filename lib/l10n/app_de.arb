@@ -96,6 +96,8 @@
     "no":  "Nein",
     "addedToShoppingList": "Zur Einkaufsliste hinzugefügt:",
     "shoppingList": "Einkaufsliste",
-    "itemsAddedToShoppingListAreHere": "Lebensmittel, die du kaufen willst werden hier gesammelt"
+    "itemsAddedToShoppingListAreHere": "Lebensmittel, die du kaufen willst werden hier gesammelt",
+    "clearList" : "Liste löschen",
+    "orderGroceries" : "Lebensmittel bestellen"
 
 }

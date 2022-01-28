@@ -167,6 +167,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
                         )
                       : Center(
                           child: Card(
+                            elevation: 20,
                               child: Padding(
                                   padding: EdgeInsets.all(10),
                                   child: Wrap(children: [
