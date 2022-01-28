@@ -95,6 +95,7 @@
     "yes": "Ja",
     "no":  "Nein",
     "addedToShoppingList": "Zur Einkaufsliste hinzugefügt:",
-    "shoppingList": "Einkaufsliste"
+    "shoppingList": "Einkaufsliste",
+    "itemsAddedToShoppingListAreHere": "Lebensmittel, die du kaufen willst werden hier gesammelt"
 
 }

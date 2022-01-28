@@ -52,54 +52,70 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
               AppBar(title: Text(AppLocalizations.of(context).shoppingList)),
           body: RefreshIndicator(
               onRefresh: refreshTriggered,
-              child: ListView.builder(
-                  itemCount: tiles.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return new Card(
-                        color: Colors.grey,
-                        child: Row(children: [
-                          new Flexible(
-                            child: new SwitchListTile(
-                                activeColor: Colors.black,
-                                dense: true,
-                                title: new Text(
-                                  tiles[index].title,
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                      letterSpacing: 0.5),
-                                ),
-                                value: true,
-                                secondary: tiles[index].isLoading
-                                    ? CircularProgressIndicator(
-                                        value: null,
-                                        backgroundColor: Colors.orange,
-                                      )
-                                    : Container(
-                                        height: 50,
-                                        width: 50,
-                                        child: Image(
-                                            image: CachedNetworkImageProvider(
-                                                tiles[index].img,
-                                                imageRenderMethodForWeb:
-                                                    ImageRenderMethodForWeb
-                                                        .HttpGet)),
-                                      ),
-                                onChanged: (bool val) {}),
-                          ),
-                          InkWell(
-                              child: FaIcon(
-                                FontAwesomeIcons.listAlt,
-                                color: Colors.yellow,
-                                size: 36,
+              child: tiles.isNotEmpty
+                  ? ListView.builder(
+                      itemCount: tiles.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return new Card(
+                            color: Colors.grey,
+                            child: Row(children: [
+                              new Flexible(
+                                child: new SwitchListTile(
+                                    activeColor: Colors.black,
+                                    dense: true,
+                                    title: new Text(
+                                      tiles[index].title,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          letterSpacing: 0.5),
+                                    ),
+                                    value: true,
+                                    secondary: tiles[index].isLoading
+                                        ? CircularProgressIndicator(
+                                            value: null,
+                                            backgroundColor: Colors.orange,
+                                          )
+                                        : Container(
+                                            height: 50,
+                                            width: 50,
+                                            child: Image(
+                                                image: CachedNetworkImageProvider(
+                                                    tiles[index].img,
+                                                    imageRenderMethodForWeb:
+                                                        ImageRenderMethodForWeb
+                                                            .HttpGet)),
+                                          ),
+                                    onChanged: (bool val) {}),
                               ),
-                              onTap: () {}),
-                          SizedBox(
-                            width: 10,
-                            height: 60,
-                          )
-                        ]));
-                  })));
+                              InkWell(
+                                  child: FaIcon(
+                                    FontAwesomeIcons.listAlt,
+                                    color: Colors.yellow,
+                                    size: 36,
+                                  ),
+                                  onTap: () {}),
+                              SizedBox(
+                                width: 10,
+                                height: 60,
+                              )
+                            ]));
+                      })
+                  : Center(
+                      child: Card(
+                          child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Wrap(children: [
+                                Text(
+                                  AppLocalizations.of(context).prettyEmptyHere,
+                                  style: TextStyle(fontSize: 26),
+                                ),
+                                Text(
+                                  AppLocalizations.of(context)
+                                      .itemsAddedToShoppingListAreHere,
+                                  style: TextStyle(fontSize: 16),
+                                )
+                              ]))))));
     else
       return Scaffold(
           appBar:

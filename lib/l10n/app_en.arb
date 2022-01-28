@@ -98,6 +98,7 @@
     "yes": "Yes",
     "no":  "No",
     "addedToShoppingList": "Added to shopping list:",
-    "shoppingList": "Shopping List"
+    "shoppingList": "Shopping List",
+    "itemsAddedToShoppingListAreHere": "Groceries you plan to buy will be listed here"
 
 }
