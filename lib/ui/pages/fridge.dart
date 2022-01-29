@@ -35,14 +35,14 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
   List<UserFoodProduct> missingGroceries = [];
   UserFoodService userFoodService = UserFoodService();
   String apiToken;
-  bool loading = false;
+  bool loadingFromApi = false;
   bool error = false;
   List<GroceryCheckBoxListTileModel> groceries;
   TabController _tabController;
 
   @override
   Widget build(BuildContext context) {
-    if (loading && !error)
+    if (loadingFromApi && !error)
       return Scaffold(
           backgroundColor: Colors.black87,
           appBar: AppBar(
@@ -83,7 +83,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
             color: Colors.white,
             backgroundColor: Colors.green,
           )));
-    else if (!loading && !error)
+    else if (!loadingFromApi && !error)
       return Scaffold(
           backgroundColor: Colors.black87,
           appBar: AppBar(
@@ -314,7 +314,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
 
   void loadFoodProducts({reload = false}) async {
     setState(() {
-      loading = true;
+      loadingFromApi = reload;
       error = false;
     });
     try {
@@ -324,7 +324,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     } catch (err) {
       print(err);
       setState(() {
-        this.loading = false;
+        this.loadingFromApi = false;
         this.error = true;
       });
     }
@@ -359,7 +359,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
       this.checkBoxListTileModelFish.addAll(groceries
           .where((element) => element.foodCategory.name.contains("fish"))
           .toList());
-      loading = false;
+      loadingFromApi = false;
     });
   }
 

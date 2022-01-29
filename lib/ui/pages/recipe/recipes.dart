@@ -23,13 +23,13 @@ class _RecipesComponentState extends State<RecipesComponent> {
   RecipeService recipeService = RecipeService();
   DefaultNutrients defaultNutrients;
   String apiToken;
-  bool loading = false;
+  bool loadingFromApi = false;
   bool error = false;
 
   void loadRecipes({reload = false, itemsInStockChanged = false}) async {
     setState(() {
       error = false;
-      loading = true;
+      loadingFromApi = reload;
     });
     var prefs = await SharedPreferences.getInstance();
     var dietIndex = prefs.getInt('recipeDietFilter') ?? Diet.NORMAL.index;
@@ -60,7 +60,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
       });
     });
     setState(() {
-      loading = false;
+      loadingFromApi = false;
     });
   }
 
@@ -78,7 +78,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
 
   @override
   Widget build(BuildContext context) {
-    if (loading && !error)
+    if (loadingFromApi && !error)
       return Scaffold(
           appBar: AppBar(
             title: Text(AppLocalizations.of(context).recipes),

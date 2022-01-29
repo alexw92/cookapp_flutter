@@ -26,17 +26,15 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
   RecipeService recipeService = RecipeService();
   DefaultNutrients defaultNutrients;
   String apiToken;
-  bool loading = false;
+  bool loadingFromApi = false;
   bool error = false;
 
   void loadRecipes({reload = false}) async {
     setState(() {
       this.error = false;
-      this.loading = true;
+      this.loadingFromApi = true;
     });
-    setState(() {
-      recipeList = [];
-    });
+
     recipeList = await privateRecipeService
         .getPrivateRecipes(reload: reload)
         .catchError((error) {
@@ -48,7 +46,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
     apiToken = await TokenStore().getToken();
     await loadDefaultNutrition();
     setState(() {
-      loading = false;
+      loadingFromApi = false;
     });
   }
 
@@ -80,7 +78,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
 
   @override
   Widget build(BuildContext context) {
-    if (loading)
+    if (loadingFromApi)
       return Scaffold(
           appBar: AppBar(
             title: Text(AppLocalizations.of(context).yourRecipes),
