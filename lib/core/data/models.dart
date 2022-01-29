@@ -7,7 +7,7 @@ class ReducedUser {
   @HiveField(0)
   final String id;
   @HiveField(1)
-  final String displayName;
+  String displayName;
   @HiveField(2)
   final String providerPhoto;
   @HiveField(3)

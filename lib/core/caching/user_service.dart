@@ -11,8 +11,8 @@ class UserService {
     bool exists = await hiveService.exists(boxName: "Users");
     if (exists && !reload) {
       print("Getting data from Hive");
-      var _userList = (await hiveService.getBoxElements("Users"))
-          .cast<ReducedUser>();
+      var _userList =
+          (await hiveService.getBoxElements("Users")).cast<ReducedUser>();
       user = _userList[0];
       return user;
     } else {
@@ -29,4 +29,7 @@ class UserService {
     return hiveService.clearBox(boxName: "Users");
   }
 
+  updateUser(ReducedUser user) async {
+    await hiveService.addOrUpdateElementInBoxById(user, "Users");
+  }
 }

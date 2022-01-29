@@ -32,6 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
       TextEditingController();
   String usernameOrig;
   UserService userService = UserService();
+  ReducedUser user;
 
   _ProfilePageState();
 
@@ -48,11 +49,13 @@ class _ProfilePageState extends State<ProfilePage> {
     getUser();
   }
 
-  getUser() {
-    userFuture = userService.getUser();
+  getUser({bool reload=false}) {
+    userFuture = userService.getUser(reload: reload);
     userFuture.then((value) => {
           _profileNameTextController.text = value.displayName,
-          usernameOrig = value.displayName
+          usernameOrig = value.displayName,
+          user = value,
+          userService.updateUser(user)
         });
   }
 
@@ -341,6 +344,8 @@ class _ProfilePageState extends State<ProfilePage> {
     FocusManager.instance.primaryFocus?.unfocus();
     UserController.updateUserData(UserDataEdit(displayName: userName))
         .then((value) => {
+              user.displayName = value.displayName,
+              userService.updateUser(user),
               _profileNameTextController.text = value.displayName,
               usernameOrig = value.displayName,
               ScaffoldMessenger.of(context).removeCurrentSnackBar(),
@@ -361,6 +366,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     UserController.updateProfileImage(image).then(
         (value) async => {
+              getUser(reload: true),
               Navigator.pop(context),
               setState(() {
                 showProgressIndicatorImage = false;
