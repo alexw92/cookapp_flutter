@@ -45,8 +45,7 @@ class RecipeService {
 
     if (!exists || doReload) {
       print("Getting data from Api");
-      var result = await RecipeController.getFilteredRecipes(
-          diet, highProteinFilter, highCarbFilter);
+      var result = await RecipeController.getRecipes();
       if (doReload) await hiveService.clearBox(boxName: "Recipes");
       _recipeList.addAll(result);
       await hiveService.addElementsToBox(_recipeList, "Recipes");
