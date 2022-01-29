@@ -110,6 +110,23 @@ class RecipeService {
     return _recipeList;
   }
 
+  // Todo cant be used yet since likes are only in recipe details
+  Future<Recipe> getRecipe(int recipeId, {bool reload=false}) async {
+    final stopwatch = Stopwatch()..start();
+   Recipe recipe;
+    if(reload){
+      // Todo load recipe from backend and calc nutrients
+    }
+    List<Recipe> recipes = await hiveService.getBoxElements("Recipes").cast<Recipe>();
+    recipe = recipes.firstWhere((element) => element.id == recipeId);
+    if(recipe == null){
+      print("Recipe id=$recipeId was not in Cache! Loading from api");
+    }
+    print(
+        "time for get recipe was: ${stopwatch.elapsedMilliseconds}");
+    return recipe;
+  }
+
   Future<DefaultNutrients> getDefaultNutrients({bool reload = false}) async {
     bool exists = await hiveService.exists(boxName: "DefaultNutrients");
     if (exists && !reload) {
