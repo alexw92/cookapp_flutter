@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
+import 'package:cookable_flutter/core/caching/foodproduct_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
@@ -22,6 +23,7 @@ class AddIngredientPage extends StatefulWidget {
 
 class _AddIngredientPageState extends State<AddIngredientPage> {
   String searchString = "";
+  FoodProductService foodProductService = FoodProductService();
   Future<List<FoodProduct>> foodProducts;
   String apiToken;
   List<FoodProduct> foodProductsAdded = [];
@@ -38,7 +40,7 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
   }
 
   Future<List<FoodProduct>> loadFoodProductsAndDeleteAlreadyAddedOnes() async {
-    return FoodProductController.getFoodProducts().then((foodProds) {
+    return foodProductService.getFoodProducts().then((foodProds) {
       privateRecipe.ingredients.forEach((ingredient) {
         FoodProduct alreadyAddedFoodProduct = foodProds
             .firstWhere((foodProd) => foodProd.id == ingredient.foodProductId);

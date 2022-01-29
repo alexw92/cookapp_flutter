@@ -36,7 +36,6 @@ class ReducedUser {
   String toString() {
     return "id=$id, displayName=$displayName, providerPhoto=$providerPhoto, fbUploadedPhoto=$fbUploadedPhoto  ";
   }
-
 }
 
 @HiveType(typeId: 0)
@@ -60,7 +59,7 @@ class Recipe {
   @HiveField(8)
   final int prepTimeMinutes;
   @HiveField(9)
-  final Nutrients nutrients;
+  Nutrients nutrients;
   @HiveField(10)
   List<UserFoodProduct> missingUserFoodProducts = [];
 
@@ -378,6 +377,7 @@ class FoodProduct {
   final String name;
   final String description;
   final QuantityUnit quantityType;
+  final int gramPerPiece;
   final int foodCategoryId;
   final String foodCategory;
   final String imgSrc;
@@ -388,6 +388,7 @@ class FoodProduct {
       this.name,
       this.description,
       this.quantityType,
+      this.gramPerPiece,
       this.foodCategoryId,
       this.foodCategory,
       this.imgSrc,
@@ -399,6 +400,7 @@ class FoodProduct {
         name: json['name'],
         description: json['description'],
         quantityType: QuantityUnit.fromInt(json['quantityUnit']),
+        gramPerPiece: json['gramPerPiece'],
         foodCategoryId: json['foodCategoryId'],
         foodCategory: json['foodCategory'],
         imgSrc: json['img_src'],
@@ -451,7 +453,7 @@ class UserFoodProduct {
         onShoppingList: json['onShoppingList']);
   }
 
-  String toString(){
+  String toString() {
     return "foodProductId:$foodProductId, name:$name onShoppingList:$onShoppingList";
   }
 }
