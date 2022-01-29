@@ -65,6 +65,7 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                               child: AnimatedList(
                                   key: animatedListKey,
                                   initialItemCount: tiles.length,
+                                  padding: EdgeInsets.all(10),
                                   itemBuilder: (BuildContext context, int index,
                                       animation) {
                                     return buildAnimatedTile(
@@ -233,8 +234,8 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
       var removedItem = tiles.removeAt(index);
       animatedListKey.currentState.removeItem(
           index,
-          (context, animation) =>
-              buildAnimatedTile(removedItem, animation, isAdded: addToOwned, buttonOffline: true),
+          (context, animation) => buildAnimatedTile(removedItem, animation,
+              isAdded: addToOwned, buttonOffline: true),
           duration: Duration(milliseconds: 200));
       setState(() {
         busy = false;
@@ -255,9 +256,21 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
         position: animation.drive(isAdded
             ? Tween<Offset>(begin: Offset(1, 0), end: Offset(0, 0))
             : Tween<Offset>(begin: Offset(-1, 0), end: Offset(0, 0))),
-        child: new Card(
-            //color: Colors.grey,
-            elevation: 20,
+        child: Container(
+            margin: EdgeInsets.only(bottom: 12),
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              color: Colors.black87,
+              borderRadius: BorderRadius.all(Radius.circular(12)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.yellow,
+                  blurRadius: 10,
+                  spreadRadius: 2,
+                  offset: Offset(0, 0), // Shadow position
+                ),
+              ],
+            ),
             child: Row(children: [
               new Flexible(
                   child: new ListTile(
@@ -268,7 +281,8 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                   style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      letterSpacing: 0.5),
+                      letterSpacing: 0.5,
+                      color: Colors.white),
                 ),
                 leading: model.isLoading
                     ? CircularProgressIndicator(
