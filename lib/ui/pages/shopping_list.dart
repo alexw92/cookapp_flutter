@@ -313,7 +313,7 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                           },
                       child: const FaIcon(
                         FontAwesomeIcons.times,
-                        size: 26,
+                        size: 22,
                         color: Colors.red,
                       )),
                   ElevatedButton(
@@ -329,14 +329,14 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                           },
                       child: const FaIcon(
                         FontAwesomeIcons.check,
-                        size: 26,
+                        size: 22,
                         color: Colors.green,
                       ))
                 ]),
               )),
               // todo should be replaced by margin
               SizedBox(
-                height: 60,
+                height: 54,
               )
             ])));
   }

@@ -235,7 +235,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                                             ? Colors.green
                                             : Colors.red,
                                     blurRadius: 10,
-                                    spreadRadius: 0,
+                                    spreadRadius: 2,
                                     offset: Offset(0, 0), // Shadow position
                                   ),
                                 ],
