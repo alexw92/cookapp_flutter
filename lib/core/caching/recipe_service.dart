@@ -96,6 +96,15 @@ class RecipeService {
         value: (item) => item,
       );
       await setNutrientData(_recipeList, foodProductMap);
+
+      _recipeList.sort((a, b) {
+        if (a.missingUserFoodProducts.length < b.missingUserFoodProducts.length)
+          return -1;
+        else
+          return 1;
+      });
+      await hiveService.clearBox(boxName: "Recipes");
+      await hiveService.addElementsToBox(_recipeList, "Recipes");
     }
     if (exists &&
         !nutrientsReCalcRequired &&
