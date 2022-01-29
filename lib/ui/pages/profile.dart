@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
+import 'package:cookable_flutter/core/caching/user_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/signin_signout.dart';
@@ -30,6 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
   final TextEditingController _profileNameTextController =
       TextEditingController();
   String usernameOrig;
+  UserService userService = UserService();
 
   _ProfilePageState();
 
@@ -47,7 +49,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   getUser() {
-    userFuture = UserController.getUser();
+    userFuture = userService.getUser();
     userFuture.then((value) => {
           _profileNameTextController.text = value.displayName,
           usernameOrig = value.displayName
