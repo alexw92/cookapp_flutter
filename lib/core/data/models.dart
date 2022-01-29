@@ -62,7 +62,7 @@ class Recipe {
   @HiveField(9)
   final Nutrients nutrients;
   @HiveField(10)
-  final int numberMissingIngredients;
+  List<UserFoodProduct> missingUserFoodProducts = [];
 
   Recipe(
       {this.id,
@@ -74,8 +74,7 @@ class Recipe {
       this.numberOfPersons,
       this.diet,
       this.prepTimeMinutes,
-      this.nutrients,
-      this.numberMissingIngredients});
+      this.nutrients});
 
   factory Recipe.fromJson(Map<String, dynamic> recipeJson) {
     return Recipe(
@@ -94,8 +93,7 @@ class Recipe {
         numberOfPersons: recipeJson['numberOfPersons'],
         diet: Diet.values[recipeJson['dietIdentifier'] as int],
         prepTimeMinutes: recipeJson['prepTimeMinutes'],
-        nutrients: Nutrients.fromJson(recipeJson['nutrientsData']),
-        numberMissingIngredients: recipeJson['numberMissingIngredients']);
+        nutrients: Nutrients.fromJson(recipeJson['nutrientsData']));
   }
 
   String toString() {

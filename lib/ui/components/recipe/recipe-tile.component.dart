@@ -138,7 +138,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                         ),
                         borderRadius: BorderRadius.all(Radius.circular(20))),
                     child: Text(
-                        "${Intl.plural(this.recipe.numberMissingIngredients, zero: "${AppLocalizations.of(context).noMissingIngredients}", one: "${this.recipe.numberMissingIngredients} ${AppLocalizations.of(context).missingIngredient}", other: "${this.recipe.numberMissingIngredients} ${AppLocalizations.of(context).missingIngredients}")}",
+                        "${Intl.plural(this.recipe.missingUserFoodProducts.length, zero: "${AppLocalizations.of(context).noMissingIngredients}", one: "${this.recipe.missingUserFoodProducts.length} ${AppLocalizations.of(context).missingIngredient}", other: "${this.recipe.missingUserFoodProducts.length} ${AppLocalizations.of(context).missingIngredients}")}",
                         style: TextStyle(fontSize: 20),
                         textAlign: TextAlign.center)))
           ]),

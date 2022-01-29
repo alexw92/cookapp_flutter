@@ -27,6 +27,62 @@ class RecipeService {
     }
   }
 
+  Future<List<Recipe>> getFilteredRecipesOffline(
+      Diet diet, bool highProteinFilter, bool highCarbFilter,
+      {itemsInStockChanged = false}) async {
+    final stopwatch = Stopwatch()..start();
+    List<Recipe> _recipeList = [];
+    List<UserFoodProduct> _userOwnedFoodProducts = [];
+    List<UserFoodProduct> _missingFoodProducts = [];
+    Map<int, UserFoodProduct> _missingFoodProductsMap;
+    bool exists = await hiveService.exists(boxName: "Recipes");
+
+    if (!exists) {
+      print("Getting data from Api");
+      var result = await RecipeController.getFilteredRecipes(
+          diet, highProteinFilter, highCarbFilter);
+      _recipeList.addAll(result);
+      await hiveService.addElementsToBox(_recipeList, "Recipes");
+    }
+    if (!exists || itemsInStockChanged) {
+      print("Recalculating missing ingredients");
+
+      _recipeList =
+          (await hiveService.getBoxElements("Recipes")).cast<Recipe>();
+      _userOwnedFoodProducts = (await hiveService.getBoxElements("UserFood"))
+          .cast<UserFoodProduct>();
+      _missingFoodProducts =
+          (await hiveService.getBoxElements("MissingUserFoodPlusShoppingList"))
+              .cast<UserFoodProduct>();
+      _missingFoodProductsMap = Map<int, UserFoodProduct>.fromIterable(
+        _missingFoodProducts,
+        key: (item) => item.foodProductId,
+        value: (item) => item,
+      );
+
+      var _userGroceryIds =
+          _userOwnedFoodProducts.map((e) => e.foodProductId).toSet();
+      _recipeList.forEach((recipe) {
+        var _requiredFoodProducts =
+            recipe.ingredients.map((e) => e.foodProductId).toSet();
+        var _missingRecipeFoodProductIds =
+            _requiredFoodProducts.where((id) => !_userGroceryIds.contains(id)).toSet();
+        var _missingRecipeFoodProducts = _missingRecipeFoodProductIds
+            .map(
+                (id) => _missingFoodProductsMap[id]
+        ).toList();
+        recipe.missingUserFoodProducts = _missingRecipeFoodProducts;
+      });
+      await hiveService.clearBox(boxName: "Recipes");
+      await hiveService.addElementsToBox(_recipeList, "Recipes");
+    } else {
+      _recipeList =
+          (await hiveService.getBoxElements("Recipes")).cast<Recipe>();
+    }
+    print("time for ingredient matching for ${_recipeList.length} recipes was: ${stopwatch.elapsedMilliseconds}");
+    return _recipeList;
+  }
+
   Future<DefaultNutrients> getDefaultNutrients({bool reload = false}) async {
     bool exists = await hiveService.exists(boxName: "DefaultNutrients");
     if (exists && !reload) {

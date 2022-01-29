@@ -70,8 +70,7 @@ class RecipeAdapter extends TypeAdapter<Recipe> {
       diet: fields[7] as Diet,
       prepTimeMinutes: fields[8] as int,
       nutrients: fields[9] as Nutrients,
-      numberMissingIngredients: fields[10] as int,
-    );
+    )..missingUserFoodProducts = (fields[10] as List)?.cast<UserFoodProduct>();
   }
 
   @override
@@ -99,7 +98,7 @@ class RecipeAdapter extends TypeAdapter<Recipe> {
       ..writeByte(9)
       ..write(obj.nutrients)
       ..writeByte(10)
-      ..write(obj.numberMissingIngredients);
+      ..write(obj.missingUserFoodProducts);
   }
 
   @override
