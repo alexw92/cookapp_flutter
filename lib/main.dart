@@ -28,6 +28,7 @@ void main() async {
   Hive.registerAdapter(PrivateRecipeAdapter());
   Hive.registerAdapter(ReducedUserAdapter());
   Hive.registerAdapter(DefaultNutrientsAdapter());
+  Hive.registerAdapter(FoodProductAdapter());
   await Firebase.initializeApp();
   runApp(CookableFlutter());
 }

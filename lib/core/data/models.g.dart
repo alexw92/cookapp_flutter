@@ -326,6 +326,64 @@ class IngredientAdapter extends TypeAdapter<Ingredient> {
           typeId == other.typeId;
 }
 
+class FoodProductAdapter extends TypeAdapter<FoodProduct> {
+  @override
+  final int typeId = 11;
+
+  @override
+  FoodProduct read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return FoodProduct(
+      id: fields[0] as int,
+      name: fields[1] as String,
+      description: fields[2] as String,
+      quantityType: fields[3] as QuantityUnit,
+      gramPerPiece: fields[4] as int,
+      foodCategoryId: fields[5] as int,
+      foodCategory: fields[6] as String,
+      imgSrc: fields[7] as String,
+      nutrients: fields[8] as Nutrients,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, FoodProduct obj) {
+    writer
+      ..writeByte(9)
+      ..writeByte(0)
+      ..write(obj.id)
+      ..writeByte(1)
+      ..write(obj.name)
+      ..writeByte(2)
+      ..write(obj.description)
+      ..writeByte(3)
+      ..write(obj.quantityType)
+      ..writeByte(4)
+      ..write(obj.gramPerPiece)
+      ..writeByte(5)
+      ..write(obj.foodCategoryId)
+      ..writeByte(6)
+      ..write(obj.foodCategory)
+      ..writeByte(7)
+      ..write(obj.imgSrc)
+      ..writeByte(8)
+      ..write(obj.nutrients);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is FoodProductAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
 class UserFoodProductAdapter extends TypeAdapter<UserFoodProduct> {
   @override
   final int typeId = 6;

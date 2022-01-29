@@ -26,7 +26,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
   bool loading = false;
   bool error = false;
 
-  void loadRecipes({reload = false}) async {
+  void loadRecipes({reload = false, itemsInStockChanged = false}) async {
     setState(() {
       error = false;
       loading = true;
@@ -41,7 +41,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
     });
 
     recipeList = await recipeService
-        .getFilteredRecipesOffline(diet, highProteinFilter, highCarbFilter, itemsInStockChanged: reload)
+        .getFilteredRecipesOffline(diet, highProteinFilter, highCarbFilter, doReload: reload, itemsInStockChanged: itemsInStockChanged)
         .catchError((error) {
       print("filtered recipes " + error.toString());
       setState(() {
@@ -72,8 +72,8 @@ class _RecipesComponentState extends State<RecipesComponent> {
   @override
   void initState() {
     super.initState();
-    var reload = NeedsRecipeUpdateState().recipesUpdateNeeded;
-    loadRecipes(reload: reload);
+    var itemsInStockChanged = NeedsRecipeUpdateState().recipesUpdateNeeded;
+    loadRecipes(itemsInStockChanged: itemsInStockChanged);
   }
 
   @override
@@ -242,7 +242,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
   }
 
   reloadRecipes() {
-    loadRecipes(reload: true);
+    loadRecipes(itemsInStockChanged: true);
   }
 
   Future<void> refreshTriggered() async {

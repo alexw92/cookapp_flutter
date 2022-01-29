@@ -1,3 +1,4 @@
+import 'package:cookable_flutter/core/caching/foodproduct_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
 
@@ -5,6 +6,7 @@ import 'hive_service.dart';
 
 class RecipeService {
   final HiveService hiveService = HiveService();
+  final FoodProductService foodProductService = FoodProductService();
 
   Future<List<Recipe>> getFilteredRecipes(
       Diet diet, bool highProteinFilter, bool highCarbFilter,
@@ -29,22 +31,27 @@ class RecipeService {
 
   Future<List<Recipe>> getFilteredRecipesOffline(
       Diet diet, bool highProteinFilter, bool highCarbFilter,
-      {itemsInStockChanged = false}) async {
+      {bool itemsInStockChanged = false,
+      bool nutrientsReCalcRequired = false,
+      bool doReload = false}) async {
     final stopwatch = Stopwatch()..start();
+    print("getRecipesOffline: itemsChanged:$itemsInStockChanged,"
+        " nutrientReCalc:$nutrientsReCalcRequired, doReload:$doReload");
     List<Recipe> _recipeList = [];
     List<UserFoodProduct> _userOwnedFoodProducts = [];
     List<UserFoodProduct> _missingFoodProducts = [];
     Map<int, UserFoodProduct> _missingFoodProductsMap;
     bool exists = await hiveService.exists(boxName: "Recipes");
 
-    if (!exists) {
+    if (!exists || doReload) {
       print("Getting data from Api");
       var result = await RecipeController.getFilteredRecipes(
           diet, highProteinFilter, highCarbFilter);
+      if (doReload) await hiveService.clearBox(boxName: "Recipes");
       _recipeList.addAll(result);
       await hiveService.addElementsToBox(_recipeList, "Recipes");
     }
-    if (!exists || itemsInStockChanged) {
+    if (!exists || itemsInStockChanged || doReload) {
       print("Recalculating missing ingredients");
 
       _recipeList =
@@ -65,21 +72,41 @@ class RecipeService {
       _recipeList.forEach((recipe) {
         var _requiredFoodProducts =
             recipe.ingredients.map((e) => e.foodProductId).toSet();
-        var _missingRecipeFoodProductIds =
-            _requiredFoodProducts.where((id) => !_userGroceryIds.contains(id)).toSet();
+        var _missingRecipeFoodProductIds = _requiredFoodProducts
+            .where((id) => !_userGroceryIds.contains(id))
+            .toSet();
         var _missingRecipeFoodProducts = _missingRecipeFoodProductIds
-            .map(
-                (id) => _missingFoodProductsMap[id]
-        ).toList();
+            .map((id) => _missingFoodProductsMap[id])
+            .toList();
         recipe.missingUserFoodProducts = _missingRecipeFoodProducts;
+      });
+      _recipeList.sort((a, b) {
+        if (a.missingUserFoodProducts.length < b.missingUserFoodProducts.length)
+          return -1;
+        else
+          return 1;
       });
       await hiveService.clearBox(boxName: "Recipes");
       await hiveService.addElementsToBox(_recipeList, "Recipes");
-    } else {
+    }
+    if (!exists || nutrientsReCalcRequired || doReload) {
+      var foodProducts = await foodProductService.getFoodProducts();
+      var foodProductMap = Map<int, FoodProduct>.fromIterable(
+        foodProducts,
+        key: (item) => item.id,
+        value: (item) => item,
+      );
+      await setNutrientData(_recipeList, foodProductMap);
+    }
+    if (exists &&
+        !nutrientsReCalcRequired &&
+        !itemsInStockChanged &&
+        !doReload) {
       _recipeList =
           (await hiveService.getBoxElements("Recipes")).cast<Recipe>();
     }
-    print("time for ingredient matching for ${_recipeList.length} recipes was: ${stopwatch.elapsedMilliseconds}");
+    print(
+        "time for ingredient matching for ${_recipeList.length} recipes was: ${stopwatch.elapsedMilliseconds}");
     return _recipeList;
   }
 
@@ -96,6 +123,60 @@ class RecipeService {
       await hiveService.addElementsToBox([result], "DefaultNutrients");
       return result;
     }
+  }
+
+  Future<void> setNutrientData(
+      List<Recipe> recipes, Map<int, FoodProduct> foodProducts) async {
+    var now = DateTime.now();
+
+    recipes.forEach((recipe) {
+      // Todo load NutritionConstants and calc these values in app
+      bool isHighProtein = false;
+      bool isHighCarb = false;
+
+      double fat = 0;
+      double carbohydrate = 0;
+      double protein = 0;
+      double calories = 0;
+      double sugar = 0;
+      int numPersons = recipe.numberOfPersons == 0 ? 1 : recipe.numberOfPersons;
+
+      recipe.ingredients.forEach((ingredient) {
+        var foodProduct = foodProducts[ingredient.foodProductId];
+        var gramPerPiece = foodProduct.quantityType.value == QuantityUnit.PIECES
+            ? foodProduct.gramPerPiece
+            : 1;
+        var amount = ingredient.amount;
+        double factor = (amount * gramPerPiece) / 100;
+
+        fat += foodProduct.nutrients == null
+            ? 0
+            : foodProduct.nutrients.fat * factor;
+        sugar += foodProduct.nutrients == null
+            ? 0
+            : foodProduct.nutrients.sugar * factor;
+        carbohydrate += foodProduct.nutrients == null
+            ? 0
+            : foodProduct.nutrients.carbohydrate * factor;
+        protein += foodProduct.nutrients == null
+            ? 0
+            : foodProduct.nutrients.protein * factor;
+        calories += foodProduct.nutrients == null
+            ? 0
+            : foodProduct.nutrients.calories * factor;
+      });
+
+      recipe.nutrients = Nutrients(
+          fat: fat / numPersons,
+          carbohydrate: carbohydrate / numPersons,
+          sugar: sugar / numPersons,
+          protein: protein / numPersons,
+          calories: (calories / numPersons).round(),
+          source: "derived",
+          dateOfRetrieval: now,
+          isHighProteinRecipe: isHighProtein,
+          isHighCarbRecipe: isHighCarb);
+    });
   }
 
   clearDefaultNutrients() async {

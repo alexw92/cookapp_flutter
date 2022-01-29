@@ -371,16 +371,25 @@ class Ingredient {
         "quantityType": quantityType.value,
       };
 }
-
+@HiveType(typeId: 11)
 class FoodProduct {
+  @HiveField(0)
   final int id;
+  @HiveField(1)
   final String name;
+  @HiveField(2)
   final String description;
+  @HiveField(3)
   final QuantityUnit quantityType;
+  @HiveField(4)
   final int gramPerPiece;
+  @HiveField(5)
   final int foodCategoryId;
+  @HiveField(6)
   final String foodCategory;
+  @HiveField(7)
   final String imgSrc;
+  @HiveField(8)
   final Nutrients nutrients;
 
   FoodProduct(
