@@ -44,6 +44,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
   Widget build(BuildContext context) {
     if (loading && !error)
       return Scaffold(
+          backgroundColor: Colors.black87,
           appBar: AppBar(
             title: Text(AppLocalizations.of(context).fridge),
             actions: [
@@ -79,10 +80,12 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
           body: Center(
               child: CircularProgressIndicator(
             value: null,
+            color: Colors.white,
             backgroundColor: Colors.green,
           )));
     else if (!loading && !error)
       return Scaffold(
+          backgroundColor: Colors.black87,
           appBar: AppBar(
             title: Text(AppLocalizations.of(context).fridge),
             actions: [
@@ -116,6 +119,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
             ],
           ),
           body: Scaffold(
+              backgroundColor: Colors.black54,
               appBar: AppBar(
                 toolbarHeight: 0,
                 bottom: TabBar(
@@ -135,6 +139,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
               body: getTabBarView()));
     else
       return Scaffold(
+          backgroundColor: Colors.black87,
           appBar: AppBar(
             title: Text(AppLocalizations.of(context).fridge),
             actions: [
@@ -164,6 +169,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
             ],
           ),
           body: Scaffold(
+              backgroundColor: Colors.black87,
               appBar: AppBar(
                 toolbarHeight: 0,
                 bottom: TabBar(
@@ -209,43 +215,71 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                 child: new Container(
                     child: new ListView.builder(
                         itemCount: tileLists[categoryIndex].length,
+                        padding: EdgeInsets.all(10),
                         itemBuilder: (BuildContext context, int index) {
-                          return new Card(
-                              color: tileLists[categoryIndex][index].isCheck
-                                  ? Colors.green
-                                  : Colors.grey,
+                          var item = tileLists[categoryIndex][index];
+                          return Container(
+                              margin: EdgeInsets.only(bottom: 12),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                color: item.isCheck
+                                    ? Colors.black87
+                                    : Colors.black87,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(12)),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: item.isOnShoppingList
+                                        ? Colors.yellow
+                                        : item.isCheck
+                                            ? Colors.green
+                                            : Colors.red,
+                                    blurRadius: 10,
+                                    spreadRadius: 0,
+                                    offset: Offset(0, 0), // Shadow position
+                                  ),
+                                ],
+                              ),
                               child: Row(children: [
                                 new Flexible(
                                   child: new SwitchListTile(
-                                      activeColor: Colors.black,
+                                      activeColor: Colors.green,
+                                      inactiveThumbColor: item.isOnShoppingList
+                                          ? Colors.yellow
+                                          : Colors.red,
+                                      inactiveTrackColor: item.isOnShoppingList
+                                          ? Color(0xFFACAA00)
+                                          : Color(0xFFAA3300),
                                       dense: true,
                                       title: new Text(
-                                        tileLists[categoryIndex][index].title,
+                                        item.title,
                                         style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w600,
-                                            letterSpacing: 0.5),
+                                            letterSpacing: 0.5,
+                                            color: Colors.white),
                                       ),
-                                      value: (tileLists[categoryIndex])[index]
-                                          .isCheck,
-                                      secondary:
-                                          (tileLists[categoryIndex])[index]
-                                                  .isLoading
-                                              ? CircularProgressIndicator(
-                                                  value: null,
-                                                  backgroundColor:
-                                                      Colors.orange,
-                                                )
-                                              : Container(
-                                                  height: 50,
-                                                  width: 50,
-                                                  child: Image(
-                                                      image: CachedNetworkImageProvider(
-                                                          "${(tileLists[categoryIndex])[index].img}",
-                                                          imageRenderMethodForWeb:
-                                                              ImageRenderMethodForWeb
-                                                                  .HttpGet)),
-                                                ),
+                                      value: item.isCheck,
+                                      secondary: item.isLoading
+                                          ? CircularProgressIndicator(
+                                              value: null,
+                                              color: item.isOnShoppingList
+                                                  ? Colors.yellow
+                                                  : item.isCheck
+                                                      ? Colors.green
+                                                      : Colors.red,
+                                              backgroundColor: Colors.white,
+                                            )
+                                          : Container(
+                                              height: 50,
+                                              width: 50,
+                                              child: Image(
+                                                  image: CachedNetworkImageProvider(
+                                                      "${item.img}",
+                                                      imageRenderMethodForWeb:
+                                                          ImageRenderMethodForWeb
+                                                              .HttpGet)),
+                                            ),
                                       onChanged: (bool val) {
                                         itemChange(
                                             categoryIndex, val, index, null);
@@ -254,19 +288,14 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                                 InkWell(
                                     child: FaIcon(
                                       FontAwesomeIcons.listAlt,
-                                      color: (tileLists[categoryIndex])[index]
-                                              .isOnShoppingList
+                                      color: item.isOnShoppingList
                                           ? Colors.yellow
-                                          : Colors.black,
+                                          : Colors.white,
                                       size: 36,
                                     ),
                                     onTap: () {
-                                      itemChange(
-                                          categoryIndex,
-                                          null,
-                                          index,
-                                          !(tileLists[categoryIndex])[index]
-                                              .isOnShoppingList);
+                                      itemChange(categoryIndex, null, index,
+                                          !item.isOnShoppingList);
                                     }),
                                 SizedBox(
                                   width: 10,
