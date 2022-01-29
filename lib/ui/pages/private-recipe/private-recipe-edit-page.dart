@@ -43,21 +43,26 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
 
   @override
   void initState() {
+    super.initState();
     getToken();
     loadDailyRequiredNutrients();
-    loadPrivateRecipe(privateRecipeId);
-    super.initState();
+    privateRecipeService.getPrivateRecipes().then((privateRecipes) => {
+          privateRecipe = privateRecipes
+              .firstWhere((element) => element.id == privateRecipeId),
+          getInstructionTiles(),
+          setState(() {})
+        });
   }
 
   void loadPrivateRecipe(int privateRecipeId) async {
-    var updatedPrivateRecipe = await RecipeController.getPrivateRecipe(privateRecipeId);
+    var updatedPrivateRecipe =
+        await RecipeController.getPrivateRecipe(privateRecipeId);
     privateRecipeService.addOrUpdatePrivateRecipe(updatedPrivateRecipe);
     setState(() {
       privateRecipe = updatedPrivateRecipe;
       updateNutrientsKey++;
       updateIngredientsKey++;
     });
-    getInstructionTiles();
   }
 
   loadDailyRequiredNutrients() async {
@@ -208,12 +213,11 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
     for (int i = 0; i < privateRecipe.ingredients.length; i++) {
       myTiles.add(
         IngredientEditTileComponent(
-          ingredient: privateRecipe.ingredients[i],
-          apiToken: apiToken,
-          textColor: Colors.black,
-          radius: 34.0,
-          onTap: _openEditIngredientsAmountScreen
-        ),
+            ingredient: privateRecipe.ingredients[i],
+            apiToken: apiToken,
+            textColor: Colors.black,
+            radius: 34.0,
+            onTap: _openEditIngredientsAmountScreen),
       );
     }
     return myTiles;
@@ -265,41 +269,39 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
   }
 
   Widget getIngredientGridView() {
-      return Card(
-          key: ValueKey(updateIngredientsKey),
-          elevation: 10,
-          margin: EdgeInsets.all(10),
-          child: new GridView.count(
-            //     primary: true,
-            //    padding: const EdgeInsets.all(0),
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            crossAxisCount: 3,
-            mainAxisSpacing: 3,
-            padding: EdgeInsets.all(2),
-            children: [
-              ...getAllIngredientTiles(),
-              Padding( child:SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: ElevatedButton(
-                    onPressed: _openAddIngredientScreen,
-                    child: Icon(Icons.add, size: 36),
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all(CircleBorder()),
-                      padding: MaterialStateProperty.all(EdgeInsets.all(2)),
-                      backgroundColor: MaterialStateProperty.all(
-                          Colors.white), // <-- Button color,
-                    ),
-                  )), padding:EdgeInsets.only(
-                left:22,
-                right:22,
-                bottom:22,
-                top:0
-              )),
-              //
-            ],
-          ));
+    return Card(
+        key: ValueKey(updateIngredientsKey),
+        elevation: 10,
+        margin: EdgeInsets.all(10),
+        child: new GridView.count(
+          //     primary: true,
+          //    padding: const EdgeInsets.all(0),
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          crossAxisCount: 3,
+          mainAxisSpacing: 3,
+          padding: EdgeInsets.all(2),
+          children: [
+            ...getAllIngredientTiles(),
+            Padding(
+                child: SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: ElevatedButton(
+                      onPressed: _openAddIngredientScreen,
+                      child: Icon(Icons.add, size: 36),
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(CircleBorder()),
+                        padding: MaterialStateProperty.all(EdgeInsets.all(2)),
+                        backgroundColor: MaterialStateProperty.all(
+                            Colors.white), // <-- Button color,
+                      ),
+                    )),
+                padding:
+                    EdgeInsets.only(left: 22, right: 22, bottom: 22, top: 0)),
+            //
+          ],
+        ));
   }
 
   Widget getNutritionGridView() {
@@ -369,7 +371,6 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
     setState(() {
       _instructionTiles = updatedTiles;
     });
-    return _instructionTiles;
   }
 
   Future<void> openAddInstructionDialog() async {
