@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
 import 'package:cookable_flutter/core/caching/firebase_image_service.dart';
+import 'package:cookable_flutter/core/caching/private_recipe_service.dart';
 import 'package:cookable_flutter/core/caching/recipe_service.dart';
 import 'package:cookable_flutter/core/caching/userfood_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
-import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/components/ingredient-tile.component.dart';
 import 'package:cookable_flutter/ui/components/nutrient-tile.component.dart';
@@ -28,6 +28,7 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
   PrivateRecipe recipe;
   String apiToken;
   RecipeService recipeService = RecipeService();
+  PrivateRecipeService privateRecipeService = PrivateRecipeService();
   UserFoodService userFoodService = UserFoodService();
   FirebaseImageService firebaseImageService = FirebaseImageService();
   List<UserFoodProduct> userOwnedFood;
@@ -54,7 +55,7 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
     dailyProtein = defaultNutrients.recDailyProtein;
     dailyFat = defaultNutrients.recDailyFat;
     userOwnedFood = await userFoodService.getUserFood(false);
-    this.recipe = await RecipeController.getPrivateRecipe(this.widget.recipeId);
+    this.recipe = await privateRecipeService.getPrivateRecipe(this.widget.recipeId);
     await getImageUrl();
     var ingredientsCopy = copyIngredients(recipe.ingredients);
     setState(() {

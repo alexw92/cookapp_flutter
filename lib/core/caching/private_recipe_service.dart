@@ -33,6 +33,14 @@ class PrivateRecipeService {
         privateRecipe, "PrivateRecipes");
   }
 
+  getPrivateRecipe(int recipeId) async {
+    List privateRecipes = (await hiveService.getBoxElements("PrivateRecipes"))
+        .cast<PrivateRecipe>();
+    var privateRecipe =
+        privateRecipes.firstWhere((element) => element.id == recipeId);
+    return privateRecipe;
+  }
+
   clearPrivateRecipe(PrivateRecipe deletedItem) {
     hiveService.clearElementFromBoxById(deletedItem, "PrivateRecipes");
   }
