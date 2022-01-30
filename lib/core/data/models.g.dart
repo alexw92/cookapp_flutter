@@ -238,13 +238,19 @@ class DefaultNutrientsAdapter extends TypeAdapter<DefaultNutrients> {
       recDailyProtein: fields[5] as double,
       recDailyCalories: fields[6] as int,
       source: fields[7] as String,
+      caloriesPerGramCarb: fields[8] as int,
+      caloriesPerGramFat: fields[9] as int,
+      caloriesPerGramProtein: fields[10] as int,
+      caloriesThresholdHighCarb: fields[11] as double,
+      caloriesThresholdHighProtein: fields[12] as double,
+      changed: fields[13] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, DefaultNutrients obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(14)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -260,7 +266,19 @@ class DefaultNutrientsAdapter extends TypeAdapter<DefaultNutrients> {
       ..writeByte(6)
       ..write(obj.recDailyCalories)
       ..writeByte(7)
-      ..write(obj.source);
+      ..write(obj.source)
+      ..writeByte(8)
+      ..write(obj.caloriesPerGramCarb)
+      ..writeByte(9)
+      ..write(obj.caloriesPerGramFat)
+      ..writeByte(10)
+      ..write(obj.caloriesPerGramProtein)
+      ..writeByte(11)
+      ..write(obj.caloriesThresholdHighCarb)
+      ..writeByte(12)
+      ..write(obj.caloriesThresholdHighProtein)
+      ..writeByte(13)
+      ..write(obj.changed);
   }
 
   @override

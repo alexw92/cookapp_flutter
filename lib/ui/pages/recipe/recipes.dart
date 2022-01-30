@@ -53,7 +53,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
       NeedsRecipeUpdateState().recipesUpdateNeeded = false;
     }
     apiToken = await TokenStore().getToken();
-    await loadDefaultNutrition().catchError((error) {
+    await loadDefaultNutrition(reload: reload).catchError((error) {
       print("default nutrition" + error.toString());
       setState(() {
         this.error = true;
@@ -64,8 +64,8 @@ class _RecipesComponentState extends State<RecipesComponent> {
     });
   }
 
-  Future<void> loadDefaultNutrition() async {
-    recipeService.getDefaultNutrients()
+  Future<void> loadDefaultNutrition({bool reload=false}) async {
+    recipeService.getDefaultNutrients(reload: reload)
         .then((nutrients) => {defaultNutrients = nutrients});
   }
 

@@ -284,6 +284,18 @@ class DefaultNutrients {
   final int recDailyCalories;
   @HiveField(7)
   final String source;
+  @HiveField(8)
+  final int caloriesPerGramCarb;
+  @HiveField(9)
+  final int caloriesPerGramFat;
+  @HiveField(10)
+  final int caloriesPerGramProtein;
+  @HiveField(11)
+  final double caloriesThresholdHighCarb;
+  @HiveField(12)
+  final double caloriesThresholdHighProtein;
+  @HiveField(13)
+  final DateTime changed;
 
   DefaultNutrients(
       {this.id,
@@ -293,9 +305,16 @@ class DefaultNutrients {
       this.recDailySugar,
       this.recDailyProtein,
       this.recDailyCalories,
-      this.source});
+      this.source,
+      this.caloriesPerGramCarb,
+      this.caloriesPerGramFat,
+      this.caloriesPerGramProtein,
+      this.caloriesThresholdHighCarb,
+      this.caloriesThresholdHighProtein,
+      this.changed});
 
   factory DefaultNutrients.fromJson(Map<String, dynamic> json) {
+    print(DateTime.parse(json['changed']));
     return DefaultNutrients(
         id: json['id'],
         recDailyFat: json['recDailyFat'],
@@ -304,7 +323,14 @@ class DefaultNutrients {
         recDailySugar: json['recDailySugar'],
         recDailyProtein: json['recDailyProtein'],
         recDailyCalories: json['recDailyCalories'],
-        source: json['source']);
+        source: json['source'],
+        caloriesPerGramCarb: json['caloriesPerGramCarb'],
+        caloriesPerGramFat: json['caloriesPerGramFat'],
+        caloriesPerGramProtein: json['caloriesPerGramProtein'],
+        caloriesThresholdHighCarb: json['caloriesThresholdHighCarb'],
+        caloriesThresholdHighProtein: json['caloriesThresholdHighProtein'],
+        changed: DateTime.parse(json['changed'])
+    );
   }
 }
 
@@ -371,6 +397,7 @@ class Ingredient {
         "quantityType": quantityType.value,
       };
 }
+
 @HiveType(typeId: 11)
 class FoodProduct {
   @HiveField(0)

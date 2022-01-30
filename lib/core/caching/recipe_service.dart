@@ -95,7 +95,8 @@ class RecipeService {
         key: (item) => item.id,
         value: (item) => item,
       );
-      await setNutrientData(_recipeList, foodProductMap);
+      var defaultNutrients = await getDefaultNutrients();
+      await setNutrientData(_recipeList, foodProductMap, defaultNutrients);
 
       _recipeList.sort((a, b) {
         if (a.missingUserFoodProducts.length < b.missingUserFoodProducts.length)
@@ -119,19 +120,19 @@ class RecipeService {
   }
 
   // Todo cant be used yet since likes are only in recipe details
-  Future<Recipe> getRecipe(int recipeId, {bool reload=false}) async {
+  Future<Recipe> getRecipe(int recipeId, {bool reload = false}) async {
     final stopwatch = Stopwatch()..start();
-   Recipe recipe;
-    if(reload){
+    Recipe recipe;
+    if (reload) {
       // Todo load recipe from backend and calc nutrients
     }
-    List<Recipe> recipes = await hiveService.getBoxElements("Recipes").cast<Recipe>();
+    List<Recipe> recipes =
+        await hiveService.getBoxElements("Recipes").cast<Recipe>();
     recipe = recipes.firstWhere((element) => element.id == recipeId);
-    if(recipe == null){
+    if (recipe == null) {
       print("Recipe id=$recipeId was not in Cache! Loading from api");
     }
-    print(
-        "time for get recipe was: ${stopwatch.elapsedMilliseconds}");
+    print("time for get recipe was: ${stopwatch.elapsedMilliseconds}");
     return recipe;
   }
 
@@ -151,14 +152,12 @@ class RecipeService {
   }
 
   Future<void> setNutrientData(
-      List<Recipe> recipes, Map<int, FoodProduct> foodProducts) async {
+      List<Recipe> recipes,
+      Map<int, FoodProduct> foodProducts,
+      DefaultNutrients defaultNutrients) async {
     var now = DateTime.now();
 
     recipes.forEach((recipe) {
-      // Todo load NutritionConstants and calc these values in app
-      bool isHighProtein = false;
-      bool isHighCarb = false;
-
       double fat = 0;
       double carbohydrate = 0;
       double protein = 0;
@@ -190,6 +189,15 @@ class RecipeService {
             ? 0
             : foodProduct.nutrients.calories * factor;
       });
+
+      bool isHighProtein = calories == 0
+          ? false
+          : ((protein * defaultNutrients.caloriesPerGramProtein) / calories) >
+              defaultNutrients.caloriesThresholdHighProtein;
+      bool isHighCarb = calories == 0
+          ? false
+          : ((carbohydrate * defaultNutrients.caloriesPerGramCarb) / calories) >
+              defaultNutrients.caloriesThresholdHighCarb;
 
       recipe.nutrients = Nutrients(
           fat: fat / numPersons,
