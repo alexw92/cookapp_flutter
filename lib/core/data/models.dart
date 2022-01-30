@@ -440,7 +440,7 @@ class FoodProduct {
         foodCategoryId: json['foodCategoryId'],
         foodCategory: json['foodCategory'],
         imgSrc: json['img_src'],
-        nutrients: Nutrients.fromJson(json['nutrients']));
+        nutrients: Nutrients.fromJson(json['nutrientsData']));
   }
 }
 

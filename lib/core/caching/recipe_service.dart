@@ -89,7 +89,7 @@ class RecipeService {
       await hiveService.addElementsToBox(_recipeList, "Recipes");
     }
     if (!exists || nutrientsReCalcRequired || doReload) {
-      var foodProducts = await foodProductService.getFoodProducts();
+      var foodProducts = await foodProductService.getFoodProducts(reload: doReload);
       var foodProductMap = Map<int, FoodProduct>.fromIterable(
         foodProducts,
         key: (item) => item.id,
