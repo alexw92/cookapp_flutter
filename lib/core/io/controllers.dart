@@ -53,7 +53,7 @@ class RecipeController {
 
     Dio dio = new Dio(options);
     var response = await dio
-        .post("/like/recipe/$recipeId")
+        .post("/likes/recipes/$recipeId")
         .timeout(IOConfig.timeoutDuration);
 
     /// If the first API call is successful
