@@ -70,13 +70,16 @@ class RecipeAdapter extends TypeAdapter<Recipe> {
       diet: fields[7] as Diet,
       prepTimeMinutes: fields[8] as int,
       nutrients: fields[9] as Nutrients,
-    )..missingUserFoodProducts = (fields[10] as List)?.cast<UserFoodProduct>();
+    )
+      ..missingUserFoodProducts = (fields[10] as List)?.cast<UserFoodProduct>()
+      ..userLiked = fields[11] as bool
+      ..likes = fields[12] as int;
   }
 
   @override
   void write(BinaryWriter writer, Recipe obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -98,7 +101,11 @@ class RecipeAdapter extends TypeAdapter<Recipe> {
       ..writeByte(9)
       ..write(obj.nutrients)
       ..writeByte(10)
-      ..write(obj.missingUserFoodProducts);
+      ..write(obj.missingUserFoodProducts)
+      ..writeByte(11)
+      ..write(obj.userLiked)
+      ..writeByte(12)
+      ..write(obj.likes);
   }
 
   @override
@@ -108,6 +115,80 @@ class RecipeAdapter extends TypeAdapter<Recipe> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is RecipeAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class TotalRecipeLikesAdapter extends TypeAdapter<TotalRecipeLikes> {
+  @override
+  final int typeId = 12;
+
+  @override
+  TotalRecipeLikes read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return TotalRecipeLikes(
+      recipeId: fields[0] as int,
+      likes: fields[1] as int,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, TotalRecipeLikes obj) {
+    writer
+      ..writeByte(2)
+      ..writeByte(0)
+      ..write(obj.recipeId)
+      ..writeByte(1)
+      ..write(obj.likes);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TotalRecipeLikesAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class UserRecipeLikeAdapter extends TypeAdapter<UserRecipeLike> {
+  @override
+  final int typeId = 13;
+
+  @override
+  UserRecipeLike read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return UserRecipeLike(
+      recipeId: fields[0] as int,
+      userId: fields[1] as String,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, UserRecipeLike obj) {
+    writer
+      ..writeByte(2)
+      ..writeByte(0)
+      ..write(obj.recipeId)
+      ..writeByte(1)
+      ..write(obj.userId);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is UserRecipeLikeAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

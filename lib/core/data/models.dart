@@ -62,6 +62,10 @@ class Recipe {
   Nutrients nutrients;
   @HiveField(10)
   List<UserFoodProduct> missingUserFoodProducts = [];
+  @HiveField(11)
+  bool userLiked;
+  @HiveField(12)
+  int likes;
 
   Recipe(
       {this.id,
@@ -96,7 +100,47 @@ class Recipe {
   }
 
   String toString() {
-    return "id=$id, name=$name, ingredients=${ingredients.length} ";
+    return "id=$id, name=$name, ingredients=${ingredients.length} likes=$likes";
+  }
+}
+
+@HiveType(typeId: 12)
+class TotalRecipeLikes {
+  @HiveField(0)
+  final int recipeId;
+  @HiveField(1)
+  final int likes;
+
+  TotalRecipeLikes({this.recipeId, this.likes});
+
+  factory TotalRecipeLikes.fromJson(Map<String, dynamic> totalRecipeLikesJson) {
+    return TotalRecipeLikes(
+        recipeId: totalRecipeLikesJson['recipeId'],
+        likes: totalRecipeLikesJson['likes']);
+  }
+
+  String toString() {
+    return "recipeId=$recipeId, likes=$likes";
+  }
+}
+
+@HiveType(typeId: 13)
+class UserRecipeLike {
+  @HiveField(0)
+  final int recipeId;
+  @HiveField(1)
+  final String userId;
+
+  UserRecipeLike({this.recipeId, this.userId});
+
+  factory UserRecipeLike.fromJson(Map<String, dynamic> userRecipeLikeJson) {
+    return UserRecipeLike(
+        recipeId: userRecipeLikeJson['recipeId'],
+        userId: userRecipeLikeJson['userId']);
+  }
+
+  String toString() {
+    return "recipeId=$recipeId, userId=$userId";
   }
 }
 
@@ -329,8 +373,7 @@ class DefaultNutrients {
         caloriesPerGramProtein: json['caloriesPerGramProtein'],
         caloriesThresholdHighCarb: json['caloriesThresholdHighCarb'],
         caloriesThresholdHighProtein: json['caloriesThresholdHighProtein'],
-        changed: DateTime.parse(json['changed'])
-    );
+        changed: DateTime.parse(json['changed']));
   }
 }
 

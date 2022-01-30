@@ -28,7 +28,7 @@ class RecipesDetailsPage extends StatefulWidget {
 
 class _RecipesDetailsPageState extends State<RecipesDetailsPage>
     with SingleTickerProviderStateMixin {
-  RecipeDetails recipe;
+  Recipe recipe;
   RecipeService recipeService = RecipeService();
   UserFoodService userFoodService = UserFoodService();
   List<UserFoodProduct> userOwnedFood;
@@ -64,7 +64,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
     userOwnedFood = await userFoodService.getUserFood(false);
     // this loading is just to initially fill the hive box, can be removed if it was done before already
     missingUserFoodAndShoppingList = await userFoodService.getUserFood(true);
-    this.recipe = await RecipeController.getRecipe(this.widget.recipeId);
+    this.recipe = await recipeService.getRecipe(this.widget.recipeId);
     var ingredientsCopy = copyIngredients(recipe.ingredients);
     setState(() {
       numberOfPersonsTmp = recipe.numberOfPersons;
@@ -126,7 +126,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
       recipe.userLiked = !recipe.userLiked;
       recipe.likes = likes;
     });
-
+    await recipeService.addOrUpdateRecipe(recipe);
     /// if failed, you can do nothing
     // return success? !isLiked:isLiked;
 

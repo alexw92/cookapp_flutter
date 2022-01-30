@@ -66,6 +66,64 @@ class RecipeController {
         "Error toggling like recipe, Code: ${response.statusCode} Message: ${response.data} ");
   }
 
+  static Future<List<UserRecipeLike>> getUserRecipeLikes() async {
+    // get token from token store
+    var tokenStore = IOConfig.tokenStore;
+    String storedToken = await tokenStore.getToken();
+    BaseOptions options = new BaseOptions(
+        baseUrl: IOConfig.apiUrl,
+        connectTimeout: 3000, //10 seconds
+        receiveTimeout: 10000,
+        headers: {
+          "Authorization": "Bearer $storedToken",
+          'Content-Type': 'application/json',
+        });
+
+    Dio dio = new Dio(options);
+    var response = await dio
+        .get("/likes/recipes/user")
+        .timeout(IOConfig.timeoutDuration);
+
+    /// If the first API call is successful
+    if (response.statusCode == HttpStatus.ok) {
+      var list = response.data as List;
+      List<UserRecipeLike> userRecipeLikes = list.map((it) => UserRecipeLike.fromJson(it)).toList();
+      return userRecipeLikes;
+    }
+
+    throw Exception(
+        "Error getting user recipe likes, Code: ${response.statusCode} Message: ${response.data} ");
+  }
+
+  static Future<List<TotalRecipeLikes>> getTotalRecipeLikes() async {
+    // get token from token store
+    var tokenStore = IOConfig.tokenStore;
+    String storedToken = await tokenStore.getToken();
+    BaseOptions options = new BaseOptions(
+        baseUrl: IOConfig.apiUrl,
+        connectTimeout: 3000, //10 seconds
+        receiveTimeout: 10000,
+        headers: {
+          "Authorization": "Bearer $storedToken",
+          'Content-Type': 'application/json',
+        });
+
+    Dio dio = new Dio(options);
+    var response = await dio
+        .get("/likes/recipes")
+        .timeout(IOConfig.timeoutDuration);
+
+    /// If the first API call is successful
+    if (response.statusCode == HttpStatus.ok) {
+      var list = response.data as List;
+      List<TotalRecipeLikes> totalRecipeLikesList = list.map((it) => TotalRecipeLikes.fromJson(it)).toList();
+      return totalRecipeLikesList;
+    }
+
+    throw Exception(
+        "Error getting user recipe likes, Code: ${response.statusCode} Message: ${response.data} ");
+  }
+
   static Future<List<Recipe>> getRecipes() async {
     var langCode = LangState().currentLang;
     // get token from token store
@@ -133,7 +191,7 @@ class RecipeController {
         "Error requesting recipes, Code: ${response.statusCode} Message: ${response.data} ");
   }
 
-  static Future<RecipeDetails> getRecipe(int id) async {
+  static Future<Recipe> getRecipe(int id) async {
     var langCode = LangState().currentLang;
     // get token from token store
     var tokenStore = IOConfig.tokenStore;
@@ -156,7 +214,7 @@ class RecipeController {
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
       var recipeJson = response.data;
-      RecipeDetails recipe = RecipeDetails.fromJson(recipeJson);
+      Recipe recipe = Recipe.fromJson(recipeJson);
       return recipe;
     }
 

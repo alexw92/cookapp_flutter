@@ -1,4 +1,6 @@
+import 'package:collection/src/iterable_extensions.dart';
 import 'package:cookable_flutter/core/caching/foodproduct_service.dart';
+import 'package:cookable_flutter/core/caching/like_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
 
@@ -7,6 +9,7 @@ import 'hive_service.dart';
 class RecipeService {
   final HiveService hiveService = HiveService();
   final FoodProductService foodProductService = FoodProductService();
+  final LikeService likeService = LikeService();
 
   Future<List<Recipe>> getFilteredRecipes(
       Diet diet, bool highProteinFilter, bool highCarbFilter,
@@ -48,6 +51,16 @@ class RecipeService {
       var result = await RecipeController.getRecipes();
       if (doReload) await hiveService.clearBox(boxName: "Recipes");
       _recipeList.addAll(result);
+      var totalRecipeLikes =
+          await likeService.getTotalRecipeLikes(reload: doReload);
+      var userRecipeLikesList =
+          await likeService.getUserRecipeLikes(reload: doReload);
+      var totalRecipeLikesMap = Map<int, int>.fromIterable(
+          totalRecipeLikes,
+          key: (element) => element.recipeId,
+          value: (element) => element.likes);
+      setRecipeLikes(_recipeList, userRecipeLikesList, totalRecipeLikesMap);
+
       await hiveService.addElementsToBox(_recipeList, "Recipes");
     }
     if (!exists || itemsInStockChanged || doReload) {
@@ -88,8 +101,10 @@ class RecipeService {
       await hiveService.clearBox(boxName: "Recipes");
       await hiveService.addElementsToBox(_recipeList, "Recipes");
     }
+
     if (!exists || nutrientsReCalcRequired || doReload) {
-      var foodProducts = await foodProductService.getFoodProducts(reload: doReload);
+      var foodProducts =
+          await foodProductService.getFoodProducts(reload: doReload);
       var foodProductMap = Map<int, FoodProduct>.fromIterable(
         foodProducts,
         key: (item) => item.id,
@@ -107,6 +122,7 @@ class RecipeService {
       await hiveService.clearBox(boxName: "Recipes");
       await hiveService.addElementsToBox(_recipeList, "Recipes");
     }
+
     if (exists &&
         !nutrientsReCalcRequired &&
         !itemsInStockChanged &&
@@ -114,6 +130,7 @@ class RecipeService {
       _recipeList =
           (await hiveService.getBoxElements("Recipes")).cast<Recipe>();
     }
+
     print(
         "time for ingredient matching for ${_recipeList.length} recipes was: ${stopwatch.elapsedMilliseconds}");
     return _recipeList;
@@ -125,12 +142,24 @@ class RecipeService {
     Recipe recipe;
     if (reload) {
       // Todo load recipe from backend and calc nutrients
+      recipe = await RecipeController.getRecipe(recipeId);
+      var foodProducts = (await foodProductService.getFoodProducts());
+      var foodProductMap = Map<int, FoodProduct>.fromIterable(
+        foodProducts,
+        key: (item) => item.id,
+        value: (item) => item,
+      );
+      // todo load user like and total likes
+      var defaultNutrients = await getDefaultNutrients();
+      await setNutrientData([recipe], foodProductMap, defaultNutrients);
+      var userRecipeLikes =  await likeService.getUserRecipeLikes();
+      await likeService.getTotalRecipeLikes();
     }
     List<Recipe> recipes =
-        await hiveService.getBoxElements("Recipes").cast<Recipe>();
+    (await hiveService.getBoxElements("Recipes")).cast<Recipe>();
     recipe = recipes.firstWhere((element) => element.id == recipeId);
     if (recipe == null) {
-      print("Recipe id=$recipeId was not in Cache! Loading from api");
+      print("Recipe id=$recipeId was not in Cache! Loading from api (todo lol)");
     }
     print("time for get recipe was: ${stopwatch.elapsedMilliseconds}");
     return recipe;
@@ -149,6 +178,20 @@ class RecipeService {
       await hiveService.addElementsToBox([result], "DefaultNutrients");
       return result;
     }
+  }
+
+  void setRecipeLikes(
+      List<Recipe> recipes,
+      List<UserRecipeLike> userRecipeLikes,
+      Map<int, int> totalRecipeLikesList) {
+    recipes.forEach((recipe) {
+      recipe.likes = totalRecipeLikesList.containsKey(recipe.id)
+          ? totalRecipeLikesList[recipe.id]
+          : 0;
+      var userRecipeLike = userRecipeLikes.firstWhereOrNull(
+          (userRecipeLike) => userRecipeLike.recipeId == recipe.id);
+      recipe.userLiked = userRecipeLike != null;
+    });
   }
 
   Future<void> setNutrientData(
@@ -218,5 +261,9 @@ class RecipeService {
 
   clearPrivateRecipes() async {
     return hiveService.clearBox(boxName: "Recipes");
+  }
+
+  addOrUpdateRecipe(Recipe recipe) async {
+    return hiveService.addOrUpdateElementInBoxById(recipe, "Recipes");
   }
 }
