@@ -37,173 +37,203 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
   String apiToken;
   bool loadingFromApi = false;
   bool error = false;
+  Future<void> _loadingRecipe;
   List<GroceryCheckBoxListTileModel> groceries;
   TabController _tabController;
 
   @override
   Widget build(BuildContext context) {
-    if (loadingFromApi && !error)
-      return Scaffold(
-          backgroundColor: Colors.black87,
-          appBar: AppBar(
-            title: Text(AppLocalizations.of(context).fridge),
-            actions: [
-              IconButton(
-                icon: FaIcon(FontAwesomeIcons.listAlt),
-                onPressed: _openShoppingList,
-              ),
-              PopupMenuButton(
-                onSelected: (result) {
-                  switch (result) {
-                    case 0:
-                      _openSettings();
-                      break;
-                    case 1:
-                      _signOut();
-                      break;
-                  }
-                },
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                      child: Text(AppLocalizations.of(context).settings),
-                      value: 0),
-                  PopupMenuItem(
-                      child: Text(AppLocalizations.of(context).logout),
-                      value: 1)
-                ],
-                icon: Icon(
-                  Icons.settings,
-                ),
-              )
-            ],
-          ),
-          body: Center(
-              child: CircularProgressIndicator(
-            value: null,
-            color: Colors.white,
-            backgroundColor: Colors.green,
-          )));
-    else if (!loadingFromApi && !error)
-      return Scaffold(
-          backgroundColor: Colors.black87,
-          appBar: AppBar(
-            title: Text(AppLocalizations.of(context).fridge),
-            actions: [
-              IconButton(
-                icon: FaIcon(FontAwesomeIcons.listAlt),
-                onPressed: _openShoppingList,
-              ),
-              PopupMenuButton(
-                onSelected: (result) {
-                  switch (result) {
-                    case 0:
-                      _openSettings();
-                      break;
-                    case 1:
-                      _signOut();
-                      break;
-                  }
-                },
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                      child: Text(AppLocalizations.of(context).settings),
-                      value: 0),
-                  PopupMenuItem(
-                      child: Text(AppLocalizations.of(context).logout),
-                      value: 1)
-                ],
-                icon: Icon(
-                  Icons.settings,
-                ),
-              )
-            ],
-          ),
-          body: Scaffold(
-              backgroundColor: Colors.black54,
-              appBar: AppBar(
-                toolbarHeight: 0,
-                bottom: TabBar(
-                  controller: _tabController,
-                  isScrollable: true,
-                  tabs: [
-                    Tab(text: AppLocalizations.of(context).tab_fruits),
-                    Tab(text: AppLocalizations.of(context).tab_vegetables),
-                    Tab(text: AppLocalizations.of(context).tab_spices),
-                    Tab(text: AppLocalizations.of(context).tab_pantry),
-                    Tab(text: AppLocalizations.of(context).tab_dairy),
-                    Tab(text: AppLocalizations.of(context).tab_meat),
-                    Tab(text: AppLocalizations.of(context).tab_fish),
-                  ],
-                ),
-              ),
-              body: getTabBarView()));
-    else
-      return Scaffold(
-          backgroundColor: Colors.black87,
-          appBar: AppBar(
-            title: Text(AppLocalizations.of(context).fridge),
-            actions: [
-              PopupMenuButton(
-                onSelected: (result) {
-                  switch (result) {
-                    case 0:
-                      _openSettings();
-                      break;
-                    case 1:
-                      _signOut();
-                      break;
-                  }
-                },
-                itemBuilder: (context) => [
-                  PopupMenuItem(
-                      child: Text(AppLocalizations.of(context).settings),
-                      value: 0),
-                  PopupMenuItem(
-                      child: Text(AppLocalizations.of(context).logout),
-                      value: 1)
-                ],
-                icon: Icon(
-                  Icons.settings,
-                ),
-              )
-            ],
-          ),
-          body: Scaffold(
-              backgroundColor: Colors.black87,
-              appBar: AppBar(
-                toolbarHeight: 0,
-                bottom: TabBar(
-                  controller: _tabController,
-                  isScrollable: true,
-                  tabs: [
-                    Tab(text: AppLocalizations.of(context).tab_fruits),
-                    Tab(text: AppLocalizations.of(context).tab_vegetables),
-                    Tab(text: AppLocalizations.of(context).tab_spices),
-                    Tab(text: AppLocalizations.of(context).tab_pantry),
-                    Tab(text: AppLocalizations.of(context).tab_dairy),
-                    Tab(text: AppLocalizations.of(context).tab_meat),
-                    Tab(text: AppLocalizations.of(context).tab_fish),
-                  ],
-                ),
-              ),
-              body: Center(
-                  child: Container(
-                height: 100,
-                child: Card(
-                    elevation: 10,
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                          child: Text(
-                              AppLocalizations.of(context).somethingWentWrong),
+    return FutureBuilder<void>(
+        future: _loadingRecipe,
+        builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return Scaffold(
+                  backgroundColor: Colors.black87,
+                  appBar: AppBar(
+                    title: Text(AppLocalizations.of(context).fridge),
+                    actions: [
+                      IconButton(
+                        icon: FaIcon(FontAwesomeIcons.listAlt),
+                        onPressed: _openShoppingList,
+                      ),
+                      PopupMenuButton(
+                        onSelected: (result) {
+                          switch (result) {
+                            case 0:
+                              _openSettings();
+                              break;
+                            case 1:
+                              _signOut();
+                              break;
+                          }
+                        },
+                        itemBuilder: (context) => [
+                          PopupMenuItem(
+                              child:
+                                  Text(AppLocalizations.of(context).settings),
+                              value: 0),
+                          PopupMenuItem(
+                              child: Text(AppLocalizations.of(context).logout),
+                              value: 1)
+                        ],
+                        icon: Icon(
+                          Icons.settings,
                         ),
-                        ElevatedButton(
-                            onPressed: refreshTriggered,
-                            child: Text(AppLocalizations.of(context).tryAgain))
+                      )
+                    ],
+                  ),
+                  body: Center(
+                      child: CircularProgressIndicator(
+                    value: null,
+                    color: Colors.white,
+                    backgroundColor: Colors.green,
+                  )));
+            default:
+              if (!snapshot.hasError)
+                return Scaffold(
+                    backgroundColor: Colors.black87,
+                    appBar: AppBar(
+                      title: Text(AppLocalizations.of(context).fridge),
+                      actions: [
+                        IconButton(
+                          icon: FaIcon(FontAwesomeIcons.listAlt),
+                          onPressed: _openShoppingList,
+                        ),
+                        PopupMenuButton(
+                          onSelected: (result) {
+                            switch (result) {
+                              case 0:
+                                _openSettings();
+                                break;
+                              case 1:
+                                _signOut();
+                                break;
+                            }
+                          },
+                          itemBuilder: (context) => [
+                            PopupMenuItem(
+                                child:
+                                    Text(AppLocalizations.of(context).settings),
+                                value: 0),
+                            PopupMenuItem(
+                                child:
+                                    Text(AppLocalizations.of(context).logout),
+                                value: 1)
+                          ],
+                          icon: Icon(
+                            Icons.settings,
+                          ),
+                        )
                       ],
-                    )),
-              ))));
+                    ),
+                    body: Scaffold(
+                        backgroundColor: Colors.black54,
+                        appBar: AppBar(
+                          toolbarHeight: 0,
+                          bottom: TabBar(
+                            controller: _tabController,
+                            isScrollable: true,
+                            tabs: [
+                              Tab(
+                                  text:
+                                      AppLocalizations.of(context).tab_fruits),
+                              Tab(
+                                  text: AppLocalizations.of(context)
+                                      .tab_vegetables),
+                              Tab(
+                                  text:
+                                      AppLocalizations.of(context).tab_spices),
+                              Tab(
+                                  text:
+                                      AppLocalizations.of(context).tab_pantry),
+                              Tab(text: AppLocalizations.of(context).tab_dairy),
+                              Tab(text: AppLocalizations.of(context).tab_meat),
+                              Tab(text: AppLocalizations.of(context).tab_fish),
+                            ],
+                          ),
+                        ),
+                        body: getTabBarView()));
+              else
+                return Scaffold(
+                    backgroundColor: Colors.black87,
+                    appBar: AppBar(
+                      title: Text(AppLocalizations.of(context).fridge),
+                      actions: [
+                        PopupMenuButton(
+                          onSelected: (result) {
+                            switch (result) {
+                              case 0:
+                                _openSettings();
+                                break;
+                              case 1:
+                                _signOut();
+                                break;
+                            }
+                          },
+                          itemBuilder: (context) => [
+                            PopupMenuItem(
+                                child:
+                                    Text(AppLocalizations.of(context).settings),
+                                value: 0),
+                            PopupMenuItem(
+                                child:
+                                    Text(AppLocalizations.of(context).logout),
+                                value: 1)
+                          ],
+                          icon: Icon(
+                            Icons.settings,
+                          ),
+                        )
+                      ],
+                    ),
+                    body: Scaffold(
+                        backgroundColor: Colors.black87,
+                        appBar: AppBar(
+                          toolbarHeight: 0,
+                          bottom: TabBar(
+                            controller: _tabController,
+                            isScrollable: true,
+                            tabs: [
+                              Tab(
+                                  text:
+                                      AppLocalizations.of(context).tab_fruits),
+                              Tab(
+                                  text: AppLocalizations.of(context)
+                                      .tab_vegetables),
+                              Tab(
+                                  text:
+                                      AppLocalizations.of(context).tab_spices),
+                              Tab(
+                                  text:
+                                      AppLocalizations.of(context).tab_pantry),
+                              Tab(text: AppLocalizations.of(context).tab_dairy),
+                              Tab(text: AppLocalizations.of(context).tab_meat),
+                              Tab(text: AppLocalizations.of(context).tab_fish),
+                            ],
+                          ),
+                        ),
+                        body: Center(
+                            child: Container(
+                          height: 100,
+                          child: Card(
+                              elevation: 10,
+                              child: Column(
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                    child: Text(AppLocalizations.of(context)
+                                        .somethingWentWrong),
+                                  ),
+                                  ElevatedButton(
+                                      onPressed: refreshTriggered,
+                                      child: Text(AppLocalizations.of(context)
+                                          .tryAgain))
+                                ],
+                              )),
+                        ))));
+          }
+        });
   }
 
   TabBarView getTabBarView() {
@@ -307,26 +337,19 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     ]);
   }
 
-  Future<void> refreshTriggered() async {
+  Future refreshTriggered() {
     print("refresh triggered");
-    return loadFoodProducts(reload: true);
+    _loadingRecipe = loadFoodProducts(reload: true);
+    return _loadingRecipe;
   }
 
-  void loadFoodProducts({reload = false}) async {
-    setState(() {
-      loadingFromApi = reload;
-      error = false;
-    });
+  Future<void> loadFoodProducts({reload = false}) async {
     try {
       ownedGroceries = await userFoodService.getUserFood(false, reload: reload);
       missingGroceries =
           await userFoodService.getUserFood(true, reload: reload);
     } catch (err) {
       print(err);
-      setState(() {
-        this.loadingFromApi = false;
-        this.error = true;
-      });
     }
     apiToken = await TokenStore().getToken();
     groceries = getGroceries();
@@ -359,7 +382,6 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
       this.checkBoxListTileModelFish.addAll(groceries
           .where((element) => element.foodCategory.name.contains("fish"))
           .toList());
-      loadingFromApi = false;
     });
   }
 
@@ -410,8 +432,9 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
       checkBoxListTileModelFish
     ]);
 
-    loadFoodProducts();
+    _loadingRecipe = loadFoodProducts();
     _tabController = new TabController(length: 7, vsync: this);
+    setState(() {});
   }
 
   Future<void> toggleItem(
