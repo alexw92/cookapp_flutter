@@ -442,9 +442,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _openSettings() async {
-    print('settings');
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => SettingsPage()));
-    print('settings completed');
   }
 }

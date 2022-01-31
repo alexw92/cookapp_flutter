@@ -16,7 +16,6 @@ class UserService {
       user = _userList[0];
       return user;
     } else {
-      print("Getting ReducedUser from Api");
       var result = await UserController.getUser();
       user = result;
       if (reload) await hiveService.clearBox(boxName: "Users");

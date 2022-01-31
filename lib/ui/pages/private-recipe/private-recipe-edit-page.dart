@@ -241,18 +241,15 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
   }
 
   Future<void> _openAddIngredientScreen() async {
-    print('addIngredientScreen');
     await Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => AddIngredientPage(
                   privateRecipe: this.privateRecipe,
                 ))).then((ingredient) => {loadPrivateRecipe(privateRecipeId)});
-    print('addIngredientScreen completed');
   }
 
   Future<void> _openEditIngredientsAmountScreen() async {
-    print('EditIngredientsAmountScreen');
     await Navigator.push(
         context,
         MaterialPageRoute(
@@ -261,7 +258,6 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                 routedFromAddIngredient: false))).then((ghj) {
       loadPrivateRecipe(privateRecipeId);
     });
-    print('EditIngredientsAmountScreen completed');
   }
 
   Future<void> getToken() async {

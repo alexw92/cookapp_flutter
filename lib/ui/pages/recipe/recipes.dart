@@ -286,9 +286,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
   }
 
   Future<void> _openSettings() async {
-    print('settings');
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => SettingsPage()));
-    print('settings completed');
   }
 }

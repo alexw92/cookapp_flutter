@@ -560,10 +560,8 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
   }
 
   Future<void> _openSettings() async {
-    print('settings');
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => SettingsPage()));
-    print('settings completed');
   }
 
   Future<void> _openShoppingList() async {
@@ -571,14 +569,10 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     ScaffoldMessenger.of(context).removeCurrentSnackBar();
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => ShoppingListPage()));
-    print("closed shopping list");
     this.missingGroceries = await userFoodService.getUserFood(true);
     this.ownedGroceries = await userFoodService.getUserFood(false);
     groceries.clear();
     groceries.addAll(getGroceries());
-    print("grocery tiles length: ${groceries.length}");
-    print("missingGroceries length: ${missingGroceries.length}");
-    print("ownedGroceries length: ${ownedGroceries.length}");
     this.checkBoxListTileModelFruits.clear();
     this.checkBoxListTileModelFruits.addAll(groceries
         .where((element) => element.foodCategory.name.contains("fruits"))

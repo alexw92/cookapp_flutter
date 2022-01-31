@@ -22,7 +22,6 @@ class RecipeService {
           (await hiveService.getBoxElements("Recipes")).cast<Recipe>();
       return _recipeList;
     } else {
-      print("Getting Recipe from Api");
       var result = await RecipeController.getFilteredRecipes(
           diet, highProteinFilter, highCarbFilter);
       _recipeList.addAll(result);
@@ -37,8 +36,6 @@ class RecipeService {
       {bool itemsInStockChanged = false,
       bool nutrientsReCalcRequired = false,
       bool doReload = false}) async {
-    print("getRecipesOffline: itemsChanged:$itemsInStockChanged,"
-        " nutrientReCalc:$nutrientsReCalcRequired, doReload:$doReload");
     List<Recipe> _recipeList = [];
     List<UserFoodProduct> _userOwnedFoodProducts = [];
     List<UserFoodProduct> _missingFoodProducts = [];
@@ -171,7 +168,6 @@ class RecipeService {
       return (await hiveService.getBoxElements("DefaultNutrients"))
           .cast<DefaultNutrients>()[0];
     } else {
-      print("Getting DefaultNutrients from Api");
       var result = await RecipeController.getDefaultNutrients();
       if (reload) await hiveService.clearBox(boxName: "DefaultNutrients");
       await hiveService.addElementsToBox([result], "DefaultNutrients");

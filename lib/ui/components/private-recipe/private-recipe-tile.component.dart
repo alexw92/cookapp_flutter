@@ -46,7 +46,6 @@ class _PrivateRecipeTileComponentState
   }
 
   getImageUrl() async {
-    print(privateRecipe.imgSrc);
     if (privateRecipe.imgSrc.contains(Constants.DEFAULT_RECIPE_IMG)) {
       setState(() {
         defaultImg = true;
@@ -321,12 +320,10 @@ class _PrivateRecipeTileComponentState
   }
 
   Future<void> _openEditRecipeScreen(PrivateRecipe privateRecipe) async {
-    print('editRecipeScreen');
     await Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => RecipeEditPage(privateRecipe.id)));
-    print('editRecipeScreen completed');
   }
 
   _editPrivateRecipeImg(PrivateRecipe privateRecipe, bool fromGallery) async {

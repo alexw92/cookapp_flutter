@@ -17,7 +17,6 @@ class LikeService {
               .cast<TotalRecipeLikes>();
       return _totalRecipeLikesList;
     } else {
-      print("Getting TotalRecipeLikes from Api");
       var result = await RecipeController.getTotalRecipeLikes();
       _totalRecipeLikesList.addAll(result);
       if (reload) await hiveService.clearBox(boxName: "TotalRecipeLikes");

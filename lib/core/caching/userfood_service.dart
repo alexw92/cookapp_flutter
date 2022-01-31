@@ -12,12 +12,11 @@ class UserFoodService {
     String foodBoxName = missingUserFood ? "MissingUserFoodPlusShoppingList" : "UserFood";
     bool exists = await hiveService.exists(boxName: foodBoxName);
     if (exists && !reload) {
-      // Getting UserFoodProduct from Hive");
+      // Getting UserFoodProduct from Hive
       _recipeList = (await hiveService.getBoxElements(foodBoxName))
           .cast<UserFoodProduct>();
       return _recipeList;
     } else {
-      print("Getting UserFoodProduct from Api");
       var result =
           await UserFoodProductController.getUserFoodProducts(missingUserFood);
       _recipeList.addAll(result);

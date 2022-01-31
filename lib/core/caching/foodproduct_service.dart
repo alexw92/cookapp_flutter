@@ -15,7 +15,6 @@ class FoodProductService {
           .cast<FoodProduct>();
       return _foodProductList;
     } else {
-      print("Getting FoodProduct from Api");
       var result = await FoodProductController.getFoodProducts();
       _foodProductList.addAll(result);
       if (reload) await hiveService.clearBox(boxName: "FoodProducts");

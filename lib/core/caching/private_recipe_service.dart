@@ -15,7 +15,6 @@ class PrivateRecipeService {
           .cast<PrivateRecipe>();
       return _recipeList;
     } else {
-      print("Getting PrivateRecipes from Api");
       var result = await RecipeController.getPrivateRecipes();
       _recipeList.addAll(result);
       if (reload) await hiveService.clearBox(boxName: "PrivateRecipes");

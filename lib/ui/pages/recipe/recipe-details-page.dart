@@ -147,7 +147,6 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
       });
     controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        print("anim status completed");
         controller.reverse();
       }
     });
