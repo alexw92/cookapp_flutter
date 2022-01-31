@@ -1,5 +1,7 @@
+import 'package:cookable_flutter/core/caching/like_service.dart';
 import 'package:cookable_flutter/core/caching/private_recipe_service.dart';
 import 'package:cookable_flutter/core/caching/recipe_service.dart';
+import 'package:cookable_flutter/core/caching/user_service.dart';
 import 'package:cookable_flutter/core/caching/userfood_service.dart';
 import 'package:cookable_flutter/ui/pages/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,8 +24,12 @@ Future<void> clearUserSpecificData() async {
   var userFoodService = UserFoodService();
   var recipeService = RecipeService();
   var privateService = PrivateRecipeService();
+  var userService = UserService();
+  var likeService = LikeService();
   await userFoodService.clearUserFood();
   await recipeService.clearPrivateRecipes();
   await privateService.clearPrivateRecipes();
+  await userService.clearUsers();
+  await likeService.clearUserRecipeLikes();
 }
 
