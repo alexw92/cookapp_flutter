@@ -18,7 +18,9 @@ class FoodProductService {
       var result = await FoodProductController.getFoodProducts();
       _foodProductList.addAll(result);
       if (reload) await hiveService.clearBox(boxName: "FoodProducts");
-      await hiveService.addElementsToBox(_foodProductList, "FoodProducts");
+      var map = Map<int, FoodProduct>.fromIterable(_foodProductList,
+          key: (element) => element.id, value: (element)=>element);
+      await hiveService.putElements(map, "FoodProducts");
       return _foodProductList;
     }
   }

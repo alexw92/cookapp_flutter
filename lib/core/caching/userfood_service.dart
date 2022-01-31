@@ -9,7 +9,8 @@ class UserFoodService {
   Future<List<UserFoodProduct>> getUserFood(bool missingUserFood,
       {bool reload = false}) async {
     List<UserFoodProduct> _recipeList = [];
-    String foodBoxName = missingUserFood ? "MissingUserFoodPlusShoppingList" : "UserFood";
+    String foodBoxName =
+        missingUserFood ? "MissingUserFoodPlusShoppingList" : "UserFood";
     bool exists = await hiveService.exists(boxName: foodBoxName);
     if (exists && !reload) {
       // Getting UserFoodProduct from Hive
@@ -21,16 +22,21 @@ class UserFoodService {
           await UserFoodProductController.getUserFoodProducts(missingUserFood);
       _recipeList.addAll(result);
       if (reload) await hiveService.clearBox(boxName: foodBoxName);
-      await hiveService.addElementsToBox(_recipeList, foodBoxName);
+      var map = Map<int, UserFoodProduct>.fromIterable(_recipeList,
+          key: (el) => el.foodProductId, value: (el) => el);
+      await hiveService.putElements(map, foodBoxName);
       return _recipeList;
     }
   }
 
   updateBoxValues(
       bool missingUserFood, List<UserFoodProduct> foodProducts) async {
-    String foodBoxName = missingUserFood ? "MissingUserFoodPlusShoppingList" : "UserFood";
+    String foodBoxName =
+        missingUserFood ? "MissingUserFoodPlusShoppingList" : "UserFood";
     await hiveService.clearBox(boxName: foodBoxName);
-    await hiveService.addElementsToBox(foodProducts, foodBoxName);
+    var map = Map<int, UserFoodProduct>.fromIterable(foodProducts,
+        key: (el) => el.foodProductId, value: (el) => el);
+    await hiveService.putElements(map, foodBoxName);
   }
 
   clearUserFood() async {

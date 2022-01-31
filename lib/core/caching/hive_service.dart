@@ -15,14 +15,29 @@ class HiveService {
     }
   }
 
-  putElement(dynamic key, dynamic value, String boxName) async {
+  Future<void> putElement(dynamic key, dynamic value, String boxName) async {
     final openBox = await Hive.openBox(boxName);
     return openBox.put(key, value);
   }
 
-  getElement(dynamic key, String boxName) async {
+  Future<dynamic> getElement(dynamic key, String boxName) async {
     final openBox = await Hive.openBox(boxName);
     return openBox.get(key);
+  }
+
+  Future<Map<dynamic, dynamic>> getMap(String boxName) async {
+    final openBox = await Hive.openBox(boxName);
+    return openBox.toMap();
+  }
+
+  Future<void> putElements(Map entries, String boxName) async {
+    final openBox = await Hive.openBox(boxName);
+    return openBox.putAll(entries);
+  }
+
+  dynamic clearElement(dynamic key, String boxName) async {
+    final openBox = await Hive.openBox(boxName);
+    return await openBox.delete(key);
   }
 
   clearBox({String boxName}) async {
@@ -72,4 +87,5 @@ class HiveService {
     }
     await openBox.deleteAt(index);
   }
+
 }

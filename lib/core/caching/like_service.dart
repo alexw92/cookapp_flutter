@@ -20,8 +20,9 @@ class LikeService {
       var result = await RecipeController.getTotalRecipeLikes();
       _totalRecipeLikesList.addAll(result);
       if (reload) await hiveService.clearBox(boxName: "TotalRecipeLikes");
-      await hiveService.addElementsToBox(
-          _totalRecipeLikesList, "TotalRecipeLikes");
+      var map = Map<int, TotalRecipeLikes>.fromIterable(_totalRecipeLikesList,
+          key: (el) => el.recipeId, value: (el) => el);
+      await hiveService.putElements(map, "TotalRecipeLikes");
       return _totalRecipeLikesList;
     }
   }
@@ -43,7 +44,9 @@ class LikeService {
       var result = await RecipeController.getUserRecipeLikes();
       _userRecipeLikes.addAll(result);
       if (reload) await hiveService.clearBox(boxName: "UserRecipeLikes");
-      await hiveService.addElementsToBox(_userRecipeLikes, "UserRecipeLikes");
+      var map = Map<int, UserRecipeLike>.fromIterable(_userRecipeLikes,
+          key: (el) => el.recipeId, value: (el) => el);
+      await hiveService.putElements(map, "UserRecipeLikes");
       return _userRecipeLikes;
     }
   }

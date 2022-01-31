@@ -11,6 +11,7 @@ class RecipeService {
   final FoodProductService foodProductService = FoodProductService();
   final LikeService likeService = LikeService();
 
+  // todo refac, but probably is not used anyway, maybe delete
   Future<List<Recipe>> getFilteredRecipes(
       Diet diet, bool highProteinFilter, bool highCarbFilter,
       {bool reload = false}) async {
@@ -26,7 +27,9 @@ class RecipeService {
           diet, highProteinFilter, highCarbFilter);
       _recipeList.addAll(result);
       if (reload) await hiveService.clearBox(boxName: "Recipes");
-      await hiveService.addElementsToBox(_recipeList, "Recipes");
+      var map = Map<int, Recipe>.fromIterable(_recipeList,
+          key: (el) => el.id, value: (el) => el);
+      await hiveService.putElements(map, "Recipes");
       return _recipeList;
     }
   }
@@ -51,13 +54,13 @@ class RecipeService {
           await likeService.getTotalRecipeLikes(reload: doReload);
       var userRecipeLikesList =
           await likeService.getUserRecipeLikes(reload: doReload);
-      var totalRecipeLikesMap = Map<int, int>.fromIterable(
-          totalRecipeLikes,
+      var totalRecipeLikesMap = Map<int, int>.fromIterable(totalRecipeLikes,
           key: (element) => element.recipeId,
           value: (element) => element.likes);
       setRecipeLikes(_recipeList, userRecipeLikesList, totalRecipeLikesMap);
-
-      await hiveService.addElementsToBox(_recipeList, "Recipes");
+      var map = Map<int, Recipe>.fromIterable(_recipeList,
+          key: (el) => el.id, value: (el) => el);
+      await hiveService.putElements(map, "Recipes");
     }
     if (!exists || itemsInStockChanged || doReload) {
       // Recalculating missing ingredients
@@ -95,7 +98,9 @@ class RecipeService {
           return 1;
       });
       await hiveService.clearBox(boxName: "Recipes");
-      await hiveService.addElementsToBox(_recipeList, "Recipes");
+      var map = Map<int, Recipe>.fromIterable(_recipeList,
+          key: (el) => el.id, value: (el) => el);
+      await hiveService.putElements(map, "Recipes");
       print(
           "time for ingredient matching for ${_recipeList.length} recipes was: ${stopwatch.elapsedMilliseconds}");
     }
@@ -118,7 +123,9 @@ class RecipeService {
           return 1;
       });
       await hiveService.clearBox(boxName: "Recipes");
-      await hiveService.addElementsToBox(_recipeList, "Recipes");
+      var map = Map<int, Recipe>.fromIterable(_recipeList,
+          key: (el) => el.id, value: (el) => el);
+      await hiveService.putElements(map, "Recipes");
     }
 
     if (exists &&
@@ -128,7 +135,6 @@ class RecipeService {
       _recipeList =
           (await hiveService.getBoxElements("Recipes")).cast<Recipe>();
     }
-
 
     return _recipeList;
   }
@@ -149,14 +155,15 @@ class RecipeService {
       // todo load user like and total likes
       var defaultNutrients = await getDefaultNutrients();
       await setNutrientData([recipe], foodProductMap, defaultNutrients);
-      var userRecipeLikes =  await likeService.getUserRecipeLikes();
+      var userRecipeLikes = await likeService.getUserRecipeLikes();
       await likeService.getTotalRecipeLikes();
     }
     List<Recipe> recipes =
-    (await hiveService.getBoxElements("Recipes")).cast<Recipe>();
+        (await hiveService.getBoxElements("Recipes")).cast<Recipe>();
     recipe = recipes.firstWhere((element) => element.id == recipeId);
     if (recipe == null) {
-      print("Recipe id=$recipeId was not in Cache! Loading from api (todo lol)");
+      print(
+          "Recipe id=$recipeId was not in Cache! Loading from api (todo lol)");
     }
     print("time for get recipe was: ${stopwatch.elapsedMilliseconds}");
     return recipe;

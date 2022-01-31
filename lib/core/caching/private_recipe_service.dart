@@ -18,7 +18,9 @@ class PrivateRecipeService {
       var result = await RecipeController.getPrivateRecipes();
       _recipeList.addAll(result);
       if (reload) await hiveService.clearBox(boxName: "PrivateRecipes");
-      await hiveService.addElementsToBox(_recipeList, "PrivateRecipes");
+      var map = Map<int, PrivateRecipe>.fromIterable(_recipeList,
+          key: (el) => el.id, value: (el) => el);
+      await hiveService.putElements(map, "PrivateRecipes");
       return _recipeList;
     }
   }
@@ -28,19 +30,17 @@ class PrivateRecipeService {
   }
 
   addOrUpdatePrivateRecipe(PrivateRecipe privateRecipe) async {
-    await hiveService.addOrUpdateElementInBoxById(
-        privateRecipe, "PrivateRecipes");
+    await hiveService.putElement(
+        privateRecipe.id, privateRecipe, "PrivateRecipes");
   }
 
   getPrivateRecipe(int recipeId) async {
-    List privateRecipes = (await hiveService.getBoxElements("PrivateRecipes"))
-        .cast<PrivateRecipe>();
-    var privateRecipe =
-        privateRecipes.firstWhere((element) => element.id == recipeId);
+    PrivateRecipe privateRecipe = (await hiveService.getElement(
+        recipeId, "PrivateRecipes")) as PrivateRecipe;
     return privateRecipe;
   }
 
   clearPrivateRecipe(PrivateRecipe deletedItem) {
-    hiveService.clearElementFromBoxById(deletedItem, "PrivateRecipes");
+    hiveService.clearElement(deletedItem.id, "PrivateRecipes");
   }
 }
