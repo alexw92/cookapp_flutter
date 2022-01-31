@@ -17,12 +17,12 @@ class RecipeService {
     List<Recipe> _recipeList = [];
     bool exists = await hiveService.exists(boxName: "Recipes");
     if (exists && !reload) {
-      print("Getting data from Hive");
+      print("Getting Recipe from Hive");
       _recipeList =
           (await hiveService.getBoxElements("Recipes")).cast<Recipe>();
       return _recipeList;
     } else {
-      print("Getting data from Api");
+      print("Getting Recipe from Api");
       var result = await RecipeController.getFilteredRecipes(
           diet, highProteinFilter, highCarbFilter);
       _recipeList.addAll(result);
@@ -37,7 +37,6 @@ class RecipeService {
       {bool itemsInStockChanged = false,
       bool nutrientsReCalcRequired = false,
       bool doReload = false}) async {
-    final stopwatch = Stopwatch()..start();
     print("getRecipesOffline: itemsChanged:$itemsInStockChanged,"
         " nutrientReCalc:$nutrientsReCalcRequired, doReload:$doReload");
     List<Recipe> _recipeList = [];
@@ -47,7 +46,7 @@ class RecipeService {
     bool exists = await hiveService.exists(boxName: "Recipes");
 
     if (!exists || doReload) {
-      print("Getting data from Api");
+      print("Getting Recipes from Api");
       var result = await RecipeController.getRecipes();
       if (doReload) await hiveService.clearBox(boxName: "Recipes");
       _recipeList.addAll(result);
@@ -64,8 +63,8 @@ class RecipeService {
       await hiveService.addElementsToBox(_recipeList, "Recipes");
     }
     if (!exists || itemsInStockChanged || doReload) {
-      print("Recalculating missing ingredients");
-
+      // Recalculating missing ingredients
+      final stopwatch = Stopwatch()..start();
       _recipeList =
           (await hiveService.getBoxElements("Recipes")).cast<Recipe>();
       _userOwnedFoodProducts = (await hiveService.getBoxElements("UserFood"))
@@ -100,6 +99,8 @@ class RecipeService {
       });
       await hiveService.clearBox(boxName: "Recipes");
       await hiveService.addElementsToBox(_recipeList, "Recipes");
+      print(
+          "time for ingredient matching for ${_recipeList.length} recipes was: ${stopwatch.elapsedMilliseconds}");
     }
 
     if (!exists || nutrientsReCalcRequired || doReload) {
@@ -131,12 +132,10 @@ class RecipeService {
           (await hiveService.getBoxElements("Recipes")).cast<Recipe>();
     }
 
-    print(
-        "time for ingredient matching for ${_recipeList.length} recipes was: ${stopwatch.elapsedMilliseconds}");
+
     return _recipeList;
   }
 
-  // Todo cant be used yet since likes are only in recipe details
   Future<Recipe> getRecipe(int recipeId, {bool reload = false}) async {
     final stopwatch = Stopwatch()..start();
     Recipe recipe;
@@ -168,11 +167,11 @@ class RecipeService {
   Future<DefaultNutrients> getDefaultNutrients({bool reload = false}) async {
     bool exists = await hiveService.exists(boxName: "DefaultNutrients");
     if (exists && !reload) {
-      print("Getting data from Hive");
+      print("Getting DefaultNutrients from Hive");
       return (await hiveService.getBoxElements("DefaultNutrients"))
           .cast<DefaultNutrients>()[0];
     } else {
-      print("Getting data from Api");
+      print("Getting DefaultNutrients from Api");
       var result = await RecipeController.getDefaultNutrients();
       if (reload) await hiveService.clearBox(boxName: "DefaultNutrients");
       await hiveService.addElementsToBox([result], "DefaultNutrients");

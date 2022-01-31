@@ -10,12 +10,12 @@ class PrivateRecipeService {
     List<PrivateRecipe> _recipeList = [];
     bool exists = await hiveService.exists(boxName: "PrivateRecipes");
     if (exists && !reload) {
-      print("Getting data from Hive");
+      print("Getting PrivateRecipes from Hive");
       _recipeList = (await hiveService.getBoxElements("PrivateRecipes"))
           .cast<PrivateRecipe>();
       return _recipeList;
     } else {
-      print("Getting data from Api");
+      print("Getting PrivateRecipes from Api");
       var result = await RecipeController.getPrivateRecipes();
       _recipeList.addAll(result);
       if (reload) await hiveService.clearBox(boxName: "PrivateRecipes");
