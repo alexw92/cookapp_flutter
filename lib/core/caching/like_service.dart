@@ -11,13 +11,13 @@ class LikeService {
     List<TotalRecipeLikes> _totalRecipeLikesList = [];
     bool exists = await hiveService.exists(boxName: "TotalRecipeLikes");
     if (exists && !reload) {
-      print("Getting data from Hive");
+      print("Getting TotalRecipeLikes from Hive");
       _totalRecipeLikesList =
           (await hiveService.getBoxElements("TotalRecipeLikes"))
               .cast<TotalRecipeLikes>();
       return _totalRecipeLikesList;
     } else {
-      print("Getting data from Api");
+      print("Getting TotalRecipeLikes from Api");
       var result = await RecipeController.getTotalRecipeLikes();
       _totalRecipeLikesList.addAll(result);
       if (reload) await hiveService.clearBox(boxName: "TotalRecipeLikes");
@@ -35,12 +35,12 @@ class LikeService {
     List<UserRecipeLike> _userRecipeLikes = [];
     bool exists = await hiveService.exists(boxName: "UserRecipeLikes");
     if (exists && !reload) {
-      print("Getting data from Hive");
+      print("Getting UserRecipeLikes from Hive");
       _userRecipeLikes = (await hiveService.getBoxElements("UserRecipeLikes"))
           .cast<UserRecipeLike>();
       return _userRecipeLikes;
     } else {
-      print("Getting data from Api");
+      print("Getting UserRecipeLikes from Api");
       var result = await RecipeController.getUserRecipeLikes();
       _userRecipeLikes.addAll(result);
       if (reload) await hiveService.clearBox(boxName: "UserRecipeLikes");

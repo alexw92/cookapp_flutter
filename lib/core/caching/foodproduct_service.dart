@@ -10,12 +10,12 @@ class FoodProductService {
     List<FoodProduct> _foodProductList = [];
     bool exists = await hiveService.exists(boxName: "FoodProducts");
     if (exists && !reload) {
-      print("Getting data from Hive");
+      print("Getting FoodProduct from Hive");
       _foodProductList = (await hiveService.getBoxElements("FoodProducts"))
           .cast<FoodProduct>();
       return _foodProductList;
     } else {
-      print("Getting data from Api");
+      print("Getting FoodProduct from Api");
       var result = await FoodProductController.getFoodProducts();
       _foodProductList.addAll(result);
       if (reload) await hiveService.clearBox(boxName: "FoodProducts");
