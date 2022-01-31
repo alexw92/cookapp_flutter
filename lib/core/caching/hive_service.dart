@@ -8,7 +8,6 @@ class HiveService {
   }
 
   addElementsToBox<T>(List<T> items, String boxName) async {
-    print("adding elements to box $boxName");
     final openBox = await Hive.openBox(boxName);
 
     for (var item in items) {

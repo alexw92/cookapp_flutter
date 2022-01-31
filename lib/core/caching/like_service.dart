@@ -11,7 +11,7 @@ class LikeService {
     List<TotalRecipeLikes> _totalRecipeLikesList = [];
     bool exists = await hiveService.exists(boxName: "TotalRecipeLikes");
     if (exists && !reload) {
-      print("Getting TotalRecipeLikes from Hive");
+      // Getting TotalRecipeLikes from Hive
       _totalRecipeLikesList =
           (await hiveService.getBoxElements("TotalRecipeLikes"))
               .cast<TotalRecipeLikes>();
@@ -35,7 +35,7 @@ class LikeService {
     List<UserRecipeLike> _userRecipeLikes = [];
     bool exists = await hiveService.exists(boxName: "UserRecipeLikes");
     if (exists && !reload) {
-      print("Getting UserRecipeLikes from Hive");
+      // Getting UserRecipeLikes from Hive
       _userRecipeLikes = (await hiveService.getBoxElements("UserRecipeLikes"))
           .cast<UserRecipeLike>();
       return _userRecipeLikes;

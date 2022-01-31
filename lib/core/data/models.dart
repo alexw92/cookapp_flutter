@@ -358,7 +358,6 @@ class DefaultNutrients {
       this.changed});
 
   factory DefaultNutrients.fromJson(Map<String, dynamic> json) {
-    print(DateTime.parse(json['changed']));
     return DefaultNutrients(
         id: json['id'],
         recDailyFat: json['recDailyFat'],

@@ -10,7 +10,7 @@ class UserService {
     ReducedUser user;
     bool exists = await hiveService.exists(boxName: "Users");
     if (exists && !reload) {
-      print("Getting ReducedUser from Hive");
+      // Getting ReducedUser from Hive
       var _userList =
           (await hiveService.getBoxElements("Users")).cast<ReducedUser>();
       user = _userList[0];

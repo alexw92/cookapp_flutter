@@ -10,7 +10,7 @@ class FoodProductService {
     List<FoodProduct> _foodProductList = [];
     bool exists = await hiveService.exists(boxName: "FoodProducts");
     if (exists && !reload) {
-      print("Getting FoodProduct from Hive");
+     // Getting FoodProduct from Hive
       _foodProductList = (await hiveService.getBoxElements("FoodProducts"))
           .cast<FoodProduct>();
       return _foodProductList;

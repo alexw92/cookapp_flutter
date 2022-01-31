@@ -17,7 +17,7 @@ class RecipeService {
     List<Recipe> _recipeList = [];
     bool exists = await hiveService.exists(boxName: "Recipes");
     if (exists && !reload) {
-      print("Getting Recipe from Hive");
+      // Getting Recipe from Hive
       _recipeList =
           (await hiveService.getBoxElements("Recipes")).cast<Recipe>();
       return _recipeList;
@@ -167,7 +167,7 @@ class RecipeService {
   Future<DefaultNutrients> getDefaultNutrients({bool reload = false}) async {
     bool exists = await hiveService.exists(boxName: "DefaultNutrients");
     if (exists && !reload) {
-      print("Getting DefaultNutrients from Hive");
+      // Getting DefaultNutrients from Hive");
       return (await hiveService.getBoxElements("DefaultNutrients"))
           .cast<DefaultNutrients>()[0];
     } else {
