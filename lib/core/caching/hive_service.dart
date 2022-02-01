@@ -35,9 +35,11 @@ class HiveService {
     return openBox.putAll(entries);
   }
 
-  dynamic clearElement(dynamic key, String boxName) async {
+  Future<dynamic> clearElement(dynamic key, String boxName) async {
     final openBox = await Hive.openBox(boxName);
-    return await openBox.delete(key);
+    var toBeDeleted = await openBox.get(key);
+    await openBox.delete(key);
+    return toBeDeleted;
   }
 
   clearBox({String boxName}) async {
@@ -57,25 +59,6 @@ class HiveService {
     return boxList;
   }
 
-  addOrUpdateElementInBoxById(dynamic item, String boxName) async {
-    final openBox = await Hive.openBox(boxName);
-
-    var isInBox = openBox.values.any((element) => element.id == item.id);
-    if (!isInBox)
-      return openBox.add(item);
-    else {
-      var index = -1;
-      for (int i = 0; i < openBox.length; i++) {
-        index = i;
-        if (openBox.getAt(i).id == item.id) {
-          break;
-        }
-      }
-      await openBox.deleteAt(index);
-      return openBox.add(item);
-    }
-  }
-
   void clearElementFromBoxById(dynamic item, String boxName) async {
     final openBox = await Hive.openBox(boxName);
     var index = -1;
@@ -87,5 +70,4 @@ class HiveService {
     }
     await openBox.deleteAt(index);
   }
-
 }

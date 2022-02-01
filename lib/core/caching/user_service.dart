@@ -28,7 +28,7 @@ class UserService {
     return hiveService.clearBox(boxName: "Users");
   }
 
-  updateUser(ReducedUser user) async {
-    await hiveService.addOrUpdateElementInBoxById(user, "Users");
+  addOrUpdateUser(ReducedUser user) async {
+    await hiveService.putElement(user.id, user, "Users");
   }
 }

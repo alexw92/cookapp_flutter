@@ -267,6 +267,6 @@ class RecipeService {
   }
 
   addOrUpdateRecipe(Recipe recipe) async {
-    return hiveService.addOrUpdateElementInBoxById(recipe, "Recipes");
+    return hiveService.putElement(recipe.id, recipe, "Recipes");
   }
 }

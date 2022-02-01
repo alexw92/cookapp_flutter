@@ -55,7 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
           _profileNameTextController.text = value.displayName,
           usernameOrig = value.displayName,
           user = value,
-          userService.updateUser(user)
+          userService.addOrUpdateUser(user)
         });
   }
 
@@ -345,7 +345,7 @@ class _ProfilePageState extends State<ProfilePage> {
     UserController.updateUserData(UserDataEdit(displayName: userName))
         .then((value) => {
               user.displayName = value.displayName,
-              userService.updateUser(user),
+              userService.addOrUpdateUser(user),
               _profileNameTextController.text = value.displayName,
               usernameOrig = value.displayName,
               ScaffoldMessenger.of(context).removeCurrentSnackBar(),

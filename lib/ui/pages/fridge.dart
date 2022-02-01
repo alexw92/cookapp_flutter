@@ -447,15 +447,15 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
         item.onShoppingList = true;
         ownedGroceries.remove(item);
         missingGroceries.add(item);
-        await userFoodService.updateBoxValues(true, missingGroceries);
-        await userFoodService.updateBoxValues(false, ownedGroceries);
+        await userFoodService.addBoxValue(true, item);
+        await userFoodService.removeBoxValue(false, item);
         // changing grocery stock requires reloading of recipes
         NeedsRecipeUpdateState().recipesUpdateNeeded = true;
       } else {
         item = missingGroceries
             .firstWhereOrNull((item) => item.foodProductId == groceryId);
         item.onShoppingList = true;
-        await userFoodService.updateBoxValues(true, missingGroceries);
+        await userFoodService.addBoxValue(true, item);
         NeedsRecipeUpdateState().recipesUpdateNeeded = true;
         // item was missing before
         // item was on shopping List before -> cant happen i think
@@ -485,7 +485,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
           return;
         }
         item.onShoppingList = false;
-        await userFoodService.updateBoxValues(true, missingGroceries);
+        await userFoodService.addBoxValue(true, item);
         NeedsRecipeUpdateState().recipesUpdateNeeded = true;
         // item was missing before
         // item was not on shopping List before -> cant happen i think
@@ -502,6 +502,8 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
       }
       missingGroceries.remove(item);
       ownedGroceries.add(item);
+      await userFoodService.removeBoxValue(true, item);
+      await userFoodService.addBoxValue(false, item);
     } else if (setTo == false) {
       var item = ownedGroceries
           .firstWhereOrNull((item) => item.foodProductId == groceryId);
@@ -511,9 +513,9 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
       }
       ownedGroceries.remove(item);
       missingGroceries.add(item);
+      await userFoodService.addBoxValue(true, item);
+      await userFoodService.removeBoxValue(false, item);
     }
-    await userFoodService.updateBoxValues(true, missingGroceries);
-    await userFoodService.updateBoxValues(false, ownedGroceries);
     // changing grocery stock requires reloading of recipes
     NeedsRecipeUpdateState().recipesUpdateNeeded = true;
   }

@@ -29,6 +29,25 @@ class UserFoodService {
     }
   }
 
+  Future<UserFoodProduct> getUserFoodById(bool missingUserFood, int groceryId) {
+    String foodBoxName =
+        missingUserFood ? "MissingUserFoodPlusShoppingList" : "UserFood";
+    return hiveService.getElement(groceryId, foodBoxName);
+  }
+
+  Future<void> addBoxValue(bool missingUserFood, UserFoodProduct foodProduct) async {
+    String foodBoxName =
+    missingUserFood ? "MissingUserFoodPlusShoppingList" : "UserFood";
+    await hiveService.putElement(foodProduct.foodProductId, foodProduct, foodBoxName);
+  }
+
+  Future<UserFoodProduct> removeBoxValue(bool missingUserFood, UserFoodProduct foodProduct) async {
+    String foodBoxName =
+    missingUserFood ? "MissingUserFoodPlusShoppingList" : "UserFood";
+    var userFoodProduct = await hiveService.clearElement(foodProduct.foodProductId, foodBoxName);
+    return userFoodProduct as UserFoodProduct;
+  }
+
   updateBoxValues(
       bool missingUserFood, List<UserFoodProduct> foodProducts) async {
     String foodBoxName =

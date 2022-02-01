@@ -219,8 +219,10 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
         missingGroceries.remove(item);
         item.onShoppingList = false;
         ownedGroceries.add(item);
-        await userFoodService.updateBoxValues(false, ownedGroceries);
-        await userFoodService.updateBoxValues(true, missingGroceries);
+
+        await userFoodService.addBoxValue(false, item);
+        await userFoodService.removeBoxValue(true, item);
+
       } else {
         print("Remove $groceryId from shopping list");
         await UserFoodProductController.toggleUserFoodProduct(
@@ -229,7 +231,7 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
             .missingGroceries
             .firstWhereOrNull((element) => element.foodProductId == groceryId);
         item.onShoppingList = false;
-        await userFoodService.updateBoxValues(true, missingGroceries);
+        await userFoodService.addBoxValue(true, item);
       }
       var removedItem = tiles.removeAt(index);
       animatedListKey.currentState.removeItem(
