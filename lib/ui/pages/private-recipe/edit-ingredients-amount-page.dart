@@ -102,8 +102,10 @@ class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
     apiToken = await TokenStore().getToken();
   }
 
-  _onDismissedIngredient(index, direction) {
+  _onDismissedIngredient(index, direction) async {
+    await Future.delayed(Duration(milliseconds: 350), () {});
     privateRecipe.ingredients.removeAt(index);
+    setState(() {});
   }
 
   Widget getIngredientAmountTile(int index) {
