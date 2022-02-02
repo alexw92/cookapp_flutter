@@ -255,7 +255,6 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
                                 label: Text(
                                   "${recipe.prepTimeMinutes} min",
                                   style: TextStyle(
-                                      color: Colors.black54,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 backgroundColor: Colors.white,
@@ -270,7 +269,6 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
                                   Utility.getTranslatedDiet(
                                       context, recipe.diet),
                                   style: TextStyle(
-                                      color: Colors.black54,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 backgroundColor: Colors.white,
