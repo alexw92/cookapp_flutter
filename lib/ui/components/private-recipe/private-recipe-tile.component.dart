@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
 import 'package:cookable_flutter/common/constants.dart';
 import 'package:cookable_flutter/core/caching/firebase_image_service.dart';
+import 'package:cookable_flutter/core/caching/private_recipe_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/private-recipe-details-page.dart';
@@ -30,6 +31,7 @@ class PrivateRecipeTileComponent extends StatefulWidget {
 class _PrivateRecipeTileComponentState
     extends State<PrivateRecipeTileComponent> {
   PrivateRecipe privateRecipe;
+  PrivateRecipeService privateRecipeService = new PrivateRecipeService();
   FirebaseImageService firebaseImageService = FirebaseImageService();
   String apiToken;
   String recipeImgUrl;
@@ -55,8 +57,8 @@ class _PrivateRecipeTileComponentState
     var imgUrl =
         await firebaseImageService.getFirebaseImage(privateRecipe.imgSrc);
     setState(() {
-      defaultImg = false;
       recipeImgUrl = imgUrl;
+      defaultImg = false;
     });
   }
 
@@ -328,6 +330,7 @@ class _PrivateRecipeTileComponentState
 
   _editPrivateRecipeImg(PrivateRecipe privateRecipe, bool fromGallery) async {
     var image = await pickImage(fromGallery: fromGallery);
+    Navigator.pop(context);
     setState(() {
       showProgressIndicatorImage = true;
     });
@@ -336,13 +339,11 @@ class _PrivateRecipeTileComponentState
         (value) async => {
               updatedPrivateRecipe =
                   await RecipeController.getPrivateRecipe(privateRecipe.id),
-              setState(() {
-                this.privateRecipe = updatedPrivateRecipe;
-              }),
+              await this.privateRecipeService.addOrUpdatePrivateRecipe(updatedPrivateRecipe),
+              this.privateRecipe = updatedPrivateRecipe,
               getImageUrl(),
-              setState(() {
-                showProgressIndicatorImage = false;
-              }),
+              showProgressIndicatorImage = false,
+              setState(() {}),
               ScaffoldMessenger.of(context).removeCurrentSnackBar(),
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
