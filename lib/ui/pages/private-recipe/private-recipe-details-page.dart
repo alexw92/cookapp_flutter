@@ -1,13 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
+import 'package:collection/src/iterable_extensions.dart';
+import 'package:cookable_flutter/common/NeedsRecipeUpdateState.dart';
+import 'package:cookable_flutter/common/constants.dart';
 import 'package:cookable_flutter/core/caching/firebase_image_service.dart';
 import 'package:cookable_flutter/core/caching/private_recipe_service.dart';
 import 'package:cookable_flutter/core/caching/recipe_service.dart';
 import 'package:cookable_flutter/core/caching/userfood_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
+import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/components/ingredient-tile.component.dart';
 import 'package:cookable_flutter/ui/components/nutrient-tile.component.dart';
+import 'package:cookable_flutter/ui/pages/recipe/recipe-missing-ingredient-dialog.dart';
 import 'package:cookable_flutter/ui/util/formatters.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +37,7 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
   UserFoodService userFoodService = UserFoodService();
   FirebaseImageService firebaseImageService = FirebaseImageService();
   List<UserFoodProduct> userOwnedFood;
+  List<UserFoodProduct> missingUserFoodAndShoppingList;
   DefaultNutrients defaultNutrients;
   int dailyCalories;
   double dailyCarbohydrate;
@@ -44,6 +50,11 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
   List<Ingredient> ingredientsTmp;
   Animation<double> animation;
   AnimationController controller;
+  List<IngredientTileComponent> myTiles = [];
+  int updateIngredientsKey = 1;
+  int _toggledGroceryId;
+  bool _toggledGroceryNewState;
+  bool _toggledGroceryNewStateOnShoppingList = false;
 
   _PrivateRecipeDetailsPageState();
 
@@ -55,6 +66,7 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
     dailyProtein = defaultNutrients.recDailyProtein;
     dailyFat = defaultNutrients.recDailyFat;
     userOwnedFood = await userFoodService.getUserFood(false);
+    missingUserFoodAndShoppingList = await userFoodService.getUserFood(true);
     this.recipe = await privateRecipeService.getPrivateRecipe(this.widget.recipeId);
     await getImageUrl();
     var ingredientsCopy = copyIngredients(recipe.ingredients);
@@ -311,24 +323,52 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
   }
 
   List<Widget> getAllIngredientTiles() {
-    List<IngredientTileComponent> myTiles = [];
-    for (int i = 0; i < ingredientsTmp.length; i++) {
-      var ingredient = ingredientsTmp[i];
-      var hasIngredient = userOwnedFood
-          .any((element) => element.foodProductId == ingredient.foodProductId);
-      myTiles.add(
-        IngredientTileComponent(
-            ingredient: ingredient,
-            apiToken: apiToken,
-            userOwns: hasIngredient),
-      );
-    }
-    myTiles.sort((a, b) {
-      if (b.userOwns) {
-        return 1;
+    if(myTiles.isEmpty) {
+      for (int i = 0; i < ingredientsTmp.length; i++) {
+        var ingredient = ingredientsTmp[i];
+        var hasIngredient = userOwnedFood
+            .any((element) =>
+        element.foodProductId == ingredient.foodProductId);
+        var onShoppingList = missingUserFoodAndShoppingList.any((element) =>
+        element.foodProductId == ingredient.foodProductId &&
+            element.onShoppingList);
+        myTiles.add(
+            IngredientTileComponent(
+                ingredient: ingredient,
+                apiToken: apiToken,
+                userOwns: hasIngredient,
+                onShoppingList: onShoppingList == null ? false : onShoppingList,
+                onTap: () => {_showMissingIngredientDialog(ingredient)})
+        );
       }
-      return -1;
-    });
+      myTiles.sort((a, b) {
+        if (!a.userOwns && b.userOwns) {
+          return 1;
+        } else if (a.userOwns && !b.userOwns) {
+          return -1;
+        } else {
+          if (!a.onShoppingList && b.onShoppingList)
+            return 1;
+          else if (a.onShoppingList && !b.onShoppingList) return -1;
+          return 0;
+        }
+      });
+    }
+    // check if user switched ingredient manually
+    else if (_toggledGroceryId != null) {
+    var toggledIngredientTile = myTiles.firstWhereOrNull(
+    (element) => element.ingredient.foodProductId == _toggledGroceryId);
+    if (toggledIngredientTile == null)
+    print("Error: $_toggledGroceryId not found in IngredientTiles!");
+    else {
+    toggledIngredientTile.userOwns = _toggledGroceryNewState;
+    toggledIngredientTile.onShoppingList =
+    _toggledGroceryNewStateOnShoppingList;
+    }
+    // reset
+    _toggledGroceryId = null;
+    }
+
     return myTiles;
   }
 
@@ -368,6 +408,7 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
     if (recipe.ingredients.length != 0) {
       List<Widget> tiles = getAllIngredientTiles();
       return Column(
+        key: ValueKey(updateIngredientsKey),
         children: <Widget>[
           for (int i = 0; i <= tiles.length / 3; i++)
             new Row(
@@ -467,4 +508,182 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
       )
     ]);
   }
+
+  Future<void> _showMissingIngredientDialog(Ingredient ingredient) async {
+    // var ownedGroceries = await userFoodService.getUserFood(false);
+    // var missingGroceriesAndShoppingList = await userFoodService.getUserFood(true);
+    // print(
+    //     "items in cache missing: ${missingGroceriesAndShoppingList.where((element) => element.onShoppingList == false).length}");
+    // print("items in cache owned: ${ownedGroceries.length}");
+    // print(
+    //     "items in cache shoppingList: ${missingGroceriesAndShoppingList.where((element) => element.onShoppingList == true).length}");
+    // print(
+    //     "items in widget missing: ${missingUserFoodAndShoppingList.where((element) => element.onShoppingList == false).length}");
+    // print("items in widget owned: ${userOwnedFood.length}");
+    // print(
+    //     "items in widget shoppingList: ${missingUserFoodAndShoppingList.where((element) => element.onShoppingList == true).length}");
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return new MissingIngredientDialog(ingredient: ingredient);
+      },
+    ).then(
+            (res) async => {
+          if (res == Constants.UserHasIngredient)
+            {
+              UserFoodProductController.toggleUserFoodProduct(
+                  ingredient.foodProductId, true, null)
+                  .then((value) => {
+                // update hive box and ui
+                toggleIngredientState(
+                    ingredient.foodProductId, true),
+              })
+            }
+          else if (res == Constants.UserLacksIngredient)
+            {
+              UserFoodProductController.toggleUserFoodProduct(
+                  ingredient.foodProductId, false, null)
+                  .then((value) => {
+                toggleIngredientState(
+                    ingredient.foodProductId, false),
+              }),
+            }
+          else if (res ==
+                Constants
+                    .UserLacksIngredientAndWantsToAddToList) // add to shopping list
+              {
+                UserFoodProductController.toggleUserFoodProduct(
+                    ingredient.foodProductId, null, true)
+                    .then((value) => toggleIngredientToShoppingList(
+                    ingredient.foodProductId)),
+              }
+            else
+              {
+                // Dialog was closed, do nothing!
+              }
+        },
+        onError: (error) =>
+        {print("Error in missingIngredientDialog " + error)});
+  }
+
+  Future<void> toggleIngredientState(int groceryId, bool setTo) async {
+    List<UserFoodProduct> ownedGroceries =
+    await userFoodService.getUserFood(false);
+    List<UserFoodProduct> missingGroceriesAndShoppingList =
+    await userFoodService.getUserFood(true);
+    if (setTo == true) {
+      var item = missingGroceriesAndShoppingList
+          .firstWhereOrNull((item) => item.foodProductId == groceryId);
+      var itemOwned = ownedGroceries
+          .firstWhereOrNull((item) => item.foodProductId == groceryId);
+      // check if item had the same state before
+      if (itemOwned != null) {
+        if (itemOwned.onShoppingList) {
+          print("Error: Item owned was on shopping list!");
+        }
+        print("Item set to owned which was already owned. Nothing to do");
+        return;
+      }
+      if (item == null) {
+        print("ERROR: $groceryId not found in missingGroceries");
+        return;
+      } else {
+        item.onShoppingList = false;
+        missingGroceriesAndShoppingList.remove(item);
+        ownedGroceries.add(item);
+      }
+    } else {
+      var item = missingGroceriesAndShoppingList
+          .firstWhereOrNull((item) => item.foodProductId == groceryId);
+      // check if item had the same state before
+      if (item != null) {
+        if (item.onShoppingList == false) {
+          print("Item was missing is set to missing, nothing todo.");
+          return;
+        } // item was in shopping list -> remove it
+        else {
+          setState(() {
+            item.onShoppingList = false;
+          });
+        }
+      } else {
+        // item was not in missing list
+        item = ownedGroceries
+            .firstWhereOrNull((item) => item.foodProductId == groceryId);
+        if (item == null) {
+          print("ERROR: $groceryId not found in ownedGroceries!");
+          //debug
+          item = missingGroceriesAndShoppingList
+              .firstWhereOrNull((item) => item.foodProductId == groceryId);
+          if (item != null) print("But now found in missing food products!");
+
+          //debug end
+          return;
+        } else {
+          ownedGroceries.remove(item);
+          missingGroceriesAndShoppingList.add(item);
+        }
+      }
+    }
+
+    userOwnedFood = ownedGroceries;
+    missingUserFoodAndShoppingList = missingGroceriesAndShoppingList;
+    await userFoodService.updateBoxValues(true, missingUserFoodAndShoppingList);
+    await userFoodService.updateBoxValues(false, userOwnedFood);
+    _toggledGroceryId = groceryId;
+    _toggledGroceryNewState = setTo;
+    _toggledGroceryNewStateOnShoppingList = false;
+    updateIngredientsKey++;
+    // changing grocery stock requires reloading of recipes
+    NeedsRecipeUpdateState().recipesUpdateNeeded = true;
+    setState(() {});
+  }
+
+  toggleIngredientToShoppingList(int groceryId) async {
+    List<UserFoodProduct> missingGroceriesAndShoppingList =
+    await userFoodService.getUserFood(true);
+    missingUserFoodAndShoppingList = missingGroceriesAndShoppingList;
+    // item was missing before
+    var item = missingGroceriesAndShoppingList
+        .firstWhereOrNull((item) => item.foodProductId == groceryId);
+    if (item != null) {
+      //check if it was on shopping list before
+      if (item.onShoppingList) {
+        print("was on shopping list before, nothing to do");
+        return;
+      }
+      setState(() {
+        item.onShoppingList = true;
+        _toggledGroceryNewStateOnShoppingList = true;
+        _toggledGroceryNewState = false;
+        _toggledGroceryId = groceryId;
+        updateIngredientsKey++;
+      });
+      await userFoodService.updateBoxValues(
+          true, missingGroceriesAndShoppingList);
+      NeedsRecipeUpdateState().recipesUpdateNeeded = true;
+      return;
+    }
+    // item was owned before
+    item = userOwnedFood
+        .firstWhereOrNull((item) => item.foodProductId == groceryId);
+    if (item != null) {
+      item.onShoppingList = true;
+      userOwnedFood.remove(item);
+      missingGroceriesAndShoppingList.add(item);
+      await userFoodService.updateBoxValues(
+          true, missingGroceriesAndShoppingList);
+      await userFoodService.updateBoxValues(false, userOwnedFood);
+      _toggledGroceryNewStateOnShoppingList = true;
+      _toggledGroceryNewState = false;
+      _toggledGroceryId = groceryId;
+      updateIngredientsKey++;
+      setState(() {});
+      // changing grocery stock requires reloading of recipes
+      NeedsRecipeUpdateState().recipesUpdateNeeded = true;
+    } else {
+      print("Error: Item to set on shopping list was not found!");
+    }
+  }
+
 }

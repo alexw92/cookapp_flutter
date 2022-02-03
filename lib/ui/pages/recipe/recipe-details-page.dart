@@ -127,6 +127,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
       recipe.likes = likes;
     });
     await recipeService.addOrUpdateRecipe(recipe);
+
     /// if failed, you can do nothing
     // return success? !isLiked:isLiked;
 
@@ -254,8 +255,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
                                 avatar: Icon(Icons.access_time),
                                 label: Text(
                                   "${recipe.prepTimeMinutes} min",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold),
+                                  style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 backgroundColor: Colors.white,
                                 elevation: 6.0,
@@ -268,8 +268,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
                                 label: Text(
                                   Utility.getTranslatedDiet(
                                       context, recipe.diet),
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold),
+                                  style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 backgroundColor: Colors.white,
                                 elevation: 6.0,
