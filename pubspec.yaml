@@ -59,6 +59,10 @@ dependencies:
   hive: ^2.0.5
   hive_flutter: ^1.1.0
 
+  # ml required packages
+  google_ml_kit: 0.7.3
+  camera: ^0.8.1
+
   #generators
   hive_generator:
   build_runner:

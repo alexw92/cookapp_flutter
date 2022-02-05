@@ -1,3 +1,4 @@
+import 'package:cookable_flutter/core/object_detection/object_detector_view.dart';
 import 'package:cookable_flutter/ui/pages/fridge.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/private_recipes.dart';
 import 'package:cookable_flutter/ui/pages/profile.dart';
@@ -22,6 +23,7 @@ class _HomePageState extends State<HomePage> {
     RecipesComponent(),
     PrivateRecipesComponent(),
     ProfilePage(),
+    ObjectDetectorView()
   ];
 
   void _onItemTapped(int index) {
@@ -57,6 +59,10 @@ class _HomePageState extends State<HomePage> {
                 icon: Icon(Icons.person),
                 label: AppLocalizations.of(context).profile,
               ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.video_call_rounded),
+                label: "ML Test",
+              )
             ],
             currentIndex: _selectedIndex,
             unselectedItemColor: Colors.grey,
