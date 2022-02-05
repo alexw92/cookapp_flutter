@@ -11,6 +11,7 @@ class ObjectDetectorView extends StatefulWidget {
 }
 
 class _ObjectDetectorView extends State<ObjectDetectorView> {
+  // https://tfhub.dev/google/object_detection/mobile_object_labeler_v1/1
   LocalModel model = LocalModel("object_labeler.tflite");
   ObjectDetector objectDetector;
 
