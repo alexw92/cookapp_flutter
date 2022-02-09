@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:like_button/like_button.dart';
 
 class RecipeTileComponent extends StatefulWidget {
   Recipe recipe;
@@ -69,6 +70,45 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                     child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Wrap(spacing: 3, children: [
+                          Container(
+                              margin: EdgeInsets.only(top: 8, right: 3),
+                              child: LikeButton(
+                                size: 40,
+                                circleColor: CircleColor(
+                                    start: Color(0xffdd6666),
+                                    end: Color(0xffff3600)),
+                                likeCount: recipe.likes,
+                                isLiked: recipe.userLiked,
+                                likeBuilder: (bool isLiked) {
+                                  return isLiked
+                                      ? Icon(
+                                          Icons.favorite,
+                                          color: Colors.red,
+                                          size: 40,
+                                        )
+                                      : Icon(
+                                          Icons.favorite_outline_sharp,
+                                          color: Colors.black,
+                                          size: 40,
+                                        );
+                                },
+                                countBuilder:
+                                    (int count, bool isLiked, String text) {
+                                  var color = Colors.white;
+                                  Widget result;
+                                  if (count == 0) {
+                                    result = Text(
+                                      "",
+                                      style: TextStyle(color: color),
+                                    );
+                                  } else
+                                    result = Text(
+                                      text,
+                                      style: TextStyle(color: color),
+                                    );
+                                  return result;
+                                },
+                              )),
                           Chip(
                             labelPadding: EdgeInsets.all(4.0),
                             avatar: Utility.getIconForDiet(recipe.diet),
