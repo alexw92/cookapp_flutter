@@ -109,21 +109,26 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                                   return result;
                                 },
                               )),
-                          Chip(
-                            labelPadding: EdgeInsets.all(4.0),
-                            avatar: Utility.getIconForDiet(recipe.diet),
-                            label: Text(
-                              Utility.getTranslatedDiet(context, recipe.diet),
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12.0),
-                            ),
-                            backgroundColor: Colors.white,
-                            elevation: 6.0,
-                            shadowColor: Colors.grey[60],
-                            padding: EdgeInsets.all(8.0),
-                          ),
+                          Container(
+                              margin: EdgeInsets.only(top: 12),
+                              child: Chip(
+                                materialTapTargetSize:
+                                    MaterialTapTargetSize.shrinkWrap,
+                                //   labelPadding: EdgeInsets.all(4.0),
+                                avatar: Utility.getIconForDiet(recipe.diet),
+                                label: Text(
+                                  Utility.getTranslatedDiet(
+                                      context, recipe.diet),
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12.0),
+                                ),
+                                backgroundColor: Colors.white,
+                                elevation: 6.0,
+                                shadowColor: Colors.grey[60],
+                                // padding: EdgeInsets.all(8.0),
+                              )),
                           getHighProteinChipIfNeeded(),
                           getHighCarbChipIfNeeded(),
                         ])))),
@@ -144,7 +149,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                         textAlign: TextAlign.center))),
             recipe.uploadedBy != null
                 ? Positioned(
-                    bottom: 0,
+                    top: 0,
                     right: 0,
                     child: Column(children: [
                       Stack(children: [
@@ -156,12 +161,12 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                               imageRenderMethodForWeb:
                                   ImageRenderMethodForWeb.HttpGet),
                           // backgroundColor: Colors.transparent,
-                          radius: 40,
+                          radius: 30,
                         ),
                       ]),
                       Text(
                         recipe.uploadedBy.displayName,
-                        style: TextStyle(fontSize: 12, color: Colors.white),
+                        style: TextStyle(fontSize: 10, color: Colors.white),
                       )
                     ]))
                 : Container(),
@@ -186,9 +191,10 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
   }
 
   Widget getHighProteinChipIfNeeded() {
-    return (recipe.nutrients.isHighProteinRecipe)
-        ? Chip(
-            labelPadding: EdgeInsets.all(4.0),
+    return (!recipe.nutrients.isHighProteinRecipe)
+        ? Container(
+        margin: EdgeInsets.only(top: 4),
+        child: Chip(
             avatar: Icon(
               Icons.fitness_center,
             ),
@@ -203,14 +209,16 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
             elevation: 6.0,
             shadowColor: Colors.grey[60],
             padding: EdgeInsets.all(8.0),
-          )
+          ))
         : Container();
   }
 
   Widget getHighCarbChipIfNeeded() {
-    return (recipe.nutrients.isHighCarbRecipe)
-        ? Chip(
-            labelPadding: EdgeInsets.all(4.0),
+    return (!recipe.nutrients.isHighCarbRecipe)
+        ? Container(
+        margin: EdgeInsets.only(top: 4),
+        child: Chip(
+          //  labelPadding: EdgeInsets.all(4.0),
             avatar: Icon(
               Icons.directions_bike,
             ),
@@ -225,7 +233,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
             elevation: 6.0,
             shadowColor: Colors.grey[60],
             padding: EdgeInsets.all(8.0),
-          )
+          ))
         : Container();
   }
 
