@@ -67,71 +67,76 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                 child: Container(
                     height: 50,
                     margin: EdgeInsets.only(left: 5),
-                    child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Wrap(spacing: 3, children: [
-                          Container(
-                              margin: EdgeInsets.only(top: 8, right: 3),
-                              child: LikeButton(
-                                size: 40,
-                                circleColor: CircleColor(
-                                    start: Color(0xffdd6666),
-                                    end: Color(0xffff3600)),
-                                likeCount: recipe.likes,
-                                isLiked: recipe.userLiked,
-                                likeBuilder: (bool isLiked) {
-                                  return isLiked
-                                      ? Icon(
-                                          Icons.favorite,
-                                          color: Colors.red,
-                                          size: 40,
-                                        )
-                                      : Icon(
-                                          Icons.favorite_outline_sharp,
-                                          color: Colors.black,
-                                          size: 40,
-                                        );
-                                },
-                                countBuilder:
-                                    (int count, bool isLiked, String text) {
-                                  var color = Colors.white;
-                                  Widget result;
-                                  if (count == 0) {
-                                    result = Text(
-                                      "",
-                                      style: TextStyle(color: color),
-                                    );
-                                  } else
-                                    result = Text(
-                                      text,
-                                      style: TextStyle(color: color),
-                                    );
-                                  return result;
-                                },
-                              )),
-                          Container(
-                              margin: EdgeInsets.only(top: 12),
-                              child: Chip(
-                                materialTapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
-                                //   labelPadding: EdgeInsets.all(4.0),
-                                avatar: Utility.getIconForDiet(recipe.diet),
-                                label: Text(
-                                  Utility.getTranslatedDiet(
-                                      context, recipe.diet),
-                                  style: TextStyle(
+                    child: Container(
+                        child: (Row(children: [
+                      Container(
+                          margin: EdgeInsets.only(top: 8, right: 3),
+                          child: LikeButton(
+                            size: 40,
+                            circleColor: CircleColor(
+                                start: Color(0xffdd6666),
+                                end: Color(0xffff3600)),
+                            likeCount: recipe.likes,
+                            isLiked: recipe.userLiked,
+                            likeBuilder: (bool isLiked) {
+                              return isLiked
+                                  ? Icon(
+                                      Icons.favorite,
+                                      color: Colors.red,
+                                      size: 40,
+                                    )
+                                  : Icon(
+                                      Icons.favorite_outline_sharp,
                                       color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12.0),
-                                ),
-                                backgroundColor: Colors.white,
-                                elevation: 6.0,
-                                shadowColor: Colors.grey[60],
-                                // padding: EdgeInsets.all(8.0),
-                              )),
-                          getHighProteinChipIfNeeded(),
-                          getHighCarbChipIfNeeded(),
-                        ])))),
+                                      size: 40,
+                                    );
+                            },
+                            countBuilder:
+                                (int count, bool isLiked, String text) {
+                              var color = Colors.white;
+                              Widget result;
+                              if (count == 0) {
+                                result = Text(
+                                  "",
+                                  style: TextStyle(color: color),
+                                );
+                              } else
+                                result = Text(
+                                  text,
+                                  style: TextStyle(color: color),
+                                );
+                              return result;
+                            },
+                          )),
+                      Expanded(
+                          child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Wrap(spacing: 3, children: [
+                                Container(
+                                    margin: EdgeInsets.only(top: 12),
+                                    child: Chip(
+                                      materialTapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
+                                      //   labelPadding: EdgeInsets.all(4.0),
+                                      avatar:
+                                          Utility.getIconForDiet(recipe.diet),
+                                      label: Text(
+                                        Utility.getTranslatedDiet(
+                                            context, recipe.diet),
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 12.0),
+                                      ),
+                                      backgroundColor: Colors.white,
+                                      elevation: 6.0,
+                                      shadowColor: Colors.grey[60],
+                                      // padding: EdgeInsets.all(8.0),
+                                    )),
+                                getHighProteinChipIfNeeded(),
+                                getHighCarbChipIfNeeded(),
+                              ])))
+                    ]))))),
             Positioned(
                 top: 0,
                 left: 0,
@@ -170,47 +175,47 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
   Widget getHighProteinChipIfNeeded() {
     return (!recipe.nutrients.isHighProteinRecipe)
         ? Container(
-        margin: EdgeInsets.only(top: 4),
-        child: Chip(
-            avatar: Icon(
-              Icons.fitness_center,
-            ),
-            label: Text(
-              AppLocalizations.of(context).highProtein,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12.0),
-            ),
-            backgroundColor: Colors.white,
-            elevation: 6.0,
-            shadowColor: Colors.grey[60],
-            padding: EdgeInsets.all(8.0),
-          ))
+            margin: EdgeInsets.only(top: 4),
+            child: Chip(
+              avatar: Icon(
+                Icons.fitness_center,
+              ),
+              label: Text(
+                AppLocalizations.of(context).highProtein,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12.0),
+              ),
+              backgroundColor: Colors.white,
+              elevation: 6.0,
+              shadowColor: Colors.grey[60],
+              padding: EdgeInsets.all(8.0),
+            ))
         : Container();
   }
 
   Widget getHighCarbChipIfNeeded() {
     return (!recipe.nutrients.isHighCarbRecipe)
         ? Container(
-        margin: EdgeInsets.only(top: 4),
-        child: Chip(
-          //  labelPadding: EdgeInsets.all(4.0),
-            avatar: Icon(
-              Icons.directions_bike,
-            ),
-            label: Text(
-              AppLocalizations.of(context).highCarb,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12.0),
-            ),
-            backgroundColor: Colors.white,
-            elevation: 6.0,
-            shadowColor: Colors.grey[60],
-            padding: EdgeInsets.all(8.0),
-          ))
+            margin: EdgeInsets.only(top: 4),
+            child: Chip(
+              //  labelPadding: EdgeInsets.all(4.0),
+              avatar: Icon(
+                Icons.directions_bike,
+              ),
+              label: Text(
+                AppLocalizations.of(context).highCarb,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12.0),
+              ),
+              backgroundColor: Colors.white,
+              elevation: 6.0,
+              shadowColor: Colors.grey[60],
+              padding: EdgeInsets.all(8.0),
+            ))
         : Container();
   }
 
