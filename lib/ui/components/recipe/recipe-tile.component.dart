@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
 import 'package:cookable_flutter/common/NeedsRecipeUpdateState.dart';
+import 'package:cookable_flutter/core/caching/recipe_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
+import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/ui/pages/recipe/recipe-details-page.dart';
 import 'package:cookable_flutter/ui/util/formatters.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,9 +16,10 @@ class RecipeTileComponent extends StatefulWidget {
   Recipe recipe;
   String apiToken;
   final VoidCallback userFoodUpdatedCallback;
+  final Function likesUpdated;
 
   RecipeTileComponent(
-      {Key key, this.recipe, this.apiToken, this.userFoodUpdatedCallback})
+      {Key key, this.recipe, this.apiToken, this.userFoodUpdatedCallback, this.likesUpdated})
       : super(key: key);
 
   @override
@@ -27,6 +30,7 @@ class RecipeTileComponent extends StatefulWidget {
 class _RecipeTileComponentState extends State<RecipeTileComponent> {
   Recipe recipe;
   String apiToken;
+  RecipeService recipeService = RecipeService();
 
   _RecipeTileComponentState({this.recipe, this.apiToken});
 
@@ -78,6 +82,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                                 end: Color(0xffff3600)),
                             likeCount: recipe.likes,
                             isLiked: recipe.userLiked,
+                            onTap: onLikeButtonTapped,
                             likeBuilder: (bool isLiked) {
                               return isLiked
                                   ? Icon(
@@ -170,6 +175,21 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                         textAlign: TextAlign.center)))
           ]),
         ));
+  }
+
+  Future<bool> onLikeButtonTapped(bool isLiked) async {
+    /// send your request here
+    final int likes = await RecipeController.toggleRecipeLike(recipe.id);
+    setState(() {
+      recipe.userLiked = !recipe.userLiked;
+      recipe.likes = likes;
+    });
+    await recipeService.addOrUpdateRecipe(recipe);
+    this.widget.likesUpdated();
+    /// if failed, you can do nothing
+    // return success? !isLiked:isLiked;
+
+    return !isLiked;
   }
 
   Widget getHighProteinChipIfNeeded() {

@@ -39,9 +39,9 @@ class _RecipesComponentState extends State<RecipesComponent> {
     setState(() {
       recipeList = [];
     });
-
     recipeList = await recipeService
-        .getFilteredRecipesOffline(diet, highProteinFilter, highCarbFilter, doReload: reload, itemsInStockChanged: itemsInStockChanged)
+        .getFilteredRecipesOffline(diet, highProteinFilter, highCarbFilter,
+            doReload: reload, itemsInStockChanged: itemsInStockChanged)
         .catchError((error) {
       print("filtered recipes " + error.toString());
       setState(() {
@@ -64,8 +64,9 @@ class _RecipesComponentState extends State<RecipesComponent> {
     });
   }
 
-  Future<void> loadDefaultNutrition({bool reload=false}) async {
-    recipeService.getDefaultNutrients(reload: reload)
+  Future<void> loadDefaultNutrition({bool reload = false}) async {
+    recipeService
+        .getDefaultNutrients(reload: reload)
         .then((nutrients) => {defaultNutrients = nutrients});
   }
 
@@ -235,7 +236,8 @@ class _RecipesComponentState extends State<RecipesComponent> {
         RecipeTileComponent(
             recipe: recipeList[i],
             apiToken: apiToken,
-            userFoodUpdatedCallback: reloadRecipes),
+            userFoodUpdatedCallback: reloadRecipes,
+            likesUpdated: () => reloadRecipe(recipeList[i].id, i)),
       );
     }
     return myTiles;
@@ -243,6 +245,14 @@ class _RecipesComponentState extends State<RecipesComponent> {
 
   reloadRecipes() {
     loadRecipes(itemsInStockChanged: true);
+  }
+
+  reloadRecipe(id, index) async {
+    // Todo problem: when likes changed, pop does not return on same height as before
+    var recipe = await recipeService.getRecipe(id);
+    setState(() {
+      recipeList[index] = recipe;
+    });
   }
 
   Future<void> refreshTriggered() async {
