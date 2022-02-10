@@ -153,30 +153,6 @@ class _PrivateRecipeTileComponentState
                           getHighCarbChipIfNeeded()
                         ])))),
             Positioned(
-                bottom: 0,
-                right: 0,
-                child: Stack(children: [
-                  (privateRecipe.uploadedBy.fbUploadedPhoto == null &&
-                          privateRecipe.uploadedBy.providerPhoto == null)
-                      ? CircleAvatar(
-                          child: Icon(
-                            Icons.person,
-                            size: 74,
-                          ),
-                          radius: 40,
-                        )
-                      : CircleAvatar(
-                          backgroundImage: CachedNetworkImageProvider(
-                              (privateRecipe.uploadedBy.fbUploadedPhoto == null)
-                                  ? privateRecipe.uploadedBy.providerPhoto
-                                  : privateRecipe.uploadedBy.fbUploadedPhoto,
-                              imageRenderMethodForWeb:
-                                  ImageRenderMethodForWeb.HttpGet),
-                          // backgroundColor: Colors.transparent,
-                          radius: 40,
-                        ),
-                ])),
-            Positioned(
                 top: 36,
                 right: 0,
                 child: Column(children: [

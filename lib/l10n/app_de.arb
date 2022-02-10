@@ -98,6 +98,7 @@
     "shoppingList": "Einkaufsliste",
     "itemsAddedToShoppingListAreHere": "Lebensmittel, die du kaufen willst werden hier gesammelt",
     "clearList" : "Liste löschen",
-    "orderGroceries" : "Lebensmittel bestellen"
+    "orderGroceries" : "Lebensmittel bestellen",
+    "cookedBy": "Chef"
 
 }

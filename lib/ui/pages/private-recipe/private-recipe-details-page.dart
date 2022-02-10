@@ -67,7 +67,8 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
     dailyFat = defaultNutrients.recDailyFat;
     userOwnedFood = await userFoodService.getUserFood(false);
     missingUserFoodAndShoppingList = await userFoodService.getUserFood(true);
-    this.recipe = await privateRecipeService.getPrivateRecipe(this.widget.recipeId);
+    this.recipe =
+        await privateRecipeService.getPrivateRecipe(this.widget.recipeId);
     await getImageUrl();
     var ingredientsCopy = copyIngredients(recipe.ingredients);
     setState(() {
@@ -202,6 +203,41 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
                                   //  radius: 40,
                                 ))),
                     Positioned(
+                      top: 0,
+                      left: 0,
+                      child: Column(children: [
+                        Stack(children: [
+                          (recipe.uploadedBy.fbUploadedPhoto == null &&
+                                  recipe.uploadedBy.providerPhoto == null)
+                              ? CircleAvatar(
+                                  child: Icon(
+                                    Icons.person,
+                                    size: 74,
+                                  ),
+                                  radius: 40,
+                                )
+                              : CircleAvatar(
+                                  backgroundImage: CachedNetworkImageProvider(
+                                      (recipe.uploadedBy.fbUploadedPhoto ==
+                                              null)
+                                          ? recipe.uploadedBy.providerPhoto
+                                          : recipe.uploadedBy.fbUploadedPhoto,
+                                      imageRenderMethodForWeb:
+                                          ImageRenderMethodForWeb.HttpGet),
+                                  // backgroundColor: Colors.transparent,
+                                  radius: 40,
+                                ),
+                        ]),
+                        Text(
+                          AppLocalizations.of(context).cookedBy +
+                              "\n" +
+                              recipe.uploadedBy.displayName,
+                          style: TextStyle(fontSize: 10, color: Colors.white),
+                          textAlign: TextAlign.center,
+                        )
+                      ]),
+                    ),
+                    Positioned(
                       bottom: 0,
                       left: 0,
                       right: 0,
@@ -323,23 +359,20 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
   }
 
   List<Widget> getAllIngredientTiles() {
-    if(myTiles.isEmpty) {
+    if (myTiles.isEmpty) {
       for (int i = 0; i < ingredientsTmp.length; i++) {
         var ingredient = ingredientsTmp[i];
-        var hasIngredient = userOwnedFood
-            .any((element) =>
-        element.foodProductId == ingredient.foodProductId);
+        var hasIngredient = userOwnedFood.any(
+            (element) => element.foodProductId == ingredient.foodProductId);
         var onShoppingList = missingUserFoodAndShoppingList.any((element) =>
-        element.foodProductId == ingredient.foodProductId &&
+            element.foodProductId == ingredient.foodProductId &&
             element.onShoppingList);
-        myTiles.add(
-            IngredientTileComponent(
-                ingredient: ingredient,
-                apiToken: apiToken,
-                userOwns: hasIngredient,
-                onShoppingList: onShoppingList == null ? false : onShoppingList,
-                onTap: () => {_showMissingIngredientDialog(ingredient)})
-        );
+        myTiles.add(IngredientTileComponent(
+            ingredient: ingredient,
+            apiToken: apiToken,
+            userOwns: hasIngredient,
+            onShoppingList: onShoppingList == null ? false : onShoppingList,
+            onTap: () => {_showMissingIngredientDialog(ingredient)}));
       }
       myTiles.sort((a, b) {
         if (!a.userOwns && b.userOwns) {
@@ -356,17 +389,17 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
     }
     // check if user switched ingredient manually
     else if (_toggledGroceryId != null) {
-    var toggledIngredientTile = myTiles.firstWhereOrNull(
-    (element) => element.ingredient.foodProductId == _toggledGroceryId);
-    if (toggledIngredientTile == null)
-    print("Error: $_toggledGroceryId not found in IngredientTiles!");
-    else {
-    toggledIngredientTile.userOwns = _toggledGroceryNewState;
-    toggledIngredientTile.onShoppingList =
-    _toggledGroceryNewStateOnShoppingList;
-    }
-    // reset
-    _toggledGroceryId = null;
+      var toggledIngredientTile = myTiles.firstWhereOrNull(
+          (element) => element.ingredient.foodProductId == _toggledGroceryId);
+      if (toggledIngredientTile == null)
+        print("Error: $_toggledGroceryId not found in IngredientTiles!");
+      else {
+        toggledIngredientTile.userOwns = _toggledGroceryNewState;
+        toggledIngredientTile.onShoppingList =
+            _toggledGroceryNewStateOnShoppingList;
+      }
+      // reset
+      _toggledGroceryId = null;
     }
 
     return myTiles;
@@ -528,49 +561,49 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
         return new MissingIngredientDialog(ingredient: ingredient);
       },
     ).then(
-            (res) async => {
-          if (res == Constants.UserHasIngredient)
-            {
-              UserFoodProductController.toggleUserFoodProduct(
-                  ingredient.foodProductId, true, null)
-                  .then((value) => {
-                // update hive box and ui
-                toggleIngredientState(
-                    ingredient.foodProductId, true),
-              })
-            }
-          else if (res == Constants.UserLacksIngredient)
-            {
-              UserFoodProductController.toggleUserFoodProduct(
-                  ingredient.foodProductId, false, null)
-                  .then((value) => {
-                toggleIngredientState(
-                    ingredient.foodProductId, false),
-              }),
-            }
-          else if (res ==
-                Constants
-                    .UserLacksIngredientAndWantsToAddToList) // add to shopping list
-              {
-                UserFoodProductController.toggleUserFoodProduct(
-                    ingredient.foodProductId, null, true)
-                    .then((value) => toggleIngredientToShoppingList(
-                    ingredient.foodProductId)),
-              }
-            else
-              {
-                // Dialog was closed, do nothing!
-              }
-        },
+        (res) async => {
+              if (res == Constants.UserHasIngredient)
+                {
+                  UserFoodProductController.toggleUserFoodProduct(
+                          ingredient.foodProductId, true, null)
+                      .then((value) => {
+                            // update hive box and ui
+                            toggleIngredientState(
+                                ingredient.foodProductId, true),
+                          })
+                }
+              else if (res == Constants.UserLacksIngredient)
+                {
+                  UserFoodProductController.toggleUserFoodProduct(
+                          ingredient.foodProductId, false, null)
+                      .then((value) => {
+                            toggleIngredientState(
+                                ingredient.foodProductId, false),
+                          }),
+                }
+              else if (res ==
+                  Constants
+                      .UserLacksIngredientAndWantsToAddToList) // add to shopping list
+                {
+                  UserFoodProductController.toggleUserFoodProduct(
+                          ingredient.foodProductId, null, true)
+                      .then((value) => toggleIngredientToShoppingList(
+                          ingredient.foodProductId)),
+                }
+              else
+                {
+                  // Dialog was closed, do nothing!
+                }
+            },
         onError: (error) =>
-        {print("Error in missingIngredientDialog " + error)});
+            {print("Error in missingIngredientDialog " + error)});
   }
 
   Future<void> toggleIngredientState(int groceryId, bool setTo) async {
     List<UserFoodProduct> ownedGroceries =
-    await userFoodService.getUserFood(false);
+        await userFoodService.getUserFood(false);
     List<UserFoodProduct> missingGroceriesAndShoppingList =
-    await userFoodService.getUserFood(true);
+        await userFoodService.getUserFood(true);
     if (setTo == true) {
       var item = missingGroceriesAndShoppingList
           .firstWhereOrNull((item) => item.foodProductId == groceryId);
@@ -641,7 +674,7 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
 
   toggleIngredientToShoppingList(int groceryId) async {
     List<UserFoodProduct> missingGroceriesAndShoppingList =
-    await userFoodService.getUserFood(true);
+        await userFoodService.getUserFood(true);
     missingUserFoodAndShoppingList = missingGroceriesAndShoppingList;
     // item was missing before
     var item = missingGroceriesAndShoppingList
@@ -685,5 +718,4 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
       print("Error: Item to set on shopping list was not found!");
     }
   }
-
 }

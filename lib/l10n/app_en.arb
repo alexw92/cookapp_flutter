@@ -101,6 +101,7 @@
     "shoppingList": "Shopping List",
     "itemsAddedToShoppingListAreHere": "Groceries you plan to buy will be listed here",
     "clearList" : "Clear list",
-    "orderGroceries" : "Order groceries"
+    "orderGroceries" : "Order groceries",
+    "cookedBy": "Chef"
 
 }
