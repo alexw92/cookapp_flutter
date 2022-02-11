@@ -19,7 +19,11 @@ class RecipeTileComponent extends StatefulWidget {
   final Function likesUpdated;
 
   RecipeTileComponent(
-      {Key key, this.recipe, this.apiToken, this.userFoodUpdatedCallback, this.likesUpdated})
+      {Key key,
+      this.recipe,
+      this.apiToken,
+      this.userFoodUpdatedCallback,
+      this.likesUpdated})
       : super(key: key);
 
   @override
@@ -38,143 +42,146 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () => navigateToRecipePage(recipe.id),
-        child: Container(
-          alignment: Alignment.center,
-          clipBehavior: Clip.hardEdge,
-          margin: EdgeInsets.only(bottom: 10),
-          decoration: BoxDecoration(
-              border: Border.all(
-                color: Color.fromARGB(0, 0, 0, 0),
-              ),
-              borderRadius: BorderRadius.all(Radius.circular(20))),
-          child: Stack(fit: StackFit.expand, children: [
-            Container(
-                height: 300,
-                width: 300,
-                color: Colors.grey,
-                child: FittedBox(
-                    fit: BoxFit.fill,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image(
-                        // needs --web-renderer html
-                        image: CachedNetworkImageProvider(recipe.imgSrc,
-                            imageRenderMethodForWeb:
-                                ImageRenderMethodForWeb.HttpGet),
-                        // backgroundColor: Colors.transparent,
-                      ),
-                    ))),
-            Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                    height: 50,
-                    margin: EdgeInsets.only(left: 5),
+            child: Container(
+            alignment: Alignment.center,
+            clipBehavior: Clip.hardEdge,
+            margin: EdgeInsets.only(bottom: 10),
+            height: 400,
+            decoration: BoxDecoration(
+                border: Border.all(
+                  color: Color.fromARGB(0, 0, 0, 0),
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(20))),
+            child: Stack(fit: StackFit.expand, children: [
+                Container(
+                    height: 400,
+                    width: 300,
+                    color: Colors.grey,
+                    child: FittedBox(
+                        fit: BoxFit.fill,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image(
+                            // needs --web-renderer html
+                            image: CachedNetworkImageProvider(recipe.imgSrc,
+                                imageRenderMethodForWeb:
+                                    ImageRenderMethodForWeb.HttpGet),
+                            // backgroundColor: Colors.transparent,
+                          ),
+                        ))),
+                Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
                     child: Container(
-                        child: (Row(children: [
-                      Container(
-                          margin: EdgeInsets.only(top: 8, right: 3),
-                          child: LikeButton(
-                            size: 40,
-                            circleColor: CircleColor(
-                                start: Color(0xffdd6666),
-                                end: Color(0xffff3600)),
-                            likeCount: recipe.likes,
-                            isLiked: recipe.userLiked,
-                            onTap: onLikeButtonTapped,
-                            likeBuilder: (bool isLiked) {
-                              return isLiked
-                                  ? Icon(
-                                      Icons.favorite,
-                                      color: Colors.red,
-                                      size: 40,
-                                    )
-                                  : Icon(
-                                      Icons.favorite_outline_sharp,
-                                      color: Colors.black,
-                                      size: 40,
+                        height: 50,
+                        margin: EdgeInsets.only(left: 5),
+                        child: Container(
+                            child: (Row(children: [
+                          Container(
+                              margin: EdgeInsets.only(top: 8, right: 3),
+                              child: LikeButton(
+                                size: 40,
+                                circleColor: CircleColor(
+                                    start: Color(0xffdd6666),
+                                    end: Color(0xffff3600)),
+                                likeCount: recipe.likes,
+                                isLiked: recipe.userLiked,
+                                onTap: onLikeButtonTapped,
+                                likeBuilder: (bool isLiked) {
+                                  return isLiked
+                                      ? Icon(
+                                          Icons.favorite,
+                                          color: Colors.red,
+                                          size: 40,
+                                        )
+                                      : Icon(
+                                          Icons.favorite_outline_sharp,
+                                          color: Colors.black,
+                                          size: 40,
+                                        );
+                                },
+                                countBuilder:
+                                    (int count, bool isLiked, String text) {
+                                  var color = Colors.white;
+                                  Widget result;
+                                  if (count == 0) {
+                                    result = Text(
+                                      "",
+                                      style: TextStyle(color: color),
                                     );
-                            },
-                            countBuilder:
-                                (int count, bool isLiked, String text) {
-                              var color = Colors.white;
-                              Widget result;
-                              if (count == 0) {
-                                result = Text(
-                                  "",
-                                  style: TextStyle(color: color),
-                                );
-                              } else
-                                result = Text(
-                                  text,
-                                  style: TextStyle(color: color),
-                                );
-                              return result;
-                            },
-                          )),
-                      Expanded(
-                          child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Wrap(spacing: 3, children: [
-                                Container(
-                                    margin: EdgeInsets.only(top: 12),
-                                    child: Chip(
-                                      materialTapTargetSize:
-                                          MaterialTapTargetSize.shrinkWrap,
-                                      //   labelPadding: EdgeInsets.all(4.0),
-                                      avatar:
-                                          Utility.getIconForDiet(recipe.diet),
-                                      label: Text(
-                                        Utility.getTranslatedDiet(
-                                            context, recipe.diet),
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12.0),
-                                      ),
-                                      backgroundColor: Colors.white,
-                                      elevation: 6.0,
-                                      shadowColor: Colors.grey[60],
-                                      // padding: EdgeInsets.all(8.0),
-                                    )),
-                                getHighProteinChipIfNeeded(),
-                                getHighCarbChipIfNeeded(),
-                              ])))
-                    ]))))),
-            Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                    height: 30,
-                    decoration: BoxDecoration(
-                        color: Color.fromARGB(200, 255, 255, 255),
-                        border: Border.all(
-                          color: Color.fromARGB(0, 0, 0, 0),
-                        ),
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
-                    child: Text(this.recipe.name,
-                        style: TextStyle(fontSize: 20),
-                        textAlign: TextAlign.center))),
-            Positioned(
-                top: 35,
-                left: 0,
-                right: 0,
-                child: Container(
-                    height: 30,
-                    decoration: BoxDecoration(
-                        color: Color.fromARGB(200, 255, 255, 255),
-                        border: Border.all(
-                          color: Color.fromARGB(0, 0, 0, 0),
-                        ),
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
-                    child: Text(
-                        "${Intl.plural(this.recipe.missingUserFoodProducts.length, zero: "${AppLocalizations.of(context).noMissingIngredients}", one: "${this.recipe.missingUserFoodProducts.length} ${AppLocalizations.of(context).missingIngredient}", other: "${this.recipe.missingUserFoodProducts.length} ${AppLocalizations.of(context).missingIngredients}")}",
-                        style: TextStyle(fontSize: 20),
-                        textAlign: TextAlign.center)))
-          ]),
-        ));
+                                  } else
+                                    result = Text(
+                                      text,
+                                      style: TextStyle(color: color),
+                                    );
+                                  return result;
+                                },
+                              )),
+                          Expanded(
+                              child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Wrap(spacing: 3, children: [
+                                    Container(
+                                        margin: EdgeInsets.only(top: 12),
+                                        child: Chip(
+                                          materialTapTargetSize:
+                                              MaterialTapTargetSize.shrinkWrap,
+                                          //   labelPadding: EdgeInsets.all(4.0),
+                                          avatar: Utility.getIconForDiet(
+                                              recipe.diet),
+                                          label: Text(
+                                            Utility.getTranslatedDiet(
+                                                context, recipe.diet),
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12.0),
+                                          ),
+                                          backgroundColor: Colors.white,
+                                          elevation: 6.0,
+                                          shadowColor: Colors.grey[60],
+                                          // padding: EdgeInsets.all(8.0),
+                                        )),
+                                    getHighProteinChipIfNeeded(),
+                                    getHighCarbChipIfNeeded(),
+                                  ])))
+                        ]))))),
+                Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                        height: 30,
+                        decoration: BoxDecoration(
+                            color: Color.fromARGB(200, 255, 255, 255),
+                            border: Border.all(
+                              color: Color.fromARGB(0, 0, 0, 0),
+                            ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        child: Text(this.recipe.name,
+                            style: TextStyle(fontSize: 20),
+                            textAlign: TextAlign.center))),
+                Positioned(
+                    top: 35,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                        height: 30,
+                        decoration: BoxDecoration(
+                            color: Color.fromARGB(200, 255, 255, 255),
+                            border: Border.all(
+                              color: Color.fromARGB(0, 0, 0, 0),
+                            ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        child: Text(
+                            "${Intl.plural(this.recipe.missingUserFoodProducts.length, zero: "${AppLocalizations.of(context).noMissingIngredients}", one: "${this.recipe.missingUserFoodProducts.length} ${AppLocalizations.of(context).missingIngredient}", other: "${this.recipe.missingUserFoodProducts.length} ${AppLocalizations.of(context).missingIngredients}")}",
+                            style: TextStyle(fontSize: 20),
+                            textAlign: TextAlign.center)))
+              ]),
+            ));
   }
 
   Future<bool> onLikeButtonTapped(bool isLiked) async {
@@ -186,6 +193,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
     });
     await recipeService.addOrUpdateRecipe(recipe);
     this.widget.likesUpdated();
+
     /// if failed, you can do nothing
     // return success? !isLiked:isLiked;
 

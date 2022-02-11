@@ -70,7 +70,7 @@ class _PrivateRecipeTileComponentState
         child: Container(
           alignment: Alignment.center,
           clipBehavior: Clip.hardEdge,
-          height: 300,
+          height: 400,
           margin: EdgeInsets.only(bottom: 10),
           decoration: BoxDecoration(
               border: Border.all(
@@ -79,7 +79,7 @@ class _PrivateRecipeTileComponentState
               borderRadius: BorderRadius.all(Radius.circular(20))),
           child: Stack(fit: StackFit.expand, children: [
             Container(
-              height: 300,
+              height: 400,
               width: 300,
               color: Colors.grey,
               child: FittedBox(
