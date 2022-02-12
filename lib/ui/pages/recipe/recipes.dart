@@ -18,15 +18,13 @@ class RecipesComponent extends StatefulWidget {
   _RecipesComponentState createState() => _RecipesComponentState();
 }
 
-class _RecipesComponentState extends State<RecipesComponent>
-    with SingleTickerProviderStateMixin {
+class _RecipesComponentState extends State<RecipesComponent> {
   List<Recipe> recipeList = [];
   RecipeService recipeService = RecipeService();
   DefaultNutrients defaultNutrients;
   String apiToken;
   bool loadingFromApi = false;
   bool error = false;
-  TabController _tabController;
 
   void loadRecipes({reload = false, itemsInStockChanged = false}) async {
     setState(() {
@@ -75,7 +73,6 @@ class _RecipesComponentState extends State<RecipesComponent>
   @override
   void initState() {
     super.initState();
-    _tabController = new TabController(length: 2, vsync: this);
     var itemsInStockChanged = NeedsRecipeUpdateState().recipesUpdateNeeded;
     loadRecipes(itemsInStockChanged: itemsInStockChanged);
   }
@@ -158,16 +155,7 @@ class _RecipesComponentState extends State<RecipesComponent>
               )
             ],
           ),
-          body: Scaffold(
-              appBar: AppBar(
-                  toolbarHeight: 0,
-                  bottom: TabBar(
-                      controller: _tabController,
-                      isScrollable: true,
-                      tabs: [
-                        Tab(text: AppLocalizations.of(context).tab_fruits),
-                        Tab(text: AppLocalizations.of(context).tab_vegetables)
-                      ])),
+
               body: RefreshIndicator(
                   onRefresh: refreshTriggered,
                   child: Container(
@@ -180,7 +168,7 @@ class _RecipesComponentState extends State<RecipesComponent>
                           padding: const EdgeInsets.all(0),
                           children: [...getAllTiles()]),
                     ),
-                  ))));
+                  )));
     else
       return Scaffold(
           appBar: AppBar(

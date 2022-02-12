@@ -99,6 +99,8 @@
     "itemsAddedToShoppingListAreHere": "Lebensmittel, die du kaufen willst werden hier gesammelt",
     "clearList" : "Liste löschen",
     "orderGroceries" : "Lebensmittel bestellen",
-    "cookedBy": "Chef"
+    "cookedBy": "Chef",
+    "tab_favouriteRecipes" : "Lieblingsrezepte",
+    "tab_yourRecipes" : "Deine Rezepte"
 
 }

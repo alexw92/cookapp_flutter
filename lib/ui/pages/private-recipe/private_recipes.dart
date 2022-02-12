@@ -20,7 +20,8 @@ class PrivateRecipesComponent extends StatefulWidget {
       _PrivateRecipesComponentState();
 }
 
-class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
+class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
+    with SingleTickerProviderStateMixin {
   List<PrivateRecipe> recipeList = [];
   PrivateRecipeService privateRecipeService = PrivateRecipeService();
   RecipeService recipeService = RecipeService();
@@ -28,6 +29,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
   String apiToken;
   bool loadingFromApi = false;
   bool error = false;
+  TabController _tabController;
 
   void loadRecipes({reload = false}) async {
     setState(() {
@@ -73,6 +75,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
   @override
   void initState() {
     super.initState();
+    _tabController = new TabController(length: 2, vsync: this);
     loadRecipes();
   }
 
@@ -150,38 +153,48 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
               )
             ],
           ),
-          body: RefreshIndicator(
-              onRefresh: refreshTriggered,
-              child: Container(
-                color: Colors.green,
-                child: Container(
-                  // height: 400,
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: recipeList.isNotEmpty
-                      ? ListView(
-                          primary: true,
-                          padding: const EdgeInsets.all(0),
-                          children: [...getAllTiles()],
-                        )
-                      : Center(
-                          child: Card(
-                            elevation: 20,
-                              child: Padding(
-                                  padding: EdgeInsets.all(10),
-                                  child: Wrap(children: [
-                                    Text(
-                                      AppLocalizations.of(context)
-                                          .prettyEmptyHere,
-                                      style: TextStyle(fontSize: 26),
-                                    ),
-                                    Text(
-                                      AppLocalizations.of(context)
-                                          .likeOrCreateRecipeToAdd,
-                                      style: TextStyle(fontSize: 16),
-                                    )
-                                  ])))),
-                ),
-              )));
+          body: Scaffold(
+              appBar: AppBar(
+                  toolbarHeight: 0,
+                  bottom: TabBar(
+                      controller: _tabController,
+                      isScrollable: true,
+                      tabs: [
+                        Tab(text: AppLocalizations.of(context).tab_favouriteRecipes),
+                        Tab(text: AppLocalizations.of(context).tab_yourRecipes)
+                      ])),
+              body: RefreshIndicator(
+                  onRefresh: refreshTriggered,
+                  child: Container(
+                    color: Colors.green,
+                    child: Container(
+                      // height: 400,
+                      margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      child: recipeList.isNotEmpty
+                          ? ListView(
+                              primary: true,
+                              padding: const EdgeInsets.all(0),
+                              children: [...getAllTiles()],
+                            )
+                          : Center(
+                              child: Card(
+                                  elevation: 20,
+                                  child: Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: Wrap(children: [
+                                        Text(
+                                          AppLocalizations.of(context)
+                                              .prettyEmptyHere,
+                                          style: TextStyle(fontSize: 26),
+                                        ),
+                                        Text(
+                                          AppLocalizations.of(context)
+                                              .likeOrCreateRecipeToAdd,
+                                          style: TextStyle(fontSize: 16),
+                                        )
+                                      ])))),
+                    ),
+                  ))));
     else
       return Scaffold(
           appBar: AppBar(
@@ -328,7 +341,8 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent> {
         (privateRecipe) async => {
               if (privateRecipe != null)
                 {
-                  await privateRecipeService.addOrUpdatePrivateRecipe(privateRecipe),
+                  await privateRecipeService
+                      .addOrUpdatePrivateRecipe(privateRecipe),
                   _openEditRecipeScreen(privateRecipe)
                 }
             },
