@@ -219,10 +219,13 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
                         right: 0,
                         child: Row(
                           children: [
-                            Text(this.recipe.name,
+                            Expanded(
+                                child: FittedBox(
+                                  fit: BoxFit.contain,
+                                  child: Text(this.recipe.name,
                                 style: TextStyle(
-                                    fontSize: 30, color: Colors.white),
-                                textAlign: TextAlign.center),
+                                    color: Colors.white),
+                                textAlign: TextAlign.center))),
                             LikeButton(
                               size: 40,
                               circleColor: CircleColor(
