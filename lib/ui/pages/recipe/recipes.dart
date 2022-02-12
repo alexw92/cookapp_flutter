@@ -18,13 +18,15 @@ class RecipesComponent extends StatefulWidget {
   _RecipesComponentState createState() => _RecipesComponentState();
 }
 
-class _RecipesComponentState extends State<RecipesComponent> {
+class _RecipesComponentState extends State<RecipesComponent>
+    with SingleTickerProviderStateMixin {
   List<Recipe> recipeList = [];
   RecipeService recipeService = RecipeService();
   DefaultNutrients defaultNutrients;
   String apiToken;
   bool loadingFromApi = false;
   bool error = false;
+  TabController _tabController;
 
   void loadRecipes({reload = false, itemsInStockChanged = false}) async {
     setState(() {
@@ -73,6 +75,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
   @override
   void initState() {
     super.initState();
+    _tabController = new TabController(length: 2, vsync: this);
     var itemsInStockChanged = NeedsRecipeUpdateState().recipesUpdateNeeded;
     loadRecipes(itemsInStockChanged: itemsInStockChanged);
   }
@@ -155,20 +158,29 @@ class _RecipesComponentState extends State<RecipesComponent> {
               )
             ],
           ),
-          body: RefreshIndicator(
-              onRefresh: refreshTriggered,
-              child: Container(
-                color: Colors.green,
-                child: Container(
-                  // height: 400,
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: ListView(
-                      primary: true,
-                      padding: const EdgeInsets.all(0),
-                      children: [...getAllTiles()]
-                  ),
-                ),
-              )));
+          body: Scaffold(
+              appBar: AppBar(
+                  toolbarHeight: 0,
+                  bottom: TabBar(
+                      controller: _tabController,
+                      isScrollable: true,
+                      tabs: [
+                        Tab(text: AppLocalizations.of(context).tab_fruits),
+                        Tab(text: AppLocalizations.of(context).tab_vegetables)
+                      ])),
+              body: RefreshIndicator(
+                  onRefresh: refreshTriggered,
+                  child: Container(
+                    color: Colors.green,
+                    child: Container(
+                      // height: 400,
+                      margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      child: ListView(
+                          primary: true,
+                          padding: const EdgeInsets.all(0),
+                          children: [...getAllTiles()]),
+                    ),
+                  ))));
     else
       return Scaffold(
           appBar: AppBar(
