@@ -15,6 +15,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ToggleFridgeWidget extends StatefulWidget {
+  int pageIndex = 0;
   ToggleFridgeWidget({Key key}) : super(key: key);
 
   @override
@@ -241,7 +242,8 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
       ...List.generate(
           tileLists.length,
           (categoryIndex) => RefreshIndicator(
-                onRefresh: refreshTriggered,
+            key: new PageStorageKey<String>('TabBarView:$categoryIndex'),
+            onRefresh: refreshTriggered,
                 child: new Container(
                     child: new ListView.builder(
                         itemCount: tileLists[categoryIndex].length,
@@ -431,10 +433,27 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
       checkBoxListTileModelMeat,
       checkBoxListTileModelFish
     ]);
-
     _loadingRecipe = loadFoodProducts();
-    _tabController = new TabController(length: 7, vsync: this);
+    _tabController = new TabController(length: 7, initialIndex: _getInitialIndex(), vsync: this);
+    _tabController.addListener(() {
+      print("New Index ${_tabController.index}");
+      PageStorage.of(context).writeState(
+        context,
+        _tabController.index,
+        identifier: widget.pageIndex,
+      );
+    });
     setState(() {});
+  }
+
+  int _getInitialIndex() {
+    int initialIndex = PageStorage.of(context).readState(
+      context,
+      identifier: widget.pageIndex,
+    ) ??
+        0;
+    print("Initial Index ${initialIndex}");
+    return initialIndex;
   }
 
   Future<void> toggleItem(

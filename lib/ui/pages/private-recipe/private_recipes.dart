@@ -13,15 +13,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PrivateRecipesComponent extends StatefulWidget {
+  int pageIndex = 0;
+
   PrivateRecipesComponent({Key key}) : super(key: key);
 
   @override
   _PrivateRecipesComponentState createState() =>
       _PrivateRecipesComponentState();
 }
-
+// Preserve state: https://stackoverflow.com/a/59749688/11751609 seems to have worked
 class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   List<PrivateRecipe> recipeList = [];
   PrivateRecipeService privateRecipeService = PrivateRecipeService();
   RecipeService recipeService = RecipeService();
@@ -75,8 +77,28 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
   @override
   void initState() {
     super.initState();
-    _tabController = new TabController(length: 2, vsync: this);
+    _tabController = new TabController(
+        length: 2, initialIndex: _getInitialIndex(), vsync: this);
+    _tabController.addListener(() {
+      print("New Index ${_tabController.index}");
+      PageStorage.of(context).writeState(
+        context,
+        _tabController.index,
+        identifier: widget.pageIndex,
+      );
+    });
     loadRecipes();
+    print("init state");
+  }
+
+  int _getInitialIndex() {
+    int initialIndex = PageStorage.of(context).readState(
+          context,
+          identifier: widget.pageIndex,
+        ) ??
+        0;
+    print("Initial Index ${initialIndex}");
+    return initialIndex;
   }
 
   @override
@@ -160,41 +182,17 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
                       controller: _tabController,
                       isScrollable: true,
                       tabs: [
-                        Tab(text: AppLocalizations.of(context).tab_favouriteRecipes),
-                        Tab(text: AppLocalizations.of(context).tab_yourRecipes)
+                        Tab(
+                          text:
+                              AppLocalizations.of(context).tab_favouriteRecipes,
+                          icon: Icon(Icons.favorite_outline),
+                        ),
+                        Tab(
+                          text: AppLocalizations.of(context).tab_yourRecipes,
+                          icon: Icon(Icons.star),
+                        ),
                       ])),
-              body: RefreshIndicator(
-                  onRefresh: refreshTriggered,
-                  child: Container(
-                    color: Colors.green,
-                    child: Container(
-                      // height: 400,
-                      margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                      child: recipeList.isNotEmpty
-                          ? ListView(
-                              primary: true,
-                              padding: const EdgeInsets.all(0),
-                              children: [...getAllTiles()],
-                            )
-                          : Center(
-                              child: Card(
-                                  elevation: 20,
-                                  child: Padding(
-                                      padding: EdgeInsets.all(10),
-                                      child: Wrap(children: [
-                                        Text(
-                                          AppLocalizations.of(context)
-                                              .prettyEmptyHere,
-                                          style: TextStyle(fontSize: 26),
-                                        ),
-                                        Text(
-                                          AppLocalizations.of(context)
-                                              .likeOrCreateRecipeToAdd,
-                                          style: TextStyle(fontSize: 16),
-                                        )
-                                      ])))),
-                    ),
-                  ))));
+              body: getTabBarView()));
     else
       return Scaffold(
           appBar: AppBar(
@@ -247,6 +245,47 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
                   ],
                 )),
           )));
+  }
+
+  TabBarView getTabBarView() {
+    return TabBarView(controller: _tabController, children: [
+      RefreshIndicator(
+          onRefresh: refreshTriggered,
+          key: new PageStorageKey<String>('TabBarView:0'),
+          child: Container()),
+      RefreshIndicator(
+          onRefresh: refreshTriggered,
+          key: new PageStorageKey<String>('TabBarView:1'),
+          child: Container(
+            color: Colors.green,
+            child: Container(
+              // height: 400,
+              margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+              child: recipeList.isNotEmpty
+                  ? ListView(
+                      primary: true,
+                      padding: const EdgeInsets.all(0),
+                      children: [...getAllTiles()],
+                    )
+                  : Center(
+                      child: Card(
+                          elevation: 20,
+                          child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Wrap(children: [
+                                Text(
+                                  AppLocalizations.of(context).prettyEmptyHere,
+                                  style: TextStyle(fontSize: 26),
+                                ),
+                                Text(
+                                  AppLocalizations.of(context)
+                                      .likeOrCreateRecipeToAdd,
+                                  style: TextStyle(fontSize: 16),
+                                )
+                              ])))),
+            ),
+          ))
+    ]);
   }
 
   List<Widget> getAllTiles() {
@@ -358,4 +397,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
     await reloadRecipesFromBox();
     print("reload after navigate to recipeEditPage");
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
