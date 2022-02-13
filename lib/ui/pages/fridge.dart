@@ -242,7 +242,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
       ...List.generate(
           tileLists.length,
           (categoryIndex) => RefreshIndicator(
-            key: new PageStorageKey<String>('TabBarView:$categoryIndex'),
+            key: new PageStorageKey<String>('FridgeTabBarView:$categoryIndex'),
             onRefresh: refreshTriggered,
                 child: new Container(
                     child: new ListView.builder(
@@ -440,7 +440,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
       PageStorage.of(context).writeState(
         context,
         _tabController.index,
-        identifier: widget.pageIndex,
+        identifier: ValueKey("fridge_tab_key")
       );
     });
     setState(() {});
@@ -449,7 +449,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
   int _getInitialIndex() {
     int initialIndex = PageStorage.of(context).readState(
       context,
-      identifier: widget.pageIndex,
+      identifier: ValueKey("fridge_tab_key")
     ) ??
         0;
     print("Initial Index ${initialIndex}");

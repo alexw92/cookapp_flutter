@@ -84,7 +84,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
       PageStorage.of(context).writeState(
         context,
         _tabController.index,
-        identifier: widget.pageIndex,
+        identifier: ValueKey("recipe_tab_key")
       );
     });
     loadRecipes();
@@ -94,8 +94,8 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
   int _getInitialIndex() {
     int initialIndex = PageStorage.of(context).readState(
           context,
-          identifier: widget.pageIndex,
-        ) ??
+        identifier: ValueKey("recipe_tab_key")
+    ) ??
         0;
     print("Initial Index ${initialIndex}");
     return initialIndex;
@@ -251,11 +251,11 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
     return TabBarView(controller: _tabController, children: [
       RefreshIndicator(
           onRefresh: refreshTriggered,
-          key: new PageStorageKey<String>('TabBarView:0'),
+          key: new PageStorageKey<String>('PrivateRecipesTabBarView:0'),
           child: Container()),
       RefreshIndicator(
           onRefresh: refreshTriggered,
-          key: new PageStorageKey<String>('TabBarView:1'),
+          key: new PageStorageKey<String>('PrivateRecipesTabBarView:1'),
           child: Container(
             color: Colors.green,
             child: Container(
