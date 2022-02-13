@@ -215,8 +215,8 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
                         : Container(),
                     Positioned(
                         bottom: 0,
-                        left: 0,
-                        right: 0,
+                        left: 8,
+                        right: 8,
                         child: Row(
                           children: [
                             Expanded(

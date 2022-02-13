@@ -239,8 +239,8 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
                     ),
                     Positioned(
                       bottom: 0,
-                      left: 0,
-                      right: 0,
+                      left: 8,
+                      right: 8,
                       child: Text(this.recipe.name,
                           style: TextStyle(fontSize: 30, color: Colors.white),
                           textAlign: TextAlign.center),
