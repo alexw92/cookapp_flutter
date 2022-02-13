@@ -7,6 +7,7 @@ import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/components/private-recipe/private-recipe-tile.component.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/private-recipe-creation-dialog.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/private-recipe-edit-page.dart';
+import 'package:cookable_flutter/ui/pages/recipe/recipes.dart';
 import 'package:cookable_flutter/ui/pages/settings_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ class PrivateRecipesComponent extends StatefulWidget {
   _PrivateRecipesComponentState createState() =>
       _PrivateRecipesComponentState();
 }
+
 // Preserve state: https://stackoverflow.com/a/59749688/11751609 seems to have worked
 class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
@@ -81,21 +83,16 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
         length: 2, initialIndex: _getInitialIndex(), vsync: this);
     _tabController.addListener(() {
       print("New Index ${_tabController.index}");
-      PageStorage.of(context).writeState(
-        context,
-        _tabController.index,
-        identifier: ValueKey("recipe_tab_key")
-      );
+      PageStorage.of(context).writeState(context, _tabController.index,
+          identifier: ValueKey("recipe_tab_key"));
     });
     loadRecipes();
     print("init state");
   }
 
   int _getInitialIndex() {
-    int initialIndex = PageStorage.of(context).readState(
-          context,
-        identifier: ValueKey("recipe_tab_key")
-    ) ??
+    int initialIndex = PageStorage.of(context)
+            .readState(context, identifier: ValueKey("recipe_tab_key")) ??
         0;
     print("Initial Index ${initialIndex}");
     return initialIndex;
@@ -252,7 +249,32 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
       RefreshIndicator(
           onRefresh: refreshTriggered,
           key: new PageStorageKey<String>('PrivateRecipesTabBarView:0'),
-          child: Container()),
+          child: Center(
+              child: Card(
+                  elevation: 20,
+                  child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Wrap(children: [
+                        Text(
+                          AppLocalizations.of(context).prettyEmptyHere,
+                          style: TextStyle(fontSize: 26),
+                        ),
+                        Text(
+                          AppLocalizations.of(context).likeRecipeToAdd,
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        Center(
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              RecipesComponent()));
+                                },
+                                child: Text(
+                                    AppLocalizations.of(context).goToRecipes)))
+                      ]))))),
       RefreshIndicator(
           onRefresh: refreshTriggered,
           key: new PageStorageKey<String>('PrivateRecipesTabBarView:1'),
@@ -279,9 +301,16 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
                                 ),
                                 Text(
                                   AppLocalizations.of(context)
-                                      .likeOrCreateRecipeToAdd,
+                                      .createRecipeToAdd,
                                   style: TextStyle(fontSize: 16),
-                                )
+                                ),
+                                Center(
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          _showRecipeCreateDialog();
+                                        },
+                                        child: Text(AppLocalizations.of(context)
+                                            .createARecipe)))
                               ])))),
             ),
           ))
