@@ -20,6 +20,7 @@ class _FilterRecipesDialogState extends State<FilterRecipesDialog> {
   Diet recipeDiet;
   bool filterHighProtein;
   bool filterHighCarb;
+  var diets = [Diet.NORMAL, Diet.PESCATARIAN, Diet.VEGETARIAN, Diet.VEGAN];
 
   _FilterRecipesDialogState();
 
@@ -37,34 +38,27 @@ class _FilterRecipesDialogState extends State<FilterRecipesDialog> {
       title: Text(AppLocalizations.of(context).filterRecipes),
       actions: <Widget>[
         Column(children: [
-          DropdownButton<Diet>(
-            icon: const Icon(Icons.arrow_downward),
-            iconSize: 24,
-            elevation: 16,
-            style: const TextStyle(color: Colors.deepPurple),
-            underline: Container(
-              height: 2,
-              color: Colors.deepPurpleAccent,
-            ),
-            items: <Diet>[
-              Diet.NORMAL,
-              Diet.PESCATARIAN,
-              Diet.VEGETARIAN,
-              Diet.VEGAN
-            ].map((Diet value) {
-              return DropdownMenuItem<Diet>(
-                value: value,
-                child: Text(Utility.getTranslatedDiet(context, value)),
-              );
-            }).toList(),
-            onChanged: (Diet newValue) async {
-              setState(() {
-                recipeDiet = newValue;
-              });
-              var prefs = await SharedPreferences.getInstance();
-              prefs.setInt('recipeDietFilter', newValue.index);
-            },
-            value: recipeDiet,
+          Wrap(
+            spacing: 4.0,
+            children: List<Widget>.generate(
+              diets.length,
+              (int index) {
+                return ChoiceChip(
+                  avatar: Utility.getIconForDiet(diets[index]),
+                  label: Text(Utility.getTranslatedDiet(context, diets[index])),
+                  selected: diets.indexOf(recipeDiet) == index,
+                  onSelected: (bool selected) async {
+                    if(!selected)
+                      return;
+                    setState(() {
+                      recipeDiet = selected ? diets[index] : null;
+                    });
+                    var prefs = await SharedPreferences.getInstance();
+                    prefs.setInt('recipeDietFilter', diets[index].index);
+                  },
+                );
+              },
+            ).toList(),
           ),
           FilterNutritionWidget(
             isSelectedHighCarb: filterHighCarb,
@@ -112,8 +106,7 @@ class _FilterNutritionWidgetState extends State<FilterNutritionWidget> {
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         value: _isSelectedHighProtein,
         onChanged: (bool newValue) {
-          SharedPreferences.getInstance()
-              .then((prefs) => {
+          SharedPreferences.getInstance().then((prefs) => {
                 prefs.setBool('highProteinFilter', newValue),
               });
           setState(() {
@@ -125,10 +118,9 @@ class _FilterNutritionWidgetState extends State<FilterNutritionWidget> {
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         value: _isSelectedHighCarb,
         onChanged: (bool newValue) {
-          SharedPreferences.getInstance()
-              .then((prefs) => {
+          SharedPreferences.getInstance().then((prefs) => {
                 prefs.setBool('highCarbFilter', newValue),
-          });
+              });
           setState(() {
             _isSelectedHighCarb = newValue;
           });
