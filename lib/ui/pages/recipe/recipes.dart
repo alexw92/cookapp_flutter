@@ -268,7 +268,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
     bool highProteinFilterNew;
     bool highCarbFilterNew;
     bool changedFilters;
-    showDialog(
+    showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
         return new FilterRecipesDialog(

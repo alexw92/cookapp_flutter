@@ -34,45 +34,36 @@ class _FilterRecipesDialogState extends State<FilterRecipesDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(AppLocalizations.of(context).filterRecipes),
-      actions: <Widget>[
-        Column(children: [
-          Wrap(
-            spacing: 4.0,
-            children: List<Widget>.generate(
-              diets.length,
-              (int index) {
-                return ChoiceChip(
-                  avatar: Utility.getIconForDiet(diets[index]),
-                  label: Text(Utility.getTranslatedDiet(context, diets[index])),
-                  selected: diets.indexOf(recipeDiet) == index,
-                  onSelected: (bool selected) async {
-                    if(!selected)
-                      return;
-                    setState(() {
-                      recipeDiet = selected ? diets[index] : null;
-                    });
-                    var prefs = await SharedPreferences.getInstance();
-                    prefs.setInt('recipeDietFilter', diets[index].index);
-                  },
-                );
-              },
-            ).toList(),
-          ),
-          FilterNutritionWidget(
-            isSelectedHighCarb: filterHighCarb,
-            isSelectedHighProtein: filterHighProtein,
-          )
-        ]),
-        TextButton(
-          child: Text('Okay'),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+    return Container(
+      child: Wrap( children: [Column(children: [
+        Text(AppLocalizations.of(context).filterRecipes, style: TextStyle(fontSize: 24),),
+        Wrap(
+          spacing: 4.0,
+          children: List<Widget>.generate(
+            diets.length,
+            (int index) {
+              return ChoiceChip(
+                avatar: Utility.getIconForDiet(diets[index]),
+                label: Text(Utility.getTranslatedDiet(context, diets[index])),
+                selected: diets.indexOf(recipeDiet) == index,
+                onSelected: (bool selected) async {
+                  if (!selected) return;
+                  setState(() {
+                    recipeDiet = selected ? diets[index] : null;
+                  });
+                  var prefs = await SharedPreferences.getInstance();
+                  prefs.setInt('recipeDietFilter', diets[index].index);
+                },
+              );
+            },
+          ).toList(),
         ),
-      ],
-    );
+        FilterNutritionWidget(
+          isSelectedHighCarb: filterHighCarb,
+          isSelectedHighProtein: filterHighProtein,
+        )
+      ]),
+      ]));
   }
 }
 
