@@ -177,7 +177,8 @@ class _RecipesComponentState extends State<RecipesComponent> {
                             recipe: recipeList[i],
                             apiToken: apiToken,
                             userFoodUpdatedCallback: reloadRecipes,
-                            likesUpdated: () => reloadRecipe(recipeList[i].id, i));
+                            likesUpdated: () =>
+                                reloadRecipe(recipeList[i].id, i));
                       }),
                 ),
               )));
@@ -297,9 +298,10 @@ class _RecipesComponentState extends State<RecipesComponent> {
           changedFilters = !(dietIndexNew == dietIndex &&
               highProteinFilterNew == highProteinFilter &&
               highCarbFilterNew == highCarbFilter),
-          if (changedFilters) {
-            loadRecipes(),
-          }
+          if (changedFilters)
+            {
+              loadRecipes(),
+            }
         });
   }
 

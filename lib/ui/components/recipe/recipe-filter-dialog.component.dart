@@ -20,7 +20,7 @@ class _FilterRecipesDialogState extends State<FilterRecipesDialog> {
   Diet recipeDiet;
   bool filterHighProtein;
   bool filterHighCarb;
-  var diets = [Diet.NORMAL, Diet.PESCATARIAN, Diet.VEGETARIAN, Diet.VEGAN];
+  var diets = [Diet.VEGAN, Diet.VEGETARIAN, Diet.PESCATARIAN, Diet.NORMAL];
 
   _FilterRecipesDialogState();
 
@@ -35,8 +35,12 @@ class _FilterRecipesDialogState extends State<FilterRecipesDialog> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Wrap( children: [Column(children: [
-        Text(AppLocalizations.of(context).filterRecipes, style: TextStyle(fontSize: 24),),
+        child: Wrap(children: [
+      Column(children: [
+        Text(
+          AppLocalizations.of(context).filterRecipes,
+          style: TextStyle(fontSize: 24),
+        ),
         Wrap(
           spacing: 4.0,
           children: List<Widget>.generate(
@@ -47,12 +51,13 @@ class _FilterRecipesDialogState extends State<FilterRecipesDialog> {
                 label: Text(Utility.getTranslatedDiet(context, diets[index])),
                 selected: diets.indexOf(recipeDiet) == index,
                 onSelected: (bool selected) async {
-                  if (!selected) return;
                   setState(() {
                     recipeDiet = selected ? diets[index] : null;
                   });
                   var prefs = await SharedPreferences.getInstance();
-                  prefs.setInt('recipeDietFilter', diets[index].index);
+                  // set filter on normal if no diet filter is selected
+                  var newRecipeDietFilter = selected ? diets[index].index : Diet.NORMAL.index;
+                  prefs.setInt('recipeDietFilter', newRecipeDietFilter);
                 },
               );
             },
@@ -63,7 +68,7 @@ class _FilterRecipesDialogState extends State<FilterRecipesDialog> {
           isSelectedHighProtein: filterHighProtein,
         )
       ]),
-      ]));
+    ]));
   }
 }
 
