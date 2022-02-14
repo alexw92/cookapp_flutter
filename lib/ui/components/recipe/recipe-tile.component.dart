@@ -201,7 +201,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
   }
 
   Widget getHighProteinChipIfNeeded() {
-    return (!recipe.nutrients.isHighProteinRecipe)
+    return (recipe.nutrients.isHighProteinRecipe)
         ? Container(
             margin: EdgeInsets.only(top: 4),
             child: Chip(
@@ -224,7 +224,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
   }
 
   Widget getHighCarbChipIfNeeded() {
-    return (!recipe.nutrients.isHighCarbRecipe)
+    return (recipe.nutrients.isHighCarbRecipe)
         ? Container(
             margin: EdgeInsets.only(top: 4),
             child: Chip(
