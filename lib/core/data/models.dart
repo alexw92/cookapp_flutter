@@ -660,9 +660,9 @@ enum Diet {
   @HiveField(0)
   VEGAN,
   @HiveField(1)
-  PESCATARIAN,
-  @HiveField(2)
   VEGETARIAN,
+  @HiveField(2)
+  PESCATARIAN,
   @HiveField(3)
   NORMAL
 }

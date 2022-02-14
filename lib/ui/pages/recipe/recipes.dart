@@ -36,10 +36,12 @@ class _RecipesComponentState extends State<RecipesComponent> {
     var highProteinFilter = prefs.getBool('highProteinFilter') ?? false;
     var highCarbFilter = prefs.getBool('highCarbFilter') ?? false;
     var diet = Diet.values[dietIndex];
+
     setState(() {
       recipeList = [];
     });
-    recipeList = await recipeService
+
+    var recipes = await recipeService
         .getFilteredRecipesOffline(diet, highProteinFilter, highCarbFilter,
             doReload: reload, itemsInStockChanged: itemsInStockChanged)
         .catchError((error) {
@@ -47,6 +49,9 @@ class _RecipesComponentState extends State<RecipesComponent> {
       setState(() {
         this.error = true;
       });
+    });
+    setState(() {
+      recipeList = recipes;
     });
     // reset reload flag after loading
     if (reload) {
@@ -155,20 +160,27 @@ class _RecipesComponentState extends State<RecipesComponent> {
               )
             ],
           ),
-
-              body: RefreshIndicator(
-                  onRefresh: refreshTriggered,
-                  child: Container(
-                    color: Colors.green,
-                    child: Container(
-                      // height: 400,
-                      margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                      child: ListView(
-                          primary: true,
-                          padding: const EdgeInsets.all(0),
-                          children: [...getAllTiles()]),
-                    ),
-                  )));
+          body: RefreshIndicator(
+              onRefresh: refreshTriggered,
+              child: Container(
+                color: Colors.green,
+                child: Container(
+                  // height: 400,
+                  margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  child: ListView.builder(
+                      primary: true,
+                      padding: const EdgeInsets.all(0),
+                      itemCount: recipeList.length,
+                      itemBuilder: (BuildContext context, int i) {
+                        return RecipeTileComponent(
+                            key: ValueKey(recipeList[i].id),
+                            recipe: recipeList[i],
+                            apiToken: apiToken,
+                            userFoodUpdatedCallback: reloadRecipes,
+                            likesUpdated: () => reloadRecipe(recipeList[i].id, i));
+                      }),
+                ),
+              )));
     else
       return Scaffold(
           appBar: AppBar(
@@ -231,6 +243,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
     for (int i = 0; i < recipeList.length; i++) {
       myTiles.add(
         RecipeTileComponent(
+            key: ValueKey(recipeList[i].id),
             recipe: recipeList[i],
             apiToken: apiToken,
             userFoodUpdatedCallback: reloadRecipes,
@@ -284,7 +297,9 @@ class _RecipesComponentState extends State<RecipesComponent> {
           changedFilters = !(dietIndexNew == dietIndex &&
               highProteinFilterNew == highProteinFilter &&
               highCarbFilterNew == highCarbFilter),
-          if (changedFilters) {loadRecipes(reload: true)}
+          if (changedFilters) {
+            loadRecipes(),
+          }
         });
   }
 

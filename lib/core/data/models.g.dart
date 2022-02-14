@@ -686,9 +686,9 @@ class DietAdapter extends TypeAdapter<Diet> {
       case 0:
         return Diet.VEGAN;
       case 1:
-        return Diet.PESCATARIAN;
-      case 2:
         return Diet.VEGETARIAN;
+      case 2:
+        return Diet.PESCATARIAN;
       case 3:
         return Diet.NORMAL;
       default:
@@ -702,10 +702,10 @@ class DietAdapter extends TypeAdapter<Diet> {
       case Diet.VEGAN:
         writer.writeByte(0);
         break;
-      case Diet.PESCATARIAN:
+      case Diet.VEGETARIAN:
         writer.writeByte(1);
         break;
-      case Diet.VEGETARIAN:
+      case Diet.PESCATARIAN:
         writer.writeByte(2);
         break;
       case Diet.NORMAL:

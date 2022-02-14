@@ -135,7 +135,18 @@ class RecipeService {
       _recipeList =
           (await hiveService.getBoxElements("Recipes")).cast<Recipe>();
     }
-
+    //Diet diet, bool highProteinFilter, bool highCarbFilter
+    // filter recipes
+    print(diet);
+    print(highCarbFilter);
+    print(highProteinFilter);
+    if (diet != null || highProteinFilter || highCarbFilter)
+      _recipeList = _recipeList
+          .where((recipe) =>
+              (diet == null || recipe.diet.index <= diet.index) &&
+              (!highProteinFilter || recipe.nutrients.isHighProteinRecipe) &&
+              (!highCarbFilter || recipe.nutrients.isHighCarbRecipe))
+          .toList();
     return _recipeList;
   }
 
