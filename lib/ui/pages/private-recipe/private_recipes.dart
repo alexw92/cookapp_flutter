@@ -5,6 +5,7 @@ import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/signin_signout.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/components/private-recipe/private-recipe-tile.component.dart';
+import 'package:cookable_flutter/ui/components/recipe/recipe-tile.component.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/private-recipe-creation-dialog.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/private-recipe-edit-page.dart';
 import 'package:cookable_flutter/ui/pages/recipe/recipes.dart';
@@ -27,6 +28,7 @@ class PrivateRecipesComponent extends StatefulWidget {
 class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   List<PrivateRecipe> recipeList = [];
+  List<Recipe> likedRecipesList = [];
   PrivateRecipeService privateRecipeService = PrivateRecipeService();
   RecipeService recipeService = RecipeService();
   DefaultNutrients defaultNutrients;
@@ -40,7 +42,6 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
       this.error = false;
       this.loadingFromApi = true;
     });
-
     recipeList = await privateRecipeService
         .getPrivateRecipes(reload: reload)
         .catchError((error) {
@@ -53,6 +54,16 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
     await loadDefaultNutrition();
     setState(() {
       loadingFromApi = false;
+    });
+  }
+
+  Future<void> reloadLikedRecipesFromBox() async {
+    likedRecipesList =
+        await recipeService.getLikedRecipes().catchError((error) {
+      print("recipes " + error.toString());
+      setState(() {
+        this.error = true;
+      });
     });
   }
 
@@ -87,6 +98,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
           identifier: ValueKey("recipe_tab_key"));
     });
     loadRecipes();
+    reloadLikedRecipesFromBox();
     print("init state");
   }
 
@@ -247,34 +259,44 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
   TabBarView getTabBarView() {
     return TabBarView(controller: _tabController, children: [
       RefreshIndicator(
-          onRefresh: refreshTriggered,
+          onRefresh: likedRecipesRefreshTriggered,
           key: new PageStorageKey<String>('PrivateRecipesTabBarView:0'),
-          child: Center(
-              child: Card(
-                  elevation: 20,
-                  child: Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Wrap(children: [
-                        Text(
-                          AppLocalizations.of(context).prettyEmptyHere,
-                          style: TextStyle(fontSize: 26),
-                        ),
-                        Text(
-                          AppLocalizations.of(context).likeRecipeToAdd,
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        Center(
-                            child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              RecipesComponent()));
-                                },
-                                child: Text(
-                                    AppLocalizations.of(context).goToRecipes)))
-                      ]))))),
+          child: likedRecipesList.isNotEmpty
+              ? ListView.builder(
+                  primary: true,
+                  padding: const EdgeInsets.all(0),
+                  itemCount: likedRecipesList.length,
+                  itemBuilder: (BuildContext context, int i) {
+                    return RecipeTileComponent(
+                        recipe: likedRecipesList[i], apiToken: apiToken);
+                  },
+                )
+              : Center(
+                  child: Card(
+                      elevation: 20,
+                      child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Wrap(children: [
+                            Text(
+                              AppLocalizations.of(context).prettyEmptyHere,
+                              style: TextStyle(fontSize: 26),
+                            ),
+                            Text(
+                              AppLocalizations.of(context).likeRecipeToAdd,
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            Center(
+                                child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  RecipesComponent()));
+                                    },
+                                    child: Text(AppLocalizations.of(context)
+                                        .goToRecipes)))
+                          ]))))),
       RefreshIndicator(
           onRefresh: refreshTriggered,
           key: new PageStorageKey<String>('PrivateRecipesTabBarView:1'),
@@ -388,6 +410,10 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
 
   Future<void> refreshTriggered() async {
     return loadRecipes(reload: true);
+  }
+
+  Future<void> likedRecipesRefreshTriggered() async {
+    return reloadLikedRecipesFromBox();
   }
 
   Future<void> _signOut() async {

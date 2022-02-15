@@ -34,6 +34,12 @@ class RecipeService {
     }
   }
 
+  Future<List<Recipe>> getLikedRecipes() async {
+    List<Recipe> _recipeList =
+    (await hiveService.getBoxElements("Recipes")).cast<Recipe>();
+    return _recipeList.where((recipe) => recipe.userLiked).toList();
+  }
+
   Future<List<Recipe>> getFilteredRecipesOffline(
       Diet diet, bool highProteinFilter, bool highCarbFilter,
       {bool itemsInStockChanged = false,
@@ -277,4 +283,6 @@ class RecipeService {
   addOrUpdateRecipe(Recipe recipe) async {
     return hiveService.putElement(recipe.id, recipe, "Recipes");
   }
+
+
 }
