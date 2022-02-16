@@ -16,6 +16,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ToggleFridgeWidget extends StatefulWidget {
   int pageIndex = 0;
+
   ToggleFridgeWidget({Key key}) : super(key: key);
 
   @override
@@ -98,14 +99,41 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                     appBar: AppBar(
                       title: Text(AppLocalizations.of(context).fridge),
                       actions: [
-                        IconButton(
-                          icon: Stack(children: [
-                            FaIcon(FontAwesomeIcons.listAlt),
-                            Positioned(child: Text("$itemsOnShoppingList", style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold, color: Colors.red),),
-                              bottom: 0,
-                              right: 0,)
-                          ]),
-                          onPressed: _openShoppingList,
+                        InkWell(
+                          onTap: _openShoppingList,
+                          child: Container(
+                            width: 72,
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    FaIcon(FontAwesomeIcons.listAlt),
+                                    //   Text("text", overflow: TextOverflow.ellipsis),
+                                  ],
+                                ),
+                                Positioned(
+                                  top: 4,
+                                  right: 2,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 6, vertical: 2),
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.red),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "$itemsOnShoppingList",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
                         ),
                         PopupMenuButton(
                           onSelected: (result) {
@@ -248,8 +276,9 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
       ...List.generate(
           tileLists.length,
           (categoryIndex) => RefreshIndicator(
-            key: new PageStorageKey<String>('FridgeTabBarView:$categoryIndex'),
-            onRefresh: refreshTriggered,
+                key: new PageStorageKey<String>(
+                    'FridgeTabBarView:$categoryIndex'),
+                onRefresh: refreshTriggered,
                 child: new Container(
                     child: new ListView.builder(
                         itemCount: tileLists[categoryIndex].length,
@@ -359,6 +388,10 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     } catch (err) {
       print(err);
     }
+    setState(() {
+      itemsOnShoppingList =
+          missingGroceries.where((element) => element.onShoppingList).length;
+    });
     apiToken = await TokenStore().getToken();
     groceries = getGroceries();
     setState(() {
@@ -440,23 +473,19 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
       checkBoxListTileModelFish
     ]);
     _loadingRecipe = loadFoodProducts();
-    _tabController = new TabController(length: 7, initialIndex: _getInitialIndex(), vsync: this);
+    _tabController = new TabController(
+        length: 7, initialIndex: _getInitialIndex(), vsync: this);
     _tabController.addListener(() {
       print("New Index ${_tabController.index}");
-      PageStorage.of(context).writeState(
-        context,
-        _tabController.index,
-        identifier: ValueKey("fridge_tab_key")
-      );
+      PageStorage.of(context).writeState(context, _tabController.index,
+          identifier: ValueKey("fridge_tab_key"));
     });
     setState(() {});
   }
 
   int _getInitialIndex() {
-    int initialIndex = PageStorage.of(context).readState(
-      context,
-      identifier: ValueKey("fridge_tab_key")
-    ) ??
+    int initialIndex = PageStorage.of(context)
+            .readState(context, identifier: ValueKey("fridge_tab_key")) ??
         0;
     print("Initial Index ${initialIndex}");
     return initialIndex;
@@ -485,6 +514,11 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
         // item was missing before
         // item was on shopping List before -> cant happen i think
       }
+      // update shopping list number
+      setState(() {
+        itemsOnShoppingList =
+            missingGroceries.where((element) => element.onShoppingList).length;
+      });
       // show snackBar if added to shopping list
       ScaffoldMessenger.of(context).removeCurrentSnackBar();
       ScaffoldMessenger.of(context).showSnackBar(
@@ -511,6 +545,11 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
         }
         item.onShoppingList = false;
         await userFoodService.addBoxValue(true, item);
+        // update shopping list number
+        setState(() {
+          itemsOnShoppingList =
+              missingGroceries.where((element) => element.onShoppingList).length;
+        });
         NeedsRecipeUpdateState().recipesUpdateNeeded = true;
         // item was missing before
         // item was not on shopping List before -> cant happen i think
@@ -540,6 +579,11 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
       missingGroceries.add(item);
       await userFoodService.addBoxValue(true, item);
       await userFoodService.removeBoxValue(false, item);
+      // update shopping list number
+      setState(() {
+        itemsOnShoppingList =
+            missingGroceries.where((element) => element.onShoppingList).length;
+      });
     }
     // changing grocery stock requires reloading of recipes
     NeedsRecipeUpdateState().recipesUpdateNeeded = true;
@@ -598,6 +642,11 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
         context, MaterialPageRoute(builder: (context) => ShoppingListPage()));
     this.missingGroceries = await userFoodService.getUserFood(true);
     this.ownedGroceries = await userFoodService.getUserFood(false);
+    // update shopping list number
+    setState(() {
+      itemsOnShoppingList =
+          missingGroceries.where((element) => element.onShoppingList).length;
+    });
     groceries.clear();
     groceries.addAll(getGroceries());
     this.checkBoxListTileModelFruits.clear();
