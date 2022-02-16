@@ -34,6 +34,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
   List<List<GroceryCheckBoxListTileModel>> tileLists = [];
   List<UserFoodProduct> ownedGroceries = [];
   List<UserFoodProduct> missingGroceries = [];
+  int itemsOnShoppingList = 0;
   UserFoodService userFoodService = UserFoodService();
   String apiToken;
   bool loadingFromApi = false;
@@ -98,7 +99,12 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                       title: Text(AppLocalizations.of(context).fridge),
                       actions: [
                         IconButton(
-                          icon: FaIcon(FontAwesomeIcons.listAlt),
+                          icon: Stack(children: [
+                            FaIcon(FontAwesomeIcons.listAlt),
+                            Positioned(child: Text("$itemsOnShoppingList", style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold, color: Colors.red),),
+                              bottom: 0,
+                              right: 0,)
+                          ]),
                           onPressed: _openShoppingList,
                         ),
                         PopupMenuButton(
