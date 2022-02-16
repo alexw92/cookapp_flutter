@@ -117,9 +117,6 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
           appBar: AppBar(
             title: Text(AppLocalizations.of(context).yourRecipes),
             actions: [
-              IconButton(
-                icon: Icon(Icons.add, size: 32),
-              ),
               PopupMenuButton(
                 onSelected: (result) {
                   switch (result) {
@@ -155,10 +152,6 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
           appBar: AppBar(
             title: Text(AppLocalizations.of(context).yourRecipes),
             actions: [
-              IconButton(
-                icon: Icon(Icons.add, size: 32),
-                onPressed: _showRecipeCreateDialog,
-              ),
               PopupMenuButton(
                 onSelected: (result) {
                   switch (result) {
@@ -207,9 +200,6 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
           appBar: AppBar(
             title: Text(AppLocalizations.of(context).yourRecipes),
             actions: [
-              IconButton(
-                icon: Icon(Icons.add, size: 32),
-              ),
               PopupMenuButton(
                 onSelected: (result) {
                   switch (result) {
@@ -302,39 +292,58 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
           key: new PageStorageKey<String>('PrivateRecipesTabBarView:1'),
           child: Container(
             color: Colors.green,
-            child: Container(
-              // height: 400,
-              margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: recipeList.isNotEmpty
-                  ? ListView(
-                      primary: true,
-                      padding: const EdgeInsets.all(0),
-                      children: [...getAllTiles()],
-                    )
-                  : Center(
-                      child: Card(
-                          elevation: 20,
-                          child: Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Wrap(children: [
-                                Text(
-                                  AppLocalizations.of(context).prettyEmptyHere,
-                                  style: TextStyle(fontSize: 26),
-                                ),
-                                Text(
-                                  AppLocalizations.of(context)
-                                      .createRecipeToAdd,
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                                Center(
-                                    child: ElevatedButton(
-                                        onPressed: () {
-                                          _showRecipeCreateDialog();
-                                        },
-                                        child: Text(AppLocalizations.of(context)
-                                            .createARecipe)))
-                              ])))),
-            ),
+            child: Stack(children: [
+              Container(
+                // height: 400,
+                margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                child: recipeList.isNotEmpty
+                    ? ListView(
+                        primary: true,
+                        padding: const EdgeInsets.all(0),
+                        children: [...getAllTiles()],
+                      )
+                    : Center(
+                        child: Card(
+                            elevation: 20,
+                            child: Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Wrap(children: [
+                                  Text(
+                                    AppLocalizations.of(context)
+                                        .prettyEmptyHere,
+                                    style: TextStyle(fontSize: 26),
+                                  ),
+                                  Text(
+                                    AppLocalizations.of(context)
+                                        .createRecipeToAdd,
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                  Center(
+                                      child: ElevatedButton(
+                                          onPressed: () {
+                                            _showRecipeCreateDialog();
+                                          },
+                                          child: Text(
+                                              AppLocalizations.of(context)
+                                                  .createARecipe)))
+                                ])))),
+              ),
+              Positioned(
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shape: CircleBorder(),
+                        padding: EdgeInsets.all(8),
+                        primary: Colors.green),
+                    onPressed: () => _showRecipeCreateDialog(),
+                    child: const Icon(
+                      Icons.add,
+                      size: 36,
+                      color: Colors.white,
+                    )),
+                bottom: 8,
+                right: 8,
+              )
+            ]),
           ))
     ]);
   }
