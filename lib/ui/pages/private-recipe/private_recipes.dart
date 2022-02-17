@@ -58,7 +58,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
   }
 
   Future<void> reloadLikedRecipesFromBox() async {
-    likedRecipesList =
+    this.likedRecipesList =
         await recipeService.getLikedRecipes().catchError((error) {
       print("recipes " + error.toString());
       setState(() {
@@ -251,42 +251,48 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
       RefreshIndicator(
           onRefresh: likedRecipesRefreshTriggered,
           key: new PageStorageKey<String>('PrivateRecipesTabBarView:0'),
-          child: likedRecipesList.isNotEmpty
-              ? ListView.builder(
-                  primary: true,
-                  padding: const EdgeInsets.all(0),
-                  itemCount: likedRecipesList.length,
-                  itemBuilder: (BuildContext context, int i) {
-                    return RecipeTileComponent(
-                        recipe: likedRecipesList[i], apiToken: apiToken);
-                  },
-                )
-              : Center(
-                  child: Card(
-                      elevation: 20,
-                      child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Wrap(children: [
-                            Text(
-                              AppLocalizations.of(context).prettyEmptyHere,
-                              style: TextStyle(fontSize: 26),
-                            ),
-                            Text(
-                              AppLocalizations.of(context).likeRecipeToAdd,
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            Center(
-                                child: ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  RecipesComponent()));
-                                    },
-                                    child: Text(AppLocalizations.of(context)
-                                        .goToRecipes)))
-                          ]))))),
+          child: Container(
+              margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+              child: likedRecipesList.isNotEmpty
+                  ? ListView.builder(
+                      primary: true,
+                      padding: const EdgeInsets.all(0),
+                      itemCount: likedRecipesList.length,
+                      itemBuilder: (BuildContext context, int i) {
+                        return RecipeTileComponent(
+                          key: UniqueKey(),
+                          recipe: likedRecipesList[i],
+                          apiToken: apiToken,
+                          likesUpdated: () => updateUserLike(i),
+                        );
+                      },
+                    )
+                  : Center(
+                      child: Card(
+                          elevation: 20,
+                          child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Wrap(children: [
+                                Text(
+                                  AppLocalizations.of(context).prettyEmptyHere,
+                                  style: TextStyle(fontSize: 26),
+                                ),
+                                Text(
+                                  AppLocalizations.of(context).likeRecipeToAdd,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                Center(
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      RecipesComponent()));
+                                        },
+                                        child: Text(AppLocalizations.of(context)
+                                            .goToRecipes)))
+                              ])))))),
       RefreshIndicator(
           onRefresh: refreshTriggered,
           key: new PageStorageKey<String>('PrivateRecipesTabBarView:1'),
@@ -346,6 +352,11 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
             ]),
           ))
     ]);
+  }
+
+  updateUserLike(int i) async {
+    await reloadLikedRecipesFromBox();
+    setState(() {});
   }
 
   List<Widget> getAllTiles() {
@@ -422,7 +433,8 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
   }
 
   Future<void> likedRecipesRefreshTriggered() async {
-    return reloadLikedRecipesFromBox();
+    await reloadLikedRecipesFromBox();
+    setState(() {});
   }
 
   Future<void> _signOut() async {

@@ -239,21 +239,6 @@ class _RecipesComponentState extends State<RecipesComponent> {
           )));
   }
 
-  List<Widget> getAllTiles() {
-    List<Widget> myTiles = [];
-    for (int i = 0; i < recipeList.length; i++) {
-      myTiles.add(
-        RecipeTileComponent(
-            key: ValueKey(recipeList[i].id),
-            recipe: recipeList[i],
-            apiToken: apiToken,
-            userFoodUpdatedCallback: reloadRecipes,
-            likesUpdated: () => reloadRecipe(recipeList[i].id, i)),
-      );
-    }
-    return myTiles;
-  }
-
   reloadRecipes() {
     loadRecipes(itemsInStockChanged: true);
   }
