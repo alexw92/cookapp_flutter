@@ -87,12 +87,13 @@ class _RecipesComponentState extends State<RecipesComponent> {
     if (loadingFromApi && !error)
       return Scaffold(
           appBar: AppBar(
-            title: Text(AppLocalizations.of(context).recipes),
+            backgroundColor: Colors.green,
+            title: Text(AppLocalizations.of(context).recipes, style: TextStyle(color: Colors.white),),
             actions: [
               // AppLocalizations.of(context).logout
               // AppLocalizations.of(context).settings
               IconButton(
-                icon: Icon(Icons.filter_list),
+                icon: Icon(Icons.filter_list, color: Colors.white,),
               ),
               PopupMenuButton(
                 onSelected: (result) {
@@ -115,6 +116,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
                 ],
                 icon: Icon(
                   Icons.settings,
+                  color: Colors.white,
                 ),
               )
             ],
@@ -127,12 +129,13 @@ class _RecipesComponentState extends State<RecipesComponent> {
     else if (!error)
       return Scaffold(
           appBar: AppBar(
-            title: Text(AppLocalizations.of(context).recipes),
+            backgroundColor: Colors.green,
+            title: Text(AppLocalizations.of(context).recipes, style: TextStyle(color: Colors.white),),
             actions: [
               // AppLocalizations.of(context).logout
               // AppLocalizations.of(context).settings
               IconButton(
-                icon: Icon(Icons.filter_list),
+                icon: Icon(Icons.filter_list, color: Colors.white,),
                 onPressed: _showFilterDialog,
               ),
               PopupMenuButton(
@@ -156,6 +159,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
                 ],
                 icon: Icon(
                   Icons.settings,
+                  color: Colors.white,
                 ),
               )
             ],
@@ -163,10 +167,10 @@ class _RecipesComponentState extends State<RecipesComponent> {
           body: RefreshIndicator(
               onRefresh: refreshTriggered,
               child: Container(
-                color: Colors.green,
+                color: Colors.black87,
                 child: Container(
                   // height: 400,
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: ListView.builder(
                       primary: true,
                       padding: const EdgeInsets.all(0),
@@ -185,12 +189,13 @@ class _RecipesComponentState extends State<RecipesComponent> {
     else
       return Scaffold(
           appBar: AppBar(
-            title: Text(AppLocalizations.of(context).recipes),
+            backgroundColor: Colors.green,
+            title: Text(AppLocalizations.of(context).recipes, style: TextStyle(color: Colors.white),),
             actions: [
               // AppLocalizations.of(context).logout
               // AppLocalizations.of(context).settings
               IconButton(
-                icon: Icon(Icons.filter_list),
+                icon: Icon(Icons.filter_list, color: Colors.white,),
                 onPressed: _showFilterDialog,
               ),
               PopupMenuButton(
@@ -214,6 +219,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
                 ],
                 icon: Icon(
                   Icons.settings,
+                  color: Colors.white,
                 ),
               )
             ],

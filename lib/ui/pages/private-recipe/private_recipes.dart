@@ -115,7 +115,11 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
     if (loadingFromApi)
       return Scaffold(
           appBar: AppBar(
-            title: Text(AppLocalizations.of(context).yourRecipes),
+            backgroundColor: Colors.green,
+            title: Text(
+              AppLocalizations.of(context).yourRecipes,
+              style: TextStyle(color: Colors.white),
+            ),
             actions: [
               PopupMenuButton(
                 onSelected: (result) {
@@ -138,6 +142,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
                 ],
                 icon: Icon(
                   Icons.settings,
+                  color: Colors.white,
                 ),
               )
             ],
@@ -150,7 +155,11 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
     else if (!error)
       return Scaffold(
           appBar: AppBar(
-            title: Text(AppLocalizations.of(context).yourRecipes),
+            backgroundColor: Colors.green,
+            title: Text(
+              AppLocalizations.of(context).yourRecipes,
+              style: TextStyle(color: Colors.white),
+            ),
             actions: [
               PopupMenuButton(
                 onSelected: (result) {
@@ -173,12 +182,14 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
                 ],
                 icon: Icon(
                   Icons.settings,
+                  color: Colors.white,
                 ),
               )
             ],
           ),
           body: Scaffold(
               appBar: AppBar(
+                  backgroundColor: Colors.green,
                   toolbarHeight: 0,
                   bottom: TabBar(
                       controller: _tabController,
@@ -198,7 +209,11 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
     else
       return Scaffold(
           appBar: AppBar(
-            title: Text(AppLocalizations.of(context).yourRecipes),
+            backgroundColor: Colors.green,
+            title: Text(
+              AppLocalizations.of(context).yourRecipes,
+              style: TextStyle(color: Colors.white),
+            ),
             actions: [
               PopupMenuButton(
                 onSelected: (result) {
@@ -221,6 +236,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
                 ],
                 icon: Icon(
                   Icons.settings,
+                  color: Colors.white,
                 ),
               )
             ],
@@ -252,56 +268,61 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
           onRefresh: likedRecipesRefreshTriggered,
           key: new PageStorageKey<String>('PrivateRecipesTabBarView:0'),
           child: Container(
-              margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: likedRecipesList.isNotEmpty
-                  ? ListView.builder(
-                      primary: true,
-                      padding: const EdgeInsets.all(0),
-                      itemCount: likedRecipesList.length,
-                      itemBuilder: (BuildContext context, int i) {
-                        return RecipeTileComponent(
-                          key: UniqueKey(),
-                          recipe: likedRecipesList[i],
-                          apiToken: apiToken,
-                          likesUpdated: () => updateUserLike(i),
-                        );
-                      },
-                    )
-                  : Center(
-                      child: Card(
-                          elevation: 20,
-                          child: Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Wrap(children: [
-                                Text(
-                                  AppLocalizations.of(context).prettyEmptyHere,
-                                  style: TextStyle(fontSize: 26),
-                                ),
-                                Text(
-                                  AppLocalizations.of(context).likeRecipeToAdd,
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                                Center(
-                                    child: ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      RecipesComponent()));
-                                        },
-                                        child: Text(AppLocalizations.of(context)
-                                            .goToRecipes)))
-                              ])))))),
+              color: Colors.black87,
+              child: Container(
+                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                  child: likedRecipesList.isNotEmpty
+                      ? ListView.builder(
+                          primary: true,
+                          padding: const EdgeInsets.all(0),
+                          itemCount: likedRecipesList.length,
+                          itemBuilder: (BuildContext context, int i) {
+                            return RecipeTileComponent(
+                              key: UniqueKey(),
+                              recipe: likedRecipesList[i],
+                              apiToken: apiToken,
+                              likesUpdated: () => updateUserLike(i),
+                            );
+                          },
+                        )
+                      : Center(
+                          child: Card(
+                              elevation: 20,
+                              child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Wrap(children: [
+                                    Text(
+                                      AppLocalizations.of(context)
+                                          .prettyEmptyHere,
+                                      style: TextStyle(fontSize: 26),
+                                    ),
+                                    Text(
+                                      AppLocalizations.of(context)
+                                          .likeRecipeToAdd,
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                    Center(
+                                        child: ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          RecipesComponent()));
+                                            },
+                                            child: Text(
+                                                AppLocalizations.of(context)
+                                                    .goToRecipes)))
+                                  ]))))))),
       RefreshIndicator(
           onRefresh: refreshTriggered,
           key: new PageStorageKey<String>('PrivateRecipesTabBarView:1'),
           child: Container(
-            color: Colors.green,
+            color: Colors.black87,
             child: Stack(children: [
               Container(
                 // height: 400,
-                margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: recipeList.isNotEmpty
                     ? ListView(
                         primary: true,

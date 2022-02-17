@@ -49,7 +49,7 @@ class _ProfilePageState extends State<ProfilePage> {
     getUser();
   }
 
-  getUser({bool reload=false}) {
+  getUser({bool reload = false}) {
     userFuture = userService.getUser(reload: reload);
     userFuture.then((value) => {
           _profileNameTextController.text = value.displayName,
@@ -76,7 +76,11 @@ class _ProfilePageState extends State<ProfilePage> {
               },
               child: Scaffold(
                   appBar: AppBar(
-                    title: Text(AppLocalizations.of(context).profile),
+                    backgroundColor: Colors.green,
+                    title: Text(
+                      AppLocalizations.of(context).profile,
+                      style: TextStyle(color: Colors.white),
+                    ),
                     actions: [
                       // AppLocalizations.of(context).logout
                       // AppLocalizations.of(context).settings
@@ -100,9 +104,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               child: Text(AppLocalizations.of(context).logout),
                               value: 1)
                         ],
-                        icon: Icon(
-                          Icons.settings,
-                        ),
+                        icon: Icon(Icons.settings, color: Colors.white),
                       )
                     ],
                   ),
@@ -191,6 +193,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         Positioned(
                                           child: ElevatedButton(
                                             style: ElevatedButton.styleFrom(
+                                                primary: Colors.green,
                                                 shape: CircleBorder(),
                                                 padding: EdgeInsets.all(8)),
                                             child: const Icon(
@@ -426,8 +429,7 @@ class _ProfilePageState extends State<ProfilePage> {
               print(
                   "Anonymous account successfully upgraded: " + user.toString())
             },
-        onError: (error) async =>
-            {
+        onError: (error) async => {
               // linking to google did not work because registered acc already exists with this google account
               // so just log in and assume the user wanted to login
               await FirebaseAuth.instance.signInWithCredential(credential),

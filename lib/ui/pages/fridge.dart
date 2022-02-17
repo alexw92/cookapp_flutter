@@ -54,11 +54,51 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
               return Scaffold(
                   backgroundColor: Colors.black87,
                   appBar: AppBar(
-                    title: Text(AppLocalizations.of(context).fridge),
+                    backgroundColor: Colors.green,
+                    title: Text(
+                      AppLocalizations.of(context).fridge,
+                      style: TextStyle(color: Colors.white),
+                    ),
                     actions: [
-                      IconButton(
-                        icon: FaIcon(FontAwesomeIcons.listAlt),
-                        onPressed: _openShoppingList,
+                      InkWell(
+                        onTap: _openShoppingList,
+                        child: Container(
+                          width: 72,
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  FaIcon(
+                                    FontAwesomeIcons.listAlt,
+                                    color: Colors.white,
+                                  ),
+                                  //   Text("text", overflow: TextOverflow.ellipsis),
+                                ],
+                              ),
+                              Positioned(
+                                top: 4,
+                                right: 2,
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 6, vertical: 2),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.red),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "?",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
                       ),
                       PopupMenuButton(
                         onSelected: (result) {
@@ -82,6 +122,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                         ],
                         icon: Icon(
                           Icons.settings,
+                          color: Colors.white,
                         ),
                       )
                     ],
@@ -97,7 +138,9 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                 return Scaffold(
                     backgroundColor: Colors.black87,
                     appBar: AppBar(
-                      title: Text(AppLocalizations.of(context).fridge),
+                      backgroundColor: Colors.green,
+                      title: Text(AppLocalizations.of(context).fridge,
+                          style: TextStyle(color: Colors.white)),
                       actions: [
                         InkWell(
                           onTap: _openShoppingList,
@@ -110,7 +153,10 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
-                                    FaIcon(FontAwesomeIcons.listAlt),
+                                    FaIcon(
+                                      FontAwesomeIcons.listAlt,
+                                      color: Colors.white,
+                                    ),
                                     //   Text("text", overflow: TextOverflow.ellipsis),
                                   ],
                                 ),
@@ -127,7 +173,8 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                                     child: Text(
                                       "$itemsOnShoppingList",
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
                                     ),
                                   ),
                                 )
@@ -158,6 +205,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                           ],
                           icon: Icon(
                             Icons.settings,
+                            color: Colors.white,
                           ),
                         )
                       ],
@@ -165,6 +213,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                     body: Scaffold(
                         backgroundColor: Colors.black54,
                         appBar: AppBar(
+                          backgroundColor: Colors.green,
                           toolbarHeight: 0,
                           bottom: TabBar(
                             controller: _tabController,
@@ -547,8 +596,9 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
         await userFoodService.addBoxValue(true, item);
         // update shopping list number
         setState(() {
-          itemsOnShoppingList =
-              missingGroceries.where((element) => element.onShoppingList).length;
+          itemsOnShoppingList = missingGroceries
+              .where((element) => element.onShoppingList)
+              .length;
         });
         NeedsRecipeUpdateState().recipesUpdateNeeded = true;
         // item was missing before
