@@ -40,19 +40,29 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: () => navigateToRecipePage(recipe.id),
+    return Container(
+      padding: EdgeInsets.all(10),
+        child: GestureDetector(
+            onTap: () => navigateToRecipePage(recipe.id),
             child: Container(
-            alignment: Alignment.center,
-            clipBehavior: Clip.hardEdge,
-            margin: EdgeInsets.only(bottom: 10),
-            height: 400,
-            decoration: BoxDecoration(
-                border: Border.all(
-                  color: Color.fromARGB(0, 0, 0, 0),
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(20))),
-            child: Stack(fit: StackFit.expand, children: [
+              alignment: Alignment.center,
+              clipBehavior: Clip.hardEdge,
+              margin: EdgeInsets.only(bottom: 10),
+              height: 400,
+              decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Color.fromARGB(0, 0, 0, 0),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.teal,
+                      blurRadius: 6,
+                      spreadRadius: 2,
+                      offset: Offset(0, 0), // Shadow position
+                    ),
+                  ],
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+              child: Stack(fit: StackFit.expand, children: [
                 Container(
                     height: 400,
                     width: 300,
@@ -181,7 +191,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                             style: TextStyle(fontSize: 20),
                             textAlign: TextAlign.center)))
               ]),
-            ));
+            )));
   }
 
   Future<bool> onLikeButtonTapped(bool isLiked) async {

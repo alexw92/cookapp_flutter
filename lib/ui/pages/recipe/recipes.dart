@@ -169,7 +169,6 @@ class _RecipesComponentState extends State<RecipesComponent> {
               child: Container(
                 color: Colors.black87,
                 child: Container(
-                  // height: 400,
                   margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: ListView.builder(
                       primary: true,
