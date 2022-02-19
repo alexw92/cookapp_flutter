@@ -78,24 +78,6 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                                   //   Text("text", overflow: TextOverflow.ellipsis),
                                 ],
                               ),
-                              Positioned(
-                                top: 4,
-                                right: 2,
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 6, vertical: 2),
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.red),
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "?",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  ),
-                                ),
-                              )
                             ],
                           ),
                         ),
@@ -160,24 +142,26 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                                     //   Text("text", overflow: TextOverflow.ellipsis),
                                   ],
                                 ),
-                                Positioned(
-                                  top: 4,
-                                  right: 2,
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 6, vertical: 2),
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.red),
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "$itemsOnShoppingList",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
-                                    ),
-                                  ),
-                                )
+                                itemsOnShoppingList > 0
+                                    ? Positioned(
+                                        top: 4,
+                                        right: 2,
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 6, vertical: 2),
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.red),
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            "$itemsOnShoppingList",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
+                                          ),
+                                        ),
+                                      )
+                                    : Container()
                               ],
                             ),
                           ),

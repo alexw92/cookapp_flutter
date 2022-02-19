@@ -44,8 +44,11 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
     if (loading && !error)
       return Scaffold(
           backgroundColor: Colors.black87,
-          appBar:
-              AppBar(title: Text(AppLocalizations.of(context).shoppingList), backgroundColor: Colors.teal,),
+          appBar: AppBar(
+              title: Text(
+            AppLocalizations.of(context).shoppingList,
+            style: TextStyle(color: Colors.white),
+          )),
           body: Center(
               child: CircularProgressIndicator(
             value: null,
@@ -54,8 +57,8 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
     else if (!loading && !error)
       return Scaffold(
           appBar: AppBar(
-            title: Text(AppLocalizations.of(context).shoppingList),
-            backgroundColor: Colors.teal,
+            title: Text(AppLocalizations.of(context).shoppingList,
+                style: TextStyle(color: Colors.white)),
           ),
           body: RefreshIndicator(
               onRefresh: refreshTriggered,
@@ -83,30 +86,33 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            ElevatedButton(
-                                                child: Text(
-                                                    AppLocalizations.of(context)
-                                                        .clearList),
-                                                style: ButtonStyle(
-                                                    backgroundColor:
-                                                        MaterialStateProperty
-                                                            .all(Colors.teal)),
-                                                onPressed: _clearList),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            ElevatedButton(
-                                                child: Text(
-                                                  AppLocalizations.of(context)
-                                                      .orderGroceries,
-                                                ),
-                                                onPressed: () =>
-                                                    {print("Order groceries")},
-                                                style: ButtonStyle(
-                                                    backgroundColor:
-                                                        MaterialStateProperty
-                                                            .all(Colors.teal)))
-                                          ])))
+                                        ElevatedButton(
+                                            child: Text(
+                                                AppLocalizations.of(context)
+                                                    .clearList,
+                                                style: TextStyle(
+                                                    color: Colors.white)),
+                                            style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                        Colors.teal)),
+                                            onPressed: _clearList),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        ElevatedButton(
+                                            child: Text(
+                                                AppLocalizations.of(context)
+                                                    .orderGroceries,
+                                                style: TextStyle(
+                                                    color: Colors.white)),
+                                            onPressed: () =>
+                                                {print("Order groceries")},
+                                            style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                        Colors.teal)))
+                                      ])))
                               : Container()
                         ])
                       : Center(

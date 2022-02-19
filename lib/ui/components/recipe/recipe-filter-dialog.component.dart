@@ -48,7 +48,10 @@ class _FilterRecipesDialogState extends State<FilterRecipesDialog> {
             (int index) {
               return ChoiceChip(
                 avatar: Utility.getIconForDiet(diets[index]),
-                label: Text(Utility.getTranslatedDiet(context, diets[index])),
+                label: Text(
+                  Utility.getTranslatedDiet(context, diets[index]),
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 selected: diets.indexOf(recipeDiet) == index,
                 onSelected: (bool selected) async {
                   setState(() {
@@ -56,7 +59,8 @@ class _FilterRecipesDialogState extends State<FilterRecipesDialog> {
                   });
                   var prefs = await SharedPreferences.getInstance();
                   // set filter on normal if no diet filter is selected
-                  var newRecipeDietFilter = selected ? diets[index].index : Diet.NORMAL.index;
+                  var newRecipeDietFilter =
+                      selected ? diets[index].index : Diet.NORMAL.index;
                   prefs.setInt('recipeDietFilter', newRecipeDietFilter);
                 },
               );
