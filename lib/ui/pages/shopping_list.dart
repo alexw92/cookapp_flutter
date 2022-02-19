@@ -45,16 +45,18 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
       return Scaffold(
           backgroundColor: Colors.black87,
           appBar:
-              AppBar(title: Text(AppLocalizations.of(context).shoppingList)),
+              AppBar(title: Text(AppLocalizations.of(context).shoppingList), backgroundColor: Colors.teal,),
           body: Center(
               child: CircularProgressIndicator(
             value: null,
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.teal,
           )));
     else if (!loading && !error)
       return Scaffold(
-          appBar:
-              AppBar(title: Text(AppLocalizations.of(context).shoppingList)),
+          appBar: AppBar(
+            title: Text(AppLocalizations.of(context).shoppingList),
+            backgroundColor: Colors.teal,
+          ),
           body: RefreshIndicator(
               onRefresh: refreshTriggered,
               child: Container(
@@ -75,8 +77,7 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                               ? Container(
                                   margin: EdgeInsets.only(
                                       bottom: 10, top: 10, left: 20, right: 20),
-                                  child: Card(
-                                      elevation: 20,
+                                  child: Container(
                                       child: Row(
                                           // mainAxisSize: MainAxisSize.min,
                                           mainAxisAlignment:
@@ -86,17 +87,25 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                                                 child: Text(
                                                     AppLocalizations.of(context)
                                                         .clearList),
+                                                style: ButtonStyle(
+                                                    backgroundColor:
+                                                        MaterialStateProperty
+                                                            .all(Colors.teal)),
                                                 onPressed: _clearList),
                                             SizedBox(
                                               width: 10,
                                             ),
                                             ElevatedButton(
-                                              child: Text(
+                                                child: Text(
                                                   AppLocalizations.of(context)
-                                                      .orderGroceries),
-                                              onPressed: () =>
-                                                  {print("Order groceries")},
-                                            )
+                                                      .orderGroceries,
+                                                ),
+                                                onPressed: () =>
+                                                    {print("Order groceries")},
+                                                style: ButtonStyle(
+                                                    backgroundColor:
+                                                        MaterialStateProperty
+                                                            .all(Colors.teal)))
                                           ])))
                               : Container()
                         ])
@@ -222,7 +231,6 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
 
         await userFoodService.addBoxValue(false, item);
         await userFoodService.removeBoxValue(true, item);
-
       } else {
         print("Remove $groceryId from shopping list");
         await UserFoodProductController.toggleUserFoodProduct(

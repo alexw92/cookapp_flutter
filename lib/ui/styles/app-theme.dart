@@ -7,6 +7,10 @@ class MyAppTheme {
         accentColor: Colors.blueGrey,
         buttonColor: Colors.white,
         scaffoldBackgroundColor: Colors.white,
+        appBarTheme: AppBarTheme(
+          iconTheme: IconThemeData(color: Colors.white),
+          backgroundColor: Colors.teal
+        ),
 
         // Define the default font family.
         fontFamily: 'Helvetica-Neue-LT-Std-Light.ttf',

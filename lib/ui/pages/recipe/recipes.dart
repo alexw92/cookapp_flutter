@@ -87,7 +87,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
     if (loadingFromApi && !error)
       return Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.teal,
             title: Text(AppLocalizations.of(context).recipes, style: TextStyle(color: Colors.white),),
             actions: [
               // AppLocalizations.of(context).logout
@@ -124,12 +124,12 @@ class _RecipesComponentState extends State<RecipesComponent> {
           body: Center(
               child: CircularProgressIndicator(
             value: null,
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.teal,
           )));
     else if (!error)
       return Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.teal,
             title: Text(AppLocalizations.of(context).recipes, style: TextStyle(color: Colors.white),),
             actions: [
               // AppLocalizations.of(context).logout
@@ -188,7 +188,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
     else
       return Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.teal,
             title: Text(AppLocalizations.of(context).recipes, style: TextStyle(color: Colors.white),),
             actions: [
               // AppLocalizations.of(context).logout

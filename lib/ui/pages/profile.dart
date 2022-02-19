@@ -76,7 +76,7 @@ class _ProfilePageState extends State<ProfilePage> {
               },
               child: Scaffold(
                   appBar: AppBar(
-                    backgroundColor: Colors.green,
+                    backgroundColor: Colors.teal,
                     title: Text(
                       AppLocalizations.of(context).profile,
                       style: TextStyle(color: Colors.white),
@@ -193,7 +193,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         Positioned(
                                           child: ElevatedButton(
                                             style: ElevatedButton.styleFrom(
-                                                primary: Colors.green,
+                                                primary: Colors.teal,
                                                 shape: CircleBorder(),
                                                 padding: EdgeInsets.all(8)),
                                             child: const Icon(
@@ -259,7 +259,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                           .camera_alt,
                                                                       size: 26,
                                                                       color: Colors
-                                                                          .green,
+                                                                          .teal,
                                                                     )),
                                                                 SizedBox(
                                                                   height: 10,
@@ -299,7 +299,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                           .image,
                                                                       size: 26,
                                                                       color: Colors
-                                                                          .green,
+                                                                          .teal,
                                                                     )),
                                                                 SizedBox(
                                                                   height: 10,

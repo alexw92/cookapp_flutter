@@ -54,7 +54,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
               return Scaffold(
                   backgroundColor: Colors.black87,
                   appBar: AppBar(
-                    backgroundColor: Colors.green,
+                    backgroundColor: Colors.teal,
                     title: Text(
                       AppLocalizations.of(context).fridge,
                       style: TextStyle(color: Colors.white),
@@ -138,7 +138,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                 return Scaffold(
                     backgroundColor: Colors.black87,
                     appBar: AppBar(
-                      backgroundColor: Colors.green,
+                      backgroundColor: Colors.teal,
                       title: Text(AppLocalizations.of(context).fridge,
                           style: TextStyle(color: Colors.white)),
                       actions: [
@@ -213,7 +213,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                     body: Scaffold(
                         backgroundColor: Colors.black54,
                         appBar: AppBar(
-                          backgroundColor: Colors.green,
+                          backgroundColor: Colors.teal,
                           toolbarHeight: 0,
                           bottom: TabBar(
                             controller: _tabController,
@@ -243,6 +243,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                     backgroundColor: Colors.black87,
                     appBar: AppBar(
                       title: Text(AppLocalizations.of(context).fridge),
+                      backgroundColor: Colors.teal,
                       actions: [
                         PopupMenuButton(
                           onSelected: (result) {
@@ -275,6 +276,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                         backgroundColor: Colors.black87,
                         appBar: AppBar(
                           toolbarHeight: 0,
+                          backgroundColor: Colors.teal,
                           bottom: TabBar(
                             controller: _tabController,
                             isScrollable: true,

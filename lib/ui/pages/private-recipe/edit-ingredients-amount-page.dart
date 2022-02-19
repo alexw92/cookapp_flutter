@@ -47,8 +47,9 @@ class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar:
-            AppBar(title: Text(AppLocalizations.of(context).ingredientsAmount)),
+        appBar: AppBar(
+            title: Text(AppLocalizations.of(context).ingredientsAmount, style: TextStyle(color: Colors.white),),
+            backgroundColor: Colors.teal),
         body: Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -85,15 +86,17 @@ class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
             ),
             SizedBox(
                 height: 50,
-                child: Center( child:ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: Colors.lightGreen),
-                    onPressed: () {
-                      saveAmountsAndContinue();
-                    },
-                    child: Text(
-                      AppLocalizations.of(context).saveAndContinue,
-                      style: TextStyle(fontSize: 16),
-                    ))))
+                child: Center(
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.teal),
+                        onPressed: () {
+                          saveAmountsAndContinue();
+                        },
+                        child: Text(
+                          AppLocalizations.of(context).saveAndContinue,
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ))))
           ],
         ));
   }

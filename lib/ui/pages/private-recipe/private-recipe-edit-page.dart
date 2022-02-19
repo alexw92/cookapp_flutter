@@ -87,8 +87,13 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                     children: [CircularProgressIndicator()])
               ])
         : Scaffold(
-            appBar:
-                AppBar(title: Text(AppLocalizations.of(context).recipeEdit)),
+            appBar: AppBar(
+              title: Text(
+                AppLocalizations.of(context).recipeEdit,
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.teal,
+            ),
             body: SingleChildScrollView(
                 child: Column(
               children: [

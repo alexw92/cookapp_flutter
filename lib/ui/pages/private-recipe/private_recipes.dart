@@ -115,7 +115,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
     if (loadingFromApi)
       return Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.teal,
             title: Text(
               AppLocalizations.of(context).yourRecipes,
               style: TextStyle(color: Colors.white),
@@ -150,12 +150,12 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
           body: Center(
               child: CircularProgressIndicator(
             value: null,
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.teal,
           )));
     else if (!error)
       return Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.teal,
             title: Text(
               AppLocalizations.of(context).yourRecipes,
               style: TextStyle(color: Colors.white),
@@ -189,7 +189,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
           ),
           body: Scaffold(
               appBar: AppBar(
-                  backgroundColor: Colors.green,
+                  backgroundColor: Colors.teal,
                   toolbarHeight: 0,
                   bottom: TabBar(
                       controller: _tabController,
@@ -209,7 +209,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
     else
       return Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.teal,
             title: Text(
               AppLocalizations.of(context).yourRecipes,
               style: TextStyle(color: Colors.white),
@@ -360,7 +360,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
                     style: ElevatedButton.styleFrom(
                         shape: CircleBorder(),
                         padding: EdgeInsets.all(8),
-                        primary: Colors.green),
+                        primary: Colors.teal),
                     onPressed: () => _showRecipeCreateDialog(),
                     child: const Icon(
                       Icons.add,

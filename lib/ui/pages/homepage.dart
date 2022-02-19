@@ -46,27 +46,33 @@ class _HomePageState extends State<HomePage> {
               BottomNavigationBarItem(
                 icon: ImageIcon(AssetImage("assets/fridge32.png")),
                 label: AppLocalizations.of(context).fridge,
+                backgroundColor: Colors.teal,
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.lunch_dining),
                 label: AppLocalizations.of(context).recipes,
+                backgroundColor: Colors.teal,
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.favorite),
                 label: AppLocalizations.of(context).yourRecipes,
+                backgroundColor: Colors.teal,
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),
                 label: AppLocalizations.of(context).profile,
+                backgroundColor: Colors.teal,
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.video_call_rounded),
-                label: "ML Test",
+                label: "ML",
+                backgroundColor: Colors.teal
               )
             ],
+            type: BottomNavigationBarType.shifting,
             currentIndex: _selectedIndex,
-            unselectedItemColor: Colors.grey,
-            selectedItemColor: Colors.black,
+            unselectedItemColor: Colors.black,
+            selectedItemColor: Colors.white,
             onTap: _onItemTapped,
           ),
         ),

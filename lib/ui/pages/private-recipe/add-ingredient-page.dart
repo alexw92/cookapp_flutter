@@ -53,7 +53,13 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(AppLocalizations.of(context).addIngredient)),
+        appBar: AppBar(
+          title: Text(
+            AppLocalizations.of(context).addIngredient,
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.teal,
+        ),
         body: Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -98,7 +104,13 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
                                     Text(AppLocalizations.of(context)
                                         .sendProposalToAddIt),
                                     ElevatedButton(
-                                      child: Text(AppLocalizations.of(context).requestIngredient),
+                                      child: Text(
+                                        AppLocalizations.of(context)
+                                            .requestIngredient,
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                          primary: Colors.teal),
                                       onPressed: () => {},
                                     )
                                   ]))));

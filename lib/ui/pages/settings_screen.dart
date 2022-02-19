@@ -47,7 +47,10 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context).settings)),
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context).settings),
+        backgroundColor: Colors.teal,
+      ),
       body: SettingsList(
         sections: [
           SettingsSection(
@@ -58,10 +61,11 @@ class _SettingsPageState extends State<SettingsPage> {
                 subtitle: language,
                 leading: Icon(Icons.language),
                 onPressed: (context) async {
-                  final result =
-                      await Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => LanguagesScreen(language: language),
-                  )).then((value) => _fetchLocale() );
+                  final result = await Navigator.of(context)
+                      .push(MaterialPageRoute(
+                        builder: (_) => LanguagesScreen(language: language),
+                      ))
+                      .then((value) => _fetchLocale());
                   setState(() {
                     this.language = result;
                   });
