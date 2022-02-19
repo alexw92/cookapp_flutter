@@ -41,7 +41,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(10),
         child: GestureDetector(
             onTap: () => navigateToRecipePage(recipe.id),
             child: Container(
@@ -113,17 +113,21 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                                 },
                                 countBuilder:
                                     (int count, bool isLiked, String text) {
-                                  var color = Colors.white;
+                                  var color = Colors.red;
                                   Widget result;
                                   if (count == 0) {
                                     result = Text(
-                                      "",
-                                      style: TextStyle(color: color),
+                                      "0",
+                                      style: TextStyle(
+                                          color: color,
+                                          fontWeight: FontWeight.bold),
                                     );
                                   } else
                                     result = Text(
                                       text,
-                                      style: TextStyle(color: color),
+                                      style: TextStyle(
+                                          color: color,
+                                          fontWeight: FontWeight.bold),
                                     );
                                   return result;
                                 },
