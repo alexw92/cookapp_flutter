@@ -1,4 +1,3 @@
-import 'package:cookable_flutter/core/object_detection/object_detector_view.dart';
 import 'package:cookable_flutter/ui/pages/fridge.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/private_recipes.dart';
 import 'package:cookable_flutter/ui/pages/profile.dart';
@@ -23,7 +22,7 @@ class _HomePageState extends State<HomePage> {
     RecipesComponent(),
     PrivateRecipesComponent(),
     ProfilePage(),
-    ObjectDetectorView()
+    //  ObjectDetectorView()
   ];
 
   void _onItemTapped(int index) {
@@ -37,7 +36,6 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: SafeArea(
         child: Scaffold(
-
           body: Center(
             child: _widgetOptions.elementAt(_selectedIndex),
           ),
@@ -63,11 +61,11 @@ class _HomePageState extends State<HomePage> {
                 label: AppLocalizations.of(context).profile,
                 backgroundColor: Colors.teal,
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.video_call_rounded),
-                label: "ML",
-                backgroundColor: Colors.teal
-              )
+              // BottomNavigationBarItem(
+              //   icon: Icon(Icons.video_call_rounded),
+              //   label: "ML",
+              //   backgroundColor: Colors.teal
+              // )
             ],
             type: BottomNavigationBarType.shifting,
             currentIndex: _selectedIndex,

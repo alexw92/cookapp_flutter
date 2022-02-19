@@ -147,11 +147,13 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
               )
             ],
           ),
-          body: Center(
-              child: CircularProgressIndicator(
-            value: null,
-            backgroundColor: Colors.teal,
-          )));
+          body: Container(
+              color: Colors.black87,
+              child: Center(
+                  child: CircularProgressIndicator(
+                value: null,
+                backgroundColor: Colors.teal,
+              ))));
     else if (!error)
       return Scaffold(
           appBar: AppBar(
