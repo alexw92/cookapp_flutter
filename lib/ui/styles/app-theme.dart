@@ -8,10 +8,11 @@ class MyAppTheme {
         buttonColor: Colors.white,
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: AppBarTheme(
-          iconTheme: IconThemeData(color: Colors.white),
-          backgroundColor: Colors.teal
-        ),
-
+            iconTheme: IconThemeData(color: Colors.white),
+            backgroundColor: Colors.teal),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.teal))),
         // Define the default font family.
         fontFamily: 'Helvetica-Neue-LT-Std-Light.ttf',
 

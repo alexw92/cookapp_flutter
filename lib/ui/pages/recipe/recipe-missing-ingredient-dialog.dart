@@ -35,13 +35,19 @@ class _MissingIngredientDialogState extends State<MissingIngredientDialog> {
             //       crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ElevatedButton(
-                child: Text(AppLocalizations.of(context).yes),
+                child: Text(
+                  AppLocalizations.of(context).yes,
+                  style: TextStyle(color: Colors.white),
+                ),
                 onPressed: () async {
                   Navigator.of(context).pop(Constants.UserHasIngredient);
                 },
               ),
               ElevatedButton(
-                child: Text(AppLocalizations.of(context).no),
+                child: Text(
+                  AppLocalizations.of(context).no,
+                  style: TextStyle(color: Colors.white),
+                ),
                 onPressed: () async {
                   Navigator.of(context).pop(Constants.UserLacksIngredient);
                 },
@@ -51,7 +57,10 @@ class _MissingIngredientDialogState extends State<MissingIngredientDialog> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              child: Text(AppLocalizations.of(context).addToShoppingList),
+              child: Text(
+                AppLocalizations.of(context).addToShoppingList,
+                style: TextStyle(color: Colors.white),
+              ),
               onPressed: () async {
                 Navigator.of(context)
                     .pop(Constants.UserLacksIngredientAndWantsToAddToList);

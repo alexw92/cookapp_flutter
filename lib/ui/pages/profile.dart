@@ -121,6 +121,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                         Text(
                                           AppLocalizations.of(context)
                                               .loginToAccessThisPage,
+                                          style: TextStyle(fontSize: 22),
+                                        ),
+                                        SizedBox(
+                                          height: 20,
                                         ),
                                         SignInButton(
                                           Buttons.Facebook,
@@ -136,19 +140,23 @@ class _ProfilePageState extends State<ProfilePage> {
                                             convertAnonymousToGoogle();
                                           },
                                         ),
-                                        SignInButton(
-                                          Buttons.Email,
+                                        SignInButtonBuilder(
+                                          icon: Icons.email,
+                                          iconColor: Colors.white,
+                                          backgroundColor: Colors.teal,
+                                          onPressed: () {},
                                           text: AppLocalizations.of(context)
                                               .createAccount,
-                                          onPressed: () {},
                                         ),
                                         Text("or"),
-                                        SignInButton(
-                                          Buttons.Email,
+                                        SignInButtonBuilder(
+                                          icon: Icons.email,
+                                          iconColor: Colors.white,
+                                          backgroundColor: Colors.teal,
+                                          onPressed: () {},
                                           text: AppLocalizations.of(context)
                                               .loginWithAccount,
-                                          onPressed: () {},
-                                        ),
+                                        )
                                       ])))
                           : Column(children: [
                               Container(

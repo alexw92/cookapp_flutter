@@ -313,8 +313,11 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
                                                           RecipesComponent()));
                                             },
                                             child: Text(
-                                                AppLocalizations.of(context)
-                                                    .goToRecipes)))
+                                              AppLocalizations.of(context)
+                                                  .goToRecipes,
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            )))
                                   ]))))))),
       RefreshIndicator(
           onRefresh: refreshTriggered,
@@ -353,8 +356,11 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
                                             _showRecipeCreateDialog();
                                           },
                                           child: Text(
-                                              AppLocalizations.of(context)
-                                                  .createARecipe)))
+                                            AppLocalizations.of(context)
+                                                .createARecipe,
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )))
                                 ])))),
               ),
               Positioned(
