@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class MyAppTheme {
   ThemeData get theme => ThemeData(
         brightness: Brightness.light,
-        primaryColor: Colors.green,
+        primaryColor: Colors.teal,
         accentColor: Colors.blueGrey,
         buttonColor: Colors.white,
         scaffoldBackgroundColor: Colors.white,
@@ -15,7 +15,10 @@ class MyAppTheme {
                 backgroundColor: MaterialStateProperty.all(Colors.teal))),
         // Define the default font family.
         fontFamily: 'Helvetica-Neue-LT-Std-Light.ttf',
-
+        inputDecorationTheme: InputDecorationTheme(
+            focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.teal)),
+            floatingLabelStyle: TextStyle(color: Colors.teal)),
         // Define the default TextTheme. Use this to specify the default
         // text styling for headlines, titles, bodies of text, and more.
         primarySwatch: Colors.lightGreen,

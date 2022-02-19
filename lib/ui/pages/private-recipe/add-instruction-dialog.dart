@@ -26,24 +26,26 @@ class _AddRecipeInstructionDialogState
     return AlertDialog(
       title: Text(AppLocalizations.of(context).addInstruction),
       content: TextField(
-        controller: _controller,
-        keyboardType: TextInputType.multiline,
-        minLines: 1,
-        maxLines: 20,
-        maxLength: 1000,
+          controller: _controller,
+          keyboardType: TextInputType.multiline,
+          minLines: 1,
+          maxLines: 20,
+          maxLength: 1000,
           decoration: InputDecoration(
             labelText: AppLocalizations.of(context).newRecipeInstructionSample,
-            suffixIcon: Icon(Icons.edit),
-          )
-      ),
+            suffixIcon: Icon(Icons.edit, color: Colors.teal,),
+          )),
       actions: <Widget>[
-        TextButton(
-          child: Text('Okay'),
+        ElevatedButton(
+          child: Text(
+            'Okay',
+            style: TextStyle(color: Colors.white),
+          ),
           onPressed: () {
             String instruction = _controller.value.text;
             Navigator.of(context).pop(instruction);
           },
-        ),
+        )
       ],
     );
   }

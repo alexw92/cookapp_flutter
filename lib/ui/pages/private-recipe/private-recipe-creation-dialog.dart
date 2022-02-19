@@ -33,8 +33,11 @@ class _CreateRecipeDialogState extends State<CreateRecipeDialog> {
             hintText: AppLocalizations.of(context).recipeNameHint),
       ),
       actions: <Widget>[
-        TextButton(
-          child: Text(AppLocalizations.of(context).createRecipe),
+        ElevatedButton(
+          child: Text(
+            AppLocalizations.of(context).createRecipe,
+            style: TextStyle(color: Colors.white),
+          ),
           onPressed: () async {
             String recipeName = _controller.value.text;
             if (recipeName != null) {
@@ -45,6 +48,7 @@ class _CreateRecipeDialogState extends State<CreateRecipeDialog> {
             }
           },
         ),
+        //Text(AppLocalizations.of(context).createRecipe, style: TextStyle(color: w),),
       ],
     );
   }
