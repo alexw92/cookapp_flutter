@@ -102,7 +102,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                   height: 16,
                 ),
                 ExpansionPanelList(
-                  elevation: 1,
+                  elevation: 2,
                   expandedHeaderPadding: EdgeInsets.all(4),
                   dividerColor: Colors.green,
                   children: [
@@ -137,71 +137,89 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                               style: TextStyle(fontSize: 24),
                               textAlign: TextAlign.center);
                         },
-                        body: Column(
-                          children: [
-                            ReorderableListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                onReorder: (int oldIndex, int newIndex) {
-                                  if (oldIndex < newIndex) {
-                                    newIndex -= 1;
-                                  }
-                                  setState(() {
-                                    Widget oldItem =
-                                        _instructionTiles.removeAt(oldIndex);
-                                    _instructionTiles.insert(newIndex, oldItem);
+                        body: privateRecipe.instructions.length == 0
+                            ? ElevatedButton(
+                                onPressed: openAddInstructionDialog,
+                                child: Text(
+                                  "${AppLocalizations.of(context).addInstruction}",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      Colors.teal), // <-- Button color,
+                                ),
+                              )
+                            : Column(
+                                children: [
+                                  ReorderableListView.builder(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      onReorder: (int oldIndex, int newIndex) {
+                                        if (oldIndex < newIndex) {
+                                          newIndex -= 1;
+                                        }
+                                        setState(() {
+                                          Widget oldItem = _instructionTiles
+                                              .removeAt(oldIndex);
+                                          _instructionTiles.insert(
+                                              newIndex, oldItem);
 
-                                    for (int i = 0;
-                                        i < _instructionTiles.length;
-                                        i++) {
-                                      var tile = _instructionTiles[i]
-                                          as PrivateRecipeInstructionTileComponent;
-                                      var recipeInstruction =
-                                          tile.recipeInstruction;
-                                      recipeInstruction.step = i;
-                                      tile.recipeInstruction =
-                                          recipeInstruction;
-                                    }
-                                    savePrivateRecipeManually();
-                                  });
-                                },
-                                itemBuilder: (BuildContext context, int index) {
-                                  var instructionTile = _instructionTiles[index]
-                                      as PrivateRecipeInstructionTileComponent;
-                                  return Dismissible(
-                                      key: ValueKey(
-                                        instructionTile.recipeInstruction.id,
-                                      ),
-                                      background: Container(
-                                          color: Colors.red,
-                                          child: Icon(
-                                            Icons.delete,
-                                            size: 48,
-                                          )),
-                                      onDismissed: (direction) =>
-                                          _onRecipeInstructionDismissed(
-                                              index, direction),
-                                      child: instructionTile);
-                                },
-                                itemCount: _instructionTiles.length),
-                            ElevatedButton(
-                              onPressed: openAddInstructionDialog,
-                              child: Icon(
-                                Icons.add,
-                                size: 32,
-                              ),
-                              style: ButtonStyle(
-                                shape:
-                                    MaterialStateProperty.all(CircleBorder()),
-                                padding: MaterialStateProperty.all(
-                                    EdgeInsets.all(10)),
-                                backgroundColor: MaterialStateProperty.all(
-                                    Colors.white), // <-- Button color,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                          ],
-                        )),
+                                          for (int i = 0;
+                                              i < _instructionTiles.length;
+                                              i++) {
+                                            var tile = _instructionTiles[i]
+                                                as PrivateRecipeInstructionTileComponent;
+                                            var recipeInstruction =
+                                                tile.recipeInstruction;
+                                            recipeInstruction.step = i;
+                                            tile.recipeInstruction =
+                                                recipeInstruction;
+                                          }
+                                          savePrivateRecipeManually();
+                                        });
+                                      },
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        var instructionTile = _instructionTiles[
+                                                index]
+                                            as PrivateRecipeInstructionTileComponent;
+                                        return Dismissible(
+                                            key: ValueKey(
+                                              instructionTile
+                                                  .recipeInstruction.id,
+                                            ),
+                                            background: Container(
+                                                color: Colors.red,
+                                                child: Icon(
+                                                  Icons.delete,
+                                                  size: 48,
+                                                )),
+                                            onDismissed: (direction) =>
+                                                _onRecipeInstructionDismissed(
+                                                    index, direction),
+                                            child: instructionTile);
+                                      },
+                                      itemCount: _instructionTiles.length),
+                                  ElevatedButton(
+                                    onPressed: openAddInstructionDialog,
+                                    child: Icon(
+                                      Icons.add,
+                                      size: 32,
+                                      color: Colors.white,
+                                    ),
+                                    style: ButtonStyle(
+                                      shape: MaterialStateProperty.all(
+                                          CircleBorder()),
+                                      padding: MaterialStateProperty.all(
+                                          EdgeInsets.all(10)),
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.teal), // <-- Button color,
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                ],
+                              )),
                   ],
                   expansionCallback: (i, isOpen) => {
                     setState(() {
@@ -270,39 +288,56 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
   }
 
   Widget getIngredientGridView() {
-    return Card(
-        key: ValueKey(updateIngredientsKey),
-        elevation: 10,
-        margin: EdgeInsets.all(10),
-        child: new GridView.count(
-          //     primary: true,
-          //    padding: const EdgeInsets.all(0),
-          physics: NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          crossAxisCount: 3,
-          mainAxisSpacing: 3,
-          padding: EdgeInsets.all(2),
-          children: [
-            ...getAllIngredientTiles(),
-            Padding(
-                child: SizedBox(
-                    width: 16,
-                    height: 16,
-                    child: ElevatedButton(
-                      onPressed: _openAddIngredientScreen,
-                      child: Icon(Icons.add, size: 36),
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(CircleBorder()),
-                        padding: MaterialStateProperty.all(EdgeInsets.all(2)),
-                        backgroundColor: MaterialStateProperty.all(
-                            Colors.white), // <-- Button color,
-                      ),
-                    )),
-                padding:
-                    EdgeInsets.only(left: 22, right: 22, bottom: 22, top: 0)),
-            //
-          ],
-        ));
+    return privateRecipe.ingredients.length == 0
+        ? ElevatedButton(
+            onPressed: _openAddIngredientScreen,
+            child: Text(
+              "${AppLocalizations.of(context).addIngredient}",
+              style: TextStyle(color: Colors.white),
+            ),
+            style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all(Colors.teal), // <-- Button color,
+            ),
+          )
+        : Card(
+            key: ValueKey(updateIngredientsKey),
+            elevation: 10,
+            margin: EdgeInsets.all(10),
+            child: new GridView.count(
+              //     primary: true,
+              //    padding: const EdgeInsets.all(0),
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              crossAxisCount: 3,
+              mainAxisSpacing: 3,
+              padding: EdgeInsets.all(2),
+              children: [
+                ...getAllIngredientTiles(),
+                Padding(
+                    child: SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: ElevatedButton(
+                          onPressed: _openAddIngredientScreen,
+                          child: Icon(
+                            Icons.add,
+                            size: 36,
+                            color: Colors.white,
+                          ),
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all(CircleBorder()),
+                            padding:
+                                MaterialStateProperty.all(EdgeInsets.all(2)),
+                            backgroundColor: MaterialStateProperty.all(
+                                Colors.teal), // <-- Button color,
+                          ),
+                        )),
+                    padding: EdgeInsets.only(
+                        left: 22, right: 22, bottom: 22, top: 0)),
+                //
+              ],
+            ));
   }
 
   Widget getNutritionGridView() {
