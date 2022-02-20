@@ -72,7 +72,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   FaIcon(
-                                    FontAwesomeIcons.listAlt,
+                                    FontAwesomeIcons.shoppingCart,
                                     color: Colors.white,
                                   ),
                                   //   Text("text", overflow: TextOverflow.ellipsis),
@@ -136,7 +136,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     FaIcon(
-                                      FontAwesomeIcons.listAlt,
+                                      FontAwesomeIcons.shoppingCart,
                                       color: Colors.white,
                                     ),
                                     //   Text("text", overflow: TextOverflow.ellipsis),
@@ -389,7 +389,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                                 ),
                                 InkWell(
                                     child: FaIcon(
-                                      FontAwesomeIcons.listAlt,
+                                      FontAwesomeIcons.shoppingCart,
                                       color: item.isOnShoppingList
                                           ? Colors.yellow
                                           : Colors.white,
