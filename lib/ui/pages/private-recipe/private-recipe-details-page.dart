@@ -108,6 +108,9 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
             ((ingredient.amount / recipe.numberOfPersons) * numberOfPersonsTmp);
       }
     });
+    setState(() {
+      updateIngredientsKey++;
+    });
   }
 
   void decreaseNumberOfPersons() {
@@ -123,6 +126,9 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
         ingredientCpy.amount =
             ((ingredient.amount / recipe.numberOfPersons) * numberOfPersonsTmp);
       }
+    });
+    setState(() {
+      updateIngredientsKey++;
     });
   }
 
