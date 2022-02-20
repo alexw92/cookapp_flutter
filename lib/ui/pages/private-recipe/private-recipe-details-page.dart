@@ -235,10 +235,7 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
                                 ),
                         ]),
                         Text(
-                          AppLocalizations.of(context).cookedBy +
-                              "\n" +
-                              (recipe.uploadedBy.displayName ??
-                                  "anonymousUser"),
+                          (recipe.uploadedBy.displayName ?? "anonymousUser"),
                           style: TextStyle(fontSize: 10, color: Colors.white),
                           textAlign: TextAlign.center,
                         )

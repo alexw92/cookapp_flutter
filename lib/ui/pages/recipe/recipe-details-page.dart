@@ -51,6 +51,8 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
   bool _toggledGroceryNewState;
   bool _toggledGroceryNewStateOnShoppingList = false;
 
+  Color recipeTileFooterColor = Colors.brown;
+
   _RecipesDetailsPageState();
 
   void loadRecipe() async {
@@ -176,7 +178,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
                     child: Column(children: [
                   Stack(children: [
                     Container(
-                        height: 400,
+                        height: 350,
                         width: double.infinity,
                         child: FittedBox(
                             fit: BoxFit.fill,
@@ -191,7 +193,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
                     recipe.uploadedBy != null
                         ? Positioned(
                             top: 0,
-                            left: 0,
+                            right: 0,
                             child: Column(children: [
                               Stack(children: [
                                 CircleAvatar(
@@ -207,73 +209,82 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
                                 ),
                               ]),
                               Text(
-                                AppLocalizations.of(context).cookedBy +
-                                    "\n" +
-                                    recipe.uploadedBy.displayName,
+                                recipe.uploadedBy.displayName,
                                 style: TextStyle(
                                     fontSize: 10, color: Colors.white),
                                 textAlign: TextAlign.center,
+                              ),
+                              LikeButton(
+                                size: 40,
+                                circleColor: CircleColor(
+                                    start: Color(0xffdd6666),
+                                    end: Color(0xffff3600)),
+                                likeCount: recipe.likes,
+                                isLiked: recipe.userLiked,
+                                onTap: onLikeButtonTapped,
+                                countPostion: CountPostion.bottom,
+                                likeBuilder: (bool isLiked) {
+                                  return isLiked
+                                      ? Icon(
+                                          Icons.favorite,
+                                          color: Colors.red,
+                                          size: 40,
+                                        )
+                                      : Icon(
+                                          Icons.favorite_outline_sharp,
+                                          color: Colors.white,
+                                          size: 40,
+                                        );
+                                },
+                                countBuilder:
+                                    (int count, bool isLiked, String text) {
+                                  var color = Colors.white;
+                                  Widget result;
+                                  if (count == 0) {
+                                    result = Text(
+                                      "0",
+                                      style: TextStyle(
+                                          color: color,
+                                          fontWeight: FontWeight.bold),
+                                    );
+                                  } else
+                                    result = Text(
+                                      text,
+                                      style: TextStyle(
+                                          color: color,
+                                          fontWeight: FontWeight.bold),
+                                    );
+                                  return result;
+                                },
                               )
                             ]))
                         : Container(),
-                    Positioned(
-                        bottom: 0,
-                        left: 8,
-                        right: 8,
-                        child: Row(
-                          children: [
-                            Expanded(
-                                child: FittedBox(
-                                    fit: BoxFit.contain,
-                                    child: Text(this.recipe.name,
-                                        style: TextStyle(color: Colors.white),
-                                        textAlign: TextAlign.center))),
-                            LikeButton(
-                              size: 40,
-                              circleColor: CircleColor(
-                                  start: Color(0xffdd6666),
-                                  end: Color(0xffff3600)),
-                              likeCount: recipe.likes,
-                              isLiked: recipe.userLiked,
-                              onTap: onLikeButtonTapped,
-                              likeBuilder: (bool isLiked) {
-                                return isLiked
-                                    ? Icon(
-                                        Icons.favorite,
-                                        color: Colors.red,
-                                        size: 40,
-                                      )
-                                    : Icon(
-                                        Icons.favorite_outline_sharp,
-                                        color: Colors.grey,
-                                        size: 40,
-                                      );
-                              },
-                              countBuilder:
-                                  (int count, bool isLiked, String text) {
-                                var color = Colors.red;
-                                Widget result;
-                                if (count == 0) {
-                                  result = Text(
-                                    "0",
-                                    style: TextStyle(
-                                        color: color,
-                                        fontWeight: FontWeight.bold),
-                                  );
-                                } else
-                                  result = Text(
-                                    text,
-                                    style: TextStyle(
-                                        color: color,
-                                        fontWeight: FontWeight.bold),
-                                  );
-                                return result;
-                              },
-                            )
-                          ],
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        ))
                   ]),
+                  SizedBox(
+                      height: 80,
+                      width: double.infinity,
+                      child: Container(
+                          color: recipeTileFooterColor,
+                          child: Column(children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                    child: FittedBox(
+                                        fit: BoxFit.contain,
+                                        child: Text(this.recipe.name,
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                            textAlign: TextAlign.center))),
+                                SizedBox(
+                                  width: 120,
+                                ),
+                              ],
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            ),
+                            Row(
+                              children: [],
+                            )
+                          ]))),
                   Container(
                     color: Colors.black54,
                     width: double.infinity,
