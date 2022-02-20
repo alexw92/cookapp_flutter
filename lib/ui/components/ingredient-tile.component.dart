@@ -113,7 +113,7 @@ class _IngredientTileComponentState extends State<IngredientTileComponent> {
                     bottom: 0,
                     right: 0,
                     child: FaIcon(
-                      FontAwesomeIcons.shoppingCart,
+                      FontAwesomeIcons.cartPlus,
                       color: Colors.yellow,
                       size: 26,
                     ))

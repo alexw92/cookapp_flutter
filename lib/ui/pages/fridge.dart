@@ -389,7 +389,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                                 ),
                                 InkWell(
                                     child: FaIcon(
-                                      FontAwesomeIcons.shoppingCart,
+                                      FontAwesomeIcons.cartPlus,
                                       color: item.isOnShoppingList
                                           ? Colors.yellow
                                           : Colors.white,
