@@ -33,6 +33,10 @@ class _RecipesComponentState extends State<RecipesComponent> {
     Colors.orange
   ];
 
+  Color _getRecipeBannerColor(int i) {
+    return this.recipeBannerColors[i % this.recipeBannerColors.length];
+  }
+
   void loadRecipes({reload = false, itemsInStockChanged = false}) async {
     setState(() {
       error = false;
@@ -330,7 +334,4 @@ class _RecipesComponentState extends State<RecipesComponent> {
         context, MaterialPageRoute(builder: (context) => SettingsPage()));
   }
 
-  Color _getRecipeBannerColor(int i) {
-    return this.recipeBannerColors[i % this.recipeBannerColors.length];
-  }
 }

@@ -135,7 +135,8 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                                 },
                                 countBuilder:
                                     (int count, bool isLiked, String text) {
-                                  var color = Colors.red;
+                                  var color =
+                                      isLiked ? Colors.red : Colors.white;
                                   Widget result;
                                   if (count == 0) {
                                     result = Text(

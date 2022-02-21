@@ -36,6 +36,17 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
   bool loadingFromApi = false;
   bool error = false;
   TabController _tabController;
+  List recipeBannerColors = [
+    Colors.indigo,
+    Colors.brown,
+    Colors.lime,
+    Colors.lightBlue,
+    Colors.orange
+  ];
+
+  Color _getRecipeBannerColor(int i) {
+    return this.recipeBannerColors[i % this.recipeBannerColors.length];
+  }
 
   void loadRecipes({reload = false}) async {
     setState(() {
@@ -284,6 +295,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
                               recipe: likedRecipesList[i],
                               apiToken: apiToken,
                               likesUpdated: () => updateUserLike(i),
+                              bannerColor: _getRecipeBannerColor(i),
                             );
                           },
                         )
