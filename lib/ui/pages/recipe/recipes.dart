@@ -25,6 +25,13 @@ class _RecipesComponentState extends State<RecipesComponent> {
   String apiToken;
   bool loadingFromApi = false;
   bool error = false;
+  List recipeBannerColors = [
+    Colors.indigo,
+    Colors.brown,
+    Colors.lime,
+    Colors.lightBlue,
+    Colors.orange
+  ];
 
   void loadRecipes({reload = false, itemsInStockChanged = false}) async {
     setState(() {
@@ -88,12 +95,18 @@ class _RecipesComponentState extends State<RecipesComponent> {
       return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.teal,
-            title: Text(AppLocalizations.of(context).recipes, style: TextStyle(color: Colors.white),),
+            title: Text(
+              AppLocalizations.of(context).recipes,
+              style: TextStyle(color: Colors.white),
+            ),
             actions: [
               // AppLocalizations.of(context).logout
               // AppLocalizations.of(context).settings
               IconButton(
-                icon: Icon(Icons.filter_list, color: Colors.white,),
+                icon: Icon(
+                  Icons.filter_list,
+                  color: Colors.white,
+                ),
               ),
               PopupMenuButton(
                 onSelected: (result) {
@@ -130,12 +143,18 @@ class _RecipesComponentState extends State<RecipesComponent> {
       return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.teal,
-            title: Text(AppLocalizations.of(context).recipes, style: TextStyle(color: Colors.white),),
+            title: Text(
+              AppLocalizations.of(context).recipes,
+              style: TextStyle(color: Colors.white),
+            ),
             actions: [
               // AppLocalizations.of(context).logout
               // AppLocalizations.of(context).settings
               IconButton(
-                icon: Icon(Icons.filter_list, color: Colors.white,),
+                icon: Icon(
+                  Icons.filter_list,
+                  color: Colors.white,
+                ),
                 onPressed: _showFilterDialog,
               ),
               PopupMenuButton(
@@ -176,12 +195,13 @@ class _RecipesComponentState extends State<RecipesComponent> {
                       itemCount: recipeList.length,
                       itemBuilder: (BuildContext context, int i) {
                         return RecipeTileComponent(
-                            key: ValueKey(recipeList[i].id),
-                            recipe: recipeList[i],
-                            apiToken: apiToken,
-                            userFoodUpdatedCallback: reloadRecipes,
-                            likesUpdated: () =>
-                                reloadRecipe(recipeList[i].id, i));
+                          key: ValueKey(recipeList[i].id),
+                          recipe: recipeList[i],
+                          apiToken: apiToken,
+                          userFoodUpdatedCallback: reloadRecipes,
+                          likesUpdated: () => reloadRecipe(recipeList[i].id, i),
+                          bannerColor: _getRecipeBannerColor(i),
+                        );
                       }),
                 ),
               )));
@@ -189,12 +209,18 @@ class _RecipesComponentState extends State<RecipesComponent> {
       return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.teal,
-            title: Text(AppLocalizations.of(context).recipes, style: TextStyle(color: Colors.white),),
+            title: Text(
+              AppLocalizations.of(context).recipes,
+              style: TextStyle(color: Colors.white),
+            ),
             actions: [
               // AppLocalizations.of(context).logout
               // AppLocalizations.of(context).settings
               IconButton(
-                icon: Icon(Icons.filter_list, color: Colors.white,),
+                icon: Icon(
+                  Icons.filter_list,
+                  color: Colors.white,
+                ),
                 onPressed: _showFilterDialog,
               ),
               PopupMenuButton(
@@ -302,5 +328,9 @@ class _RecipesComponentState extends State<RecipesComponent> {
   Future<void> _openSettings() async {
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => SettingsPage()));
+  }
+
+  Color _getRecipeBannerColor(int i) {
+    return this.recipeBannerColors[i % this.recipeBannerColors.length];
   }
 }

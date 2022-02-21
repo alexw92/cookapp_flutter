@@ -16,13 +16,15 @@ class RecipeTileComponent extends StatefulWidget {
   String apiToken;
   final VoidCallback userFoodUpdatedCallback;
   final Function likesUpdated;
+  Color bannerColor = Colors.brown;
 
   RecipeTileComponent(
       {Key key,
       this.recipe,
       this.apiToken,
       this.userFoodUpdatedCallback,
-      this.likesUpdated})
+      this.likesUpdated,
+      this.bannerColor})
       : super(key: key);
 
   @override
@@ -195,7 +197,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                       height: 80,
                       //       width: double.infinity,
                       child: Container(
-                          color: Colors.brown,
+                          color: widget.bannerColor,
                           child: Column(children: [
                             Row(
                               children: [
