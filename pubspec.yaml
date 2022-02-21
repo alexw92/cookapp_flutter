@@ -42,6 +42,7 @@ dependencies:
   shared_preferences: ^2.0.6
   font_awesome_flutter: ^9.1.0
   google_sign_in: ^5.0.5
+  google_fonts: 2.1.1
   # some nice social buttons, too lazy to design them myself
   flutter_signin_button: ^2.0.0
 

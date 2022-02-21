@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyAppTheme {
   ThemeData get theme => ThemeData(
@@ -14,7 +15,7 @@ class MyAppTheme {
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.teal))),
         // Define the default font family.
-        fontFamily: 'Helvetica-Neue-LT-Std-Light.ttf',
+        fontFamily: GoogleFonts.indieFlower().fontFamily,
         inputDecorationTheme: InputDecorationTheme(
             focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.teal)),
@@ -32,26 +33,23 @@ class MyAppTheme {
             // fontWeight: FontWeight.w400,
             color: Colors.black87,
           ),
-          button: TextStyle(
-            // OpenSans is similar to NotoSans but the uppercases look a bit better IMO
-            fontFamily: 'OpenSans',
-          ),
+          button: GoogleFonts.indieFlower(),
           caption: TextStyle(
             fontFamily: 'NotoSans',
             fontSize: 12.0,
             fontWeight: FontWeight.normal,
             color: Colors.deepPurple[300],
           ),
-          headline1: TextStyle(fontFamily: 'Quicksand'),
-          headline2: TextStyle(fontFamily: 'Quicksand'),
-          headline4: TextStyle(fontFamily: 'Quicksand'),
-          headline5: TextStyle(fontFamily: 'NotoSans'),
-          headline6: TextStyle(fontFamily: 'NotoSans'),
-          subtitle1: TextStyle(fontFamily: 'NotoSans'),
-          bodyText1: TextStyle(fontFamily: 'NotoSans'),
-          bodyText2: TextStyle(fontFamily: 'NotoSans'),
-          subtitle2: TextStyle(fontFamily: 'NotoSans'),
-          overline: TextStyle(fontFamily: 'NotoSans'),
+          headline1: GoogleFonts.indieFlower(),
+          headline2: GoogleFonts.indieFlower(),
+          headline4: GoogleFonts.indieFlower(),
+          headline5: GoogleFonts.indieFlower(),
+          headline6: GoogleFonts.indieFlower(),
+          subtitle1: GoogleFonts.indieFlower(),
+          bodyText1: GoogleFonts.indieFlower(),
+          bodyText2: GoogleFonts.indieFlower(),
+          subtitle2: GoogleFonts.indieFlower(),
+          overline: GoogleFonts.indieFlower(),
         ),
       );
 
