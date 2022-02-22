@@ -210,15 +210,17 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
                                           imageRenderMethodForWeb:
                                               ImageRenderMethodForWeb.HttpGet),
                                       // backgroundColor: Colors.transparent,
-                                      radius: 30,
+                                      radius: 40,
                                     ),
                                   ]),
-                                  Text(
-                                    recipe.uploadedBy.displayName,
-                                    style: TextStyle(
-                                        fontSize: 10, color: Colors.white),
-                                    textAlign: TextAlign.center,
-                                  )
+                                  SizedBox(
+                                      width: 80,
+                                      child: Text(
+                                        recipe.uploadedBy.displayName,
+                                        style: TextStyle(
+                                            fontSize: 10, color: Colors.white),
+                                        textAlign: TextAlign.center,
+                                      ))
                                 ])
                               : Container(),
                           LikeButton(

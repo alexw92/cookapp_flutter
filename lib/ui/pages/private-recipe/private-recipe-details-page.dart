@@ -210,35 +210,41 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
                                 ))),
                     Positioned(
                       top: 0,
-                      left: 0,
+                      right: 0,
                       child: Column(children: [
-                        Stack(children: [
-                          (recipe.uploadedBy.fbUploadedPhoto == null &&
-                                  recipe.uploadedBy.providerPhoto == null)
-                              ? CircleAvatar(
-                                  child: Icon(
-                                    Icons.person,
-                                    size: 74,
+                        Wrap(direction: Axis.vertical, children: [
+                          Stack(children: [
+                            (recipe.uploadedBy.fbUploadedPhoto == null &&
+                                    recipe.uploadedBy.providerPhoto == null)
+                                ? CircleAvatar(
+                                    child: Icon(
+                                      Icons.person,
+                                      size: 74,
+                                    ),
+                                    radius: 40,
+                                  )
+                                : CircleAvatar(
+                                    backgroundImage: CachedNetworkImageProvider(
+                                        (recipe.uploadedBy.fbUploadedPhoto ==
+                                                null)
+                                            ? recipe.uploadedBy.providerPhoto
+                                            : recipe.uploadedBy.fbUploadedPhoto,
+                                        imageRenderMethodForWeb:
+                                            ImageRenderMethodForWeb.HttpGet),
+                                    // backgroundColor: Colors.transparent,
+                                    radius: 40,
                                   ),
-                                  radius: 40,
-                                )
-                              : CircleAvatar(
-                                  backgroundImage: CachedNetworkImageProvider(
-                                      (recipe.uploadedBy.fbUploadedPhoto ==
-                                              null)
-                                          ? recipe.uploadedBy.providerPhoto
-                                          : recipe.uploadedBy.fbUploadedPhoto,
-                                      imageRenderMethodForWeb:
-                                          ImageRenderMethodForWeb.HttpGet),
-                                  // backgroundColor: Colors.transparent,
-                                  radius: 40,
-                                ),
-                        ]),
-                        Text(
-                          (recipe.uploadedBy.displayName ?? "anonymousUser"),
-                          style: TextStyle(fontSize: 10, color: Colors.white),
-                          textAlign: TextAlign.center,
-                        )
+                          ]),
+                          SizedBox(
+                              width: 80,
+                              child: Text(
+                                (recipe.uploadedBy.displayName ??
+                                    "anonymousUser"),
+                                style: TextStyle(
+                                    fontSize: 10, color: Colors.white),
+                                textAlign: TextAlign.center,
+                              ))
+                        ])
                       ]),
                     ),
                     Positioned(
