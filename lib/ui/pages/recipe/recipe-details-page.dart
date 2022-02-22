@@ -19,8 +19,10 @@ import 'package:like_button/like_button.dart';
 
 class RecipesDetailsPage extends StatefulWidget {
   final int recipeId;
+  Color recipeBannerColor;
 
-  RecipesDetailsPage(this.recipeId, {Key key}) : super(key: key);
+  RecipesDetailsPage(this.recipeId, {Key key, this.recipeBannerColor})
+      : super(key: key);
 
   @override
   _RecipesDetailsPageState createState() => _RecipesDetailsPageState();
@@ -139,6 +141,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
   @override
   void initState() {
     super.initState();
+    recipeTileFooterColor = widget.recipeBannerColor ?? Colors.brown;
     loadRecipe();
     controller = AnimationController(
       duration: const Duration(milliseconds: 120),
@@ -190,75 +193,78 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
                               // backgroundColor: Colors.transparent,
                               //  radius: 40,
                             ))),
-                    recipe.uploadedBy != null
-                        ? Positioned(
-                            top: 0,
-                            right: 0,
-                            child: Column(children: [
-                              Stack(children: [
-                                CircleAvatar(
-                                  backgroundImage: CachedNetworkImageProvider(
-                                      (recipe.uploadedBy.fbUploadedPhoto ==
-                                              null)
-                                          ? recipe.uploadedBy.providerPhoto
-                                          : recipe.uploadedBy.fbUploadedPhoto,
-                                      imageRenderMethodForWeb:
-                                          ImageRenderMethodForWeb.HttpGet),
-                                  // backgroundColor: Colors.transparent,
-                                  radius: 30,
-                                ),
-                              ]),
-                              Text(
-                                recipe.uploadedBy.displayName,
-                                style: TextStyle(
-                                    fontSize: 10, color: Colors.white),
-                                textAlign: TextAlign.center,
-                              ),
-                              LikeButton(
-                                size: 40,
-                                circleColor: CircleColor(
-                                    start: Color(0xffdd6666),
-                                    end: Color(0xffff3600)),
-                                likeCount: recipe.likes,
-                                isLiked: recipe.userLiked,
-                                onTap: onLikeButtonTapped,
-                                countPostion: CountPostion.bottom,
-                                likeBuilder: (bool isLiked) {
-                                  return isLiked
-                                      ? Icon(
-                                          Icons.favorite,
-                                          color: Colors.red,
-                                          size: 40,
-                                        )
-                                      : Icon(
-                                          Icons.favorite_outline_sharp,
-                                          color: Colors.white,
-                                          size: 40,
-                                        );
-                                },
-                                countBuilder:
-                                    (int count, bool isLiked, String text) {
-                                  var color = Colors.white;
-                                  Widget result;
-                                  if (count == 0) {
-                                    result = Text(
-                                      "0",
-                                      style: TextStyle(
-                                          color: color,
-                                          fontWeight: FontWeight.bold),
+                    Positioned(
+                        top: 0,
+                        right: 0,
+                        child: Column(children: [
+                          recipe.uploadedBy != null
+                              ? Wrap(direction: Axis.vertical, children: [
+                                  Stack(children: [
+                                    CircleAvatar(
+                                      backgroundImage: CachedNetworkImageProvider(
+                                          (recipe.uploadedBy.fbUploadedPhoto ==
+                                                  null)
+                                              ? recipe.uploadedBy.providerPhoto
+                                              : recipe
+                                                  .uploadedBy.fbUploadedPhoto,
+                                          imageRenderMethodForWeb:
+                                              ImageRenderMethodForWeb.HttpGet),
+                                      // backgroundColor: Colors.transparent,
+                                      radius: 30,
+                                    ),
+                                  ]),
+                                  Text(
+                                    recipe.uploadedBy.displayName,
+                                    style: TextStyle(
+                                        fontSize: 10, color: Colors.white),
+                                    textAlign: TextAlign.center,
+                                  )
+                                ])
+                              : Container(),
+                          LikeButton(
+                            size: 40,
+                            circleColor: CircleColor(
+                                start: Color(0xffdd6666),
+                                end: Color(0xffff3600)),
+                            likeCount: recipe.likes,
+                            isLiked: recipe.userLiked,
+                            onTap: onLikeButtonTapped,
+                            countPostion: CountPostion.bottom,
+                            likeBuilder: (bool isLiked) {
+                              return isLiked
+                                  ? Icon(
+                                      Icons.favorite,
+                                      color: Colors.red,
+                                      size: 40,
+                                    )
+                                  : Icon(
+                                      Icons.favorite_outline_sharp,
+                                      color: Colors.white,
+                                      size: 40,
                                     );
-                                  } else
-                                    result = Text(
-                                      text,
-                                      style: TextStyle(
-                                          color: color,
-                                          fontWeight: FontWeight.bold),
-                                    );
-                                  return result;
-                                },
-                              )
-                            ]))
-                        : Container(),
+                            },
+                            countBuilder:
+                                (int count, bool isLiked, String text) {
+                              var color = Colors.white;
+                              Widget result;
+                              if (count == 0) {
+                                result = Text(
+                                  "0",
+                                  style: TextStyle(
+                                      color: color,
+                                      fontWeight: FontWeight.bold),
+                                );
+                              } else
+                                result = Text(
+                                  text,
+                                  style: TextStyle(
+                                      color: color,
+                                      fontWeight: FontWeight.bold),
+                                );
+                              return result;
+                            },
+                          )
+                        ]))
                   ]),
                   SizedBox(
                       height: 80,

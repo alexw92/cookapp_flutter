@@ -312,12 +312,23 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
   }
 
   navigateToRecipePage(int recipeId) async {
-    final result = await Navigator.push(context,
-        MaterialPageRoute(builder: (context) => RecipesDetailsPage(recipeId)));
+    final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => RecipesDetailsPage(
+                  recipeId,
+                  recipeBannerColor: widget.bannerColor,
+                )));
     // in case the user changed the food product from missing to in stock
     // recipes must be reloaded to reflect correct missing ingredient numbers
     // Todo find less expensive solution for this
     bool needsRecipesUpdate = NeedsRecipeUpdateState().recipesUpdateNeeded;
-    if (needsRecipesUpdate) widget.userFoodUpdatedCallback();
+    if (needsRecipesUpdate) {
+      if (widget.userFoodUpdatedCallback == null) {
+        print("nav back to recipes: no callback was given");
+        return;
+      }
+      widget.userFoodUpdatedCallback();
+    }
   }
 }
