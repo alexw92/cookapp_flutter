@@ -1,3 +1,4 @@
+import 'package:cookable_flutter/common/constants.dart';
 import 'package:cookable_flutter/core/caching/private_recipe_service.dart';
 import 'package:cookable_flutter/core/caching/recipe_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
@@ -36,13 +37,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
   bool loadingFromApi = false;
   bool error = false;
   TabController _tabController;
-  List recipeBannerColors = [
-    Colors.indigo,
-    Colors.brown,
-    Colors.lime,
-    Colors.lightBlue,
-    Colors.orange
-  ];
+  List recipeBannerColors = Constants.neutralColors1;
 
   Color _getRecipeBannerColor(int i) {
     return this.recipeBannerColors[i % this.recipeBannerColors.length];

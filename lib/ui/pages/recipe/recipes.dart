@@ -1,4 +1,5 @@
 import 'package:cookable_flutter/common/NeedsRecipeUpdateState.dart';
+import 'package:cookable_flutter/common/constants.dart';
 import 'package:cookable_flutter/core/caching/recipe_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/signin_signout.dart';
@@ -25,13 +26,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
   String apiToken;
   bool loadingFromApi = false;
   bool error = false;
-  List recipeBannerColors = [
-    Colors.indigo,
-    Colors.brown,
-    Colors.lime,
-    Colors.lightBlue,
-    Colors.orange
-  ];
+  List recipeBannerColors = Constants.neutralColors1;
 
   Color _getRecipeBannerColor(int i) {
     return this.recipeBannerColors[i % this.recipeBannerColors.length];
