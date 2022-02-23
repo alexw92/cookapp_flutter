@@ -192,6 +192,7 @@ class _IngredientEditTileComponentState
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 100,
         margin: EdgeInsets.only(top: 5, bottom: 5),
         color: Colors.transparent,
         child: Column(children: [
@@ -213,7 +214,7 @@ class _IngredientEditTileComponentState
             style: TextStyle(
               color: textColor,
             ),
-          )
+          ),
         ]));
   }
 }
