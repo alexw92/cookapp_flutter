@@ -64,6 +64,7 @@
     "saveAndContinue": "Speichern und Weiter",
     "recipeNameHint": "Dein Rezeptname",
     "createRecipe": "Neu",
+    "changeRecipeName": "Rezeptname ändern",
     "ingredientNotFoundQuestionMark": "Zutat nicht gefunden?",
     "sendProposalToAddIt": "Sende uns eine Anfrage zum Hinzufügen!",
     "ingredientPcWrongInput": "Bsp: 1, 1.5, 1.25",

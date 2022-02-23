@@ -80,14 +80,14 @@ class RecipeController {
         });
 
     Dio dio = new Dio(options);
-    var response = await dio
-        .get("/likes/recipes/user")
-        .timeout(IOConfig.timeoutDuration);
+    var response =
+        await dio.get("/likes/recipes/user").timeout(IOConfig.timeoutDuration);
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
       var list = response.data as List;
-      List<UserRecipeLike> userRecipeLikes = list.map((it) => UserRecipeLike.fromJson(it)).toList();
+      List<UserRecipeLike> userRecipeLikes =
+          list.map((it) => UserRecipeLike.fromJson(it)).toList();
       return userRecipeLikes;
     }
 
@@ -109,14 +109,14 @@ class RecipeController {
         });
 
     Dio dio = new Dio(options);
-    var response = await dio
-        .get("/likes/recipes")
-        .timeout(IOConfig.timeoutDuration);
+    var response =
+        await dio.get("/likes/recipes").timeout(IOConfig.timeoutDuration);
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
       var list = response.data as List;
-      List<TotalRecipeLikes> totalRecipeLikesList = list.map((it) => TotalRecipeLikes.fromJson(it)).toList();
+      List<TotalRecipeLikes> totalRecipeLikesList =
+          list.map((it) => TotalRecipeLikes.fromJson(it)).toList();
       return totalRecipeLikesList;
     }
 
@@ -426,6 +426,35 @@ class RecipeController {
 
     throw Exception(
         "Error updating private recipe image, Code: ${response.statusCode} Message: ${response.data} ");
+  }
+
+  static Future<void> changePrivateRecipeName(
+      int privateRecipeId, String recipeName) async {
+    // get token from token store
+    var tokenStore = IOConfig.tokenStore;
+    String storedToken = await tokenStore.getToken();
+    BaseOptions options = new BaseOptions(
+        baseUrl: IOConfig.apiUrl,
+        connectTimeout: 3000, //10 seconds
+        receiveTimeout: 10000,
+        headers: {
+          "Authorization": "Bearer $storedToken",
+          'Content-Type': 'application/json',
+        });
+
+    Dio dio = new Dio(options);
+    var response = await dio.put("/privaterecipes/$privateRecipeId/name",
+        queryParameters: {
+          "name": recipeName
+        }).timeout(IOConfig.timeoutDuration);
+
+    /// If the first API call is successful
+    if (response.statusCode == HttpStatus.ok) {
+      return;
+    }
+
+    throw Exception(
+        "Error creating private recipe, Code: ${response.statusCode} Message: ${response.data} ");
   }
 
 //   public updateRecipeImage(file: any, id: number): Observable<void>  {

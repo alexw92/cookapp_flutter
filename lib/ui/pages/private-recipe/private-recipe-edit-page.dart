@@ -8,6 +8,7 @@ import 'package:cookable_flutter/ui/components/nutrient-tile.component.dart';
 import 'package:cookable_flutter/ui/components/private-recipe/private-recipe-instruction-tile.component.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/add-ingredient-page.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/edit-ingredients-amount-page.dart';
+import 'package:cookable_flutter/ui/pages/private-recipe/private-recipe-name-edit-dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -97,7 +98,13 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
             body: SingleChildScrollView(
                 child: Column(
               children: [
-                Text(privateRecipe.name, style: TextStyle(fontSize: 26)),
+                Wrap(children: [
+                  Text(privateRecipe.name, style: TextStyle(fontSize: 26)),
+                  IconButton(
+                    icon: const Icon(Icons.edit, color: Colors.teal,),
+                    onPressed: () => openChangeNameDialog(),
+                  )
+                ]),
                 SizedBox(
                   height: 16,
                 ),
@@ -407,6 +414,22 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
     setState(() {
       _instructionTiles = updatedTiles;
     });
+  }
+
+  Future<void> openChangeNameDialog() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return new ChangeRecipeNameDialog(privateRecipeId, privateRecipe.name);
+      },
+    ).then((newName) => {
+          if (newName != null)
+            {
+              privateRecipe.name = newName,
+              privateRecipeService.addOrUpdatePrivateRecipe(privateRecipe),
+              setState(() {})
+            }
+        });
   }
 
   Future<void> openAddInstructionDialog() async {

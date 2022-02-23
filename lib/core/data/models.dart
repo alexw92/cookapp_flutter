@@ -151,7 +151,7 @@ class PrivateRecipe {
   @HiveField(1)
   final String imgSrc;
   @HiveField(2)
-  final String name;
+  String name;
   @HiveField(3)
   final ReducedUser uploadedBy;
   @HiveField(4)
