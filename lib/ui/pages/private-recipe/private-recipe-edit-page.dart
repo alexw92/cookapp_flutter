@@ -327,8 +327,9 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
         : Card(
         key: ValueKey(updateIngredientsKey),
         elevation: 10,
+        margin: EdgeInsets.all(10),
         child: Padding(
-            padding: EdgeInsets.all(8),
+            padding: EdgeInsets.all(4),
             child: new GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
