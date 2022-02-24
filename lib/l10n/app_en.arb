@@ -82,6 +82,7 @@
     "recipeDeletionError": "Recipe could not be deleted",
     "recipeImageUpdated" : "Recipe Image successfully updated",
     "errorDuringImageUpload" : "Image could not be updated",
+    "errorDuringProfileNameChange": "Profile name could not be updated",
     "imageFromGallery": "Photo from Gallery",
     "takeImage": "Take picture",
     "profileImageUpdated": "Profile image updated",

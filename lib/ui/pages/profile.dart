@@ -7,6 +7,7 @@ import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/signin_signout.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
+import 'package:cookable_flutter/ui/pages/profile-name-edit-dialog.dart';
 import 'package:cookable_flutter/ui/pages/settings_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -331,17 +332,21 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ],
                                     mainAxisAlignment: MainAxisAlignment.center,
                                   )),
-                              SizedBox(
-                                  height: 40,
-                                  width: 150,
-                                  child: TextField(
-                                    controller: _profileNameTextController,
-                                    decoration: InputDecoration(
-                                        //    border: OutlineInputBorder(),
-                                        hintText: AppLocalizations.of(context)
-                                            .displayedName),
-                                    onEditingComplete: () => updateUserName(),
-                                  ))
+                              Wrap(
+                                  alignment: WrapAlignment.center,
+                                  children: [
+                                Text(
+                                  this.user.displayName,
+                                  style: TextStyle(fontSize: 24, height: 2),
+                                ),
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.edit,
+                                    color: Colors.teal,
+                                  ),
+                                  onPressed: () => openChangeNameDialog(),
+                                )
+                              ]),
                             ])));
         });
   }
@@ -350,23 +355,38 @@ class _ProfilePageState extends State<ProfilePage> {
     _profileNameTextController.text = usernameOrig;
   }
 
-  updateUserName() {
-    var userName = _profileNameTextController.text;
-    FocusManager.instance.primaryFocus?.unfocus();
-    UserController.updateUserData(UserDataEdit(displayName: userName))
-        .then((value) => {
-              user.displayName = value.displayName,
+  Future<void> openChangeNameDialog() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return new ChangeProfileNameDialog(user);
+      },
+    ).then((newName) => {
+          if (newName != null)
+            {
+              user.displayName = newName,
               userService.addOrUpdateUser(user),
-              _profileNameTextController.text = value.displayName,
-              usernameOrig = value.displayName,
+              setState(() {}),
               ScaffoldMessenger.of(context).removeCurrentSnackBar(),
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
                       "${AppLocalizations.of(context).profileNameUpdated}"),
                 ),
-              )
-            });
+              ),
+            }
+          else
+            {
+              // error
+              ScaffoldMessenger.of(context).removeCurrentSnackBar(),
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                      "${AppLocalizations.of(context).errorDuringProfileNameChange}"),
+                ),
+              ),
+            }
+        });
   }
 
   _editProfileImg(bool fromGallery) async {

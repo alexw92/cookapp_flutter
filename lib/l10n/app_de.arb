@@ -79,6 +79,7 @@
     "recipeDeletionError": "Rezept konnte nicht gelöscht werden",
     "recipeImageUpdated" : "Rezeptbild erfolgreich aktualisiert",
     "errorDuringImageUpload" : "Bild konnte nicht aktualisiert werden",
+    "errorDuringProfileNameChange": "Profilname konnte nicht aktualisiert werden",
     "imageFromGallery": "Foto aus Gallery",
     "takeImage": "Foto aufnehmen",
     "profileImageUpdated": "Profilbild aktualisiert",
