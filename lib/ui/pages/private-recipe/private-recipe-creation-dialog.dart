@@ -40,7 +40,7 @@ class _CreateRecipeDialogState extends State<CreateRecipeDialog> {
           ),
           onPressed: () async {
             String recipeName = _controller.value.text;
-            if (recipeName != null) {
+            if (recipeName.isNotEmpty && recipeName.trim().isNotEmpty) {
               PrivateRecipe privateRecipe =
                   await createAndReturnPrivateRecipe(recipeName);
               if (privateRecipe != null)

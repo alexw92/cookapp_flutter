@@ -22,6 +22,7 @@ class _ChangeRecipeNameDialogState extends State<ChangeRecipeNameDialog> {
   @override
   void initState() {
     super.initState();
+    _controller.text = this.widget.oldRecipeName;
   }
 
   @override
@@ -42,7 +43,7 @@ class _ChangeRecipeNameDialogState extends State<ChangeRecipeNameDialog> {
           ),
           onPressed: () async {
             String recipeName = _controller.value.text;
-            if (recipeName != null) {
+            if (recipeName.isNotEmpty && recipeName.trim().isNotEmpty) {
               String newName = await changePrivateRecipeName(
                   widget.privateRecipeId, recipeName);
               Navigator.of(context).pop(newName);
