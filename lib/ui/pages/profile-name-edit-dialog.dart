@@ -31,12 +31,12 @@ class _ChangeProfileNameDialogState extends State<ChangeProfileNameDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(AppLocalizations.of(context).changeRecipeName),
+      title: Text(AppLocalizations.of(context).changeProfileName),
       content: TextField(
         controller: _controller,
         decoration: InputDecoration(
             border: OutlineInputBorder(),
-            hintText: AppLocalizations.of(context).recipeNameHint),
+            hintText: AppLocalizations.of(context).profileNameHint),
       ),
       actions: <Widget>[
         ElevatedButton(
@@ -58,12 +58,15 @@ class _ChangeProfileNameDialogState extends State<ChangeProfileNameDialog> {
   }
 
   Future<String> changeUserName(ReducedUser user, String username) async {
+    var error = false;
     var updatedUser =
         await UserController.updateUserData(UserDataEdit(displayName: username))
             .catchError((err) {
       print(err);
-      return null;
+      error = true;
     });
+    if(error)
+      return "ERROR";
     var updatedUserName = updatedUser.displayName;
     return updatedUserName;
   }

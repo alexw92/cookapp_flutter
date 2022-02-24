@@ -362,7 +362,7 @@ class _ProfilePageState extends State<ProfilePage> {
         return new ChangeProfileNameDialog(user);
       },
     ).then((newName) => {
-          if (newName != null)
+          if (newName != "ERROR" && newName != null)
             {
               user.displayName = newName,
               userService.addOrUpdateUser(user),
@@ -375,6 +375,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             }
+          else if (newName == null){}
           else
             {
               // error

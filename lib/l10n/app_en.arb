@@ -87,6 +87,8 @@
     "takeImage": "Take picture",
     "profileImageUpdated": "Profile image updated",
     "profileNameUpdated": "Profile updated",
+    "changeProfileName":  "Change Name",
+    "profileNameHint": "Your displayed Name",
     "profileImage": "Profile Image",
     "recipeImage": "Recipe Image",
     "gallery": "Gallery",
