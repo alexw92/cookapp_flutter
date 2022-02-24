@@ -56,7 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
           _profileNameTextController.text = value.displayName,
           usernameOrig = value.displayName,
           user = value,
-          userService.addOrUpdateUser(user)
+          if (reload) userService.addOrUpdateUser(user)
         });
   }
 
@@ -332,9 +332,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ],
                                     mainAxisAlignment: MainAxisAlignment.center,
                                   )),
-                              Wrap(
-                                  alignment: WrapAlignment.center,
-                                  children: [
+                              Wrap(alignment: WrapAlignment.center, children: [
                                 Text(
                                   this.user.displayName,
                                   style: TextStyle(fontSize: 24, height: 2),
@@ -375,7 +373,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             }
-          else if (newName == null){}
+          else if (newName == null)
+            {}
           else
             {
               // error
