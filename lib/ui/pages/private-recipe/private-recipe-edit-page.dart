@@ -47,18 +47,17 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
     super.initState();
     getToken();
     loadDailyRequiredNutrients();
-    privateRecipeService.getPrivateRecipes().then((privateRecipes) =>
-    {
-      privateRecipe = privateRecipes
-          .firstWhere((element) => element.id == privateRecipeId),
-      getInstructionTiles(),
-      setState(() {})
-    });
+    privateRecipeService.getPrivateRecipes().then((privateRecipes) => {
+          privateRecipe = privateRecipes
+              .firstWhere((element) => element.id == privateRecipeId),
+          getInstructionTiles(),
+          setState(() {})
+        });
   }
 
   void loadPrivateRecipe(int privateRecipeId) async {
     var updatedPrivateRecipe =
-    await RecipeController.getPrivateRecipe(privateRecipeId);
+        await RecipeController.getPrivateRecipe(privateRecipeId);
     privateRecipeService.addOrUpdatePrivateRecipe(updatedPrivateRecipe);
     setState(() {
       privateRecipe = updatedPrivateRecipe;
@@ -79,30 +78,29 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
   Widget build(BuildContext context) {
     return privateRecipe == null
         ? Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: [CircularProgressIndicator()])
-        ])
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [CircularProgressIndicator()])
+              ])
         : Scaffold(
-        appBar: AppBar(
-          title: Text(
-            AppLocalizations
-                .of(context)
-                .recipeEdit,
-            style: TextStyle(color: Colors.white),
-          ),
-          backgroundColor: Colors.teal,
-        ),
-        body: SingleChildScrollView(
-            child: Column(
+            appBar: AppBar(
+              title: Text(
+                AppLocalizations.of(context).recipeEdit,
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.teal,
+            ),
+            body: SingleChildScrollView(
+                child: Column(
               children: [
                 Wrap(children: [
-                  Text(privateRecipe.name, style: TextStyle(fontSize: 26)),
+                  Text(privateRecipe.name,
+                      style: TextStyle(fontSize: 26, height: 2)),
                   IconButton(
                     icon: const Icon(
                       Icons.edit,
@@ -124,9 +122,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                         isExpanded: _isOpen[0],
                         headerBuilder: (context, isOpen) {
                           return Text(
-                            AppLocalizations
-                                .of(context)
-                                .ingredients +
+                            AppLocalizations.of(context).ingredients +
                                 " (" +
                                 privateRecipe.ingredients.length.toString() +
                                 ")",
@@ -145,9 +141,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                         isExpanded: _isOpen[1],
                         headerBuilder: (context, isOpen) {
                           return Text(
-                              AppLocalizations
-                                  .of(context)
-                                  .howToCookSteps +
+                              AppLocalizations.of(context).howToCookSteps +
                                   " (" +
                                   privateRecipe.instructions.length.toString() +
                                   ")",
@@ -156,92 +150,89 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                         },
                         body: privateRecipe.instructions.length == 0
                             ? ElevatedButton(
-                          onPressed: openAddInstructionDialog,
-                          child: Text(
-                            "${AppLocalizations
-                                .of(context)
-                                .addInstruction}",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                Colors.teal), // <-- Button color,
-                          ),
-                        )
+                                onPressed: openAddInstructionDialog,
+                                child: Text(
+                                  "${AppLocalizations.of(context).addInstruction}",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      Colors.teal), // <-- Button color,
+                                ),
+                              )
                             : Column(
-                          children: [
-                            ReorderableListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                onReorder: (int oldIndex, int newIndex) {
-                                  if (oldIndex < newIndex) {
-                                    newIndex -= 1;
-                                  }
-                                  setState(() {
-                                    Widget oldItem = _instructionTiles
-                                        .removeAt(oldIndex);
-                                    _instructionTiles.insert(
-                                        newIndex, oldItem);
+                                children: [
+                                  ReorderableListView.builder(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      onReorder: (int oldIndex, int newIndex) {
+                                        if (oldIndex < newIndex) {
+                                          newIndex -= 1;
+                                        }
+                                        setState(() {
+                                          Widget oldItem = _instructionTiles
+                                              .removeAt(oldIndex);
+                                          _instructionTiles.insert(
+                                              newIndex, oldItem);
 
-                                    for (int i = 0;
-                                    i < _instructionTiles.length;
-                                    i++) {
-                                      var tile = _instructionTiles[i]
-                                      as PrivateRecipeInstructionTileComponent;
-                                      var recipeInstruction =
-                                          tile.recipeInstruction;
-                                      recipeInstruction.step = i;
-                                      tile.recipeInstruction =
-                                          recipeInstruction;
-                                    }
-                                    savePrivateRecipeManually();
-                                  });
-                                },
-                                itemBuilder:
-                                    (BuildContext context, int index) {
-                                  var instructionTile = _instructionTiles[
-                                  index]
-                                  as PrivateRecipeInstructionTileComponent;
-                                  return Dismissible(
-                                      key: ValueKey(
-                                        instructionTile
-                                            .recipeInstruction.id,
-                                      ),
-                                      background: Container(
-                                          color: Colors.red,
-                                          child: Icon(
-                                            Icons.delete,
-                                            size: 48,
-                                          )),
-                                      onDismissed: (direction) =>
-                                          _onRecipeInstructionDismissed(
-                                              index, direction),
-                                      child: instructionTile);
-                                },
-                                itemCount: _instructionTiles.length),
-                            ElevatedButton(
-                              onPressed: openAddInstructionDialog,
-                              child: Icon(
-                                Icons.add,
-                                size: 32,
-                                color: Colors.white,
-                              ),
-                              style: ButtonStyle(
-                                shape: MaterialStateProperty.all(
-                                    CircleBorder()),
-                                padding: MaterialStateProperty.all(
-                                    EdgeInsets.all(10)),
-                                backgroundColor:
-                                MaterialStateProperty.all(
-                                    Colors.teal), // <-- Button color,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                          ],
-                        )),
+                                          for (int i = 0;
+                                              i < _instructionTiles.length;
+                                              i++) {
+                                            var tile = _instructionTiles[i]
+                                                as PrivateRecipeInstructionTileComponent;
+                                            var recipeInstruction =
+                                                tile.recipeInstruction;
+                                            recipeInstruction.step = i;
+                                            tile.recipeInstruction =
+                                                recipeInstruction;
+                                          }
+                                          savePrivateRecipeManually();
+                                        });
+                                      },
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        var instructionTile = _instructionTiles[
+                                                index]
+                                            as PrivateRecipeInstructionTileComponent;
+                                        return Dismissible(
+                                            key: ValueKey(
+                                              instructionTile
+                                                  .recipeInstruction.id,
+                                            ),
+                                            background: Container(
+                                                color: Colors.red,
+                                                child: Icon(
+                                                  Icons.delete,
+                                                  size: 48,
+                                                )),
+                                            onDismissed: (direction) =>
+                                                _onRecipeInstructionDismissed(
+                                                    index, direction),
+                                            child: instructionTile);
+                                      },
+                                      itemCount: _instructionTiles.length),
+                                  ElevatedButton(
+                                    onPressed: openAddInstructionDialog,
+                                    child: Icon(
+                                      Icons.add,
+                                      size: 32,
+                                      color: Colors.white,
+                                    ),
+                                    style: ButtonStyle(
+                                      shape: MaterialStateProperty.all(
+                                          CircleBorder()),
+                                      padding: MaterialStateProperty.all(
+                                          EdgeInsets.all(10)),
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.teal), // <-- Button color,
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                ],
+                              )),
                   ],
-                  expansionCallback: (i, isOpen) =>
-                  {
+                  expansionCallback: (i, isOpen) => {
                     setState(() {
                       _isOpen[i] = !isOpen;
                     })
@@ -269,12 +260,12 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
   void _onRecipeInstructionDismissed(index, direction) {
     setState(() {
       var tile = (_instructionTiles.removeAt(index)
-      as PrivateRecipeInstructionTileComponent);
+          as PrivateRecipeInstructionTileComponent);
       privateRecipe.instructions
           .removeWhere((instr) => tile.recipeInstruction.id == instr.id);
       for (int i = index; i < _instructionTiles.length; i++) {
         var tile =
-        _instructionTiles[i] as PrivateRecipeInstructionTileComponent;
+            _instructionTiles[i] as PrivateRecipeInstructionTileComponent;
         var recipeInstruction = tile.recipeInstruction;
         recipeInstruction.step = i;
         tile.recipeInstruction = recipeInstruction;
@@ -287,8 +278,7 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
     await Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) =>
-                AddIngredientPage(
+            builder: (context) => AddIngredientPage(
                   privateRecipe: this.privateRecipe,
                 ))).then((ingredient) => {loadPrivateRecipe(privateRecipeId)});
   }
@@ -297,10 +287,9 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
     await Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) =>
-                EditIngredientsAmountPage(
-                    privateRecipe: privateRecipe,
-                    routedFromAddIngredient: false))).then((ghj) {
+            builder: (context) => EditIngredientsAmountPage(
+                privateRecipe: privateRecipe,
+                routedFromAddIngredient: false))).then((ghj) {
       loadPrivateRecipe(privateRecipeId);
     });
   }
@@ -312,71 +301,66 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
   Widget getIngredientGridView() {
     return privateRecipe.ingredients.length == 0
         ? ElevatedButton(
-      onPressed: _openAddIngredientScreen,
-      child: Text(
-        "${AppLocalizations
-            .of(context)
-            .addIngredient}",
-        style: TextStyle(color: Colors.white),
-      ),
-      style: ButtonStyle(
-        backgroundColor:
-        MaterialStateProperty.all(Colors.teal), // <-- Button color,
-      ),
-    )
+            onPressed: _openAddIngredientScreen,
+            child: Text(
+              "${AppLocalizations.of(context).addIngredient}",
+              style: TextStyle(color: Colors.white),
+            ),
+            style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all(Colors.teal), // <-- Button color,
+            ),
+          )
         : Card(
-        key: ValueKey(updateIngredientsKey),
-        elevation: 10,
-        margin: EdgeInsets.all(10),
-        child: Padding(
-            padding: EdgeInsets.all(4),
-            child: new GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 0,
-                    mainAxisSpacing:0,
-                    mainAxisExtent: 136
-                ),
-               shrinkWrap: true,
-                //     primary: true,
-                //    padding: const EdgeInsets.all(0),
-                physics: NeverScrollableScrollPhysics(),
-           //     shrinkWrap: true,
-                itemCount: privateRecipe.ingredients.length+1,
-                itemBuilder: (BuildContext context, int index) {
-                  if (index == privateRecipe.ingredients.length) { //
-                  //  the last item is the addbutton
-                    return Padding(
-                            child: ElevatedButton(
-                              onPressed: _openAddIngredientScreen,
-                              child: Icon(
-                                Icons.add,
-                                size: 42,
-                                color: Colors.white,
-                              ),
-                              style: ButtonStyle(
-                                shape:
-                                MaterialStateProperty.all(CircleBorder()),
-                                padding: MaterialStateProperty.all(
-                                    EdgeInsets.all(2)),
-                                backgroundColor: MaterialStateProperty.all(
-                                    Colors.teal), // <-- Button color,
-                              ),
+            key: ValueKey(updateIngredientsKey),
+            elevation: 10,
+            margin: EdgeInsets.all(10),
+            child: Padding(
+                padding: EdgeInsets.all(4),
+                child: new GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 0,
+                      mainAxisSpacing: 0,
+                      mainAxisExtent: 136),
+                  shrinkWrap: true,
+                  //     primary: true,
+                  //    padding: const EdgeInsets.all(0),
+                  physics: NeverScrollableScrollPhysics(),
+                  //     shrinkWrap: true,
+                  itemCount: privateRecipe.ingredients.length + 1,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (index == privateRecipe.ingredients.length) {
+                      //
+                      //  the last item is the addbutton
+                      return Padding(
+                          child: ElevatedButton(
+                            onPressed: _openAddIngredientScreen,
+                            child: Icon(
+                              Icons.add,
+                              size: 42,
+                              color: Colors.white,
                             ),
-                        padding: EdgeInsets.only(
-                            left: 14, right: 14, bottom: 30, top: 0)
-                    );
-                  }
-                  else
-                    return IngredientEditTileComponent(
-                        ingredient: privateRecipe.ingredients[index],
-                        apiToken: apiToken,
-                        textColor: Colors.black,
-                        radius: 42.0,
-                        onTap: _openEditIngredientsAmountScreen);
-                },
-              //
-            )));
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all(CircleBorder()),
+                              padding:
+                                  MaterialStateProperty.all(EdgeInsets.all(2)),
+                              backgroundColor: MaterialStateProperty.all(
+                                  Colors.teal), // <-- Button color,
+                            ),
+                          ),
+                          padding: EdgeInsets.only(
+                              left: 14, right: 14, bottom: 30, top: 0));
+                    } else
+                      return IngredientEditTileComponent(
+                          ingredient: privateRecipe.ingredients[index],
+                          apiToken: apiToken,
+                          textColor: Colors.black,
+                          radius: 42.0,
+                          onTap: _openEditIngredientsAmountScreen);
+                  },
+                  //
+                )));
   }
 
   Widget getNutritionGridView() {
@@ -406,31 +390,23 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
     List<Widget> myTiles = [];
     myTiles.addAll([
       NutrientTileComponent(
-          nutrientName: AppLocalizations
-              .of(context)
-              .calories,
+          nutrientName: AppLocalizations.of(context).calories,
           nutrientAmount: privateRecipe.nutrients.calories.toDouble(),
           dailyRecAmount: dailyCalories.toDouble(),
           nutritionType: NutritionType.CALORIES,
           textColor: Colors.black),
       NutrientTileComponent(
-          nutrientName: AppLocalizations
-              .of(context)
-              .fat,
+          nutrientName: AppLocalizations.of(context).fat,
           nutrientAmount: privateRecipe.nutrients.fat,
           dailyRecAmount: dailyFat,
           nutritionType: NutritionType.FAT),
       NutrientTileComponent(
-          nutrientName: AppLocalizations
-              .of(context)
-              .carbs,
+          nutrientName: AppLocalizations.of(context).carbs,
           nutrientAmount: privateRecipe.nutrients.carbohydrate,
           dailyRecAmount: dailyCarbohydrate,
           nutritionType: NutritionType.CARBOHYDRATE),
       NutrientTileComponent(
-          nutrientName: AppLocalizations
-              .of(context)
-              .protein,
+          nutrientName: AppLocalizations.of(context).protein,
           nutrientAmount: privateRecipe.nutrients.protein,
           dailyRecAmount: dailyProtein,
           nutritionType: NutritionType.PROTEIN)
@@ -462,15 +438,14 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
       builder: (BuildContext context) {
         return new ChangeRecipeNameDialog(privateRecipeId, privateRecipe.name);
       },
-    ).then((newName) =>
-    {
-      if (newName != null)
-        {
-          privateRecipe.name = newName,
-          privateRecipeService.addOrUpdatePrivateRecipe(privateRecipe),
-          setState(() {})
-        }
-    });
+    ).then((newName) => {
+          if (newName != null)
+            {
+              privateRecipe.name = newName,
+              privateRecipeService.addOrUpdatePrivateRecipe(privateRecipe),
+              setState(() {})
+            }
+        });
   }
 
   Future<void> openAddInstructionDialog() async {
@@ -480,26 +455,23 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
       builder: (BuildContext context) {
         return new AddRecipeInstructionDialog();
       },
-    ).then((value) =>
-    {
-      if (value != null && value
-          .toString()
-          .isNotEmpty)
-        {
-          print("instruction " + value),
-          privateRecipe.instructions.forEach((element) {
-            if (element.step > lastStep) {
-              lastStep = element.step;
+    ).then((value) => {
+          if (value != null && value.toString().isNotEmpty)
+            {
+              print("instruction " + value),
+              privateRecipe.instructions.forEach((element) {
+                if (element.step > lastStep) {
+                  lastStep = element.step;
+                }
+              }),
+              privateRecipe.instructions.add(RecipeInstruction(
+                  id: 0,
+                  recipeId: privateRecipe.id,
+                  step: lastStep + 1,
+                  instructionsText: value)),
+              savePrivateRecipeManually()
             }
-          }),
-          privateRecipe.instructions.add(RecipeInstruction(
-              id: 0,
-              recipeId: privateRecipe.id,
-              step: lastStep + 1,
-              instructionsText: value)),
-          savePrivateRecipeManually()
-        }
-    });
+        });
   }
 
   savePrivateRecipeManually() async {
