@@ -192,40 +192,24 @@ class _IngredientEditTileComponentState
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
-        width: 100,
         margin: EdgeInsets.only(top: 5, bottom: 5),
         color: Colors.transparent,
         child: Column(children: [
           InkWell(
-            // child: CircleAvatar(
-            //   backgroundImage: CachedNetworkImageProvider(ingredient.imgSrc,
-            //       imageRenderMethodForWeb: ImageRenderMethodForWeb.HttpGet),
-            //   // backgroundColor: Colors.transparent,
-            //   radius: radius,
-            // ),
-            // onTap: widget.onTap,
-              child: CircleAvatar(
-                backgroundColor: Colors.green,
-                child: Image.network(
-                  'https://miro.medium.com/max/1400/1*-6WdIcd88w3pfphHOYln3Q.png',
-                  height: 50,
-                  width: 40,
-                ),
-              )
-          ),
-          SizedBox(height: 10,),
-          Text(
-            ingredient.name,
-            style: TextStyle(color: textColor),
-          ),
-          SizedBox(height: 10,),
-          Text(
-            //Utility.getFormattedAmountForIngredient(ingredient),
-            "20 g",
-            style: TextStyle(
-              color: textColor,
+            child: CircleAvatar(
+              backgroundImage: CachedNetworkImageProvider(ingredient.imgSrc,
+                  imageRenderMethodForWeb: ImageRenderMethodForWeb.HttpGet),
+              // backgroundColor: Colors.transparent,
+              radius: radius,
             ),
+            onTap: widget.onTap,
+          ),
+          Text(
+            ingredient.name +
+                "\n" +
+                Utility.getFormattedAmountForIngredient(ingredient),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: textColor),
           ),
         ]));
   }

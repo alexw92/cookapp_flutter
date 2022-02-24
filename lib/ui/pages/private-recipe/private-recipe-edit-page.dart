@@ -332,49 +332,46 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
             child: new GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10
+                    crossAxisSpacing: 0,
+                    mainAxisSpacing:0,
+                    mainAxisExtent: 136
                 ),
+               shrinkWrap: true,
                 //     primary: true,
                 //    padding: const EdgeInsets.all(0),
                 physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-
-                padding: EdgeInsets.all(2),
-                itemCount: privateRecipe.ingredients.length,
+           //     shrinkWrap: true,
+                itemCount: privateRecipe.ingredients.length+1,
                 itemBuilder: (BuildContext context, int index) {
                   if (index == privateRecipe.ingredients.length) { //
-                    return Container();
-                    // the last item is the addbutton
-                    // return Padding(
-                    //     child: SizedBox(
-                    //         width: 16,
-                    //         height: 16,
-                    //         child: ElevatedButton(
-                    //           onPressed: _openAddIngredientScreen,
-                    //           child: Icon(
-                    //             Icons.add,
-                    //             size: 36,
-                    //             color: Colors.white,
-                    //           ),
-                    //           style: ButtonStyle(
-                    //             shape:
-                    //             MaterialStateProperty.all(CircleBorder()),
-                    //             padding: MaterialStateProperty.all(
-                    //                 EdgeInsets.all(2)),
-                    //             backgroundColor: MaterialStateProperty.all(
-                    //                 Colors.teal), // <-- Button color,
-                    //           ),
-                    //         )),
-                    //     padding: EdgeInsets.only(
-                    //         left: 22, right: 22, bottom: 22, top: 0));
+                  //  the last item is the addbutton
+                    return Padding(
+                            child: ElevatedButton(
+                              onPressed: _openAddIngredientScreen,
+                              child: Icon(
+                                Icons.add,
+                                size: 42,
+                                color: Colors.white,
+                              ),
+                              style: ButtonStyle(
+                                shape:
+                                MaterialStateProperty.all(CircleBorder()),
+                                padding: MaterialStateProperty.all(
+                                    EdgeInsets.all(2)),
+                                backgroundColor: MaterialStateProperty.all(
+                                    Colors.teal), // <-- Button color,
+                              ),
+                            ),
+                        padding: EdgeInsets.only(
+                            left: 14, right: 14, bottom: 30, top: 0)
+                    );
                   }
                   else
                     return IngredientEditTileComponent(
                         ingredient: privateRecipe.ingredients[index],
                         apiToken: apiToken,
                         textColor: Colors.black,
-                        radius: 34.0,
+                        radius: 42.0,
                         onTap: _openEditIngredientsAmountScreen);
                 },
               //
