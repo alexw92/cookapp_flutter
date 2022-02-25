@@ -19,7 +19,7 @@ class UserService {
       var result = await UserController.getUser();
       user = result;
       if (reload) await hiveService.clearBox(boxName: "Users");
-      await hiveService.addElementsToBox([user], "Users");
+      await addOrUpdateUser(user);
       return user;
     }
   }

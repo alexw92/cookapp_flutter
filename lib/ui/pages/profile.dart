@@ -29,8 +29,6 @@ class _ProfilePageState extends State<ProfilePage> {
   final picker = ImagePicker();
   bool showProgressIndicatorImage = false;
   Future<ReducedUser> userFuture;
-  final TextEditingController _profileNameTextController =
-      TextEditingController();
   String usernameOrig;
   UserService userService = UserService();
   ReducedUser user;
@@ -53,7 +51,6 @@ class _ProfilePageState extends State<ProfilePage> {
   getUser({bool reload = false}) {
     userFuture = userService.getUser(reload: reload);
     userFuture.then((value) => {
-          _profileNameTextController.text = value.displayName,
           usernameOrig = value.displayName,
           user = value,
           if (reload) userService.addOrUpdateUser(user)
@@ -352,10 +349,6 @@ class _ProfilePageState extends State<ProfilePage> {
                               ]),
                             ])));
         });
-  }
-
-  revertInputs() {
-    _profileNameTextController.text = usernameOrig;
   }
 
   Future<void> openChangeNameDialog() async {
