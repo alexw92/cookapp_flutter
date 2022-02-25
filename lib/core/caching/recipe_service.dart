@@ -276,7 +276,7 @@ class RecipeService {
     return hiveService.clearBox(boxName: "DefaultNutrients");
   }
 
-  clearPrivateRecipes() async {
+  clearRecipes() async {
     return hiveService.clearBox(boxName: "Recipes");
   }
 

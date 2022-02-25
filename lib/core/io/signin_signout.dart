@@ -27,7 +27,7 @@ Future<void> clearUserSpecificData() async {
   var userService = UserService();
   var likeService = LikeService();
   await userFoodService.clearUserFood();
-  await recipeService.clearPrivateRecipes();
+  await recipeService.clearRecipes();
   await privateService.clearPrivateRecipes();
   await userService.clearUsers();
   await likeService.clearUserRecipeLikes();
