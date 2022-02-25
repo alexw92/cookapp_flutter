@@ -335,7 +335,12 @@ class _ProfilePageState extends State<ProfilePage> {
                               Wrap(alignment: WrapAlignment.center, children: [
                                 Text(
                                   this.user.displayName,
-                                  style: TextStyle(fontSize: 24, height: 2),
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      height: 2,
+                                      decoration: TextDecoration.underline,
+                                      decorationStyle:
+                                          TextDecorationStyle.solid),
                                 ),
                                 IconButton(
                                   icon: const Icon(
