@@ -30,8 +30,8 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
   List<GroceryCheckBoxListTileModel> checkBoxListTileModelSpices = [];
   List<GroceryCheckBoxListTileModel> checkBoxListTileModelPantry = [];
   List<GroceryCheckBoxListTileModel> checkBoxListTileModelDairy = [];
-  List<GroceryCheckBoxListTileModel> checkBoxListTileModelMeat = [];
-  List<GroceryCheckBoxListTileModel> checkBoxListTileModelFish = [];
+  // List<GroceryCheckBoxListTileModel> checkBoxListTileModelMeat = [];
+  // List<GroceryCheckBoxListTileModel> checkBoxListTileModelFish = [];
   List<List<GroceryCheckBoxListTileModel>> tileLists = [];
   List<UserFoodProduct> ownedGroceries = [];
   List<UserFoodProduct> missingGroceries = [];
@@ -216,8 +216,8 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                                   text:
                                       AppLocalizations.of(context).tab_pantry),
                               Tab(text: AppLocalizations.of(context).tab_dairy),
-                              Tab(text: AppLocalizations.of(context).tab_meat),
-                              Tab(text: AppLocalizations.of(context).tab_fish),
+                              // Tab(text: AppLocalizations.of(context).tab_meat),
+                              // Tab(text: AppLocalizations.of(context).tab_fish),
                             ],
                           ),
                         ),
@@ -450,14 +450,14 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
       this.checkBoxListTileModelDairy.addAll(groceries
           .where((element) => element.foodCategory.name.contains("dairy"))
           .toList());
-      this.checkBoxListTileModelMeat.clear();
-      this.checkBoxListTileModelMeat.addAll(groceries
-          .where((element) => element.foodCategory.name.contains("meat"))
-          .toList());
-      this.checkBoxListTileModelFish.clear();
-      this.checkBoxListTileModelFish.addAll(groceries
-          .where((element) => element.foodCategory.name.contains("fish"))
-          .toList());
+      // this.checkBoxListTileModelMeat.clear();
+      // this.checkBoxListTileModelMeat.addAll(groceries
+      //     .where((element) => element.foodCategory.name.contains("meat"))
+      //     .toList());
+      // this.checkBoxListTileModelFish.clear();
+      // this.checkBoxListTileModelFish.addAll(groceries
+      //     .where((element) => element.foodCategory.name.contains("fish"))
+      //     .toList());
     });
   }
 
@@ -504,12 +504,12 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
       checkBoxListTileModelSpices,
       checkBoxListTileModelPantry,
       checkBoxListTileModelDairy,
-      checkBoxListTileModelMeat,
-      checkBoxListTileModelFish
+      // checkBoxListTileModelMeat,
+      // checkBoxListTileModelFish
     ]);
     _loadingRecipe = loadFoodProducts();
     _tabController = new TabController(
-        length: 7, initialIndex: _getInitialIndex(), vsync: this);
+        length: 5, initialIndex: _getInitialIndex(), vsync: this);
     _tabController.addListener(() {
       print("New Index ${_tabController.index}");
       PageStorage.of(context).writeState(context, _tabController.index,
@@ -705,14 +705,14 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     this.checkBoxListTileModelDairy.addAll(groceries
         .where((element) => element.foodCategory.name.contains("dairy"))
         .toList());
-    this.checkBoxListTileModelMeat.clear();
-    this.checkBoxListTileModelMeat.addAll(groceries
-        .where((element) => element.foodCategory.name.contains("meat"))
-        .toList());
-    this.checkBoxListTileModelFish.clear();
-    this.checkBoxListTileModelFish.addAll(groceries
-        .where((element) => element.foodCategory.name.contains("fish"))
-        .toList());
+    // this.checkBoxListTileModelMeat.clear();
+    // this.checkBoxListTileModelMeat.addAll(groceries
+    //     .where((element) => element.foodCategory.name.contains("meat"))
+    //     .toList());
+    // this.checkBoxListTileModelFish.clear();
+    // this.checkBoxListTileModelFish.addAll(groceries
+    //     .where((element) => element.foodCategory.name.contains("fish"))
+    //     .toList());
     setState(() {});
   }
 }
