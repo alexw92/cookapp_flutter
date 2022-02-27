@@ -20,7 +20,7 @@ class _FilterRecipesDialogState extends State<FilterRecipesDialog> {
   Diet recipeDiet;
   bool filterHighProtein;
   bool filterHighCarb;
-  var diets = [Diet.VEGAN, Diet.VEGETARIAN, Diet.PESCATARIAN, Diet.NORMAL];
+  var diets = [Diet.VEGAN, Diet.VEGETARIAN];
 
   _FilterRecipesDialogState();
 
