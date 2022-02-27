@@ -2,6 +2,19 @@ import 'package:hive/hive.dart';
 
 part 'models.g.dart';
 
+Diet parseDiet(int dietId) {
+  var diet = Diet.VEGAN;
+  switch (dietId) {
+    case 0:
+      diet = Diet.VEGAN;
+      break;
+    case 2:
+      diet = Diet.VEGETARIAN;
+      break;
+  }
+  return diet;
+}
+
 @HiveType(typeId: 9)
 class ReducedUser {
   @HiveField(0)
@@ -94,7 +107,7 @@ class Recipe {
             .map((it) => Ingredient.fromJson(it))
             .toList(),
         numberOfPersons: recipeJson['numberOfPersons'],
-        diet: Diet.values[recipeJson['dietIdentifier'] as int],
+        diet: parseDiet(recipeJson['dietIdentifier'] as int),
         prepTimeMinutes: recipeJson['prepTimeMinutes'],
         nutrients: Nutrients.fromJson(recipeJson['nutrientsData']));
   }
@@ -196,7 +209,7 @@ class PrivateRecipe {
             .toList(),
         nutrients: Nutrients.fromJson(recipeJson['nutrientsData']),
         numberOfPersons: recipeJson['numberOfPersons'],
-        diet: Diet.values[recipeJson['dietIdentifier'] as int],
+        diet: parseDiet(recipeJson['dietIdentifier'] as int),
         prepTimeMinutes: recipeJson['prepTimeMinutes'],
         isPublishable: recipeJson['isPublishable'] as bool);
   }
