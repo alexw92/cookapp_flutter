@@ -149,6 +149,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
       return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.teal,
+            // Todo try out this one https://pub.dev/packages/animated_search_bar
             title: TextField(
               onChanged: (value) {
                 setState(() {
