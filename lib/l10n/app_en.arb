@@ -49,6 +49,7 @@
     "howToCookSteps": "Preparation Steps",
     "addIngredient": "Add Ingredient",
     "searchIngredient": "Search in Groceries",
+    "searchByIngredient": "Search by Ingredients",
     "unknownFoodCategory": "Unknown Category",
     "yourRecipes": "Your Recipes",
     "emptyInstructions": "No preparation steps so far",

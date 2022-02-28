@@ -94,9 +94,16 @@ class _RecipesComponentState extends State<RecipesComponent> {
       return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.teal,
-            title: Text(
-              AppLocalizations.of(context).recipes,
-              style: TextStyle(color: Colors.white),
+            title: TextField(
+              onChanged: (value) {
+                setState(() {
+                  //searchString = value.toLowerCase();
+                });
+              },
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context).searchByIngredient,
+                suffixIcon: Icon(Icons.search),
+              ),
             ),
             actions: [
               // AppLocalizations.of(context).logout
@@ -142,9 +149,21 @@ class _RecipesComponentState extends State<RecipesComponent> {
       return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.teal,
-            title: Text(
-              AppLocalizations.of(context).recipes,
+            title: TextField(
+              onChanged: (value) {
+                setState(() {
+                  //searchString = value.toLowerCase();
+                });
+              },
               style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context).searchByIngredient,
+                labelStyle: TextStyle(color: Colors.white54),
+                suffixIcon: Icon(
+                  Icons.search,
+                  color: Colors.white,
+                ),
+              ),
             ),
             actions: [
               // AppLocalizations.of(context).logout
@@ -328,5 +347,4 @@ class _RecipesComponentState extends State<RecipesComponent> {
     await Navigator.push(
         context, MaterialPageRoute(builder: (context) => SettingsPage()));
   }
-
 }

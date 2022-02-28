@@ -46,6 +46,7 @@
     "howToCookSteps": "Zubereitungsschritte",
     "addIngredient": "Neue Zutat",
     "searchIngredient": "Suche in Lebensmitteln",
+    "searchByIngredient": "Gib Zutat(en) ein",
     "unknownFoodCategory": "Unbekannte Kategorie",
     "yourRecipes": "Deine Rezepte",
     "emptyInstructions": "Noch ohne Zubereitungsschritte",
