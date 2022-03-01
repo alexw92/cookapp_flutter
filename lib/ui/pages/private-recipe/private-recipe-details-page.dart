@@ -93,7 +93,6 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
     });
   }
 
-  // Todo fix bug: scale pieces to 0.5 0.25 etc -> fractions, check android proj
   void increaseNumberOfPersons() {
     setState(() {
       controller.forward();

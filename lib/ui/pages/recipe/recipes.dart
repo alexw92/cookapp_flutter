@@ -150,6 +150,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
           appBar: AppBar(
             backgroundColor: Colors.teal,
             // Todo try out this one https://pub.dev/packages/animated_search_bar
+            // todo and this https://api.flutter.dev/flutter/material/Autocomplete-class.html
             title: TextField(
               onChanged: (value) {
                 setState(() {
