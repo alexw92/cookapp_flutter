@@ -192,7 +192,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                 .fbUploadedPhoto,
                                                         imageRenderMethodForWeb:
                                                             ImageRenderMethodForWeb
-                                                                .HttpGet),
+                                                                .HttpGet,
+                                                    maxHeight: 300,
+                                                    maxWidth: 300),
                                                     // backgroundColor: Colors.transparent,
                                                     radius: 72,
                                                   ),
