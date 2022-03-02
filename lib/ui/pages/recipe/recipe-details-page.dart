@@ -181,8 +181,8 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
                     child: Column(children: [
                   Stack(children: [
                     Container(
-                        height: 350,
-                        width: double.infinity,
+                        height: MediaQuery.of(context).size.width,
+                        width: MediaQuery.of(context).size.width,
                         child: FittedBox(
                             fit: BoxFit.fill,
                             child: Image(

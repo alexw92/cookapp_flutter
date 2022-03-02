@@ -91,8 +91,8 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                   Stack(children: [
                     Container(
                         color: Colors.grey,
-                        height: 250,
-                        width: 320,
+                        height: 300,
+                        width: 300,
                         child: FittedBox(
                             fit: BoxFit.fill,
                             child: ClipRRect(
@@ -101,7 +101,9 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                                 // needs --web-renderer html
                                 image: CachedNetworkImageProvider(recipe.imgSrc,
                                     imageRenderMethodForWeb:
-                                        ImageRenderMethodForWeb.HttpGet),
+                                        ImageRenderMethodForWeb.HttpGet,
+                                    maxWidth: 300,
+                                    maxHeight: 300),
                                 // backgroundColor: Colors.transparent,
                               ),
                             ))),
@@ -196,7 +198,12 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                   ]),
                   Container(
                       height: 80,
-                      //       width: double.infinity,
+                      width: 300,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          border: Border.all(
+                            color: Color.fromARGB(0, 100, 100, 100),
+                          )),
                       child: Container(
                           color: widget.bannerColor,
                           child: Column(children: [
