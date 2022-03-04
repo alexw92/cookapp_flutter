@@ -16,6 +16,10 @@ class IngredientTileComponent extends StatefulWidget {
   bool onShoppingList;
   VoidCallback onTap;
 
+  // when used userOwns onShoppingList and onTap are ignored and this
+  // item is displayed in stock
+  bool ignoreInStock;
+
   IngredientTileComponent(
       {Key key,
       this.ingredient,
@@ -24,7 +28,8 @@ class IngredientTileComponent extends StatefulWidget {
       this.radius = 46.0,
       this.userOwns = true,
       this.onShoppingList = false,
-      this.onTap})
+      this.onTap,
+      this.ignoreInStock = false})
       : super(key: key);
 
   @override
@@ -34,7 +39,8 @@ class IngredientTileComponent extends StatefulWidget {
       textColor: textColor,
       radius: radius,
       userOwns: userOwns,
-      onShoppingList: onShoppingList);
+      onShoppingList: onShoppingList,
+      ignoreInStock: ignoreInStock);
 }
 
 class _IngredientTileComponentState extends State<IngredientTileComponent> {
@@ -44,6 +50,7 @@ class _IngredientTileComponentState extends State<IngredientTileComponent> {
   double radius;
   bool userOwns;
   bool onShoppingList;
+  bool ignoreInStock;
 
   _IngredientTileComponentState(
       {this.ingredient,
@@ -51,17 +58,19 @@ class _IngredientTileComponentState extends State<IngredientTileComponent> {
       this.textColor,
       this.radius,
       this.userOwns,
-      this.onShoppingList});
+      this.onShoppingList,
+      this.ignoreInStock});
 
   @override
   Widget build(BuildContext context) {
+    print("ignoreinStock: $ignoreInStock");
     return Container(
         margin: EdgeInsets.only(top: 5, bottom: 5),
         color: Colors.transparent,
         child: Column(children: [
           Stack(children: [
             Container(
-                decoration: onShoppingList
+                decoration: onShoppingList && !ignoreInStock
                     ? BoxDecoration(
                         shape: BoxShape.circle,
                         boxShadow: [
@@ -73,7 +82,7 @@ class _IngredientTileComponentState extends State<IngredientTileComponent> {
                           ),
                         ],
                       )
-                    : userOwns
+                    : userOwns || ignoreInStock
                         ? BoxDecoration(
                             shape: BoxShape.circle,
                             boxShadow: [
@@ -105,10 +114,11 @@ class _IngredientTileComponentState extends State<IngredientTileComponent> {
                     backgroundColor: Colors.black87,
                     radius: radius,
                   ),
-                  onTap: widget.onTap,
+                  // ignore tap when item has ignored flag set
+                  onTap: ignoreInStock ? () {} : widget.onTap,
                   splashColor: Colors.white,
                 )),
-            onShoppingList
+            onShoppingList && !ignoreInStock
                 ? Positioned(
                     bottom: 0,
                     right: 0,
@@ -117,7 +127,7 @@ class _IngredientTileComponentState extends State<IngredientTileComponent> {
                       color: Colors.yellow,
                       size: 26,
                     ))
-                : userOwns
+                : userOwns || ignoreInStock
                     ? Positioned(
                         bottom: 0,
                         right: 0,

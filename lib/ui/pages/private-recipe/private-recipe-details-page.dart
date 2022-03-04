@@ -4,6 +4,7 @@ import 'package:collection/src/iterable_extensions.dart';
 import 'package:cookable_flutter/common/NeedsRecipeUpdateState.dart';
 import 'package:cookable_flutter/common/constants.dart';
 import 'package:cookable_flutter/core/caching/firebase_image_service.dart';
+import 'package:cookable_flutter/core/caching/foodproduct_service.dart';
 import 'package:cookable_flutter/core/caching/private_recipe_service.dart';
 import 'package:cookable_flutter/core/caching/recipe_service.dart';
 import 'package:cookable_flutter/core/caching/userfood_service.dart';
@@ -36,6 +37,8 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
   PrivateRecipeService privateRecipeService = PrivateRecipeService();
   UserFoodService userFoodService = UserFoodService();
   FirebaseImageService firebaseImageService = FirebaseImageService();
+  FoodProductService foodProductService = FoodProductService();
+  List<FoodProduct> foodProducts;
   List<UserFoodProduct> userOwnedFood;
   List<UserFoodProduct> missingUserFoodAndShoppingList;
   DefaultNutrients defaultNutrients;
@@ -65,6 +68,7 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
     dailyCarbohydrate = defaultNutrients.recDailyCarbohydrate;
     dailyProtein = defaultNutrients.recDailyProtein;
     dailyFat = defaultNutrients.recDailyFat;
+    foodProducts = await foodProductService.getFoodProducts();
     userOwnedFood = await userFoodService.getUserFood(false);
     missingUserFoodAndShoppingList = await userFoodService.getUserFood(true);
     this.recipe =
@@ -376,9 +380,14 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
         var onShoppingList = missingUserFoodAndShoppingList.any((element) =>
             element.foodProductId == ingredient.foodProductId &&
             element.onShoppingList);
+        print("foodProducts: $foodProducts");
+        var ignoreInStock = foodProducts
+            .firstWhere((element) => element.id == ingredient.foodProductId)
+            .inStockIsIgnored;
         myTiles.add(IngredientTileComponent(
             ingredient: ingredient,
             apiToken: apiToken,
+            ignoreInStock: ignoreInStock,
             userOwns: hasIngredient,
             onShoppingList: onShoppingList == null ? false : onShoppingList,
             onTap: () => {_showMissingIngredientDialog(ingredient)}));

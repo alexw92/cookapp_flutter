@@ -3,6 +3,7 @@ import 'package:cached_network_image_platform_interface/cached_network_image_pla
 import 'package:collection/src/iterable_extensions.dart';
 import 'package:cookable_flutter/common/NeedsRecipeUpdateState.dart';
 import 'package:cookable_flutter/common/constants.dart';
+import 'package:cookable_flutter/core/caching/foodproduct_service.dart';
 import 'package:cookable_flutter/core/caching/recipe_service.dart';
 import 'package:cookable_flutter/core/caching/userfood_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
@@ -33,8 +34,10 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
   Recipe recipe;
   RecipeService recipeService = RecipeService();
   UserFoodService userFoodService = UserFoodService();
+  FoodProductService foodProductService = FoodProductService();
   List<UserFoodProduct> userOwnedFood;
   List<UserFoodProduct> missingUserFoodAndShoppingList;
+  List<FoodProduct> foodProducts;
   DefaultNutrients defaultNutrients;
   String apiToken;
   int dailyCalories;
@@ -68,6 +71,7 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
     userOwnedFood = await userFoodService.getUserFood(false);
     // this loading is just to initially fill the hive box, can be removed if it was done before already
     missingUserFoodAndShoppingList = await userFoodService.getUserFood(true);
+    foodProducts = await foodProductService.getFoodProducts();
     this.recipe = await recipeService.getRecipe(this.widget.recipeId);
     var ingredientsCopy = copyIngredients(recipe.ingredients);
     setState(() {
@@ -513,9 +517,13 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
         var onShoppingList = missingUserFoodAndShoppingList.any((element) =>
             element.foodProductId == ingredient.foodProductId &&
             element.onShoppingList);
+        var ignoreInStock = foodProducts
+            .firstWhere((element) => element.id == ingredient.foodProductId)
+            .inStockIsIgnored;
         _myIngredientTiles.add(IngredientTileComponent(
             ingredient: ingredient,
             apiToken: apiToken,
+            ignoreInStock: ignoreInStock,
             userOwns: hasIngredient,
             onShoppingList: onShoppingList == null ? false : onShoppingList,
             onTap: () => {_showMissingIngredientDialog(ingredient)}));

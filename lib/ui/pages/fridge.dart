@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
 import 'package:collection/src/iterable_extensions.dart';
 import 'package:cookable_flutter/common/NeedsRecipeUpdateState.dart';
+import 'package:cookable_flutter/core/caching/foodproduct_service.dart';
 import 'package:cookable_flutter/core/caching/userfood_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
@@ -35,8 +36,10 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
   List<List<GroceryCheckBoxListTileModel>> tileLists = [];
   List<UserFoodProduct> ownedGroceries = [];
   List<UserFoodProduct> missingGroceries = [];
+  List<FoodProduct> foodProducts = [];
   int itemsOnShoppingList = 0;
   UserFoodService userFoodService = UserFoodService();
+  FoodProductService foodProductService = FoodProductService();
   String apiToken;
   bool loadingFromApi = false;
   bool error = false;
@@ -417,6 +420,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
 
   Future<void> loadFoodProducts({reload = false}) async {
     try {
+      foodProducts = await foodProductService.getFoodProducts(reload: reload);
       ownedGroceries = await userFoodService.getUserFood(false, reload: reload);
       missingGroceries =
           await userFoodService.getUserFood(true, reload: reload);

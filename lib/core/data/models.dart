@@ -473,6 +473,8 @@ class FoodProduct {
   final String imgSrc;
   @HiveField(8)
   final Nutrients nutrients;
+  @HiveField(9)
+  final bool inStockIsIgnored;
 
   FoodProduct(
       {this.id,
@@ -483,7 +485,8 @@ class FoodProduct {
       this.foodCategoryId,
       this.foodCategory,
       this.imgSrc,
-      this.nutrients});
+      this.nutrients,
+      this.inStockIsIgnored});
 
   factory FoodProduct.fromJson(Map<String, dynamic> json) {
     return FoodProduct(
@@ -495,7 +498,8 @@ class FoodProduct {
         foodCategoryId: json['foodCategoryId'],
         foodCategory: json['foodCategory'],
         imgSrc: json['img_src'],
-        nutrients: Nutrients.fromJson(json['nutrientsData']));
+        nutrients: Nutrients.fromJson(json['nutrientsData']),
+        inStockIsIgnored: json['inStockIsIgnored']);
   }
 }
 
