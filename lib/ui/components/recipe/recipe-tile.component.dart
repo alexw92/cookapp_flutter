@@ -199,11 +199,6 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                   Container(
                       height: 80,
                       width: 300,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          border: Border.all(
-                            color: Color.fromARGB(0, 100, 100, 100),
-                          )),
                       child: Container(
                           color: widget.bannerColor,
                           child: Column(children: [
@@ -217,7 +212,6 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                                                 fontSize: 24),
                                             textAlign: TextAlign.center))),
                               ],
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                             ),
                             Expanded(
                                 child: SingleChildScrollView(
