@@ -67,7 +67,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.only(left: 16, right: 16, bottom: 10, top: 10),
         child: GestureDetector(
             onTap: () => navigateToRecipePage(recipe.id),
             child: Container(
@@ -86,7 +86,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                         offset: Offset(0, 0), // Shadow position
                       ),
                     ],
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                    borderRadius: BorderRadius.all(Radius.circular(25))),
                 child: Column(children: [
                   Stack(children: [
                     Container(
