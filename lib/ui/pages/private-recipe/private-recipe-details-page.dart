@@ -18,6 +18,7 @@ import 'package:cookable_flutter/ui/util/formatters.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:timelines/timelines.dart';
 
 class PrivateRecipeDetailsPage extends StatefulWidget {
   final int recipeId;
@@ -489,30 +490,48 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
   }
 
   Widget showInstructionsIfNotEmpty() {
-    if (recipe.instructions.length != 0)
-      return Container(
-          margin: const EdgeInsets.only(left: 0, right: 0),
-          child: ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: recipe.instructions.length,
-              itemBuilder: (context, index) {
-                final instruction = recipe.instructions[index];
-                return Container(
-                    child: Card(
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        "${AppLocalizations.of(context).recipeInstructionStepShort} " +
-                            instruction.step.toString(),
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      Text(instruction.instructionsText)
-                    ],
-                  ),
-                ));
-              }));
-    else
+    if (recipe.instructions.length != 0) {
+      return Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: FixedTimeline.tileBuilder(
+          theme: TimelineTheme.of(context).copyWith(
+              nodePosition: 0,
+              color: Color(0xff989898),
+              indicatorTheme: IndicatorThemeData(
+                position: 0,
+                size: 36.0,
+              ),
+              connectorTheme: ConnectorThemeData(
+                thickness: 2.5,
+              )),
+          builder: TimelineTileBuilder.connected(
+            connectionDirection: ConnectionDirection.before,
+            indicatorBuilder: (_, index) => Indicator.outlined(
+                borderWidth: 2.5,
+                child: Text(
+                  (recipe.instructions[index].step + 1).toString(),
+                  style: TextStyle(fontSize: 22, color: Colors.white),
+                  textAlign: TextAlign.center,
+                )),
+            contentsBuilder: (_, index) {
+              return Padding(
+                padding: EdgeInsets.only(left: 4.0, top: 8.0),
+                child: Padding(
+                    padding: EdgeInsets.only(left: 16, bottom: 24),
+                    child: Text(
+                      recipe.instructions[index].instructionsText,
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    )),
+              );
+            },
+            connectorBuilder: (_, index, ___) => SolidLineConnector(
+              color: Colors.white,
+            ),
+            itemCount: recipe.instructions.length,
+          ),
+        ),
+      );
+    } else
       return Text(
         AppLocalizations.of(context).emptyInstructions,
         style: TextStyle(color: Colors.white),
