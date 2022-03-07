@@ -67,11 +67,10 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.only(left: 16, right: 16, bottom: 10, top: 10),
+        padding:  EdgeInsets.all(10),
         child: GestureDetector(
             onTap: () => navigateToRecipePage(recipe.id),
             child: Container(
-                alignment: Alignment.center,
                 clipBehavior: Clip.hardEdge,
                 margin: EdgeInsets.only(bottom: 10),
                 decoration: BoxDecoration(
@@ -86,16 +85,16 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                         offset: Offset(0, 0), // Shadow position
                       ),
                     ],
-                    borderRadius: BorderRadius.all(Radius.circular(25))),
-                child: Column(children: [
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                child: FittedBox(
+                    fit: BoxFit.fill,
+                    child:Column(children: [
                   Stack(children: [
                     Container(
                         color: Colors.grey,
                         height: 300,
                         width: 300,
-                        child: FittedBox(
-                            fit: BoxFit.fill,
-                            child: ClipRRect(
+                        child:  ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Image(
                                 // needs --web-renderer html
@@ -106,7 +105,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                                     maxHeight: 300),
                                 // backgroundColor: Colors.transparent,
                               ),
-                            ))),
+                            )),
                     Positioned(
                         top: 0,
                         right: 0,
@@ -246,7 +245,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                                       ])),
                             ))
                           ])))
-                ]))));
+                ])))));
   }
 
   Future<bool> onLikeButtonTapped(bool isLiked) async {

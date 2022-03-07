@@ -72,7 +72,7 @@ class _PrivateRecipeTileComponentState
             child: Container(
               alignment: Alignment.center,
               clipBehavior: Clip.hardEdge,
-              height: 400,
+              height: 300,
               margin: EdgeInsets.only(bottom: 10),
               decoration: BoxDecoration(
                   border: Border.all(
@@ -89,7 +89,7 @@ class _PrivateRecipeTileComponentState
                   borderRadius: BorderRadius.all(Radius.circular(20))),
               child: Stack(fit: StackFit.expand, children: [
                 Container(
-                  height: 400,
+                  height: 300,
                   width: 300,
                   color: Colors.grey,
                   child: FittedBox(
@@ -168,32 +168,6 @@ class _PrivateRecipeTileComponentState
                     top: 36,
                     right: 0,
                     child: Column(children: [
-                      // PopupMenuButton(
-                      //   onSelected: (result) {
-                      //     switch (result) {
-                      //       case 0:
-                      //         _editPrivateRecipeImg(privateRecipe, true);
-                      //         break;
-                      //       case 1:
-                      //         _editPrivateRecipeImg(privateRecipe, false);
-                      //         break;
-                      //     }
-                      //   },
-                      //   itemBuilder: (context) => [
-                      //     PopupMenuItem(
-                      //         child: Text(
-                      //             AppLocalizations.of(context).imageFromGallery),
-                      //         value: 0),
-                      //     PopupMenuItem(
-                      //         child: Text(AppLocalizations.of(context).takeImage),
-                      //         value: 1)
-                      //   ],
-                      //   child: Container(
-                      //       decoration: BoxDecoration(
-                      //           shape: BoxShape.circle, color: Colors.white),
-                      //       padding: EdgeInsets.all(10),
-                      //       child: Icon(Icons.camera_alt)),
-                      // ),
                       ElevatedButton(
                         style: ButtonStyle(
                             shape: MaterialStateProperty.all(CircleBorder()),
