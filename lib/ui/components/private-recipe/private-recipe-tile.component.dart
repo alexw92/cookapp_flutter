@@ -69,10 +69,11 @@ class _PrivateRecipeTileComponentState
         padding: EdgeInsets.all(10),
         child: GestureDetector(
             onTap: () => navigatePrivateToRecipePage(privateRecipe.id),
-            child: Container(
-              alignment: Alignment.center,
+            child: Center( child:Container(
+       //       alignment: Alignment.center,
               clipBehavior: Clip.hardEdge,
-              height: 300,
+              height: 320,
+              width: 320,
               margin: EdgeInsets.only(bottom: 10),
               decoration: BoxDecoration(
                   border: Border.all(
@@ -87,10 +88,10 @@ class _PrivateRecipeTileComponentState
                     ),
                   ],
                   borderRadius: BorderRadius.all(Radius.circular(20))),
-              child: Stack(fit: StackFit.expand, children: [
+              child: Stack(children: [
                 Container(
-                  height: 300,
-                  width: 300,
+                  height: 320,
+                  width: 320,
                   color: Colors.grey,
                   child: FittedBox(
                     // fit: BoxFit.fill,
@@ -277,7 +278,7 @@ class _PrivateRecipeTileComponentState
                       )
                     ]))
               ]),
-            )));
+            ))));
   }
 
   navigatePrivateToRecipePage(int recipeId) async {
