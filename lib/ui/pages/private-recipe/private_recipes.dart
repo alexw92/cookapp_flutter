@@ -9,7 +9,6 @@ import 'package:cookable_flutter/ui/components/private-recipe/private-recipe-til
 import 'package:cookable_flutter/ui/components/recipe/recipe-tile.component.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/private-recipe-creation-dialog.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/private-recipe-edit-page.dart';
-import 'package:cookable_flutter/ui/pages/recipe/recipes.dart';
 import 'package:cookable_flutter/ui/pages/settings_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +16,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PrivateRecipesComponent extends StatefulWidget {
   int pageIndex = 0;
+  GlobalKey navBarKey;
 
-  PrivateRecipesComponent({Key key}) : super(key: key);
+  PrivateRecipesComponent({Key key, this.navBarKey}) : super(key: key);
 
   @override
   _PrivateRecipesComponentState createState() =>
@@ -313,11 +313,13 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
                                     Center(
                                         child: ElevatedButton(
                                             onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          RecipesComponent()));
+                                              final BottomNavigationBar navigationBar = widget.navBarKey.currentWidget;
+                                              navigationBar.onTap(1);
+                                              // Navigator.push(
+                                              //     context,
+                                              //     MaterialPageRoute(
+                                              //         builder: (context) =>
+                                              //             RecipesComponent()));
                                             },
                                             child: Text(
                                               AppLocalizations.of(context)

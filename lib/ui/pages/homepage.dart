@@ -14,21 +14,29 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  GlobalKey globalKey;
   get error => null;
 
   int _selectedIndex = 1;
-  static List<Widget> _widgetOptions = <Widget>[
-    ToggleFridgeWidget(),
-    RecipesComponent(),
-    PrivateRecipesComponent(),
-    ProfilePage(),
-    //  ObjectDetectorView()
-  ];
+  static List<Widget> _widgetOptions;
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    globalKey = new GlobalKey();
+    _widgetOptions = <Widget>[
+      ToggleFridgeWidget(),
+      RecipesComponent(),
+      PrivateRecipesComponent(navBarKey: globalKey),
+      ProfilePage(),
+      //  ObjectDetectorView()
+    ];
+    super.initState();
   }
 
   @override
@@ -40,6 +48,7 @@ class _HomePageState extends State<HomePage> {
             child: _widgetOptions.elementAt(_selectedIndex),
           ),
           bottomNavigationBar: BottomNavigationBar(
+            key: globalKey,
             items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: ImageIcon(AssetImage("assets/fridge32.png")),
