@@ -93,20 +93,18 @@ class _PrivateRecipeTileComponentState
                   height: 320,
                   width: 320,
                   color: Colors.grey,
-                  child: FittedBox(
-                    // fit: BoxFit.fill,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
                       child: Image(
                         // needs --web-renderer html
+                        fit: BoxFit.cover,
+                        alignment: FractionalOffset.center,
                         image: CachedNetworkImageProvider(
                             (defaultImg) ? privateRecipe.imgSrc : recipeImgUrl,
                             //privateRecipe.imgSrc,
                             imageRenderMethodForWeb:
                                 ImageRenderMethodForWeb.HttpGet),
                       ),
-                    ),
-                  ),
+
+
                 ),
                 (showProgressIndicatorImage)
                     ? Positioned(
