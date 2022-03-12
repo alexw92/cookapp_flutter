@@ -215,7 +215,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                               builder: (BuildContext context) {
                                                 return Container(
                                                   height: 150,
-                                                  color: Colors.white,
                                                   margin: EdgeInsets.all(20),
                                                   child: Column(
                                                     mainAxisAlignment:
