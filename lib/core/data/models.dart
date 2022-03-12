@@ -15,6 +15,25 @@ Diet parseDiet(int dietId) {
   return diet;
 }
 
+PublishRecipeRequestStatus parsePublishRecipeRequestStatus(int statusValue) {
+  var status = PublishRecipeRequestStatus.NOT_REQUESTED;
+  switch (statusValue) {
+    case 0:
+      status = PublishRecipeRequestStatus.PENDING;
+      break;
+    case 1:
+      status = PublishRecipeRequestStatus.APPROVED;
+      break;
+    case 2:
+      status = PublishRecipeRequestStatus.DENIED;
+      break;
+    case 3:
+      status = PublishRecipeRequestStatus.NOT_REQUESTED;
+      break;
+  }
+  return status;
+}
+
 @HiveType(typeId: 9)
 class ReducedUser {
   @HiveField(0)
@@ -80,17 +99,16 @@ class Recipe {
   @HiveField(12)
   int likes;
 
-  Recipe(
-      {this.id,
-      this.imgSrc,
-      this.name,
-      this.uploadedBy,
-      this.instructions,
-      this.ingredients,
-      this.numberOfPersons,
-      this.diet,
-      this.prepTimeMinutes,
-      this.nutrients});
+  Recipe({this.id,
+    this.imgSrc,
+    this.name,
+    this.uploadedBy,
+    this.instructions,
+    this.ingredients,
+    this.numberOfPersons,
+    this.diet,
+    this.prepTimeMinutes,
+    this.nutrients});
 
   factory Recipe.fromJson(Map<String, dynamic> recipeJson) {
     return Recipe(
@@ -182,18 +200,17 @@ class PrivateRecipe {
   @HiveField(10)
   final bool isPublishable;
 
-  PrivateRecipe(
-      {this.id,
-      this.imgSrc,
-      this.name,
-      this.uploadedBy,
-      this.instructions,
-      this.ingredients,
-      this.nutrients,
-      this.numberOfPersons,
-      this.diet,
-      this.prepTimeMinutes,
-      this.isPublishable});
+  PrivateRecipe({this.id,
+    this.imgSrc,
+    this.name,
+    this.uploadedBy,
+    this.instructions,
+    this.ingredients,
+    this.nutrients,
+    this.numberOfPersons,
+    this.diet,
+    this.prepTimeMinutes,
+    this.isPublishable});
 
   factory PrivateRecipe.fromJson(Map<String, dynamic> recipeJson) {
     return PrivateRecipe(
@@ -214,7 +231,8 @@ class PrivateRecipe {
         isPublishable: recipeJson['isPublishable'] as bool);
   }
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         'id': id,
         'img_src': imgSrc,
         'name': name,
@@ -228,8 +246,42 @@ class PrivateRecipe {
       };
 
   String toString() {
-    return "private-recipe, id=$id, name=$name, ingredients=${ingredients.length}, imgSrc=$imgSrc, uploadedBy=${uploadedBy.toString()} ";
+    return "private-recipe, id=$id, name=$name, ingredients=${ingredients
+        .length}, imgSrc=$imgSrc, uploadedBy=${uploadedBy.toString()} ";
   }
+}
+
+class PrivateRecipePublishableStatus {
+  final PrivateRecipe privateRecipe;
+  final int constraintMinIngredients;
+  final int constraintMinInstructions;
+  final int constraintRecipeNameMaxLength;
+  final PublishRecipeRequestStatus status;
+
+  PrivateRecipePublishableStatus({
+    this.privateRecipe,
+    this.constraintMinIngredients,
+    this.constraintMinInstructions,
+    this.constraintRecipeNameMaxLength,
+    this.status});
+
+  factory PrivateRecipePublishableStatus.fromJson(Map<String, dynamic> json) {
+    return PrivateRecipePublishableStatus(
+        privateRecipe: PrivateRecipe.fromJson(json['privateRecipeData']),
+        constraintMinIngredients: json['constraintMinIngredients'],
+        constraintMinInstructions: json['constraintMinInstructions'],
+        constraintRecipeNameMaxLength: json['constraintRecipeNameMaxLength'],
+        status: parsePublishRecipeRequestStatus(json['status'] as int));
+  }
+
+  Map<String, dynamic> toJson() =>
+      {
+        'privateRecipe': privateRecipe.toJson(),
+        'constraintMinIngredients': constraintMinIngredients,
+        'constraintMinInstructions': constraintMinInstructions,
+        'constraintRecipeNameMaxLength': constraintRecipeNameMaxLength,
+        'status': status.index
+      };
 }
 
 // val id: Long,
@@ -259,19 +311,18 @@ class RecipeDetails {
   bool userLiked;
   int likes;
 
-  RecipeDetails(
-      {this.id,
-      this.imgSrc,
-      this.name,
-      this.uploadedBy,
-      this.instructions,
-      this.ingredients,
-      this.numberOfPersons,
-      this.nutrients,
-      this.diet,
-      this.prepTimeMinutes,
-      this.userLiked,
-      this.likes});
+  RecipeDetails({this.id,
+    this.imgSrc,
+    this.name,
+    this.uploadedBy,
+    this.instructions,
+    this.ingredients,
+    this.numberOfPersons,
+    this.nutrients,
+    this.diet,
+    this.prepTimeMinutes,
+    this.userLiked,
+    this.likes});
 
   factory RecipeDetails.fromJson(Map<String, dynamic> recipeJson) {
     return RecipeDetails(
@@ -315,7 +366,8 @@ class RecipeInstruction {
         instructionsText: json['instructionsText']);
   }
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         "id": id,
         "recipeId": recipeId,
         "step": step,
@@ -354,21 +406,20 @@ class DefaultNutrients {
   @HiveField(13)
   final DateTime changed;
 
-  DefaultNutrients(
-      {this.id,
-      this.recDailyFat,
-      this.recDailySaturatedFat,
-      this.recDailyCarbohydrate,
-      this.recDailySugar,
-      this.recDailyProtein,
-      this.recDailyCalories,
-      this.source,
-      this.caloriesPerGramCarb,
-      this.caloriesPerGramFat,
-      this.caloriesPerGramProtein,
-      this.caloriesThresholdHighCarb,
-      this.caloriesThresholdHighProtein,
-      this.changed});
+  DefaultNutrients({this.id,
+    this.recDailyFat,
+    this.recDailySaturatedFat,
+    this.recDailyCarbohydrate,
+    this.recDailySugar,
+    this.recDailyProtein,
+    this.recDailyCalories,
+    this.source,
+    this.caloriesPerGramCarb,
+    this.caloriesPerGramFat,
+    this.caloriesPerGramProtein,
+    this.caloriesThresholdHighCarb,
+    this.caloriesThresholdHighProtein,
+    this.changed});
 
   factory DefaultNutrients.fromJson(Map<String, dynamic> json) {
     return DefaultNutrients(
@@ -406,14 +457,13 @@ class Ingredient {
   @HiveField(6)
   final QuantityUnit quantityType;
 
-  Ingredient(
-      {this.id,
-      this.name,
-      this.amount,
-      this.recipeId,
-      this.foodProductId,
-      this.imgSrc,
-      this.quantityType});
+  Ingredient({this.id,
+    this.name,
+    this.amount,
+    this.recipeId,
+    this.foodProductId,
+    this.imgSrc,
+    this.quantityType});
 
   factory Ingredient.fromJson(Map<String, dynamic> json) {
     return Ingredient(
@@ -442,7 +492,8 @@ class Ingredient {
     return "Ingredient: $name, amount=$amount";
   }
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         "id": id,
         "name": name,
         "amount": amount,
@@ -476,17 +527,16 @@ class FoodProduct {
   @HiveField(9)
   final bool inStockIsIgnored;
 
-  FoodProduct(
-      {this.id,
-      this.name,
-      this.description,
-      this.quantityType,
-      this.gramPerPiece,
-      this.foodCategoryId,
-      this.foodCategory,
-      this.imgSrc,
-      this.nutrients,
-      this.inStockIsIgnored});
+  FoodProduct({this.id,
+    this.name,
+    this.description,
+    this.quantityType,
+    this.gramPerPiece,
+    this.foodCategoryId,
+    this.foodCategory,
+    this.imgSrc,
+    this.nutrients,
+    this.inStockIsIgnored});
 
   factory FoodProduct.fromJson(Map<String, dynamic> json) {
     return FoodProduct(
@@ -524,16 +574,15 @@ class UserFoodProduct {
   @HiveField(8)
   bool onShoppingList;
 
-  UserFoodProduct(
-      {this.foodProductId,
-      this.name,
-      this.amount,
-      this.description,
-      this.quantityUnit,
-      this.imgSrc,
-      this.nutrients,
-      this.foodCategory,
-      this.onShoppingList});
+  UserFoodProduct({this.foodProductId,
+    this.name,
+    this.amount,
+    this.description,
+    this.quantityUnit,
+    this.imgSrc,
+    this.nutrients,
+    this.foodCategory,
+    this.onShoppingList});
 
   factory UserFoodProduct.fromJson(Map<String, dynamic> json) {
     return UserFoodProduct(
@@ -644,17 +693,16 @@ class Nutrients {
   @HiveField(9)
   final bool isHighCarbRecipe;
 
-  Nutrients(
-      {this.id,
-      this.fat,
-      this.carbohydrate,
-      this.sugar,
-      this.protein,
-      this.calories,
-      this.source,
-      this.dateOfRetrieval,
-      this.isHighProteinRecipe,
-      this.isHighCarbRecipe});
+  Nutrients({this.id,
+    this.fat,
+    this.carbohydrate,
+    this.sugar,
+    this.protein,
+    this.calories,
+    this.source,
+    this.dateOfRetrieval,
+    this.isHighProteinRecipe,
+    this.isHighCarbRecipe});
 
   factory Nutrients.fromJson(Map<String, dynamic> json) {
     if (json == null) return null;
@@ -684,6 +732,13 @@ enum Diet {
   NORMAL
 }
 
+enum PublishRecipeRequestStatus {
+  PENDING,
+  APPROVED,
+  DENIED,
+  NOT_REQUESTED
+}
+
 enum NutritionType { CALORIES, CARBOHYDRATE, FAT, PROTEIN, SUGAR }
 
 class UserDataEdit {
@@ -691,7 +746,8 @@ class UserDataEdit {
 
   UserDataEdit({this.displayName});
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         'displayName': displayName,
       };
 }
