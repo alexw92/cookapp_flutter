@@ -13,6 +13,7 @@ import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/components/ingredient-tile.component.dart';
 import 'package:cookable_flutter/ui/components/nutrient-tile.component.dart';
+import 'package:cookable_flutter/ui/pages/private-recipe/publish-recipe-dialog.dart';
 import 'package:cookable_flutter/ui/pages/recipe/recipe-missing-ingredient-dialog.dart';
 import 'package:cookable_flutter/ui/util/formatters.dart';
 import 'package:flutter/cupertino.dart';
@@ -185,7 +186,7 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
             body: SafeArea(
             child: Container(
                 height: double.infinity,
-                color: Colors.black54,
+                color: Colors.black87,
                 child: SingleChildScrollView(
                     //  padding: EdgeInsets.only(bottom: 15),
                     child: Column(children: [
@@ -261,7 +262,6 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
                     )
                   ]),
                   Container(
-                    color: Colors.black54,
                     width: double.infinity,
                     child: Column(
                       children: [
@@ -317,7 +317,21 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
                     ),
                   ),
                   Container(
-                    color: Colors.black54,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        )),
+                        child: Text(
+                          AppLocalizations.of(context).publish,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        onPressed: _openPublishDialog,
+                      )),
+                  Container(
                     width: double.infinity,
                     child: Column(children: [
                       Text(
@@ -335,7 +349,6 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
                     ]),
                   ),
                   Container(
-                      color: Colors.black54,
                       width: double.infinity,
                       child: Column(children: [
                         Text(
@@ -359,7 +372,6 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
                             ))
                       ])),
                   Container(
-                      color: Colors.black54,
                       width: double.infinity,
                       child: Column(children: [
                         Text(
@@ -370,6 +382,15 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
                       ])),
                 ]))),
           ));
+  }
+
+  _openPublishDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return new PublishRecipeDialog(privateRecipe: recipe);
+      },
+    );
   }
 
   List<Widget> getAllIngredientTiles() {
