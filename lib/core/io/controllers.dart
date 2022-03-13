@@ -254,7 +254,8 @@ class RecipeController {
         "Error requesting private recipe, Code: ${response.statusCode} Message: ${response.data} ");
   }
 
-  static Future<PrivateRecipePublishableStatus> getPrivateRecipePublishable(int id) async {
+  static Future<PrivateRecipePublishableStatus> getPrivateRecipePublishable(
+      int id) async {
     var langCode = LangState().currentLang;
     // get token from token store
     var tokenStore = IOConfig.tokenStore;
@@ -271,14 +272,16 @@ class RecipeController {
 
     Dio dio = new Dio(options);
     final stopwatch = Stopwatch()..start();
-    var response = await dio.get("/privaterecipes/$id/publishable?langCode=$langCode");
+    var response =
+        await dio.get("/privaterecipes/$id/publishable?langCode=$langCode");
     print(
         'getPrivateRecipePublishable api req executed in ${stopwatch.elapsed.inMilliseconds}');
 
     /// If the first API call is successful
     if (response.statusCode == HttpStatus.ok) {
       var recipeJson = response.data;
-      PrivateRecipePublishableStatus publishableStatus = PrivateRecipePublishableStatus.fromJson(recipeJson);
+      PrivateRecipePublishableStatus publishableStatus =
+          PrivateRecipePublishableStatus.fromJson(recipeJson);
       return publishableStatus;
     }
 
@@ -286,7 +289,40 @@ class RecipeController {
         "Error requesting publish status of private recipe, Code: ${response.statusCode} Message: ${response.data} ");
   }
 
+  static Future<PublishPrivateRecipeRequest> publishPrivateRecipe(
+      int id) async {
+    var langCode = LangState().currentLang;
+    // get token from token store
+    var tokenStore = IOConfig.tokenStore;
+    String storedToken = await tokenStore.getToken();
 
+    BaseOptions options = new BaseOptions(
+        baseUrl: IOConfig.apiUrl,
+        connectTimeout: 3000, //10 seconds
+        receiveTimeout: 10000,
+        headers: {
+          "Authorization": "Bearer $storedToken",
+          'Content-Type': 'application/json',
+        });
+
+    Dio dio = new Dio(options);
+    final stopwatch = Stopwatch()..start();
+    var response =
+        await dio.post("/privaterecipes/$id/publish?langCode=$langCode");
+    print(
+        'publish private recipe api req executed in ${stopwatch.elapsed.inMilliseconds}');
+
+    /// If the first API call is successful
+    if (response.statusCode == HttpStatus.ok) {
+      var recipeJson = response.data;
+      PublishPrivateRecipeRequest publishRequest =
+          PublishPrivateRecipeRequest.fromJson(recipeJson);
+      return publishRequest;
+    }
+
+    throw Exception(
+        "Error requesting publish status of private recipe, Code: ${response.statusCode} Message: ${response.data} ");
+  }
 
   static Future<void> deletePrivateRecipe(int id) async {
     // get token from token store

@@ -96,9 +96,10 @@ class _PublishRecipeDialogState extends State<PublishRecipeDialog> {
           children: [
             ElevatedButton(
               style: ElevatedButton.styleFrom(
+                  onSurface: Colors.green,
                   shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0),
-              )),
+                    borderRadius: BorderRadius.circular(30.0),
+                  )),
               child: Text(
                 AppLocalizations.of(context).publish,
                 style: TextStyle(
@@ -106,12 +107,19 @@ class _PublishRecipeDialogState extends State<PublishRecipeDialog> {
                     fontSize: 22,
                     fontWeight: FontWeight.bold),
               ),
-              onPressed: () {},
+              onPressed: (publishStatus != null &&
+                      publishStatus.constraintsFulfilled())
+                  ? _sendPublishRequest
+                  : null,
             )
           ],
         )
       ]),
     );
+  }
+
+  _sendPublishRequest() {
+
   }
 
   getProgressWidget() {

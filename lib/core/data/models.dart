@@ -251,6 +251,31 @@ class PrivateRecipe {
   }
 }
 
+class PublishPrivateRecipeRequest {
+  final int id;
+  final PrivateRecipe privateRecipe;
+  final PublishRecipeRequestStatus status;
+  final DateTime statusChangedDate;
+  final ReducedUser statusChangedByAdmin;
+
+  PublishPrivateRecipeRequest(
+      {this.id,
+      this.privateRecipe,
+      this.status,
+      this.statusChangedDate,
+      this.statusChangedByAdmin});
+
+  factory PublishPrivateRecipeRequest.fromJson(Map<String, dynamic> json) {
+    return PublishPrivateRecipeRequest(
+        id: json['id'],
+        privateRecipe: PrivateRecipe.fromJson(json['privateRecipe']),
+        status: parsePublishRecipeRequestStatus(json['status'] as int),
+        statusChangedDate: DateTime.parse(json['statusChangedDate']),
+        statusChangedByAdmin:
+            ReducedUser.fromJson(json['statusChangedByAdmin']));
+  }
+}
+
 class PrivateRecipePublishableStatus {
   final PrivateRecipe privateRecipe;
   final int constraintMinIngredients;
@@ -272,6 +297,13 @@ class PrivateRecipePublishableStatus {
       this.constraintRecipeNameMaxLengthFulfilled,
       this.constraintHasImageFulfilled,
       this.status});
+
+  bool constraintsFulfilled() {
+    return constraintHasImageFulfilled &&
+        constraintMinIngredientsFulfilled &&
+        constraintMinInstructionsFulfilled &&
+        constraintRecipeNameMaxLengthFulfilled;
+  }
 
   factory PrivateRecipePublishableStatus.fromJson(Map<String, dynamic> json) {
     return PrivateRecipePublishableStatus(
