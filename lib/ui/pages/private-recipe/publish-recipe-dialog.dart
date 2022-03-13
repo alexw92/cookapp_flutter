@@ -46,7 +46,7 @@ class _PublishRecipeDialogState extends State<PublishRecipeDialog> {
               ),
               Spacer(),
               if (publishStatus == null)
-                CircularProgressIndicator()
+                getProgressWidget()
               else
                 getConstraintIcon(
                     fullFilled:
@@ -59,7 +59,7 @@ class _PublishRecipeDialogState extends State<PublishRecipeDialog> {
                 style: TextStyle(fontSize: 20)),
             Spacer(),
             if (publishStatus == null)
-              CircularProgressIndicator()
+              getProgressWidget()
             else
               getConstraintIcon(
                   fullFilled: publishStatus.constraintHasImageFulfilled)
@@ -72,7 +72,7 @@ class _PublishRecipeDialogState extends State<PublishRecipeDialog> {
                 style: TextStyle(fontSize: 20)),
             Spacer(),
             if (publishStatus == null)
-              CircularProgressIndicator()
+              getProgressWidget()
             else
               getConstraintIcon(
                   fullFilled: publishStatus.constraintMinIngredientsFulfilled)
@@ -85,7 +85,7 @@ class _PublishRecipeDialogState extends State<PublishRecipeDialog> {
                 style: TextStyle(fontSize: 20)),
             Spacer(),
             if (publishStatus == null)
-              CircularProgressIndicator()
+              getProgressWidget()
             else
               getConstraintIcon(
                   fullFilled: publishStatus.constraintMinInstructionsFulfilled)
@@ -112,6 +112,16 @@ class _PublishRecipeDialogState extends State<PublishRecipeDialog> {
         )
       ]),
     );
+  }
+
+  getProgressWidget() {
+    return SizedBox(
+        height: 16,
+        width: 16,
+        child: Center(
+            child: CircularProgressIndicator(
+          strokeWidth: 2,
+        )));
   }
 
   getConstraintIcon({bool fullFilled: false}) {
