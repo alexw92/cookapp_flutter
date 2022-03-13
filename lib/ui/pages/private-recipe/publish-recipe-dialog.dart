@@ -25,7 +25,7 @@ class _PublishRecipeDialogState extends State<PublishRecipeDialog> {
   @override
   void initState() {
     RecipeController.getPrivateRecipePublishable(this.privateRecipe.id)
-        .then((value) => {this.publishStatus = value});
+        .then((value) => {this.publishStatus = value, this.setState(() {})});
     super.initState();
   }
 
@@ -45,7 +45,12 @@ class _PublishRecipeDialogState extends State<PublishRecipeDialog> {
                 style: TextStyle(fontSize: 20),
               ),
               Spacer(),
-              getConstraintIcon(fullFilled: true)
+              if (publishStatus == null)
+                CircularProgressIndicator()
+              else
+                getConstraintIcon(
+                    fullFilled:
+                        publishStatus.constraintRecipeNameMaxLengthFulfilled)
             ]),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -53,7 +58,11 @@ class _PublishRecipeDialogState extends State<PublishRecipeDialog> {
             Text(AppLocalizations.of(context).recipeImage,
                 style: TextStyle(fontSize: 20)),
             Spacer(),
-            getConstraintIcon(fullFilled: true)
+            if (publishStatus == null)
+              CircularProgressIndicator()
+            else
+              getConstraintIcon(
+                  fullFilled: publishStatus.constraintHasImageFulfilled)
           ],
         ),
         Row(
@@ -62,7 +71,11 @@ class _PublishRecipeDialogState extends State<PublishRecipeDialog> {
             Text(AppLocalizations.of(context).ingredients,
                 style: TextStyle(fontSize: 20)),
             Spacer(),
-            getConstraintIcon(fullFilled: true)
+            if (publishStatus == null)
+              CircularProgressIndicator()
+            else
+              getConstraintIcon(
+                  fullFilled: publishStatus.constraintMinIngredientsFulfilled)
           ],
         ),
         Row(
@@ -71,7 +84,11 @@ class _PublishRecipeDialogState extends State<PublishRecipeDialog> {
             Text(AppLocalizations.of(context).howToCookSteps,
                 style: TextStyle(fontSize: 20)),
             Spacer(),
-            getConstraintIcon(fullFilled: false)
+            if (publishStatus == null)
+              CircularProgressIndicator()
+            else
+              getConstraintIcon(
+                  fullFilled: publishStatus.constraintMinInstructionsFulfilled)
           ],
         ),
         Row(
