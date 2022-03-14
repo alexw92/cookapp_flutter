@@ -20,6 +20,8 @@ class _PublishRecipeDialogState extends State<PublishRecipeDialog> {
   PrivateRecipe privateRecipe;
   PrivateRecipePublishableStatus publishStatus;
 
+  bool loading = false;
+
   _PublishRecipeDialogState({this.privateRecipe});
 
   @override
@@ -45,7 +47,7 @@ class _PublishRecipeDialogState extends State<PublishRecipeDialog> {
                 style: TextStyle(fontSize: 20),
               ),
               Spacer(),
-              if (publishStatus == null)
+              if (publishStatus == null || loading)
                 getProgressWidget()
               else
                 getConstraintIcon(
@@ -58,7 +60,7 @@ class _PublishRecipeDialogState extends State<PublishRecipeDialog> {
             Text(AppLocalizations.of(context).recipeImage,
                 style: TextStyle(fontSize: 20)),
             Spacer(),
-            if (publishStatus == null)
+            if (publishStatus == null || loading)
               getProgressWidget()
             else
               getConstraintIcon(
@@ -71,7 +73,7 @@ class _PublishRecipeDialogState extends State<PublishRecipeDialog> {
             Text(AppLocalizations.of(context).ingredients,
                 style: TextStyle(fontSize: 20)),
             Spacer(),
-            if (publishStatus == null)
+            if (publishStatus == null || loading)
               getProgressWidget()
             else
               getConstraintIcon(
@@ -84,11 +86,17 @@ class _PublishRecipeDialogState extends State<PublishRecipeDialog> {
             Text(AppLocalizations.of(context).howToCookSteps,
                 style: TextStyle(fontSize: 20)),
             Spacer(),
-            if (publishStatus == null)
+            if (publishStatus == null || loading)
               getProgressWidget()
             else
               getConstraintIcon(
                   fullFilled: publishStatus.constraintMinInstructionsFulfilled)
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            getRecipeRequestStatusWidget(),
           ],
         ),
         Row(
@@ -101,16 +109,27 @@ class _PublishRecipeDialogState extends State<PublishRecipeDialog> {
                     borderRadius: BorderRadius.circular(30.0),
                   )),
               child: Text(
-                AppLocalizations.of(context).publish,
+                (publishStatus != null &&
+                        publishStatus.status ==
+                            PublishRecipeRequestStatus.PENDING)
+                    ? AppLocalizations.of(context).cancelPublish
+                    : AppLocalizations.of(context).publish,
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 22,
                     fontWeight: FontWeight.bold),
               ),
               onPressed: (publishStatus != null &&
+                      publishStatus.status ==
+                          PublishRecipeRequestStatus.NOT_REQUESTED &&
                       publishStatus.constraintsFulfilled())
                   ? _sendPublishRequest
-                  : null,
+                  : (publishStatus != null &&
+                          publishStatus.status ==
+                              PublishRecipeRequestStatus.PENDING)
+                      ? _cancelPublishRequest
+                      : null,
+              //
             )
           ],
         )
@@ -119,7 +138,60 @@ class _PublishRecipeDialogState extends State<PublishRecipeDialog> {
   }
 
   _sendPublishRequest() {
+    setState(() {
+      loading = true;
+    });
+    RecipeController.publishPrivateRecipe(privateRecipe.id)
+        .then((value) => {
+              RecipeController.getPrivateRecipePublishable(
+                      this.privateRecipe.id)
+                  .then((value) => {
+                        this.publishStatus = value,
+                        loading = false,
+                        this.setState(() {})
+                      })
+                  .onError((error, stackTrace) {
+                setState(() {
+                  loading = false;
+                });
+                return;
+              })
+            })
+        .onError((error, stackTrace) {
+      setState(() {
+        loading = false;
+      });
+      return;
+    });
+  }
 
+  _cancelPublishRequest() {
+    setState(() {
+      loading = true;
+    });
+    RecipeController.cancelPublishPrivateRecipe(privateRecipe.id)
+        .then((value) => {
+              RecipeController.getPrivateRecipePublishable(
+                      this.privateRecipe.id)
+                  .then((value) => {
+                        this.publishStatus = value,
+                        loading = false,
+                        this.setState(() {})
+                      })
+                  .onError((error, stackTrace) {
+                setState(() {
+                  loading = false;
+                });
+                return;
+              })
+            })
+        .onError((error, stackTrace) {
+      setState(() {
+        loading = false;
+      });
+      return;
+    });
+    ;
   }
 
   getProgressWidget() {
@@ -150,5 +222,36 @@ class _PublishRecipeDialogState extends State<PublishRecipeDialog> {
           width: 6,
         )
       ]);
+  }
+
+  getRecipeRequestStatusWidget() {
+    if (this.publishStatus == null || loading)
+      return SizedBox(
+          height: 24,
+          width: 24,
+          child: Center(
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+              )));
+    Widget widget;
+    switch (this.publishStatus.status) {
+      case PublishRecipeRequestStatus.PENDING:
+        widget = Text(AppLocalizations.of(context).recipePublishPending,
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
+        break;
+      case PublishRecipeRequestStatus.NOT_REQUESTED:
+        widget = Text(AppLocalizations.of(context).recipePublishNotRequested,
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
+        break;
+      case PublishRecipeRequestStatus.APPROVED:
+        widget = Text(AppLocalizations.of(context).recipePublishApproved,
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
+        break;
+      case PublishRecipeRequestStatus.DENIED:
+        widget = Text(AppLocalizations.of(context).recipePublishDenied,
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
+        break;
+    }
+    return widget;
   }
 }

@@ -115,5 +115,10 @@
   "tab_yourRecipes": "Your Recipes",
   "publishYourRecipe": "Publish Your Recipe!",
   "publish": "Publish",
-  "recipeName": "Recipe Name"
+  "cancelPublish": "Cancel",
+  "recipeName": "Recipe Name",
+  "recipePublishPending": "Publish Pending",
+  "recipePublishNotRequested": "Not Published",
+  "recipePublishApproved": "Published",
+  "recipePublishDenied": "Publish Denied"
 }

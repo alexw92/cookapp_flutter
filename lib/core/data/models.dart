@@ -253,26 +253,28 @@ class PrivateRecipe {
 
 class PublishPrivateRecipeRequest {
   final int id;
-  final PrivateRecipe privateRecipe;
+  final int privateRecipeId;
   final PublishRecipeRequestStatus status;
   final DateTime statusChangedDate;
   final ReducedUser statusChangedByAdmin;
 
   PublishPrivateRecipeRequest(
       {this.id,
-      this.privateRecipe,
+      this.privateRecipeId,
       this.status,
       this.statusChangedDate,
       this.statusChangedByAdmin});
 
   factory PublishPrivateRecipeRequest.fromJson(Map<String, dynamic> json) {
+    print(json);
     return PublishPrivateRecipeRequest(
         id: json['id'],
-        privateRecipe: PrivateRecipe.fromJson(json['privateRecipe']),
+        privateRecipeId: json['privateRecipeId'] as int,
         status: parsePublishRecipeRequestStatus(json['status'] as int),
         statusChangedDate: DateTime.parse(json['statusChangedDate']),
-        statusChangedByAdmin:
-            ReducedUser.fromJson(json['statusChangedByAdmin']));
+        statusChangedByAdmin: json['statusChangedByAdmin'] != null
+            ? ReducedUser.fromJson(json['statusChangedByAdmin'])
+            : null);
   }
 }
 
