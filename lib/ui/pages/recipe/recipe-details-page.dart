@@ -282,15 +282,14 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
                             Row(
                               children: [
                                 Expanded(
-                                    child: FittedBox(
-                                        fit: BoxFit.contain,
-                                        child: Text(this.recipe.name,
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                            textAlign: TextAlign.center))),
-                                SizedBox(
-                                  width: 120,
-                                ),
+                                    child: SizedBox(
+                                        height: 40,
+                                        child: FittedBox(
+                                            fit: BoxFit.contain,
+                                            child: Text(this.recipe.name,
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                                textAlign: TextAlign.center)))),
                               ],
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                             ),
