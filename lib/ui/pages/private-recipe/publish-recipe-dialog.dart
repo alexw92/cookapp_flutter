@@ -120,8 +120,10 @@ class _PublishRecipeDialogState extends State<PublishRecipeDialog> {
                     fontWeight: FontWeight.bold),
               ),
               onPressed: (publishStatus != null &&
-                      publishStatus.status ==
-                          PublishRecipeRequestStatus.NOT_REQUESTED &&
+                      (publishStatus.status ==
+                              PublishRecipeRequestStatus.NOT_REQUESTED ||
+                          publishStatus.status ==
+                              PublishRecipeRequestStatus.DENIED) &&
                       publishStatus.constraintsFulfilled())
                   ? _sendPublishRequest
                   : (publishStatus != null &&
@@ -231,8 +233,8 @@ class _PublishRecipeDialogState extends State<PublishRecipeDialog> {
           width: 24,
           child: Center(
               child: CircularProgressIndicator(
-                strokeWidth: 2,
-              )));
+            strokeWidth: 2,
+          )));
     Widget widget;
     switch (this.publishStatus.status) {
       case PublishRecipeRequestStatus.PENDING:
