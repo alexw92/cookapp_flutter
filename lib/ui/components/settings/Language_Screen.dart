@@ -26,7 +26,7 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context).languages)),
+      appBar: AppBar(title: Text(AppLocalizations.of(context).languages, style: TextStyle(color: Colors.white),)),
       body: SettingsList(sections: [
         SettingsSection(
             tiles: languages
@@ -43,7 +43,7 @@ class _LanguagesScreenState extends State<LanguagesScreen> {
 
   Widget trailingWidget(int index) {
     return (languageIndex == index)
-        ? Icon(Icons.check, color: Colors.blue)
+        ? Icon(Icons.check, color: Colors.teal)
         : Icon(null);
   }
 

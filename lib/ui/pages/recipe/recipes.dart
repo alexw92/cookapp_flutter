@@ -102,7 +102,11 @@ class _RecipesComponentState extends State<RecipesComponent> {
               },
               decoration: InputDecoration(
                 labelText: AppLocalizations.of(context).searchByIngredient,
-                suffixIcon: Icon(Icons.search),
+                labelStyle: TextStyle(color: Colors.white54),
+                suffixIcon: Icon(
+                  Icons.search,
+                  color: Colors.white,
+                ),
               ),
             ),
             actions: [

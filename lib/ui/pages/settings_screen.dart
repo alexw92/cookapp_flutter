@@ -60,7 +60,7 @@ class _SettingsPageState extends State<SettingsPage> {
             titlePadding: EdgeInsets.all(20),
             tiles: [
               SettingsTile(
-                title: AppLocalizations.of(context).languages,
+                title: AppLocalizations.of(context).language,
                 subtitle: language,
                 leading: Icon(Icons.language),
                 onPressed: (context) async {
