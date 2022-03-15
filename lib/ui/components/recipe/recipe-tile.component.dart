@@ -71,8 +71,10 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
             padding: EdgeInsets.all(10),
             child: GestureDetector(
                 onTap: () => navigateToRecipePage(recipe.id),
-                child: Container(
+                child: Center( child:Container(
                     clipBehavior: Clip.hardEdge,
+                    height: 400,
+                    width: 320,
                     margin: EdgeInsets.only(bottom: 10),
                     decoration: BoxDecoration(
                         border: Border.all(
@@ -95,20 +97,17 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                                 color: Colors.grey,
                                 height: 320,
                                 width: 320,
-                                child: FittedBox(
-                                    child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
                                   child: Image(
                                     // needs --web-renderer html
+                                    fit: BoxFit.cover,
+                                    alignment: FractionalOffset.center,
                                     image: CachedNetworkImageProvider(
                                         recipe.imgSrc,
                                         imageRenderMethodForWeb:
-                                            ImageRenderMethodForWeb.HttpGet,
-                                        maxWidth: 300,
-                                        maxHeight: 300),
+                                            ImageRenderMethodForWeb.HttpGet),
                                     // backgroundColor: Colors.transparent,
                                   ),
-                                ))),
+                                ),
                             Positioned(
                                 top: 0,
                                 right: 0,
@@ -241,7 +240,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                                               ])),
                                     ))
                                   ])))
-                        ]))))));
+                        ])))))));
   }
 
   Future<bool> onLikeButtonTapped(bool isLiked) async {
