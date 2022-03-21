@@ -123,7 +123,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
           appBar: AppBar(
             backgroundColor: Colors.teal,
             title: Text(
-              AppLocalizations.of(context).yourRecipes,
+              "${AppLocalizations.of(context).yourRecipes}\ (${this.likedRecipesList.length})",
               style: TextStyle(color: Colors.white),
             ),
             actions: [
@@ -205,11 +205,12 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
                       tabs: [
                         Tab(
                           text:
-                              AppLocalizations.of(context).tab_favouriteRecipes,
+                              "${AppLocalizations.of(context).tab_favouriteRecipes} (${this.likedRecipesList.length})",
                           icon: Icon(Icons.favorite_outline),
                         ),
                         Tab(
-                          text: AppLocalizations.of(context).tab_yourRecipes,
+                          text:
+                              "${AppLocalizations.of(context).tab_yourRecipes} (${this.recipeList.length})",
                           icon: Icon(Icons.star),
                         ),
                       ])),
@@ -313,7 +314,9 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
                                     Center(
                                         child: ElevatedButton(
                                             onPressed: () {
-                                              final BottomNavigationBar navigationBar = widget.navBarKey.currentWidget;
+                                              final BottomNavigationBar
+                                                  navigationBar = widget
+                                                      .navBarKey.currentWidget;
                                               navigationBar.onTap(1);
                                               // Navigator.push(
                                               //     context,
