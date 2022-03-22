@@ -27,6 +27,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
   bool loadingFromApi = false;
   bool error = false;
   List recipeBannerColors = Constants.neutralColors1;
+  int numbActiveFilters = 0;
 
   Color _getRecipeBannerColor(int i) {
     return this.recipeBannerColors[i % this.recipeBannerColors.length];
@@ -85,6 +86,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
   void initState() {
     super.initState();
     var itemsInStockChanged = NeedsRecipeUpdateState().recipesUpdateNeeded;
+    _loadNumberOfFilters();
     loadRecipes(itemsInStockChanged: itemsInStockChanged);
   }
 
@@ -174,13 +176,46 @@ class _RecipesComponentState extends State<RecipesComponent> {
             actions: [
               // AppLocalizations.of(context).logout
               // AppLocalizations.of(context).settings
-              IconButton(
-                icon: Icon(
-                  Icons.filter_list,
-                  color: Colors.white,
-                ),
-                onPressed: _showFilterDialog,
-              ),
+              InkWell(
+                  onTap: _showFilterDialog,
+                  child: Container(
+                      width: 72,
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.filter_list,
+                                color: Colors.white,
+                              ),
+                              //   Text("text", overflow: TextOverflow.ellipsis),
+                            ],
+                          ),
+                          numbActiveFilters > 0
+                              ? Positioned(
+                                  top: 4,
+                                  right: 2,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 6, vertical: 2),
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.red),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "$numbActiveFilters",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                )
+                              : Container()
+                        ],
+                      ))),
               PopupMenuButton(
                 onSelected: (result) {
                   switch (result) {
@@ -311,6 +346,20 @@ class _RecipesComponentState extends State<RecipesComponent> {
     return loadRecipes(reload: true);
   }
 
+  Future<void> _loadNumberOfFilters() async {
+    var prefs = await SharedPreferences.getInstance();
+    var dietIndex = prefs.getInt('recipeDietFilter') ?? Diet.NORMAL.index;
+    var diet = Diet.values[dietIndex];
+    var highProteinFilter = prefs.getBool('highProteinFilter') ?? false;
+    var highCarbFilter = prefs.getBool('highCarbFilter') ?? false;
+    this.numbActiveFilters = (diet == Diet.NORMAL ? 0 : 1) +
+        (highProteinFilter ? 1 : 0) +
+        (highCarbFilter ? 1 : 0);
+    setState(() {
+
+    });
+  }
+
   Future<void> _showFilterDialog() async {
     var prefs = await SharedPreferences.getInstance();
     var dietIndex = prefs.getInt('recipeDietFilter') ?? Diet.NORMAL.index;
@@ -340,6 +389,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
               highCarbFilterNew == highCarbFilter),
           if (changedFilters)
             {
+              _loadNumberOfFilters(),
               loadRecipes(),
             }
         });
