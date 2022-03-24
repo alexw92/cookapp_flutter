@@ -123,7 +123,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
           appBar: AppBar(
             backgroundColor: Colors.teal,
             title: Text(
-              "${AppLocalizations.of(context).yourRecipes}\ (${this.likedRecipesList.length})",
+              "${AppLocalizations.of(context).yourRecipes}",
               style: TextStyle(color: Colors.white),
             ),
             actions: [

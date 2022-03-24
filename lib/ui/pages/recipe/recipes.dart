@@ -96,24 +96,33 @@ class _RecipesComponentState extends State<RecipesComponent> {
       return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.teal,
-            title: TextField(
-              onChanged: (value) {
-                setState(() {
-                  //searchString = value.toLowerCase();
-                });
-              },
-              decoration: InputDecoration(
-                labelText: AppLocalizations.of(context).searchByIngredient,
-                labelStyle: TextStyle(color: Colors.white54),
-                suffixIcon: Icon(
+            title: Text(
+              "${AppLocalizations.of(context).recipes}",
+              style: TextStyle(color: Colors.white),
+            ), // TextField(
+            //   onChanged: (value) {
+            //     setState(() {
+            //       //searchString = value.toLowerCase();
+            //     });
+            //   },
+            //   decoration: InputDecoration(
+            //     labelText: AppLocalizations.of(context).searchByIngredient,
+            //     labelStyle: TextStyle(color: Colors.white54),
+            //     suffixIcon: Icon(
+            //       Icons.search,
+            //       color: Colors.white,
+            //     ),
+            //   ),
+            // ),
+            actions: [
+              // AppLocalizations.of(context).logout
+              // AppLocalizations.of(context).settings
+              IconButton(
+                icon: Icon(
                   Icons.search,
                   color: Colors.white,
                 ),
               ),
-            ),
-            actions: [
-              // AppLocalizations.of(context).logout
-              // AppLocalizations.of(context).settings
               IconButton(
                 icon: Icon(
                   Icons.filter_list,
@@ -157,25 +166,37 @@ class _RecipesComponentState extends State<RecipesComponent> {
             backgroundColor: Colors.teal,
             // Todo try out this one https://pub.dev/packages/animated_search_bar
             // todo and this https://api.flutter.dev/flutter/material/Autocomplete-class.html
-            title: TextField(
-              onChanged: (value) {
-                setState(() {
-                  //searchString = value.toLowerCase();
-                });
-              },
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                labelText: AppLocalizations.of(context).searchByIngredient,
-                labelStyle: TextStyle(color: Colors.white54),
-                suffixIcon: Icon(
+            title: recipeList.length > 0
+                ? Text(
+                    "${AppLocalizations.of(context).recipes}(${recipeList.length})",
+                    style: TextStyle(color: Colors.white))
+                : Text("${AppLocalizations.of(context).recipes}",
+                    style: TextStyle(color: Colors.white)),
+            // TextField(
+            //   onChanged: (value) {
+            //     setState(() {
+            //       //searchString = value.toLowerCase();
+            //     });
+            //   },
+            //   style: TextStyle(color: Colors.white),
+            //   decoration: InputDecoration(
+            //     labelText: AppLocalizations.of(context).searchByIngredient,
+            //     labelStyle: TextStyle(color: Colors.white54),
+            //     suffixIcon: Icon(
+            //       Icons.search,
+            //       color: Colors.white,
+            //     ),
+            //   ),
+            // ),
+            actions: [
+              // AppLocalizations.of(context).logout
+              // AppLocalizations.of(context).settings
+              IconButton(
+                icon: Icon(
                   Icons.search,
                   color: Colors.white,
                 ),
               ),
-            ),
-            actions: [
-              // AppLocalizations.of(context).logout
-              // AppLocalizations.of(context).settings
               InkWell(
                   onTap: _showFilterDialog,
                   child: Container(
@@ -355,9 +376,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
     this.numbActiveFilters = (diet == Diet.NORMAL ? 0 : 1) +
         (highProteinFilter ? 1 : 0) +
         (highCarbFilter ? 1 : 0);
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   Future<void> _showFilterDialog() async {
