@@ -210,7 +210,7 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
           elevation: 25,
           child: Center(
               child: ElevatedButton(
-                  child: Text(AppLocalizations.of(context).okay),
+                  child: Text(AppLocalizations.of(context).okay, style: TextStyle(color: Colors.white),),
                   onPressed: () {
                     addIngredientsAndNavigateToEditAmounts(foodProductsAdded);
                   })));
