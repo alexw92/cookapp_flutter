@@ -200,6 +200,10 @@ class PrivateRecipe {
   final int prepTimeMinutes;
   @HiveField(10)
   final bool isPublishable;
+  @HiveField(11)
+  final DateTime created;
+  @HiveField(12)
+  final DateTime lastChange;
 
   PrivateRecipe(
       {this.id,
@@ -212,8 +216,9 @@ class PrivateRecipe {
       this.numberOfPersons,
       this.diet,
       this.prepTimeMinutes,
-      this.isPublishable});
-
+      this.isPublishable,
+      this.created,
+      this.lastChange});
   factory PrivateRecipe.fromJson(Map<String, dynamic> recipeJson) {
     return PrivateRecipe(
         id: recipeJson['id'],
@@ -230,7 +235,10 @@ class PrivateRecipe {
         numberOfPersons: recipeJson['numberOfPersons'],
         diet: parseDiet(recipeJson['dietIdentifier'] as int),
         prepTimeMinutes: recipeJson['prepTimeMinutes'],
-        isPublishable: recipeJson['isPublishable'] as bool);
+        isPublishable: recipeJson['isPublishable'] as bool,
+        created: DateTime.parse(recipeJson['created']),
+        lastChange: DateTime.parse(recipeJson['lastChange']),
+    );
   }
 
   Map<String, dynamic> toJson() => {
@@ -244,6 +252,8 @@ class PrivateRecipe {
         'dietIdentifier': diet.index,
         'prepTimeMinutes': prepTimeMinutes,
         'isPublishable': isPublishable,
+        'created': created.toString(),
+        'lastChange': lastChange.toString()
       };
 
   String toString() {

@@ -215,13 +215,15 @@ class PrivateRecipeAdapter extends TypeAdapter<PrivateRecipe> {
       diet: fields[8] as Diet,
       prepTimeMinutes: fields[9] as int,
       isPublishable: fields[10] as bool,
+      created: fields[11] as DateTime,
+      lastChange: fields[12] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, PrivateRecipe obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -243,7 +245,11 @@ class PrivateRecipeAdapter extends TypeAdapter<PrivateRecipe> {
       ..writeByte(9)
       ..write(obj.prepTimeMinutes)
       ..writeByte(10)
-      ..write(obj.isPublishable);
+      ..write(obj.isPublishable)
+      ..writeByte(11)
+      ..write(obj.created)
+      ..writeByte(12)
+      ..write(obj.lastChange);
   }
 
   @override
