@@ -37,7 +37,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
   bool loadingFromApi = false;
   bool error = false;
   TabController _tabController;
-  List recipeBannerColors = Constants.neutralColors1;
+  List recipeBannerColors = Constants.badgeColors;
 
   Color _getRecipeBannerColor(int i) {
     return this.recipeBannerColors[i % this.recipeBannerColors.length];

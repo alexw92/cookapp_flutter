@@ -26,7 +26,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
   String apiToken;
   bool loadingFromApi = false;
   bool error = false;
-  List recipeBannerColors = Constants.neutralColors1;
+  List recipeBannerColors = Constants.badgeColors;
   int numbActiveFilters = 0;
 
   Color _getRecipeBannerColor(int i) {

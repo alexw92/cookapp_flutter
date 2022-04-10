@@ -32,4 +32,13 @@ class Constants {
     Color(0xffcdccab),
     Color(0xffc4cfd8)
   ];
+
+  static const List<Color> badgeColors = [
+    Color(0xffd55111),
+    Color(0xffd9ff22),
+    Color(0xff33dbab),
+    Color(0xff11cc22),
+    Color(0xff7711dd)
+  ];
+
 }
