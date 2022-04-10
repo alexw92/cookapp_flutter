@@ -35,7 +35,7 @@ class Constants {
 
   static const List<Color> badgeColors = [
     Color(0xffd55111),
-    Color(0xffd9ff22),
+    Color(0xffd9dd33),
     Color(0xff33dbab),
     Color(0xff11cc22),
     Color(0xff7711dd)
