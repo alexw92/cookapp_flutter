@@ -134,7 +134,7 @@ class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
                 children: [
                   ElevatedButton(
                     onPressed: () => decreaseAmount(ingredients[index]),
-                    child: Icon(Icons.remove),
+                    child: Icon(Icons.remove, color: Colors.white,),
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all(CircleBorder()),
                       padding: MaterialStateProperty.all(
@@ -224,7 +224,7 @@ class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
                                 ))),
                   ElevatedButton(
                     onPressed: () => increaseAmount(ingredients[index]),
-                    child: Icon(Icons.add),
+                    child: Icon(Icons.add, color: Colors.white,),
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all(CircleBorder()),
                       padding: MaterialStateProperty.all(
