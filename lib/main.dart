@@ -4,8 +4,11 @@ import 'package:cookable_flutter/ui/pages/login_screen.dart';
 import 'package:cookable_flutter/ui/styles/app-theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 import "package:hive_flutter/hive_flutter.dart";
@@ -13,6 +16,23 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'common/LangState.dart';
 import 'core/data/models.dart';
+
+/// Define a top-level named handler which background/terminated messages will
+/// call.
+///
+/// To verify things are working, check out the native platform logs.
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
+  print('Handling a background message ${message.messageId}');
+}
+
+/// Create a [AndroidNotificationChannel] for heads up notifications
+AndroidNotificationChannel channel;
+
+/// Initialize the [FlutterLocalNotificationsPlugin] package.
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +52,39 @@ void main() async {
   Hive.registerAdapter(TotalRecipeLikesAdapter());
   Hive.registerAdapter(UserRecipeLikeAdapter());
   await Firebase.initializeApp();
+
+  // Set the background messaging handler early on, as a named top-level function
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  if (!kIsWeb) {
+    channel = const AndroidNotificationChannel(
+      'high_importance_channel', // id
+      'High Importance Notifications', // title
+      description: 'This channel is used for important notifications.', // description
+      importance: Importance.high,
+    );
+
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+    /// Create an Android Notification Channel.
+    ///
+    /// We use this channel in the `AndroidManifest.xml` file to override the
+    /// default FCM channel to enable heads up notifications.
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
+
+    /// Update the iOS foreground notification presentation options to allow
+    /// heads up notifications.
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+  }
+
   runApp(CookableFlutter());
 }
 
@@ -64,9 +117,60 @@ class _CookableFlutterState extends State<CookableFlutter> {
   Locale _locale = Locale('en', '');
   User _user;
 
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+
+  String fcmToken = "Getting Firebase Token";
+
+  getTokenFCM() async {
+    String token = await _firebaseMessaging.getToken();
+    setState(() {
+      fcmToken = token;
+      print(fcmToken);
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    FirebaseMessaging.instance
+        .getInitialMessage()
+        .then((RemoteMessage message) {
+          if(message != null) {
+            print('message: ' + message.messageId + ' ' + message.messageType);
+          }
+    });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print(message);
+      if(message != null) {
+        print(message.messageId);
+        print(message.messageType);
+        print(message.notification.body);
+        print('message (onMessage.listen): ' + message.messageId + ' ' + message.notification.body);
+      }
+      RemoteNotification notification = message.notification;
+      AndroidNotification android = message.notification?.android;
+      if (notification != null && android != null && !kIsWeb) {
+        flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              channelDescription: channel.description,
+              // TODO add a proper drawable resource to android, for now using
+              //      one that already exists in example app.
+              icon: 'launch_background',
+            ),
+          ),
+        );
+      }
+    });
+
+    getTokenFCM();
+
     this._fetchLocale().then((locale) {
       setState(() {
         _user = FirebaseAuth.instance.currentUser;
