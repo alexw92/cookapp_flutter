@@ -145,8 +145,8 @@ class _CookableFlutterState extends State<CookableFlutter> {
       if(message != null) {
         print(message.messageId);
         print(message.messageType);
-        print(message.notification.body);
-        print('message (onMessage.listen): ' + message.messageId + ' ' + message.notification.body);
+        print(message.data["body"]);
+        print('message (onMessage.listen): ' + message.messageId);
       }
       RemoteNotification notification = message.notification;
       AndroidNotification android = message.notification?.android;
