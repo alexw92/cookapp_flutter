@@ -572,6 +572,35 @@ class RecipeController {
 }
 
 class UserController {
+  static Future<String> submitFirebaseDeviceRegistrationToken(deviceRegistrationToken) async {
+    // get token from token store
+    var tokenStore = IOConfig.tokenStore;
+    String storedToken = await tokenStore.getToken();
+
+    BaseOptions options = new BaseOptions(
+        baseUrl: IOConfig.apiUrl,
+        connectTimeout: 3000, //10 seconds
+        receiveTimeout: 10000,
+        headers: {
+          "Authorization": "Bearer $storedToken",
+          'Content-Type': 'application/json',
+        });
+
+    Dio dio = new Dio(options);
+    final stopwatch = Stopwatch()..start();
+    var response = await dio.post("/user/deviceTokens/add/$deviceRegistrationToken");
+    print('submit firebase device token api req executed in ${stopwatch.elapsed.inMilliseconds}');
+
+    /// If the first API call is successful
+    if (response.statusCode == HttpStatus.ok) {
+      print(response.data);
+      return response.data;
+    }
+
+    throw Exception(
+        "Error submitting deviceToken, Code: ${response.statusCode} Message: ${response.data} ");
+  }
+
   static Future<ReducedUser> getUser() async {
     // get token from token store
     var tokenStore = IOConfig.tokenStore;

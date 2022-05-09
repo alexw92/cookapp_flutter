@@ -1,12 +1,13 @@
+import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/pages/homepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
 
 const users = const {
   'dribbble@gmail.com': '12345',
@@ -68,7 +69,13 @@ class LoginScreen extends StatelessWidget {
             // await FirebaseAuth.instance
             //     .sign()
             //     .then((UserCredential user) => {TokenStore().getToken()});
-            await signInWithGoogle().then((UserCredential user) => {TokenStore().getToken()});
+            await signInWithGoogle()
+                .then((UserCredential user) => {TokenStore().getToken()});
+            FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+            String token = await _firebaseMessaging.getToken();
+
+            UserController.submitFirebaseDeviceRegistrationToken(token)
+                .then((value) => null);
             return null;
           },
         ),
@@ -87,14 +94,16 @@ class LoginScreen extends StatelessWidget {
           label: AppLocalizations.of(context).withoutLogin,
           callback: () async {
             print('start anonymous sign in');
-            await signInAnonymously().then((UserCredential user) => {
+            await signInAnonymously()
+                .then((UserCredential user) => {TokenStore().getToken()});
+            FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+            String token = await _firebaseMessaging.getToken();
 
-              TokenStore().getToken()});
-
+            UserController.submitFirebaseDeviceRegistrationToken(token)
+                .then((value) => null);
             print('end anonymous sign in');
             return null;
           },
-
         )
       ],
       onSubmitAnimationCompleted: () {

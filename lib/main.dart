@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:cookable_flutter/core/providers/theme.provider.dart';
 import 'package:cookable_flutter/ui/pages/homepage.dart';
 import 'package:cookable_flutter/ui/pages/login_screen.dart';
 import 'package:cookable_flutter/ui/styles/app-theme.dart';
+import 'package:cron/cron.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -16,6 +19,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'common/LangState.dart';
 import 'core/data/models.dart';
+import 'core/io/controllers.dart';
 
 /// Define a top-level named handler which background/terminated messages will
 /// call.
@@ -53,6 +57,18 @@ void main() async {
   Hive.registerAdapter(UserRecipeLikeAdapter());
   await Firebase.initializeApp();
 
+  // set cron
+  final cron = Cron();
+  final random = new Random();
+  var m = random.nextInt(59);
+  var h = random.nextInt(20);
+  print('Submitting device registration cron scheduled for $m $h * * *');
+  cron.schedule(Schedule.parse('$m $h * * *'), () async {
+    FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+    String token = await _firebaseMessaging.getToken();
+
+    UserController.submitFirebaseDeviceRegistrationToken(token).then((value) => null);
+  });
   // Set the background messaging handler early on, as a named top-level function
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
