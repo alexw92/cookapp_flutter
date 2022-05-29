@@ -67,7 +67,8 @@ void main() async {
     FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
     String token = await _firebaseMessaging.getToken();
 
-    UserController.submitFirebaseDeviceRegistrationToken(token).then((value) => null);
+    UserController.submitFirebaseDeviceRegistrationToken(token)
+        .then((value) => null);
   });
   // Set the background messaging handler early on, as a named top-level function
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -76,7 +77,8 @@ void main() async {
     channel = const AndroidNotificationChannel(
       'high_importance_channel', // id
       'High Importance Notifications', // title
-      description: 'This channel is used for important notifications.', // description
+      description: 'This channel is used for important notifications.',
+      // description
       importance: Importance.high,
     );
 
@@ -88,7 +90,7 @@ void main() async {
     /// default FCM channel to enable heads up notifications.
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()
+            AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
     /// Update the iOS foreground notification presentation options to allow
@@ -111,7 +113,8 @@ class CookableFlutter extends StatefulWidget {
   To Change Locale of App
    */
   static void setLocale(BuildContext context, Locale newLocale) async {
-    _CookableFlutterState state = context.findAncestorStateOfType<_CookableFlutterState>();
+    _CookableFlutterState state =
+        context.findAncestorStateOfType<_CookableFlutterState>();
 
     var prefs = await SharedPreferences.getInstance();
     prefs.setString('languageCode', newLocale.languageCode);
@@ -120,7 +123,6 @@ class CookableFlutter extends StatefulWidget {
     state.setState(() {
       state._locale = newLocale;
     });
-
   }
 
   @override
@@ -151,17 +153,18 @@ class _CookableFlutterState extends State<CookableFlutter> {
     FirebaseMessaging.instance
         .getInitialMessage()
         .then((RemoteMessage message) {
-          if(message != null) {
-            print('message: ' + message.messageId + ' ' + message.messageType);
-          }
+      if (message != null) {
+        print('message: ' + message.messageId + ' ' + message.messageType);
+      }
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print(message);
-      if(message != null) {
+      if (message != null) {
         print(message.messageId);
         print(message.messageType);
-        print(message.data["body"]);
+        if (message.data["body"] != null)
+          print(String.fromCharCodes(Runes(message.data["body"])));
         print('message (onMessage.listen): ' + message.messageId);
       }
       RemoteNotification notification = message.notification;
@@ -169,8 +172,10 @@ class _CookableFlutterState extends State<CookableFlutter> {
       if (notification != null && android != null && !kIsWeb) {
         flutterLocalNotificationsPlugin.show(
           notification.hashCode,
-          notification.title,
-          notification.body,
+          String.fromCharCodes(Runes(notification.title)),
+          notification.body != null
+              ? String.fromCharCodes(Runes(notification.body))
+              : "",
           NotificationDetails(
             android: AndroidNotificationDetails(
               channel.id,
