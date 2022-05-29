@@ -219,25 +219,28 @@ class PrivateRecipe {
       this.isPublishable,
       this.created,
       this.lastChange});
+
   factory PrivateRecipe.fromJson(Map<String, dynamic> recipeJson) {
     return PrivateRecipe(
-        id: recipeJson['id'],
-        imgSrc: recipeJson['img_src'],
-        name: recipeJson['name'],
-        uploadedBy: ReducedUser.fromJson(recipeJson['uploadedBy']),
-        instructions: (recipeJson['instructions'] as List)
-            .map((it) => RecipeInstruction.fromJson(it))
-            .toList(),
-        ingredients: (recipeJson['ingredients'] as List)
-            .map((it) => Ingredient.fromJson(it))
-            .toList(),
-        nutrients: Nutrients.fromJson(recipeJson['nutrientsData']),
-        numberOfPersons: recipeJson['numberOfPersons'],
-        diet: parseDiet(recipeJson['dietIdentifier'] as int),
-        prepTimeMinutes: recipeJson['prepTimeMinutes'],
-        isPublishable: recipeJson['isPublishable'] as bool,
-        created: DateTime.parse(recipeJson['created']),
-        lastChange: DateTime.parse(recipeJson['lastChange']),
+      id: recipeJson['id'],
+      imgSrc: recipeJson['img_src'],
+      name: recipeJson['name'],
+      uploadedBy: ReducedUser.fromJson(recipeJson['uploadedBy']),
+      instructions: (recipeJson['instructions'] as List)
+          .map((it) => RecipeInstruction.fromJson(it))
+          .toList(),
+      ingredients: (recipeJson['ingredients'] as List)
+          .map((it) => Ingredient.fromJson(it))
+          .toList(),
+      nutrients: Nutrients.fromJson(recipeJson['nutrientsData']),
+      numberOfPersons: recipeJson['numberOfPersons'],
+      diet: parseDiet(recipeJson['dietIdentifier'] as int),
+      prepTimeMinutes: recipeJson['prepTimeMinutes'],
+      isPublishable: recipeJson['isPublishable'] as bool,
+      created: DateTime.parse(recipeJson['created']),
+      lastChange: recipeJson['lastChange'] != null
+          ? DateTime.parse(recipeJson['lastChange'])
+          : null,
     );
   }
 
