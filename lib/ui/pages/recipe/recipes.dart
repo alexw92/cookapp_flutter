@@ -344,7 +344,8 @@ class _RecipesComponentState extends State<RecipesComponent> {
                     ),
                     ElevatedButton(
                         onPressed: refreshTriggered,
-                        child: Text(AppLocalizations.of(context).tryAgain))
+                        child: Text(AppLocalizations.of(context).tryAgain,
+                            style: TextStyle(color: Colors.white)))
                   ],
                 )),
           )));

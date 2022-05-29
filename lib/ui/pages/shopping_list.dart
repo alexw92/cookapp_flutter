@@ -153,7 +153,8 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                     ),
                     ElevatedButton(
                         onPressed: refreshTriggered,
-                        child: Text(AppLocalizations.of(context).tryAgain))
+                        child: Text(AppLocalizations.of(context).tryAgain,
+                            style: TextStyle(color: Colors.white)))
                   ],
                 )),
           )));
