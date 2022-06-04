@@ -98,6 +98,8 @@
   "prettyEmptyHere": "Pretty empty here...",
   "createRecipeToAdd": "Tab the plus icon to create your own recipe!",
   "likeRecipeToAdd": "Like some recipes to add them to this list!",
+  "tryRemovingFiltersToSeeRecipes":  "Try to remove filters to find recipes",
+  "resetFilters": "Reset filters",
   "goToRecipes": "Go to Recipes",
   "createARecipe": "Create a Recipe",
   "doYouHave": "Do you have",

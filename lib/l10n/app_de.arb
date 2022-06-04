@@ -94,6 +94,8 @@
   "displayedName": "Sichtbarer Name",
   "prettyEmptyHere": "Ziemlich leer hier...",
   "createRecipeToAdd": "Klicke auf das + Icon, um ein eigenes Rezept zu erstellen!",
+  "tryRemovingFiltersToSeeRecipes":  "Versuche Filter zu entfernen um Rezepte zu finden",
+  "resetFilters": "Filter zurücksetzen",
   "likeRecipeToAdd": "Like ein Rezept, um es dieser Liste hinzuzufügen!",
   "goToRecipes": "Zu den Rezepten",
   "createARecipe": "Rezept erstellen",

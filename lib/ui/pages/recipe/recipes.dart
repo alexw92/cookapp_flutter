@@ -269,7 +269,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
                 color: Colors.black87,
                 child: Container(
                   margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: ListView.builder(
+                  child: recipeList.isNotEmpty? ListView.builder(
                       primary: true,
                       padding: const EdgeInsets.all(0),
                       itemCount: recipeList.length,
@@ -282,7 +282,35 @@ class _RecipesComponentState extends State<RecipesComponent> {
                           likesUpdated: () => reloadRecipe(recipeList[i].id, i),
                           bannerColor: _getRecipeBannerColor(i),
                         );
-                      }),
+                      }):
+                  Center(
+                      child: Card(
+                          elevation: 20,
+                          child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Wrap(children: [
+                                Text(
+                                  AppLocalizations.of(context)
+                                      .prettyEmptyHere,
+                                  style: TextStyle(fontSize: 26),
+                                ),
+                                Text(
+                                  AppLocalizations.of(context)
+                                      .tryRemovingFiltersToSeeRecipes,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                Center(
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          _showFilterDialog();
+                                        },
+                                        child: Text(
+                                          AppLocalizations.of(context)
+                                              .resetFilters,
+                                          style: TextStyle(
+                                              color: Colors.white),
+                                        )))
+                              ])))),
                 ),
               )));
     else
