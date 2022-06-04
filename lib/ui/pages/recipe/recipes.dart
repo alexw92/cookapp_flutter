@@ -25,6 +25,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
   DefaultNutrients defaultNutrients;
   String apiToken;
   bool loadingFromApi = false;
+  bool loading = false;
   bool error = false;
   List recipeBannerColors = Constants.badgeColors;
   int numbActiveFilters = 0;
@@ -37,6 +38,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
     setState(() {
       error = false;
       loadingFromApi = reload;
+      loading = true;
     });
     var prefs = await SharedPreferences.getInstance();
     var dietIndex = prefs.getInt('recipeDietFilter') ?? Diet.NORMAL.index;
@@ -73,6 +75,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
     });
     setState(() {
       loadingFromApi = false;
+      loading = false;
     });
   }
 
@@ -269,7 +272,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
                 color: Colors.black87,
                 child: Container(
                   margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: recipeList.isNotEmpty? ListView.builder(
+                  child: recipeList.isNotEmpty|| loading? ListView.builder(
                       primary: true,
                       padding: const EdgeInsets.all(0),
                       itemCount: recipeList.length,
