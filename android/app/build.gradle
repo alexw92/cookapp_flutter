@@ -54,8 +54,11 @@ android {
         }
     }
 
+    // todo check if tflite works with this https://github.com/shaqian/flutter_tflite/issues/220
     aaptOptions {
         noCompress "tflite"  // Your model's file extension: "tflite", "lite", etc.
+        noCompress 'lite'
+
     }
 }
 
