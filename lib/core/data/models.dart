@@ -798,6 +798,11 @@ enum Diet {
   NORMAL
 }
 
+enum NutritionDiet {
+  HIGH_PROTEIN,
+  HIGH_CARBS
+}
+
 enum PublishRecipeRequestStatus { PENDING, APPROVED, DENIED, NOT_REQUESTED }
 
 enum NutritionType { CALORIES, CARBOHYDRATE, FAT, PROTEIN, SUGAR }

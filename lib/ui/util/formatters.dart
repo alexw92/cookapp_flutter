@@ -44,6 +44,19 @@ class Utility {
     return retDiet;
   }
 
+  static String getTranslatedNutritionDiet(BuildContext context, NutritionDiet diet) {
+    String retDiet;
+    switch (diet) {
+      case NutritionDiet.HIGH_PROTEIN:
+        retDiet = AppLocalizations.of(context).highProtein;
+        break;
+      case NutritionDiet.HIGH_CARBS:
+        retDiet = AppLocalizations.of(context).highCarb;
+        break;
+    }
+    return retDiet;
+  }
+
   static String getTranslatedFoodCategory(
       BuildContext context, String foodCategory) {
     String retCat = AppLocalizations.of(context).unknownFoodCategory;
@@ -81,6 +94,19 @@ class Utility {
         break;
       case Diet.PESCATARIAN:
         retIcon = Icon(Icons.sailing, color: Colors.blue);
+        break;
+    }
+    return retIcon;
+  }
+
+  static Widget getIconForNutritionDiet(NutritionDiet diet) {
+    Widget retIcon;
+    switch (diet) {//fitness_center directions_bike
+      case NutritionDiet.HIGH_PROTEIN:
+        retIcon = Icon(Icons.fitness_center, color: Colors.black);
+        break;
+      case NutritionDiet.HIGH_CARBS:
+        retIcon = Icon(Icons.directions_bike, color: Colors.black);
         break;
     }
     return retIcon;
