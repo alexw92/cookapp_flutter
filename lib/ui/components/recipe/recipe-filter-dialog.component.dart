@@ -52,6 +52,8 @@ class _FilterRecipesDialogState extends State<FilterRecipesDialog> {
                   Utility.getTranslatedDiet(context, diets[index]),
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
+                backgroundColor: Colors.white,
+                elevation: 6.0,
                 selected: diets.indexOf(recipeDiet) == index,
                 onSelected: (bool selected) async {
                   setState(() {
