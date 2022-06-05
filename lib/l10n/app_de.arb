@@ -73,6 +73,8 @@
   "highCarb": "High Carb",
   "filterRecipes": "Rezepte filtern",
   "requestIngredient": "Neue Zutat anfragen",
+  "ingredientName": "Name der Zutat",
+  "requestIngredientButtonText": "Zutat anfragen",
   "somethingWentWrong": "Something went wrong :(",
   "deletedRecipe": "Rezept gelöscht:",
   "undo": "RÜCKGÄNGIG",

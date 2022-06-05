@@ -70,6 +70,8 @@
   "createRecipe": "Create",
   "changeRecipeName": "Change Recipe Name",
   "ingredientNotFoundQuestionMark": "Ingredient not found?",
+  "ingredientName": "Ingredient Name",
+  "requestIngredientButtonText": "Request Ingredient",
   "sendProposalToAddIt": "Send us a proposal to add it!",
   "ingredientPcWrongInput": "E.g 1, 1.5, 1.25",
   "highProtein": "High Protein",

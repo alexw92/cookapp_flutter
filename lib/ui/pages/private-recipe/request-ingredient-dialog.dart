@@ -7,7 +7,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class RequestIngredientDialog extends StatefulWidget {
   String ingredientName;
 
-
   RequestIngredientDialog({this.ingredientName});
 
   //final ValueChanged<List<String>> onSelectedCitiesListChanged;
@@ -29,6 +28,7 @@ class _RequestIngredientDialogState extends State<RequestIngredientDialog> {
   void initState() {
     // RecipeController.getPrivateRecipePublishable(this.privateRecipe.id)
     //     .then((value) => {this.publishStatus = value, this.setState(() {})});
+    _controller.text = this.ingredientName;
     super.initState();
   }
 
@@ -44,72 +44,75 @@ class _RequestIngredientDialogState extends State<RequestIngredientDialog> {
             controller: _controller,
             keyboardType: TextInputType.multiline,
             minLines: 1,
-            maxLines: 20,
-            maxLength: 1000,
+            maxLines: 2,
+            maxLength: 100,
             decoration: InputDecoration(
-              labelText: AppLocalizations.of(context).newRecipeInstructionSample,
-              suffixIcon: Icon(Icons.edit, color: Colors.teal,),
-            )),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //       crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                AppLocalizations.of(context).recipeName,
-                style: TextStyle(fontSize: 20),
+              labelText: AppLocalizations.of(context).ingredientName,
+              suffixIcon: Icon(
+                Icons.edit,
+                color: Colors.teal,
               ),
-              Spacer(),
-              if (publishStatus == null || loading)
-                getProgressWidget()
-              else
-                getConstraintIcon(
-                    fullFilled:
-                    publishStatus.constraintRecipeNameMaxLengthFulfilled)
-            ]),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text(AppLocalizations.of(context).recipeImage,
-                style: TextStyle(fontSize: 20)),
-            Spacer(),
-            if (publishStatus == null || loading)
-              getProgressWidget()
-            else
-              getConstraintIcon(
-                  fullFilled: publishStatus.constraintHasImageFulfilled)
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text(AppLocalizations.of(context).ingredients,
-                style: TextStyle(fontSize: 20)),
-            Spacer(),
-            if (publishStatus == null || loading)
-              getProgressWidget()
-            else
-              getConstraintIcon(
-                  fullFilled: publishStatus.constraintMinIngredientsFulfilled)
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text(AppLocalizations.of(context).howToCookSteps,
-                style: TextStyle(fontSize: 20)),
-            Spacer(),
-            if (publishStatus == null || loading)
-              getProgressWidget()
-            else
-              getConstraintIcon(
-                  fullFilled: publishStatus.constraintMinInstructionsFulfilled)
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            getRecipeRequestStatusWidget(),
-          ],
-        ),
+            )),
+        // Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //     //       crossAxisAlignment: CrossAxisAlignment.center,
+        //     children: [
+        //       Text(
+        //         AppLocalizations.of(context).recipeName,
+        //         style: TextStyle(fontSize: 20),
+        //       ),
+        //       Spacer(),
+        //       if (publishStatus == null || loading)
+        //         getProgressWidget()
+        //       else
+        //         getConstraintIcon(
+        //             fullFilled:
+        //                 publishStatus.constraintRecipeNameMaxLengthFulfilled)
+        //     ]),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //   children: [
+        //     Text(AppLocalizations.of(context).recipeImage,
+        //         style: TextStyle(fontSize: 20)),
+        //     Spacer(),
+        //     if (publishStatus == null || loading)
+        //       getProgressWidget()
+        //     else
+        //       getConstraintIcon(
+        //           fullFilled: publishStatus.constraintHasImageFulfilled)
+        //   ],
+        // ),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //   children: [
+        //     Text(AppLocalizations.of(context).ingredients,
+        //         style: TextStyle(fontSize: 20)),
+        //     Spacer(),
+        //     if (publishStatus == null || loading)
+        //       getProgressWidget()
+        //     else
+        //       getConstraintIcon(
+        //           fullFilled: publishStatus.constraintMinIngredientsFulfilled)
+        //   ],
+        // ),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //   children: [
+        //     Text(AppLocalizations.of(context).howToCookSteps,
+        //         style: TextStyle(fontSize: 20)),
+        //     Spacer(),
+        //     if (publishStatus == null || loading)
+        //       getProgressWidget()
+        //     else
+        //       getConstraintIcon(
+        //           fullFilled: publishStatus.constraintMinInstructionsFulfilled)
+        //   ],
+        // ),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //   children: [
+        //     getRecipeRequestStatusWidget(),
+        //   ],
+        // ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -120,28 +123,13 @@ class _RequestIngredientDialogState extends State<RequestIngredientDialog> {
                     borderRadius: BorderRadius.circular(30.0),
                   )),
               child: Text(
-                (publishStatus != null &&
-                    publishStatus.status ==
-                        PublishRecipeRequestStatus.PENDING)
-                    ? AppLocalizations.of(context).cancelPublish
-                    : AppLocalizations.of(context).publish,
+                AppLocalizations.of(context).requestIngredientButtonText,
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 22,
                     fontWeight: FontWeight.bold),
               ),
-              onPressed: (publishStatus != null &&
-                  (publishStatus.status ==
-                      PublishRecipeRequestStatus.NOT_REQUESTED ||
-                      publishStatus.status ==
-                          PublishRecipeRequestStatus.DENIED) &&
-                  publishStatus.constraintsFulfilled())
-                  ? _sendPublishRequest
-                  : (publishStatus != null &&
-                  publishStatus.status ==
-                      PublishRecipeRequestStatus.PENDING)
-                  ? _cancelPublishRequest
-                  : null,
+              onPressed: _sendRequest,
               //
             )
           ],
@@ -150,7 +138,7 @@ class _RequestIngredientDialogState extends State<RequestIngredientDialog> {
     );
   }
 
-  _sendPublishRequest() {
+  _sendRequest() {
     setState(() {
       loading = true;
     });
@@ -212,8 +200,8 @@ class _RequestIngredientDialogState extends State<RequestIngredientDialog> {
         width: 16,
         child: Center(
             child: CircularProgressIndicator(
-              strokeWidth: 2,
-            )));
+          strokeWidth: 2,
+        )));
   }
 
   getConstraintIcon({bool fullFilled: false}) {
@@ -243,8 +231,8 @@ class _RequestIngredientDialogState extends State<RequestIngredientDialog> {
           width: 24,
           child: Center(
               child: CircularProgressIndicator(
-                strokeWidth: 2,
-              )));
+            strokeWidth: 2,
+          )));
     Widget widget;
     switch (this.publishStatus.status) {
       case PublishRecipeRequestStatus.PENDING:
