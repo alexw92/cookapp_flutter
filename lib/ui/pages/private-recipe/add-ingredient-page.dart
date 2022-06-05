@@ -4,6 +4,7 @@ import 'package:cookable_flutter/core/caching/foodproduct_service.dart';
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
+import 'package:cookable_flutter/ui/pages/private-recipe/request-ingredient-dialog.dart';
 import 'package:cookable_flutter/ui/util/formatters.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -122,7 +123,9 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
                                           ),
                                           style: ElevatedButton.styleFrom(
                                               primary: Colors.teal),
-                                          onPressed: () => {},
+                                          onPressed: () => {
+                                            showRequestIngredientDialog(searchString)
+                                          },
                                         )
                                       ]))));
                         else
@@ -238,5 +241,13 @@ class _AddIngredientPageState extends State<AddIngredientPage> {
         MaterialPageRoute(
             builder: (context) => EditIngredientsAmountPage(
                 privateRecipe: privateRecipe, routedFromAddIngredient: true)));
+  }
+
+  showRequestIngredientDialog(String ingredientName) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+      return new RequestIngredientDialog(ingredientName: ingredientName);
+    });
   }
 }
