@@ -28,6 +28,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
   bool error = false;
   List recipeBannerColors = Constants.badgeColors;
   int numbActiveFilters = 0;
+  int recipesPerRow = 2;
 
   Color _getRecipeBannerColor(int i) {
     return this.recipeBannerColors[i % this.recipeBannerColors.length];
@@ -140,9 +141,13 @@ class _RecipesComponentState extends State<RecipesComponent> {
                     case 1:
                       _signOut();
                       break;
+                    case 2:
+                      _toggleRecipesPerRow();
+                      break;
                   }
                 },
                 itemBuilder: (context) => [
+                  PopupMenuItem(child: Text("Two Recipes per Row"), value: 2),
                   PopupMenuItem(
                       child: Text(AppLocalizations.of(context).settings),
                       value: 0),
@@ -248,9 +253,13 @@ class _RecipesComponentState extends State<RecipesComponent> {
                     case 1:
                       _signOut();
                       break;
+                    case 2:
+                      _toggleRecipesPerRow();
+                      break;
                   }
                 },
                 itemBuilder: (context) => [
+                  PopupMenuItem(child: Text("Two Recipes per Row"), value: 2),
                   PopupMenuItem(
                       child: Text(AppLocalizations.of(context).settings),
                       value: 0),
@@ -271,48 +280,50 @@ class _RecipesComponentState extends State<RecipesComponent> {
                 color: Colors.black87,
                 child: Container(
                   margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: recipeList.isNotEmpty|| loading? ListView.builder(
-                      primary: true,
-                      padding: const EdgeInsets.all(0),
-                      itemCount: recipeList.length,
-                      itemBuilder: (BuildContext context, int i) {
-                        return RecipeTileComponent(
-                          key: ValueKey(recipeList[i].id),
-                          recipe: recipeList[i],
-                          apiToken: apiToken,
-                          userFoodUpdatedCallback: reloadRecipes,
-                          likesUpdated: () => reloadRecipe(recipeList[i].id, i),
-                          bannerColor: _getRecipeBannerColor(i),
-                        );
-                      }):
-                  Center(
-                      child: Card(
-                          elevation: 20,
-                          child: Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Wrap(children: [
-                                Text(
-                                  AppLocalizations.of(context)
-                                      .prettyEmptyHere,
-                                  style: TextStyle(fontSize: 26),
-                                ),
-                                Text(
-                                  AppLocalizations.of(context)
-                                      .tryRemovingFiltersToSeeRecipes,
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                                Center(
-                                    child: ElevatedButton(
-                                        onPressed: () {
-                                          _showFilterDialog();
-                                        },
-                                        child: Text(
-                                          AppLocalizations.of(context)
-                                              .resetFilters,
-                                          style: TextStyle(
-                                              color: Colors.white),
-                                        )))
-                              ])))),
+                  child: recipeList.isNotEmpty || loading
+                      ? GridView.count(
+                          // Create a grid with 2 columns. If you change the scrollDirection to
+                          // horizontal, this produces 2 rows.
+                          crossAxisCount: recipesPerRow,
+                          children: List.generate(recipeList.length, (i) {
+                            return RecipeTileComponent(
+                              key: ValueKey(recipeList[i].id),
+                              recipe: recipeList[i],
+                              apiToken: apiToken,
+                              userFoodUpdatedCallback: reloadRecipes,
+                              likesUpdated: () =>
+                                  reloadRecipe(recipeList[i].id, i),
+                              bannerColor: _getRecipeBannerColor(i),
+                            );
+                          }))
+                      : Center(
+                          child: Card(
+                              elevation: 20,
+                              child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Wrap(children: [
+                                    Text(
+                                      AppLocalizations.of(context)
+                                          .prettyEmptyHere,
+                                      style: TextStyle(fontSize: 26),
+                                    ),
+                                    Text(
+                                      AppLocalizations.of(context)
+                                          .tryRemovingFiltersToSeeRecipes,
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                    Center(
+                                        child: ElevatedButton(
+                                            onPressed: () {
+                                              _showFilterDialog();
+                                            },
+                                            child: Text(
+                                              AppLocalizations.of(context)
+                                                  .resetFilters,
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            )))
+                                  ])))),
                 ),
               )));
     else
@@ -342,9 +353,13 @@ class _RecipesComponentState extends State<RecipesComponent> {
                     case 1:
                       _signOut();
                       break;
+                    case 2:
+                      _toggleRecipesPerRow();
+                      break;
                   }
                 },
                 itemBuilder: (context) => [
+                  PopupMenuItem(child: Text("Two Recipes per Row"), value: 2),
                   PopupMenuItem(
                       child: Text(AppLocalizations.of(context).settings),
                       value: 0),
@@ -447,6 +462,13 @@ class _RecipesComponentState extends State<RecipesComponent> {
 
   Future<void> _signOut() async {
     signOut(context);
+  }
+
+  _toggleRecipesPerRow() {
+    print("_toggleRecipesPerRow called");
+    setState(() {
+      this.recipesPerRow = this.recipesPerRow % 2 + 1;
+    });
   }
 
   Future<void> _openSettings() async {
