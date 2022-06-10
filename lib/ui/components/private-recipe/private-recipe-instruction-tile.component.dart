@@ -1,5 +1,4 @@
 import 'package:cookable_flutter/core/data/models.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PrivateRecipeInstructionTileComponent extends StatefulWidget {

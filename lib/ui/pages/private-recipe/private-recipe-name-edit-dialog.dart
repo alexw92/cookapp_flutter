@@ -1,5 +1,4 @@
 import 'package:cookable_flutter/core/io/controllers.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -57,7 +56,7 @@ class _ChangeRecipeNameDialogState extends State<ChangeRecipeNameDialog> {
 
   Future<String> changePrivateRecipeName(
       int privateRecipeId, String recipeName) async {
-    String result = null;
+    String result;
     await RecipeController.changePrivateRecipeName(privateRecipeId, recipeName)
         .then((_) => {result = recipeName},
             onError: (error) => {print(error), result = null});

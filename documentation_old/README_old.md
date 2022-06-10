@@ -19,6 +19,17 @@ This will also fix some annoying issues occurring in debug build like laggy scro
 flutter run --release
 ```
 
+**Firebase Sha-Certificate**
+Happens if google-services.json is not up-to-date with Sha-Hash:
+
+Unhandled Exception: PlatformException
+
+Todo: 
+```
+./gradlew signingReport
+```
+Copy Sha1-Key to Firebase and then download new google-services.json and provide it in the app.
+
 **Cors Config on Firebase Bucket to load imgs from flutter web while Testing:**
 
 ```

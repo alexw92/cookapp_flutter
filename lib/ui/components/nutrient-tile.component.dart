@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:cookable_flutter/core/data/models.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 

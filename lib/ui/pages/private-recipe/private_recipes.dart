@@ -10,7 +10,6 @@ import 'package:cookable_flutter/ui/components/recipe/recipe-tile.component.dart
 import 'package:cookable_flutter/ui/pages/private-recipe/private-recipe-creation-dialog.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/private-recipe-edit-page.dart';
 import 'package:cookable_flutter/ui/pages/settings_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -112,7 +111,7 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
     int initialIndex = PageStorage.of(context)
             .readState(context, identifier: ValueKey("recipe_tab_key")) ??
         0;
-    print("Initial Index ${initialIndex}");
+    print("Initial Index $initialIndex");
     return initialIndex;
   }
 

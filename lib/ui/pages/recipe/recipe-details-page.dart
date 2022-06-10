@@ -13,7 +13,6 @@ import 'package:cookable_flutter/ui/components/ingredient-tile.component.dart';
 import 'package:cookable_flutter/ui/components/nutrient-tile.component.dart';
 import 'package:cookable_flutter/ui/pages/recipe/recipe-missing-ingredient-dialog.dart';
 import 'package:cookable_flutter/ui/util/formatters.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:like_button/like_button.dart';

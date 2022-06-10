@@ -5,8 +5,6 @@ class MyAppTheme {
   ThemeData get theme => ThemeData(
         brightness: Brightness.light,
         primaryColor: Colors.teal,
-        accentColor: Colors.blueGrey,
-        buttonColor: Colors.white,
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: AppBarTheme(
             iconTheme: IconThemeData(color: Colors.white),
@@ -20,9 +18,6 @@ class MyAppTheme {
             focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.teal)),
             floatingLabelStyle: TextStyle(color: Colors.teal)),
-        // Define the default TextTheme. Use this to specify the default
-        // text styling for headlines, titles, bodies of text, and more.
-        primarySwatch: Colors.lightGreen,
         //  accentColor: Colors.orange,
         textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.orange),
         // fontFamily: 'SourceSansPro',
@@ -50,7 +45,7 @@ class MyAppTheme {
           bodyText2: GoogleFonts.indieFlower(),
           subtitle2: GoogleFonts.indieFlower(),
           overline: GoogleFonts.indieFlower(),
-        ),
+        ), colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.lightGreen).copyWith(secondary: Colors.blueGrey),
       );
 
   //Better and easy to define colors and text styles something like below

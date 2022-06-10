@@ -10,7 +10,6 @@ import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/private-recipe-details-page.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/private-recipe-edit-page.dart';
 import 'package:cookable_flutter/ui/util/formatters.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';

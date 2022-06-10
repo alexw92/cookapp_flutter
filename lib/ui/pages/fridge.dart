@@ -10,7 +10,6 @@ import 'package:cookable_flutter/core/io/signin_signout.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/pages/settings_screen.dart';
 import 'package:cookable_flutter/ui/pages/shopping_list.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -526,7 +525,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     int initialIndex = PageStorage.of(context)
             .readState(context, identifier: ValueKey("fridge_tab_key")) ??
         0;
-    print("Initial Index ${initialIndex}");
+    print("Initial Index $initialIndex");
     return initialIndex;
   }
 

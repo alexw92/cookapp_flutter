@@ -3,7 +3,6 @@ import 'package:cached_network_image_platform_interface/cached_network_image_pla
 import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/io-config.dart';
 import 'package:cookable_flutter/ui/styles/app-theme.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FridgeTileComponent extends StatefulWidget {

@@ -9,7 +9,6 @@ import 'package:cookable_flutter/ui/components/private-recipe/private-recipe-ins
 import 'package:cookable_flutter/ui/pages/private-recipe/add-ingredient-page.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/edit-ingredients-amount-page.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/private-recipe-name-edit-dialog.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
