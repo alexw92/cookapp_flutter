@@ -288,6 +288,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
                           children: List.generate(recipeList.length, (i) {
                             return RecipeTileComponent(
                               key: ValueKey(recipeList[i].id),
+                              isSmallTile: recipesPerRow>1,
                               recipe: recipeList[i],
                               apiToken: apiToken,
                               userFoodUpdatedCallback: reloadRecipes,

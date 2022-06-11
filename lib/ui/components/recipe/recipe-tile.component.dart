@@ -16,6 +16,7 @@ class RecipeTileComponent extends StatefulWidget {
   final VoidCallback userFoodUpdatedCallback;
   final Function likesUpdated;
   Color bannerColor = Colors.brown;
+  bool isSmallTile = false;
 
   RecipeTileComponent(
       {Key key,
@@ -23,20 +24,22 @@ class RecipeTileComponent extends StatefulWidget {
       this.apiToken,
       this.userFoodUpdatedCallback,
       this.likesUpdated,
-      this.bannerColor})
+      this.bannerColor,
+      this.isSmallTile})
       : super(key: key);
 
   @override
   _RecipeTileComponentState createState() =>
-      _RecipeTileComponentState(recipe: recipe, apiToken: apiToken);
+      _RecipeTileComponentState(recipe: recipe, apiToken: apiToken, isSmallTile: isSmallTile);
 }
 
 class _RecipeTileComponentState extends State<RecipeTileComponent> {
   Recipe recipe;
   String apiToken;
+  bool isSmallTile;
   RecipeService recipeService = RecipeService();
 
-  _RecipeTileComponentState({this.recipe, this.apiToken});
+  _RecipeTileComponentState({this.recipe, this.apiToken, this.isSmallTile});
 
   Color _getColorForMissingIngredientNumber(int missing) {
     var color = Colors.red;
@@ -67,35 +70,37 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
   Widget build(BuildContext context) {
     return Center(
         child: Container(
-            padding: EdgeInsets.all(10),
+            padding: isSmallTile?EdgeInsets.all(2):EdgeInsets.all(10),
             child: GestureDetector(
                 onTap: () => navigateToRecipePage(recipe.id),
-                child: Center( child:Container(
-                    clipBehavior: Clip.hardEdge,
-                    height: 400,
-                    width: 320,
-                    margin: EdgeInsets.only(bottom: 10),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Color.fromARGB(0, 0, 0, 0),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.teal,
-                            blurRadius: 6,
-                            spreadRadius: 2,
-                            offset: Offset(0, 0), // Shadow position
-                          ),
-                        ],
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
-                    child: FittedBox(
-                        fit: BoxFit.fitWidth,
-                        child: Column(children: [
-                          Stack(children: [
-                            Container(
-                                color: Colors.grey,
-                                height: 320,
-                                width: 320,
+                child: Center(
+                    child: Container(
+                        clipBehavior: Clip.hardEdge,
+                        height: 400,
+                        width: 320,
+                        margin: EdgeInsets.only(bottom: 10),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Color.fromARGB(0, 0, 0, 0),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.teal,
+                                blurRadius: isSmallTile?2:6,
+                                spreadRadius: isSmallTile?1:2,
+                                offset: Offset(0, 0), // Shadow position
+                              ),
+                            ],
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        child: FittedBox(
+                            fit: BoxFit.fitWidth,
+                            child: Column(children: [
+                              Stack(children: [
+                                Container(
+                                  color: Colors.grey,
+                                  height: 320,
+                                  width: 320,
                                   child: Image(
                                     // needs --web-renderer html
                                     fit: BoxFit.cover,
@@ -107,139 +112,150 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                                     // backgroundColor: Colors.transparent,
                                   ),
                                 ),
-                            Positioned(
-                                top: 0,
-                                right: 0,
-                                child: Column(children: [
-                                  Container(
-                                      margin: EdgeInsets.only(top: 3, right: 3),
-                                      child: LikeButton(
-                                        size: 40,
-                                        circleColor: CircleColor(
-                                            start: Color(0xffdd6666),
-                                            end: Color(0xffff3600)),
-                                        likeCount: recipe.likes,
-                                        isLiked: recipe.userLiked,
-                                        countPostion: CountPostion.bottom,
-                                        onTap: onLikeButtonTapped,
-                                        likeBuilder: (bool isLiked) {
-                                          return isLiked
-                                              ? Icon(
-                                                  Icons.favorite,
-                                                  color: Colors.red,
-                                                  size: 40,
-                                                )
-                                              : Icon(
-                                                  Icons.favorite_outline_sharp,
-                                                  color: Colors.white,
-                                                  size: 40,
+                                Positioned(
+                                    top: 0,
+                                    right: 0,
+                                    child: Column(children: [
+                                      Container(
+                                          margin:
+                                          isSmallTile?EdgeInsets.only(top: 48, right: 12): EdgeInsets.only(top: 3, right: 3),
+                                          child: LikeButton(
+                                            size: 40,
+                                            circleColor: CircleColor(
+                                                start: Color(0xffdd6666),
+                                                end: Color(0xffff3600)),
+                                            likeCount: recipe.likes,
+                                            isLiked: recipe.userLiked,
+                                            countPostion: CountPostion.bottom,
+                                            onTap: onLikeButtonTapped,
+                                            likeBuilder: (bool isLiked) {
+                                              return isLiked
+                                                  ? Icon(
+                                                      Icons.favorite,
+                                                      color: Colors.red,
+                                                      size: 40,
+                                                    )
+                                                  : Icon(
+                                                      Icons
+                                                          .favorite_outline_sharp,
+                                                      color: Colors.white,
+                                                      size: 40,
+                                                    );
+                                            },
+                                            countBuilder: (int count,
+                                                bool isLiked, String text) {
+                                              var color = isLiked
+                                                  ? Colors.red
+                                                  : Colors.white;
+                                              Widget result;
+                                              if (count == 0) {
+                                                result = Text(
+                                                  "0",
+                                                  style: TextStyle(
+                                                      color: color,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 18),
                                                 );
-                                        },
-                                        countBuilder: (int count, bool isLiked,
-                                            String text) {
-                                          var color = isLiked
-                                              ? Colors.red
-                                              : Colors.white;
-                                          Widget result;
-                                          if (count == 0) {
-                                            result = Text(
-                                              "0",
-                                              style: TextStyle(
-                                                  color: color,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 18),
-                                            );
-                                          } else
-                                            result = Text(
-                                              text,
-                                              style: TextStyle(
-                                                  color: color,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 18),
-                                            );
-                                          return result;
-                                        },
-                                      )),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                ])),
-                            Positioned(
-                                top: 5,
-                                left: 5,
-                                child: Container(
-                                    width: 30,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20)),
-                                        color:
-                                            _getColorForMissingIngredientNumber(
-                                                this
-                                                    .recipe
-                                                    .missingUserFoodProducts
-                                                    .length)),
-                                    child: Text(
-                                      "${this.recipe.missingUserFoodProducts.length}",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.white),
-                                    )))
-                          ]),
-                          Container(
-                              height: 80,
-                              width: 320,
-                              child: Container(
-                                  color: widget.bannerColor,
-                                  child: Column(children: [
-                                    Row(
-                                      children: [
+                                              } else
+                                                result = Text(
+                                                  text,
+                                                  style: TextStyle(
+                                                      color: color,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 18),
+                                                );
+                                              return result;
+                                            },
+                                          )),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                    ])),
+                                Positioned(
+                                    top: 5,
+                                    left: 5,
+                                    child: Container(
+                                        width: 30,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20)),
+                                            color:
+                                                _getColorForMissingIngredientNumber(
+                                                    this
+                                                        .recipe
+                                                        .missingUserFoodProducts
+                                                        .length)),
+                                        child: Text(
+                                          "${this.recipe.missingUserFoodProducts.length}",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white),
+                                        )))
+                              ]),
+                              Container(
+                                  height: 80,
+                                  width: 320,
+                                  child: Container(
+                                      color: widget.bannerColor,
+                                      child: Column(children: [
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                                child: Container(
+                                                    child: Text(
+                                                        this.recipe.name,
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 24),
+                                                        textAlign:
+                                                            TextAlign.center))),
+                                          ],
+                                        ),
                                         Expanded(
-                                            child: Container(
-                                                child: Text(this.recipe.name,
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 24),
-                                                    textAlign:
-                                                        TextAlign.center))),
-                                      ],
-                                    ),
-                                    Expanded(
-                                        child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Padding(
-                                          padding: EdgeInsets.all(5),
-                                          child: Wrap(
-                                              spacing: 3,
-                                              alignment: WrapAlignment.start,
-                                              children: [
-                                                Container(
-                                                    child: Chip(
-                                                  materialTapTargetSize:
-                                                      MaterialTapTargetSize
-                                                          .shrinkWrap,
-                                                  avatar:
-                                                      Utility.getIconForDiet(
-                                                          recipe.diet),
-                                                  label: Text(
-                                                    Utility.getTranslatedDiet(
-                                                        context, recipe.diet),
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 12.0),
-                                                  ),
-                                                  backgroundColor: Colors.white,
-                                                  elevation: 6.0,
-                                                  shadowColor: Colors.grey[60],
-                                                  // padding: EdgeInsets.all(8.0),
-                                                )),
-                                                getHighProteinChipIfNeeded(),
-                                                getHighCarbChipIfNeeded(),
-                                              ])),
-                                    ))
-                                  ])))
-                        ])))))));
+                                            child: SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Padding(
+                                              padding: EdgeInsets.all(5),
+                                              child: Wrap(
+                                                  spacing: 3,
+                                                  alignment:
+                                                      WrapAlignment.start,
+                                                  children: [
+                                                    Container(
+                                                        child: Chip(
+                                                      materialTapTargetSize:
+                                                          MaterialTapTargetSize
+                                                              .shrinkWrap,
+                                                      avatar: Utility
+                                                          .getIconForDiet(
+                                                              recipe.diet),
+                                                      label: Text(
+                                                        Utility
+                                                            .getTranslatedDiet(
+                                                                context,
+                                                                recipe.diet),
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 12.0),
+                                                      ),
+                                                      backgroundColor:
+                                                          Colors.white,
+                                                      elevation: 6.0,
+                                                      shadowColor:
+                                                          Colors.grey[60],
+                                                      // padding: EdgeInsets.all(8.0),
+                                                    )),
+                                                    getHighProteinChipIfNeeded(),
+                                                    getHighCarbChipIfNeeded(),
+                                                  ])),
+                                        ))
+                                      ])))
+                            ])))))));
   }
 
   Future<bool> onLikeButtonTapped(bool isLiked) async {
