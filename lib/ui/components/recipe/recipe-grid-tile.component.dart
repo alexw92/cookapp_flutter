@@ -10,14 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:like_button/like_button.dart';
 
-class RecipeTileComponent extends StatefulWidget {
+class RecipeGridTileComponent extends StatefulWidget {
   Recipe recipe;
   String apiToken;
   final VoidCallback userFoodUpdatedCallback;
   final Function likesUpdated;
   Color bannerColor = Colors.brown;
 
-  RecipeTileComponent(
+  RecipeGridTileComponent(
       {Key key,
       this.recipe,
       this.apiToken,
@@ -27,16 +27,16 @@ class RecipeTileComponent extends StatefulWidget {
       : super(key: key);
 
   @override
-  _RecipeTileComponentState createState() => _RecipeTileComponentState(
+  _RecipeGridTileComponentState createState() => _RecipeGridTileComponentState(
       recipe: recipe, apiToken: apiToken);
 }
 
-class _RecipeTileComponentState extends State<RecipeTileComponent> {
+class _RecipeGridTileComponentState extends State<RecipeGridTileComponent> {
   Recipe recipe;
   String apiToken;
   RecipeService recipeService = RecipeService();
 
-  _RecipeTileComponentState({this.recipe, this.apiToken});
+  _RecipeGridTileComponentState({this.recipe, this.apiToken});
 
   Color _getColorForMissingIngredientNumber(int missing) {
     var color = Colors.red;
@@ -67,7 +67,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
   Widget build(BuildContext context) {
     return Center(
         child: Container(
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.all(2),
             child: GestureDetector(
                 onTap: () => navigateToRecipePage(recipe.id),
                 child: Center(
@@ -83,8 +83,8 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.teal,
-                                blurRadius: 6,
-                                spreadRadius: 2,
+                                blurRadius: 2,
+                                spreadRadius: 1,
                                 offset: Offset(0, 0), // Shadow position
                               ),
                             ],
@@ -96,8 +96,8 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                               Stack(children: [
                                 Container(
                                   color: Colors.grey,
-                                  height: 320,
-                                  width: 320,
+                                  height: 260,
+                                  width: 260,
                                   child: Image(
                                     // needs --web-renderer html
                                     fit: BoxFit.cover,
@@ -115,7 +115,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                                     child: Column(children: [
                                       Container(
                                           margin: EdgeInsets.only(
-                                                  top: 3, right: 3),
+                                                  top: 48, right: 12),
                                           child: LikeButton(
                                             size: 40,
                                             circleColor: CircleColor(

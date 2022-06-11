@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../components/recipe/recipe-grid-tile.component.dart';
+
 class RecipesComponent extends StatefulWidget {
   RecipesComponent({Key key}) : super(key: key);
 
@@ -286,16 +288,25 @@ class _RecipesComponentState extends State<RecipesComponent> {
                           // horizontal, this produces 2 rows.
                           crossAxisCount: recipesPerRow,
                           children: List.generate(recipeList.length, (i) {
-                            return RecipeTileComponent(
-                              key: ValueKey(recipeList[i].id),
-                              isSmallTile: recipesPerRow>1,
-                              recipe: recipeList[i],
-                              apiToken: apiToken,
-                              userFoodUpdatedCallback: reloadRecipes,
-                              likesUpdated: () =>
-                                  reloadRecipe(recipeList[i].id, i),
-                              bannerColor: _getRecipeBannerColor(i),
-                            );
+                            return recipesPerRow > 1
+                                ? RecipeGridTileComponent(
+                                    key: ValueKey(recipeList[i].id),
+                                    recipe: recipeList[i],
+                                    apiToken: apiToken,
+                                    userFoodUpdatedCallback: reloadRecipes,
+                                    likesUpdated: () =>
+                                        reloadRecipe(recipeList[i].id, i),
+                                    bannerColor: _getRecipeBannerColor(i),
+                                  )
+                                : RecipeTileComponent(
+                                    key: ValueKey(recipeList[i].id),
+                                    recipe: recipeList[i],
+                                    apiToken: apiToken,
+                                    userFoodUpdatedCallback: reloadRecipes,
+                                    likesUpdated: () =>
+                                        reloadRecipe(recipeList[i].id, i),
+                                    bannerColor: _getRecipeBannerColor(i),
+                                  );
                           }))
                       : Center(
                           child: Card(
