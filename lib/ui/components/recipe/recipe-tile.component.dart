@@ -25,7 +25,7 @@ class RecipeTileComponent extends StatefulWidget {
       this.userFoodUpdatedCallback,
       this.likesUpdated,
       this.bannerColor,
-      this.isSmallTile})
+      this.isSmallTile = false})
       : super(key: key);
 
   @override
