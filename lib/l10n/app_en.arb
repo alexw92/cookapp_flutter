@@ -124,5 +124,7 @@
   "recipePublishPending": "Publish Pending",
   "recipePublishNotRequested": "Not Published",
   "recipePublishApproved": "Published",
-  "recipePublishDenied": "Publish Denied"
+  "recipePublishDenied": "Publish Denied",
+  "twoRecipesPerRow" : "Two Recipes per Row",
+  "oneRecipePerRow" : "One Recipe per Row"
 }

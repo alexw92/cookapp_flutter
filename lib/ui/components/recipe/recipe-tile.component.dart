@@ -242,7 +242,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                                                             color: Colors.black,
                                                             fontWeight:
                                                                 FontWeight.bold,
-                                                            fontSize: 12.0),
+                                                            fontSize: 18.0),
                                                       ),
                                                       backgroundColor:
                                                           Colors.white,
@@ -288,7 +288,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
               style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
-                  fontSize: 12.0),
+                  fontSize: 18.0),
             ),
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             backgroundColor: Colors.white,
@@ -313,7 +313,7 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
               style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
-                  fontSize: 12.0),
+                  fontSize: 18.0),
             ),
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             backgroundColor: Colors.white,

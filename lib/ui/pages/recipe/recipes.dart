@@ -149,7 +149,11 @@ class _RecipesComponentState extends State<RecipesComponent> {
                   }
                 },
                 itemBuilder: (context) => [
-                  PopupMenuItem(child: Text("Two Recipes per Row"), value: 2),
+                  PopupMenuItem(
+                      child: recipesPerRow == 1
+                          ? Text(AppLocalizations.of(context).twoRecipesPerRow)
+                          : Text(AppLocalizations.of(context).oneRecipePerRow),
+                      value: 2),
                   PopupMenuItem(
                       child: Text(AppLocalizations.of(context).settings),
                       value: 0),
@@ -261,7 +265,11 @@ class _RecipesComponentState extends State<RecipesComponent> {
                   }
                 },
                 itemBuilder: (context) => [
-                  PopupMenuItem(child: Text("Two Recipes per Row"), value: 2),
+                  PopupMenuItem(
+                      child: recipesPerRow == 1
+                          ? Text(AppLocalizations.of(context).twoRecipesPerRow)
+                          : Text(AppLocalizations.of(context).oneRecipePerRow),
+                      value: 2),
                   PopupMenuItem(
                       child: Text(AppLocalizations.of(context).settings),
                       value: 0),
@@ -371,7 +379,11 @@ class _RecipesComponentState extends State<RecipesComponent> {
                   }
                 },
                 itemBuilder: (context) => [
-                  PopupMenuItem(child: Text("Two Recipes per Row"), value: 2),
+                  PopupMenuItem(
+                      child: recipesPerRow == 1
+                          ? Text(AppLocalizations.of(context).twoRecipesPerRow)
+                          : Text(AppLocalizations.of(context).oneRecipePerRow),
+                      value: 2),
                   PopupMenuItem(
                       child: Text(AppLocalizations.of(context).settings),
                       value: 0),

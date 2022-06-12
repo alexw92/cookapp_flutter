@@ -121,5 +121,7 @@
   "recipePublishPending": "Veröffentlichung ausstehend",
   "recipePublishNotRequested": "Nicht veröffentlicht",
   "recipePublishApproved": "Veröffentlicht",
-  "recipePublishDenied": "Abgelehnt"
+  "recipePublishDenied": "Abgelehnt",
+  "twoRecipesPerRow" : "Zwei Rezepte pro Zeile",
+  "oneRecipePerRow" : "Ein Rezept pro Zeile"
 }

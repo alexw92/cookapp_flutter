@@ -126,7 +126,8 @@ class _RecipeGridTileComponentState extends State<RecipeGridTileComponent> {
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.white,
-                                                              fontSize: 36),
+                                                              fontSize: 36,
+                                                          overflow: TextOverflow.ellipsis),
                                                           textAlign: TextAlign
                                                               .center))),
                                             ],
