@@ -68,8 +68,9 @@ class _PrivateRecipeTileComponentState
         padding: EdgeInsets.all(10),
         child: GestureDetector(
             onTap: () => navigatePrivateToRecipePage(privateRecipe.id),
-            child: Center( child:Container(
-       //       alignment: Alignment.center,
+            child: Center(
+                child: Container(
+              //       alignment: Alignment.center,
               clipBehavior: Clip.hardEdge,
               height: 320,
               width: 320,
@@ -92,18 +93,16 @@ class _PrivateRecipeTileComponentState
                   height: 320,
                   width: 320,
                   color: Colors.grey,
-                      child: Image(
-                        // needs --web-renderer html
-                        fit: BoxFit.cover,
-                        alignment: FractionalOffset.center,
-                        image: CachedNetworkImageProvider(
-                            (defaultImg) ? privateRecipe.imgSrc : recipeImgUrl,
-                            //privateRecipe.imgSrc,
-                            imageRenderMethodForWeb:
-                                ImageRenderMethodForWeb.HttpGet),
-                      ),
-
-
+                  child: Image(
+                    // needs --web-renderer html
+                    fit: BoxFit.cover,
+                    alignment: FractionalOffset.center,
+                    image: CachedNetworkImageProvider(
+                        (defaultImg) ? privateRecipe.imgSrc : recipeImgUrl,
+                        //privateRecipe.imgSrc,
+                        imageRenderMethodForWeb:
+                            ImageRenderMethodForWeb.HttpGet),
+                  ),
                 ),
                 (showProgressIndicatorImage)
                     ? Positioned(
@@ -144,8 +143,10 @@ class _PrivateRecipeTileComponentState
                             child: Wrap(spacing: 3, children: [
                               Chip(
                                 labelPadding: EdgeInsets.all(4.0),
-                                avatar:
-                                    Utility.getIconForDiet(privateRecipe.diet),
+                                avatar: Text(
+                                    Utility.getUnicodeIconForDiet(
+                                        context, privateRecipe.diet),
+                                    style: TextStyle(fontSize: 20)),
                                 label: Text(
                                   Utility.getTranslatedDiet(
                                       context, privateRecipe.diet),
@@ -345,9 +346,10 @@ class _PrivateRecipeTileComponentState
     return (privateRecipe.nutrients.isHighProteinRecipe)
         ? Chip(
             labelPadding: EdgeInsets.all(4.0),
-            avatar: Icon(
-              Icons.fitness_center,
-            ),
+            avatar: Text(
+                Utility.getUnicodeIconForNutritionDiet(
+                    context, NutritionDiet.HIGH_PROTEIN),
+                style: TextStyle(fontSize: 20)),
             label: Text(
               AppLocalizations.of(context).highProtein,
               style: TextStyle(
@@ -367,9 +369,10 @@ class _PrivateRecipeTileComponentState
     return (privateRecipe.nutrients.isHighCarbRecipe)
         ? Chip(
             labelPadding: EdgeInsets.all(4.0),
-            avatar: Icon(
-              Icons.directions_bike,
-            ),
+            avatar: Text(
+                Utility.getUnicodeIconForNutritionDiet(
+                    context, NutritionDiet.HIGH_CARBS),
+                style: TextStyle(fontSize: 20)),
             label: Text(
               AppLocalizations.of(context).highCarb,
               style: TextStyle(

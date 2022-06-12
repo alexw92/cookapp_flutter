@@ -27,8 +27,8 @@ class RecipeTileComponent extends StatefulWidget {
       : super(key: key);
 
   @override
-  _RecipeTileComponentState createState() => _RecipeTileComponentState(
-      recipe: recipe, apiToken: apiToken);
+  _RecipeTileComponentState createState() =>
+      _RecipeTileComponentState(recipe: recipe, apiToken: apiToken);
 }
 
 class _RecipeTileComponentState extends State<RecipeTileComponent> {
@@ -73,8 +73,8 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                 child: Center(
                     child: Container(
                         clipBehavior: Clip.hardEdge,
-         //               height: 400,
-         //               width: 320,
+                        //               height: 400,
+                        //               width: 320,
                         margin: EdgeInsets.only(bottom: 10),
                         decoration: BoxDecoration(
                             border: Border.all(
@@ -114,8 +114,8 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                                     right: 0,
                                     child: Column(children: [
                                       Container(
-                                          margin: EdgeInsets.only(
-                                                  top: 3, right: 3),
+                                          margin:
+                                              EdgeInsets.only(top: 3, right: 3),
                                           child: LikeButton(
                                             size: 40,
                                             circleColor: CircleColor(
@@ -226,9 +226,13 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                                                       materialTapTargetSize:
                                                           MaterialTapTargetSize
                                                               .shrinkWrap,
-                                                      avatar: Utility
-                                                          .getIconForDiet(
-                                                              recipe.diet),
+                                                      avatar: Text(
+                                                          Utility
+                                                              .getUnicodeIconForDiet(
+                                                                  context,
+                                                                  recipe.diet),
+                                                          style: TextStyle(
+                                                              fontSize: 20)),
                                                       label: Text(
                                                         Utility
                                                             .getTranslatedDiet(
@@ -275,9 +279,10 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
     return (recipe.nutrients.isHighProteinRecipe)
         ? Container(
             child: Chip(
-            avatar: Icon(
-              Icons.fitness_center,
-            ),
+            avatar: Text(
+                Utility.getUnicodeIconForNutritionDiet(
+                    context, NutritionDiet.HIGH_PROTEIN),
+                style: TextStyle(fontSize: 20)),
             label: Text(
               AppLocalizations.of(context).highProtein,
               style: TextStyle(
@@ -299,9 +304,10 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
         ? Container(
             child: Chip(
             //  labelPadding: EdgeInsets.all(4.0),
-            avatar: Icon(
-              Icons.directions_bike,
-            ),
+            avatar: Text(
+                Utility.getUnicodeIconForNutritionDiet(
+                    context, NutritionDiet.HIGH_CARBS),
+                style: TextStyle(fontSize: 20)),
             label: Text(
               AppLocalizations.of(context).highCarb,
               style: TextStyle(

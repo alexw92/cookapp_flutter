@@ -30,11 +30,11 @@ class _FilterRecipesDialogState extends State<FilterRecipesDialog> {
     recipeDiet = widget.diet;
     filterHighProtein = widget.filterHighProtein;
     filterHighCarb = widget.filterHighCarb;
-    nutritionDiet =
-    widget.filterHighProtein
-        ? NutritionDiet.HIGH_PROTEIN :
-    widget.filterHighCarb ? NutritionDiet.HIGH_CARBS
-        : null;
+    nutritionDiet = widget.filterHighProtein
+        ? NutritionDiet.HIGH_PROTEIN
+        : widget.filterHighCarb
+            ? NutritionDiet.HIGH_CARBS
+            : null;
     super.initState();
   }
 
@@ -42,76 +42,88 @@ class _FilterRecipesDialogState extends State<FilterRecipesDialog> {
   Widget build(BuildContext context) {
     return Container(
         child: Wrap(children: [
-          Center ( child:Column(children: [
-            Text(
-              AppLocalizations
-                  .of(context)
-                  .filterRecipes,
-              style: TextStyle(fontSize: 24),
-            ),
-            Wrap(
-              spacing: 4.0,
-              children: List<Widget>.generate(
-                diets.length,
-                    (int index) {
-                  return ChoiceChip(
-                    avatar: Utility.getIconForDiet(diets[index]),
-                    label: Text(
-                      Utility.getTranslatedDiet(context, diets[index]),
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    backgroundColor: Colors.white,
-                    elevation: 6.0,
-                    selected: diets.indexOf(recipeDiet) == index,
-                    onSelected: (bool selected) async {
-                      setState(() {
-                        recipeDiet = selected ? diets[index] : null;
-                      });
-                      var prefs = await SharedPreferences.getInstance();
-                      // set filter on normal if no diet filter is selected
-                      var newRecipeDietFilter =
+      Center(
+          child: Column(children: [
+        Text(
+          AppLocalizations.of(context).filterRecipes,
+          style: TextStyle(fontSize: 24),
+        ),
+        Wrap(
+          spacing: 4.0,
+          children: List<Widget>.generate(
+            diets.length,
+            (int index) {
+              return ChoiceChip(
+                avatar: Text(
+                    Utility.getUnicodeIconForDiet(context, diets[index]),
+                    style: TextStyle(fontSize: 20)),
+                label: Text(
+                  Utility.getTranslatedDiet(context, diets[index]),
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                backgroundColor: Colors.white,
+                elevation: 6.0,
+                selected: diets.indexOf(recipeDiet) == index,
+                onSelected: (bool selected) async {
+                  setState(() {
+                    recipeDiet = selected ? diets[index] : null;
+                  });
+                  var prefs = await SharedPreferences.getInstance();
+                  // set filter on normal if no diet filter is selected
+                  var newRecipeDietFilter =
                       selected ? diets[index].index : Diet.NORMAL.index;
-                      prefs.setInt('recipeDietFilter', newRecipeDietFilter);
-                    },
-                  );
+                  prefs.setInt('recipeDietFilter', newRecipeDietFilter);
                 },
-              ).toList(),
-            ),
-            Wrap(
-              spacing: 4.0,
-              children: List<Widget>.generate(
-                nutritionDiets.length,
-                    (int index) {
-                  return ChoiceChip(
-                    avatar: Utility.getIconForNutritionDiet(nutritionDiets[index]),
-                    label: Text(
-                      Utility.getTranslatedNutritionDiet(context, nutritionDiets[index]),
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    backgroundColor: Colors.white,
-                    elevation: 6.0,
-                    selected: nutritionDiets.indexOf(nutritionDiet) == index,
-                    onSelected: (bool selected) async {
-                      setState(() {
-                        nutritionDiet = selected ? nutritionDiets[index] : null;
-                      });
-                      var prefs = await SharedPreferences.getInstance();
-                      // set filter on normal if no diet filter is selected
-                      var newRecipeNutritionDietFilter =
+              );
+            },
+          ).toList(),
+        ),
+        Wrap(
+          spacing: 4.0,
+          children: List<Widget>.generate(
+            nutritionDiets.length,
+            (int index) {
+              return ChoiceChip(
+                avatar: Text(
+                  Utility.getUnicodeIconForNutritionDiet(
+                      context, nutritionDiets[index]),
+                  style: TextStyle(fontSize: 20),
+                ),
+                label: Text(
+                  Utility.getTranslatedNutritionDiet(
+                      context, nutritionDiets[index]),
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                backgroundColor: Colors.white,
+                elevation: 6.0,
+                selected: nutritionDiets.indexOf(nutritionDiet) == index,
+                onSelected: (bool selected) async {
+                  setState(() {
+                    nutritionDiet = selected ? nutritionDiets[index] : null;
+                  });
+                  var prefs = await SharedPreferences.getInstance();
+                  // set filter on normal if no diet filter is selected
+                  var newRecipeNutritionDietFilter =
                       selected ? nutritionDiets[index].index : null;
-                      prefs.setBool('highCarbFilter', newRecipeNutritionDietFilter==NutritionDiet.HIGH_CARBS.index);
-                      prefs.setBool('highProteinFilter', newRecipeNutritionDietFilter==NutritionDiet.HIGH_PROTEIN.index);
-                    },
-                  );
+                  prefs.setBool(
+                      'highCarbFilter',
+                      newRecipeNutritionDietFilter ==
+                          NutritionDiet.HIGH_CARBS.index);
+                  prefs.setBool(
+                      'highProteinFilter',
+                      newRecipeNutritionDietFilter ==
+                          NutritionDiet.HIGH_PROTEIN.index);
                 },
-              ).toList(),
-            )
-            // FilterNutritionWidget(
-            //   isSelectedHighCarb: filterHighCarb,
-            //   isSelectedHighProtein: filterHighProtein,
-            // )
-          ])),
-        ]));
+              );
+            },
+          ).toList(),
+        )
+        // FilterNutritionWidget(
+        //   isSelectedHighCarb: filterHighCarb,
+        //   isSelectedHighProtein: filterHighProtein,
+        // )
+      ])),
+    ]));
   }
 }
 
@@ -169,32 +181,32 @@ class _FilterRecipesDialogState extends State<FilterRecipesDialog> {
 //       ).toList(),
 //     )
 //     ,
-    // return Column(children: [
-    //   HighProteinCheckbox(
-    //     padding: const EdgeInsets.symmetric(horizontal: 20.0),
-    //     value: _isSelectedHighProtein,
-    //     onChanged: (bool newValue) {
-    //       SharedPreferences.getInstance().then((prefs) => {
-    //             prefs.setBool('highProteinFilter', newValue),
-    //           });
-    //       setState(() {
-    //         _isSelectedHighProtein = newValue;
-    //       });
-    //     },
-    //   ),
-    //   HighCarbCheckbox(
-    //     padding: const EdgeInsets.symmetric(horizontal: 20.0),
-    //     value: _isSelectedHighCarb,
-    //     onChanged: (bool newValue) {
-    //       SharedPreferences.getInstance().then((prefs) => {
-    //             prefs.setBool('highCarbFilter', newValue),
-    //           });
-    //       setState(() {
-    //         _isSelectedHighCarb = newValue;
-    //       });
-    //     },
-    //   )
-    // ]);
+// return Column(children: [
+//   HighProteinCheckbox(
+//     padding: const EdgeInsets.symmetric(horizontal: 20.0),
+//     value: _isSelectedHighProtein,
+//     onChanged: (bool newValue) {
+//       SharedPreferences.getInstance().then((prefs) => {
+//             prefs.setBool('highProteinFilter', newValue),
+//           });
+//       setState(() {
+//         _isSelectedHighProtein = newValue;
+//       });
+//     },
+//   ),
+//   HighCarbCheckbox(
+//     padding: const EdgeInsets.symmetric(horizontal: 20.0),
+//     value: _isSelectedHighCarb,
+//     onChanged: (bool newValue) {
+//       SharedPreferences.getInstance().then((prefs) => {
+//             prefs.setBool('highCarbFilter', newValue),
+//           });
+//       setState(() {
+//         _isSelectedHighCarb = newValue;
+//       });
+//     },
+//   )
+// ]);
 //  }
 //}
 

@@ -43,6 +43,38 @@ class Utility {
     return retDiet;
   }
 
+  static String getUnicodeIconForDiet(BuildContext context, Diet diet) {
+    String retDiet;
+    switch (diet) {
+      case Diet.NORMAL:
+        retDiet = AppLocalizations.of(context).normal;
+        break;
+      case Diet.VEGETARIAN:
+        retDiet = "🥬";
+        break;
+      case Diet.VEGAN:
+        retDiet = "🌱";
+        break;
+      case Diet.PESCATARIAN:
+        retDiet = AppLocalizations.of(context).pescatarian;
+        break;
+    }
+    return retDiet;
+  }
+
+  static String getUnicodeIconForNutritionDiet(BuildContext context, NutritionDiet diet) {
+    String retDiet;
+    switch (diet) {
+      case NutritionDiet.HIGH_PROTEIN:
+        retDiet = "🏋";
+        break;
+      case NutritionDiet.HIGH_CARBS:
+        retDiet = "🚴";
+        break;
+    }
+    return retDiet;
+  }
+
   static String getTranslatedNutritionDiet(BuildContext context, NutritionDiet diet) {
     String retDiet;
     switch (diet) {

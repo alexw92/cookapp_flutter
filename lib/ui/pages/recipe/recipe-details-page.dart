@@ -319,7 +319,10 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
                               ),
                               Chip(
                                 labelPadding: EdgeInsets.all(4.0),
-                                avatar: Utility.getIconForDiet(recipe.diet),
+                                avatar: Text(
+                                    Utility.getUnicodeIconForDiet(
+                                        context, recipe.diet),
+                                    style: TextStyle(fontSize: 20)),
                                 label: Text(
                                   Utility.getTranslatedDiet(
                                       context, recipe.diet),

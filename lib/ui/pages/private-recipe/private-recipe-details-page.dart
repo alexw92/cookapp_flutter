@@ -284,7 +284,10 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
                               ),
                               Chip(
                                 labelPadding: EdgeInsets.all(4.0),
-                                avatar: Utility.getIconForDiet(recipe.diet),
+                                avatar: Text(
+                                    Utility.getUnicodeIconForDiet(
+                                        context, recipe.diet),
+                                    style: TextStyle(fontSize: 20)),
                                 label: Text(
                                   Utility.getTranslatedDiet(
                                       context, recipe.diet),
@@ -317,19 +320,19 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
                   ),
                   Container(
                       child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        )),
-                        child: Text(
-                          AppLocalizations.of(context).publish,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        onPressed: _openPublishDialog,
-                      )),
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    )),
+                    child: Text(
+                      AppLocalizations.of(context).publish,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    onPressed: _openPublishDialog,
+                  )),
                   Container(
                     width: double.infinity,
                     child: Column(children: [
