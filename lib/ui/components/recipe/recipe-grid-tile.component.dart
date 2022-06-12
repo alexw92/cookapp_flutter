@@ -127,7 +127,9 @@ class _RecipeGridTileComponentState extends State<RecipeGridTileComponent> {
                                                               color:
                                                                   Colors.white,
                                                               fontSize: 36,
-                                                          overflow: TextOverflow.ellipsis),
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis),
                                                           textAlign: TextAlign
                                                               .center))),
                                             ],
@@ -217,23 +219,31 @@ class _RecipeGridTileComponentState extends State<RecipeGridTileComponent> {
                           Positioned(
                               top: 4,
                               left: 4,
-                              child: Container(
-                                  width: 16,
-                                  decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20)),
-                                      color:
-                                          _getColorForMissingIngredientNumber(
-                                              this
-                                                  .recipe
-                                                  .missingUserFoodProducts
-                                                  .length)),
-                                  child: Text(
-                                    "${this.recipe.missingUserFoodProducts.length}",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 14, color: Colors.white),
-                                  )))
+                              child: ClipOval(
+                                child: Material(
+                                  color: _getColorForMissingIngredientNumber(
+                                      this
+                                          .recipe
+                                          .missingUserFoodProducts
+                                          .length), // Button color
+                                  child: Container(
+                                      width: 22,
+                                      height: 22,
+                                      padding: EdgeInsets.all(2),
+                                      child: Image.asset(
+                                        "assets/ingredients_icon.jpg",
+                                        color: Colors.white,
+                                      )),
+                                ),
+                              )
+                              //Text(
+                              //  "${this.recipe.missingUserFoodProducts.length}",
+                              //  textAlign: TextAlign.center,
+                              //  style: TextStyle(
+                              //      fontSize: 14, color: Colors.white),
+                              //)
+
+                              )
                         ]))))));
   }
 
