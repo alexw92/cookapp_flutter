@@ -13,6 +13,7 @@ import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
 import 'package:cookable_flutter/ui/components/ingredient-tile.component.dart';
 import 'package:cookable_flutter/ui/components/nutrient-tile.component.dart';
+import 'package:cookable_flutter/ui/pages/private-recipe/private-recipe-edit-page.dart';
 import 'package:cookable_flutter/ui/pages/private-recipe/publish-recipe-dialog.dart';
 import 'package:cookable_flutter/ui/pages/recipe/recipe-missing-ingredient-dialog.dart';
 import 'package:cookable_flutter/ui/util/formatters.dart';
@@ -336,10 +337,22 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
                   Container(
                     width: double.infinity,
                     child: Column(children: [
-                      Text(
-                        AppLocalizations.of(context).ingredients,
-                        style: TextStyle(color: Colors.white, fontSize: 26),
-                      ),
+                      Wrap(children: [
+                        Text(
+                          AppLocalizations.of(context).ingredients,
+                          style: TextStyle(color: Colors.white, fontSize: 26),
+                        ),
+                        IconButton(
+                          onPressed: () => {_openEditRecipeScreen(recipe)},
+                          icon: Icon(
+                            Icons.edit,
+                            color: Colors.white,
+                          ),
+                          iconSize: 30,
+                          padding:
+                              EdgeInsets.only(bottom: 16), // <-- Button color,
+                        )
+                      ]),
                       SizedBox(
                         height: 5,
                       ),
@@ -376,10 +389,19 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
                   Container(
                       width: double.infinity,
                       child: Column(children: [
-                        Text(
-                          AppLocalizations.of(context).howToCook,
-                          style: TextStyle(color: Colors.white, fontSize: 26),
-                        ),
+                        Wrap(children: [
+                          Text(
+                            AppLocalizations.of(context).howToCook,
+                            style: TextStyle(color: Colors.white, fontSize: 26),
+                          ),
+                          IconButton(
+                            onPressed: () => {_openEditRecipeScreen(recipe)},
+                            icon: Icon(Icons.edit, color: Colors.white),
+                            iconSize: 30,
+                            padding: EdgeInsets.only(
+                                bottom: 16), // <-- Button color,
+                          )
+                        ]),
                         showInstructionsIfNotEmpty()
                       ])),
                 ]))),
@@ -777,5 +799,12 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
     } else {
       print("Error: Item to set on shopping list was not found!");
     }
+  }
+
+  Future<void> _openEditRecipeScreen(PrivateRecipe privateRecipe) async {
+    await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => RecipeEditPage(privateRecipe.id)));
   }
 }
