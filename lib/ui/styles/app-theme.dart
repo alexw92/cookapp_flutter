@@ -13,7 +13,7 @@ class MyAppTheme {
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.teal))),
         // Define the default font family.
-        fontFamily: GoogleFonts.indieFlower().fontFamily,
+        fontFamily: GoogleFonts.roboto().fontFamily,
         inputDecorationTheme: InputDecorationTheme(
             focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.teal)),
@@ -28,23 +28,23 @@ class MyAppTheme {
             // fontWeight: FontWeight.w400,
             color: Colors.black87,
           ),
-          button: GoogleFonts.indieFlower(),
+          button: GoogleFonts.roboto(),
           caption: TextStyle(
             fontFamily: 'NotoSans',
             fontSize: 12.0,
             fontWeight: FontWeight.normal,
             color: Colors.deepPurple[300],
           ),
-          headline1: GoogleFonts.indieFlower(),
-          headline2: GoogleFonts.indieFlower(),
-          headline4: GoogleFonts.indieFlower(),
-          headline5: GoogleFonts.indieFlower(),
-          headline6: GoogleFonts.indieFlower(),
-          subtitle1: GoogleFonts.indieFlower(),
-          bodyText1: GoogleFonts.indieFlower(),
-          bodyText2: GoogleFonts.indieFlower(),
-          subtitle2: GoogleFonts.indieFlower(),
-          overline: GoogleFonts.indieFlower(),
+          headline1: GoogleFonts.roboto(),
+          headline2: GoogleFonts.roboto(),
+          headline4: GoogleFonts.roboto(),
+          headline5: GoogleFonts.roboto(),
+          headline6: GoogleFonts.roboto(),
+          subtitle1: GoogleFonts.roboto(),
+          bodyText1: GoogleFonts.roboto(),
+          bodyText2: GoogleFonts.roboto(),
+          subtitle2: GoogleFonts.roboto(),
+          overline: GoogleFonts.roboto(),
         ), colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.lightGreen).copyWith(secondary: Colors.blueGrey),
       );
 
