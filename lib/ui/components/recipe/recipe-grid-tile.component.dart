@@ -150,7 +150,7 @@ class _RecipeGridTileComponentState extends State<RecipeGridTileComponent> {
                                                                 recipe.diet),
                                                         style: TextStyle(
                                                             color: Colors.black,
-                                                            fontSize: 40.0),
+                                                            fontSize: 44.0),
                                                       )),
                                                       getHighProteinChipIfNeeded(),
                                                       getHighCarbChipIfNeeded(),
@@ -165,7 +165,7 @@ class _RecipeGridTileComponentState extends State<RecipeGridTileComponent> {
                                 Container(
                                     margin: EdgeInsets.only(top: 0, right: 4),
                                     child: LikeButton(
-                                      size: 30,
+                                      size: 28,
                                       circleColor: CircleColor(
                                           start: Color(0xffdd6666),
                                           end: Color(0xffff3600)),
@@ -178,12 +178,12 @@ class _RecipeGridTileComponentState extends State<RecipeGridTileComponent> {
                                             ? Icon(
                                                 Icons.favorite,
                                                 color: Colors.red,
-                                                size: 30,
+                                                size: 24,
                                               )
                                             : Icon(
                                                 Icons.favorite_outline_sharp,
                                                 color: Colors.white,
-                                                size: 30,
+                                                size: 24,
                                               );
                                       },
                                       countBuilder: (int count, bool isLiked,
@@ -197,7 +197,7 @@ class _RecipeGridTileComponentState extends State<RecipeGridTileComponent> {
                                             style: TextStyle(
                                                 color: color,
                                                 fontWeight: FontWeight.bold,
-                                                fontSize: 16),
+                                                fontSize: 12),
                                           );
                                         } else
                                           result = Text(
@@ -205,7 +205,7 @@ class _RecipeGridTileComponentState extends State<RecipeGridTileComponent> {
                                             style: TextStyle(
                                                 color: color,
                                                 fontWeight: FontWeight.bold,
-                                                fontSize: 16),
+                                                fontSize: 12),
                                           );
                                         return result;
                                       },
@@ -215,10 +215,10 @@ class _RecipeGridTileComponentState extends State<RecipeGridTileComponent> {
                                 ),
                               ])),
                           Positioned(
-                              top: 5,
-                              left: 5,
+                              top: 4,
+                              left: 4,
                               child: Container(
-                                  width: 30,
+                                  width: 16,
                                   decoration: BoxDecoration(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(20)),
@@ -232,7 +232,7 @@ class _RecipeGridTileComponentState extends State<RecipeGridTileComponent> {
                                     "${this.recipe.missingUserFoodProducts.length}",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        fontSize: 20, color: Colors.white),
+                                        fontSize: 14, color: Colors.white),
                                   )))
                         ]))))));
   }
@@ -261,7 +261,7 @@ class _RecipeGridTileComponentState extends State<RecipeGridTileComponent> {
             style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
-                fontSize: 40.0),
+                fontSize: 44.0),
           )
         : Container();
   }
@@ -271,7 +271,7 @@ class _RecipeGridTileComponentState extends State<RecipeGridTileComponent> {
         ? Text(
             Utility.getUnicodeIconForNutritionDiet(
                 context, NutritionDiet.HIGH_CARBS),
-            style: TextStyle(color: Colors.black, fontSize: 40.0),
+            style: TextStyle(color: Colors.black, fontSize: 44.0),
           )
         : Container();
   }
