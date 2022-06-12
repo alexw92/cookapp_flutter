@@ -553,11 +553,13 @@ class _PrivateRecipeDetailsPageState extends State<PrivateRecipeDetailsPage>
             connectionDirection: ConnectionDirection.before,
             indicatorBuilder: (_, index) => Indicator.outlined(
                 borderWidth: 2.5,
-                child: Text(
-                  (recipe.instructions[index].step + 1).toString(),
-                  style: TextStyle(fontSize: 22, color: Colors.white),
-                  textAlign: TextAlign.center,
-                )),
+                child: Padding(
+                    padding: EdgeInsets.only(top: 3),
+                    child: Text(
+                      (recipe.instructions[index].step + 1).toString(),
+                      style: TextStyle(fontSize: 22, color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ))),
             contentsBuilder: (_, index) {
               return Padding(
                 padding: EdgeInsets.only(left: 4.0, top: 8.0),
