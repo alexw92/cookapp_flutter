@@ -56,6 +56,18 @@ void main() async {
   Hive.registerAdapter(UserRecipeLikeAdapter());
   await Firebase.initializeApp();
 
+  try {
+    // submit deviceRegistrationToken on start
+    FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+    String token = await _firebaseMessaging.getToken();
+
+    UserController.submitFirebaseDeviceRegistrationToken(token)
+        .then((value) => null);
+  }
+  catch(e){
+    print(e);
+  }
+
   // set cron
   final cron = Cron();
   final random = new Random();
