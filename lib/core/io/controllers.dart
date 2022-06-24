@@ -17,8 +17,8 @@ class RecipeController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 3000, //10 seconds
-        receiveTimeout: 10000,
+        connectTimeout: IOConfig.timeoutDuration.inMilliseconds, //10 seconds
+        receiveTimeout: IOConfig.timeoutDuration.inMilliseconds,
         headers: {
           "Authorization": "Bearer $storedToken",
           'Content-Type': 'application/json',
@@ -44,8 +44,8 @@ class RecipeController {
     String storedToken = await tokenStore.getToken();
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 3000, //10 seconds
-        receiveTimeout: 10000,
+        connectTimeout: IOConfig.timeoutDuration.inMilliseconds, //10 seconds
+        receiveTimeout: IOConfig.timeoutDuration.inMilliseconds,
         headers: {
           "Authorization": "Bearer $storedToken",
           'Content-Type': 'application/json',
@@ -72,8 +72,8 @@ class RecipeController {
     String storedToken = await tokenStore.getToken();
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 3000, //10 seconds
-        receiveTimeout: 10000,
+        connectTimeout: IOConfig.timeoutDuration.inMilliseconds, //10 seconds
+        receiveTimeout: IOConfig.timeoutDuration.inMilliseconds,
         headers: {
           "Authorization": "Bearer $storedToken",
           'Content-Type': 'application/json',
@@ -101,8 +101,8 @@ class RecipeController {
     String storedToken = await tokenStore.getToken();
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 3000, //10 seconds
-        receiveTimeout: 10000,
+        connectTimeout: IOConfig.timeoutDuration.inMilliseconds, //10 seconds
+        receiveTimeout: IOConfig.timeoutDuration.inMilliseconds,
         headers: {
           "Authorization": "Bearer $storedToken",
           'Content-Type': 'application/json',
@@ -132,8 +132,8 @@ class RecipeController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 3000, //10 seconds
-        receiveTimeout: 10000,
+        connectTimeout: IOConfig.timeoutDuration.inMilliseconds, //10 seconds
+        receiveTimeout: IOConfig.timeoutDuration.inMilliseconds,
         headers: {
           "Authorization": "Bearer $storedToken",
           'Content-Type': 'application/json',
@@ -167,8 +167,8 @@ class RecipeController {
     };
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 3000, //10 seconds
-        receiveTimeout: 10000,
+        connectTimeout: IOConfig.timeoutDuration.inMilliseconds, //10 seconds
+        receiveTimeout: IOConfig.timeoutDuration.inMilliseconds,
         headers: {
           "Authorization": "Bearer $storedToken",
           'Content-Type': 'application/json',
@@ -199,8 +199,8 @@ class RecipeController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 3000, //10 seconds
-        receiveTimeout: 10000,
+        connectTimeout: IOConfig.timeoutDuration.inMilliseconds, //10 seconds
+        receiveTimeout: IOConfig.timeoutDuration.inMilliseconds,
         headers: {
           "Authorization": "Bearer $storedToken",
           'Content-Type': 'application/json',
@@ -230,8 +230,8 @@ class RecipeController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 3000, //10 seconds
-        receiveTimeout: 10000,
+        connectTimeout: IOConfig.timeoutDuration.inMilliseconds, //10 seconds
+        receiveTimeout: IOConfig.timeoutDuration.inMilliseconds,
         headers: {
           "Authorization": "Bearer $storedToken",
           'Content-Type': 'application/json',
@@ -263,8 +263,8 @@ class RecipeController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 3000, //10 seconds
-        receiveTimeout: 10000,
+        connectTimeout: IOConfig.timeoutDuration.inMilliseconds, //10 seconds
+        receiveTimeout: IOConfig.timeoutDuration.inMilliseconds,
         headers: {
           "Authorization": "Bearer $storedToken",
           'Content-Type': 'application/json',
@@ -298,8 +298,8 @@ class RecipeController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 3000, //10 seconds
-        receiveTimeout: 10000,
+        connectTimeout: IOConfig.timeoutDuration.inMilliseconds, //10 seconds
+        receiveTimeout: IOConfig.timeoutDuration.inMilliseconds,
         headers: {
           "Authorization": "Bearer $storedToken",
           'Content-Type': 'application/json',
@@ -333,8 +333,8 @@ class RecipeController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 3000, //10 seconds
-        receiveTimeout: 10000,
+        connectTimeout: IOConfig.timeoutDuration.inMilliseconds, //10 seconds
+        receiveTimeout: IOConfig.timeoutDuration.inMilliseconds,
         headers: {
           "Authorization": "Bearer $storedToken",
           'Content-Type': 'application/json',
@@ -364,8 +364,8 @@ class RecipeController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 3000, //10 seconds
-        receiveTimeout: 10000,
+        connectTimeout: IOConfig.timeoutDuration.inMilliseconds, //10 seconds
+        receiveTimeout: IOConfig.timeoutDuration.inMilliseconds,
         headers: {
           "Authorization": "Bearer $storedToken",
           'Content-Type': 'application/json',
@@ -394,8 +394,8 @@ class RecipeController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 3000, //10 seconds
-        receiveTimeout: 10000,
+        connectTimeout: IOConfig.timeoutDuration.inMilliseconds, //10 seconds
+        receiveTimeout: IOConfig.timeoutDuration.inMilliseconds,
         headers: {
           "Authorization": "Bearer $storedToken",
           'Content-Type': 'application/json',
@@ -426,8 +426,8 @@ class RecipeController {
     var body = json.encode({"name": recipeName});
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 3000, //10 seconds
-        receiveTimeout: 10000,
+        connectTimeout: IOConfig.timeoutDuration.inMilliseconds, //10 seconds
+        receiveTimeout: IOConfig.timeoutDuration.inMilliseconds,
         headers: {
           "Authorization": "Bearer $storedToken",
           'Content-Type': 'application/json',
@@ -462,8 +462,8 @@ class RecipeController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 3000, //10 seconds
-        receiveTimeout: 10000,
+        connectTimeout: IOConfig.timeoutDuration.inMilliseconds, //10 seconds
+        receiveTimeout: IOConfig.timeoutDuration.inMilliseconds,
         headers: {
           "Authorization": "Bearer $storedToken",
           'Content-Type': 'application/json',
@@ -538,8 +538,8 @@ class RecipeController {
     String storedToken = await tokenStore.getToken();
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 3000, //10 seconds
-        receiveTimeout: 10000,
+        connectTimeout: IOConfig.timeoutDuration.inMilliseconds, //10 seconds
+        receiveTimeout: IOConfig.timeoutDuration.inMilliseconds,
         headers: {
           "Authorization": "Bearer $storedToken",
           'Content-Type': 'application/json',
@@ -579,8 +579,8 @@ class UserController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 3000, //10 seconds
-        receiveTimeout: 10000,
+        connectTimeout: IOConfig.timeoutDuration.inMilliseconds, //10 seconds
+        receiveTimeout: IOConfig.timeoutDuration.inMilliseconds,
         headers: {
           "Authorization": "Bearer $storedToken",
           'Content-Type': 'application/json',
@@ -608,8 +608,8 @@ class UserController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 3000, //10 seconds
-        receiveTimeout: 10000,
+        connectTimeout: IOConfig.timeoutDuration.inMilliseconds, //10 seconds
+        receiveTimeout: IOConfig.timeoutDuration.inMilliseconds,
         headers: {
           "Authorization": "Bearer $storedToken",
           'Content-Type': 'application/json',
@@ -637,8 +637,8 @@ class UserController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 3000, //10 seconds
-        receiveTimeout: 10000,
+        connectTimeout: IOConfig.timeoutDuration.inMilliseconds, //10 seconds
+        receiveTimeout: IOConfig.timeoutDuration.inMilliseconds,
         headers: {
           "Authorization": "Bearer $storedToken",
           'Content-Type': 'application/json',
@@ -711,8 +711,8 @@ class FoodProductController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 3000, //10 seconds
-        receiveTimeout: 10000,
+        connectTimeout: IOConfig.timeoutDuration.inMilliseconds, //10 seconds
+        receiveTimeout: IOConfig.timeoutDuration.inMilliseconds,
         headers: {
           "Authorization": "Bearer $storedToken",
           'Content-Type': 'application/json',
@@ -748,8 +748,8 @@ class UserFoodProductController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 3000, //10 seconds
-        receiveTimeout: 10000,
+        connectTimeout: IOConfig.timeoutDuration.inMilliseconds, //10 seconds
+        receiveTimeout: IOConfig.timeoutDuration.inMilliseconds,
         headers: {
           "Authorization": "Bearer $storedToken",
           'Content-Type': 'application/json',
@@ -781,8 +781,8 @@ class UserFoodProductController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 3000, //10 seconds
-        receiveTimeout: 10000,
+        connectTimeout: IOConfig.timeoutDuration.inMilliseconds, //10 seconds
+        receiveTimeout: IOConfig.timeoutDuration.inMilliseconds,
         headers: {
           "Authorization": "Bearer $storedToken",
           'Content-Type': 'application/json',
@@ -820,8 +820,8 @@ class UserFoodProductController {
 
     BaseOptions options = new BaseOptions(
         baseUrl: IOConfig.apiUrl,
-        connectTimeout: 3000, //10 seconds
-        receiveTimeout: 10000,
+        connectTimeout: IOConfig.timeoutDuration.inMilliseconds, //10 seconds
+        receiveTimeout: IOConfig.timeoutDuration.inMilliseconds,
         headers: {
           "Authorization": "Bearer $storedToken",
           'Content-Type': 'application/json',
