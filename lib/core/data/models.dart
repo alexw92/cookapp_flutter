@@ -617,6 +617,37 @@ class FoodProduct {
   }
 }
 
+class IngredientRequest {
+  final int id;
+  final String ingredientName;
+  final ReducedUser requestedBy;
+  final DateTime requestedOn;
+  final String userNote;
+
+  IngredientRequest(
+      {this.id,
+      this.ingredientName,
+      this.requestedBy,
+      this.requestedOn,
+      this.userNote});
+
+  factory IngredientRequest.fromJson(Map<String, dynamic> json) {
+    return IngredientRequest(
+        id: json['id'],
+        ingredientName: json['ingredientName'],
+        requestedBy: ReducedUser.fromJson(json['requestedBy']),
+        requestedOn: DateTime.parse(json['requestedBy']),
+        userNote: json['userNote']);
+  }
+}
+
+class IngredientRequestCreate {
+  final String ingredientName;
+  final String userNote;
+
+  IngredientRequestCreate({this.ingredientName, this.userNote});
+}
+
 @HiveType(typeId: 6)
 class UserFoodProduct {
   @HiveField(0)
@@ -798,10 +829,7 @@ enum Diet {
   NORMAL
 }
 
-enum NutritionDiet {
-  HIGH_PROTEIN,
-  HIGH_CARBS
-}
+enum NutritionDiet { HIGH_PROTEIN, HIGH_CARBS }
 
 enum PublishRecipeRequestStatus { PENDING, APPROVED, DENIED, NOT_REQUESTED }
 
