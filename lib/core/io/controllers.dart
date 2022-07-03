@@ -757,7 +757,7 @@ class IngredientRequestController {
 
     Dio dio = new Dio(options);
     final stopwatch = Stopwatch()..start();
-    var response = await dio.get("/ingredientrequests?langCode=$langCode");
+    var response = await dio.get("/ingredientRequests?langCode=$langCode");
     print(
         'getIngredientRequests api req executed in ${stopwatch.elapsed.inMilliseconds}');
 
@@ -770,7 +770,7 @@ class IngredientRequestController {
     }
 
     throw Exception(
-        "Error requesting food products, Code: ${response.statusCode} Message: ${response.data} ");
+        "Error requesting ingredient requests, Code: ${response.statusCode} Message: ${response.data} ");
   }
 
   static Future createIngredientRequest(
@@ -792,7 +792,8 @@ class IngredientRequestController {
     Dio dio = new Dio(options);
     final stopwatch = Stopwatch()..start();
     var response = await dio.post("/ingredientRequests?langCode=$langCode",
-        data: {ingredientName: ingredientName, userNote: userNote});
+        data: jsonEncode(
+            {"ingredientName": ingredientName, "userNote": userNote}));
     print(
         'create ingredient request api req executed in ${stopwatch.elapsed.inMilliseconds}');
 

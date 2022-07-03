@@ -1,33 +1,41 @@
 import 'package:cookable_flutter/core/data/models.dart';
+import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class RequestIngredientDialog extends StatefulWidget {
   String ingredientName;
+  String ingredientNote;
 
-  RequestIngredientDialog({this.ingredientName});
+  RequestIngredientDialog({this.ingredientName, this.ingredientNote});
 
   //final ValueChanged<List<String>> onSelectedCitiesListChanged;
   @override
-  _RequestIngredientDialogState createState() =>
-      _RequestIngredientDialogState(ingredientName: ingredientName);
+  _RequestIngredientDialogState createState() => _RequestIngredientDialogState(
+      ingredientName: ingredientName, ingredientNote: ingredientNote);
 }
 
 class _RequestIngredientDialogState extends State<RequestIngredientDialog> {
-  final TextEditingController _controller = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _noteController = TextEditingController();
   PrivateRecipePublishableStatus publishStatus;
   String ingredientName;
+  String ingredientNote;
+  List<IngredientRequest> ingredientRequests = [];
+  Future<List<IngredientRequest>> ingredientRequestsFuture;
 
   bool loading = false;
 
-  _RequestIngredientDialogState({this.ingredientName});
+  _RequestIngredientDialogState({this.ingredientName, this.ingredientNote});
 
   @override
   void initState() {
     // RecipeController.getPrivateRecipePublishable(this.privateRecipe.id)
     //     .then((value) => {this.publishStatus = value, this.setState(() {})});
-    _controller.text = this.ingredientName;
+    _nameController.text = this.ingredientName;
+    _noteController.text = this.ingredientNote;
+    ingredientRequestsFuture = getIngredientRequests();
     super.initState();
   }
 
@@ -39,14 +47,42 @@ class _RequestIngredientDialogState extends State<RequestIngredientDialog> {
         style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
       ),
       content: Column(mainAxisSize: MainAxisSize.min, children: [
+        FutureBuilder(
+            //  initialData: [],
+            future: ingredientRequestsFuture,
+            builder: (context, snapshot) => snapshot.hasData
+                ? LimitedBox(
+                    maxHeight: 100,
+                    child: ListView.builder(
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (context, int i) {
+                          var e = snapshot.data[i];
+                          return Text(e.ingredientName +
+                              " " +
+                              (e.requestedOn as DateTime).day.toString());
+                        }))
+                : getProgressWidget()),
         TextField(
-            controller: _controller,
+            controller: _nameController,
             keyboardType: TextInputType.multiline,
             minLines: 1,
-            maxLines: 2,
-            maxLength: 100,
+            maxLines: 1,
+            maxLength: 35,
             decoration: InputDecoration(
               labelText: AppLocalizations.of(context).ingredientName,
+              suffixIcon: Icon(
+                Icons.edit,
+                color: Colors.teal,
+              ),
+            )),
+        TextField(
+            controller: _noteController,
+            keyboardType: TextInputType.multiline,
+            minLines: 2,
+            maxLines: 10,
+            maxLength: 1000,
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context).ingredientNote,
               suffixIcon: Icon(
                 Icons.edit,
                 color: Colors.teal,
@@ -128,7 +164,7 @@ class _RequestIngredientDialogState extends State<RequestIngredientDialog> {
                     fontSize: 22,
                     fontWeight: FontWeight.bold),
               ),
-              onPressed: _sendRequest,
+              onPressed: _sendAddIngredientRequest,
               //
             )
           ],
@@ -137,10 +173,45 @@ class _RequestIngredientDialogState extends State<RequestIngredientDialog> {
     );
   }
 
-  _sendRequest() {
+  getProgressWidget() {
+    return SizedBox(
+        height: 16,
+        width: 16,
+        child: Center(
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+            )));
+  }
+
+  _sendAddIngredientRequest() {
+    setState(() {
+      this.ingredientName = _nameController.value.text;
+      this.ingredientNote = _noteController.value.text;
+    });
+    if (this.ingredientName.length < 3) return;
     setState(() {
       loading = true;
     });
+
+    IngredientRequestController.createIngredientRequest(
+            this.ingredientName, this.ingredientNote)
+        .then((_) => {
+              setState(() {
+                setState(() {
+                  this.ingredientName = "";
+                  this.ingredientNote = "";
+                  _nameController.text = "";
+                  _noteController.text = "";
+                  this.loading = false;
+                });
+              })
+            });
+    //     .onError((error, stackTrace) {
+    //   setState(() {
+    //     loading = false;
+    //   });
+    //   return;
+    // });
     // RecipeController.publishPrivateRecipe(privateRecipe.id)
     //     .then((value) => {
     //   RecipeController.getPrivateRecipePublishable(
@@ -158,6 +229,18 @@ class _RequestIngredientDialogState extends State<RequestIngredientDialog> {
     //   })
     // })
     //    .onError((error, stackTrace) {
+    //   setState(() {
+    //     loading = false;
+    //   });
+    //   return;
+    // });
+  }
+
+  getIngredientRequests() {
+    return IngredientRequestController.getIngredientRequests();
+    //     .onError((error, stackTrace) {
+    //   print(error);
+    //   print(stackTrace);
     //   setState(() {
     //     loading = false;
     //   });
@@ -191,16 +274,6 @@ class _RequestIngredientDialogState extends State<RequestIngredientDialog> {
     //   });
     //   return;
     // });
-  }
-
-  getProgressWidget() {
-    return SizedBox(
-        height: 16,
-        width: 16,
-        child: Center(
-            child: CircularProgressIndicator(
-          strokeWidth: 2,
-        )));
   }
 
   getConstraintIcon({bool fullFilled: false}) {

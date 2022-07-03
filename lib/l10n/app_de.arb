@@ -75,6 +75,7 @@
   "requestIngredient": "Neue Zutat anfragen",
   "ingredientName": "Name der Zutat",
   "requestIngredientButtonText": "Zutat anfragen",
+  "ingredientNote": "Zusätzliche Anmerkungen zu dieser Zutat...",
   "somethingWentWrong": "Something went wrong :(",
   "deletedRecipe": "Rezept gelöscht:",
   "undo": "RÜCKGÄNGIG",

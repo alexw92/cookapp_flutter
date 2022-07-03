@@ -8,6 +8,7 @@ import 'package:cookable_flutter/core/data/models.dart';
 import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:cookable_flutter/core/io/signin_signout.dart';
 import 'package:cookable_flutter/core/io/token-store.dart';
+import 'package:cookable_flutter/ui/pages/private-recipe/request-ingredient-dialog.dart';
 import 'package:cookable_flutter/ui/pages/settings_screen.dart';
 import 'package:cookable_flutter/ui/pages/shopping_list.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
   List<GroceryCheckBoxListTileModel> checkBoxListTileModelSpices = [];
   List<GroceryCheckBoxListTileModel> checkBoxListTileModelPantry = [];
   List<GroceryCheckBoxListTileModel> checkBoxListTileModelDairy = [];
+
   // List<GroceryCheckBoxListTileModel> checkBoxListTileModelMeat = [];
   // List<GroceryCheckBoxListTileModel> checkBoxListTileModelFish = [];
   List<List<GroceryCheckBoxListTileModel>> tileLists = [];
@@ -62,6 +64,28 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                       style: TextStyle(color: Colors.white),
                     ),
                     actions: [
+                      InkWell(
+                        onTap: _openClickAddIngredient,
+                        child: Container(
+                          width: 48,
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  FaIcon(
+                                    FontAwesomeIcons.plus,
+                                    color: Colors.white,
+                                  ),
+                                  //   Text("text", overflow: TextOverflow.ellipsis),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                       InkWell(
                         onTap: _openShoppingList,
                         child: Container(
@@ -126,6 +150,28 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
                       title: Text(AppLocalizations.of(context).fridge,
                           style: TextStyle(color: Colors.white)),
                       actions: [
+                        InkWell(
+                          onTap: _openClickAddIngredient,
+                          child: Container(
+                            width: 48,
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    FaIcon(
+                                      FontAwesomeIcons.plus,
+                                      color: Colors.white,
+                                    ),
+                                    //   Text("text", overflow: TextOverflow.ellipsis),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                         InkWell(
                           onTap: _openShoppingList,
                           child: Container(
@@ -717,6 +763,14 @@ class CheckBoxListTileState extends State<ToggleFridgeWidget>
     //     .where((element) => element.foodCategory.name.contains("fish"))
     //     .toList());
     setState(() {});
+  }
+
+  void _openClickAddIngredient() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return new RequestIngredientDialog();
+        });
   }
 }
 

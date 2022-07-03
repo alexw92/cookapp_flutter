@@ -636,7 +636,7 @@ class IngredientRequest {
         id: json['id'],
         ingredientName: json['ingredientName'],
         requestedBy: ReducedUser.fromJson(json['requestedBy']),
-        requestedOn: DateTime.parse(json['requestedBy']),
+        requestedOn: DateTime.parse(json['requestedOn']),
         userNote: json['userNote']);
   }
 }
