@@ -3,6 +3,7 @@ import 'package:cookable_flutter/core/io/controllers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class RequestIngredientDialog extends StatefulWidget {
   String ingredientName;
@@ -52,14 +53,20 @@ class _RequestIngredientDialogState extends State<RequestIngredientDialog> {
             future: ingredientRequestsFuture,
             builder: (context, snapshot) => snapshot.hasData
                 ? LimitedBox(
-                    maxHeight: 100,
+                    maxHeight: 300,
                     child: ListView.builder(
                         itemCount: snapshot.data.length,
                         itemBuilder: (context, int i) {
                           var e = snapshot.data[i];
-                          return Text(e.ingredientName +
-                              " " +
-                              (e.requestedOn as DateTime).day.toString());
+                          return Card(
+                              child: Center(
+                                  child: SizedBox(
+                                      height: 32,
+                                      child: Center(
+                                          child: Text(e.ingredientName +
+                                              " (" +
+                                              timeago.format(e.requestedOn) +
+                                              ")")))));
                         }))
                 : getProgressWidget()),
         TextField(
@@ -75,79 +82,19 @@ class _RequestIngredientDialogState extends State<RequestIngredientDialog> {
                 color: Colors.teal,
               ),
             )),
-        TextField(
-            controller: _noteController,
-            keyboardType: TextInputType.multiline,
-            minLines: 2,
-            maxLines: 10,
-            maxLength: 1000,
-            decoration: InputDecoration(
-              labelText: AppLocalizations.of(context).ingredientNote,
-              suffixIcon: Icon(
-                Icons.edit,
-                color: Colors.teal,
-              ),
-            )),
-        // Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //     //       crossAxisAlignment: CrossAxisAlignment.center,
-        //     children: [
-        //       Text(
-        //         AppLocalizations.of(context).recipeName,
-        //         style: TextStyle(fontSize: 20),
+        // TextField(
+        //     controller: _noteController,
+        //     keyboardType: TextInputType.multiline,
+        //     minLines: 2,
+        //     maxLines: 10,
+        //     maxLength: 1000,
+        //     decoration: InputDecoration(
+        //       labelText: AppLocalizations.of(context).ingredientNote,
+        //       suffixIcon: Icon(
+        //         Icons.edit,
+        //         color: Colors.teal,
         //       ),
-        //       Spacer(),
-        //       if (publishStatus == null || loading)
-        //         getProgressWidget()
-        //       else
-        //         getConstraintIcon(
-        //             fullFilled:
-        //                 publishStatus.constraintRecipeNameMaxLengthFulfilled)
-        //     ]),
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //   children: [
-        //     Text(AppLocalizations.of(context).recipeImage,
-        //         style: TextStyle(fontSize: 20)),
-        //     Spacer(),
-        //     if (publishStatus == null || loading)
-        //       getProgressWidget()
-        //     else
-        //       getConstraintIcon(
-        //           fullFilled: publishStatus.constraintHasImageFulfilled)
-        //   ],
-        // ),
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //   children: [
-        //     Text(AppLocalizations.of(context).ingredients,
-        //         style: TextStyle(fontSize: 20)),
-        //     Spacer(),
-        //     if (publishStatus == null || loading)
-        //       getProgressWidget()
-        //     else
-        //       getConstraintIcon(
-        //           fullFilled: publishStatus.constraintMinIngredientsFulfilled)
-        //   ],
-        // ),
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //   children: [
-        //     Text(AppLocalizations.of(context).howToCookSteps,
-        //         style: TextStyle(fontSize: 20)),
-        //     Spacer(),
-        //     if (publishStatus == null || loading)
-        //       getProgressWidget()
-        //     else
-        //       getConstraintIcon(
-        //           fullFilled: publishStatus.constraintMinInstructionsFulfilled)
-        //   ],
-        // ),
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //   children: [
-        //     getRecipeRequestStatusWidget(),
-        //   ],
-        // ),
+        //     )),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -161,7 +108,7 @@ class _RequestIngredientDialogState extends State<RequestIngredientDialog> {
                 AppLocalizations.of(context).requestIngredientButtonText,
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: 22,
+                    fontSize: 18,
                     fontWeight: FontWeight.bold),
               ),
               onPressed: _sendAddIngredientRequest,
@@ -179,16 +126,47 @@ class _RequestIngredientDialogState extends State<RequestIngredientDialog> {
         width: 16,
         child: Center(
             child: CircularProgressIndicator(
-              strokeWidth: 2,
-            )));
+          strokeWidth: 2,
+        )));
   }
 
   _sendAddIngredientRequest() {
+    FocusScope.of(context).unfocus();
     setState(() {
       this.ingredientName = _nameController.value.text;
-      this.ingredientNote = _noteController.value.text;
+    //  this.ingredientNote = _noteController.value.text;
+      this.ingredientNote = "";
     });
-    if (this.ingredientName.length < 3) return;
+    if (this.ingredientRequests.length >= 10) {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+              "${AppLocalizations.of(context).tooManyPendingIngredientRequests}"),
+        ),
+      );
+      return;
+    }
+    if (this.ingredientName.length < 5) {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content:
+              Text("${AppLocalizations.of(context).ingredientNameToShort}"),
+        ),
+      );
+      return;
+    }
+    // if (this.ingredientNote.length == 0) {
+    //   ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     SnackBar(
+    //       content:
+    //           Text("${AppLocalizations.of(context).ingredientNoteMissing}"),
+    //     ),
+    //   );
+    //   return;
+    // }
     setState(() {
       loading = true;
     });
@@ -197,43 +175,21 @@ class _RequestIngredientDialogState extends State<RequestIngredientDialog> {
             this.ingredientName, this.ingredientNote)
         .then((_) => {
               setState(() {
-                setState(() {
-                  this.ingredientName = "";
-                  this.ingredientNote = "";
-                  _nameController.text = "";
-                  _noteController.text = "";
-                  this.loading = false;
-                });
+                this.ingredientName = "";
+                this.ingredientNote = "";
+                _nameController.text = "";
+                _noteController.text = "";
+                this.loading = false;
+              }),
+              // reload
+              setState(() {
+                ingredientRequestsFuture = getIngredientRequests();
               })
             });
-    //     .onError((error, stackTrace) {
-    //   setState(() {
-    //     loading = false;
-    //   });
-    //   return;
-    // });
-    // RecipeController.publishPrivateRecipe(privateRecipe.id)
-    //     .then((value) => {
-    //   RecipeController.getPrivateRecipePublishable(
-    //       this.privateRecipe.id)
-    //       .then((value) => {
-    //     this.publishStatus = value,
-    //     loading = false,
-    //     this.setState(() {})
-    //   })
-    //       .onError((error, stackTrace) {
-    //     setState(() {
-    //       loading = false;
-    //     });
-    //     return;
-    //   })
-    // })
-    //    .onError((error, stackTrace) {
-    //   setState(() {
-    //     loading = false;
-    //   });
-    //   return;
-    // });
+
+    setState(() {
+      ingredientRequestsFuture = getIngredientRequests();
+    });
   }
 
   getIngredientRequests() {
