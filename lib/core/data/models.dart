@@ -623,13 +623,15 @@ class IngredientRequest {
   final ReducedUser requestedBy;
   final DateTime requestedOn;
   final String userNote;
+  final IngredientRequestResult requestResult;
 
   IngredientRequest(
       {this.id,
       this.ingredientName,
       this.requestedBy,
       this.requestedOn,
-      this.userNote});
+      this.userNote,
+      this.requestResult});
 
   factory IngredientRequest.fromJson(Map<String, dynamic> json) {
     return IngredientRequest(
@@ -637,9 +639,83 @@ class IngredientRequest {
         ingredientName: json['ingredientName'],
         requestedBy: ReducedUser.fromJson(json['requestedBy']),
         requestedOn: DateTime.parse(json['requestedOn']),
-        userNote: json['userNote']);
+        userNote: json['userNote'],
+        requestResult: json['ingredientRequestResultData'] != null
+            ? IngredientRequestResult.fromJson(
+                json['ingredientRequestResultData'])
+            : null);
   }
 }
+
+class IngredientRequestResult {
+  final int id;
+  final IngredientRequestStatus ingredientRequestStatus;
+  final DateTime statusChangedDate;
+  final ReducedUser statusChangedByAdmin;
+  final FoodProduct duplicateIngredient;
+  final String resultNote;
+
+  IngredientRequestResult(
+      {this.id,
+      this.ingredientRequestStatus,
+      this.statusChangedDate,
+      this.statusChangedByAdmin,
+      this.duplicateIngredient,
+      this.resultNote});
+
+  factory IngredientRequestResult.fromJson(Map<String, dynamic> json) {
+    return IngredientRequestResult(
+        id: json['id'],
+        ingredientRequestStatus: parseIngredientRequestStatus(
+            json['ingredientRequestStatus'] as int),
+        statusChangedDate: DateTime.parse(json['statusChangedDate']),
+        statusChangedByAdmin:
+            ReducedUser.fromJson(json['statusChangedByAdmin']),
+        duplicateIngredient: json['duplicateIngredient'] != null
+            ? FoodProduct.fromJson(json['duplicateIngredient'])
+            : null,
+        resultNote: json['resultNote']);
+  }
+}
+
+IngredientRequestStatus parseIngredientRequestStatus(int status) {
+  var result = IngredientRequestStatus.DENIED_OTHER;
+  switch (status) {
+    case 0:
+      result = IngredientRequestStatus.APPROVED;
+      break;
+    case 1:
+      result = IngredientRequestStatus.DENIED_DUPLICATE;
+      break;
+    case 2:
+      result = IngredientRequestStatus.DENIED_MEAT;
+      break;
+    case 3:
+      result = IngredientRequestStatus.DENIED_TO_SPECIFIC;
+      break;
+    case 4:
+      result = IngredientRequestStatus.DENIED_OTHER;
+      break;
+  }
+  return result;
+}
+
+enum IngredientRequestStatus {
+  APPROVED,
+  DENIED_DUPLICATE,
+  DENIED_MEAT,
+  DENIED_TO_SPECIFIC,
+  DENIED_OTHER,
+}
+
+// data class IngredientRequestResultData(
+// val id: Long = 0,
+// val ingredientRequestStatus: IngredientRequestStatus,
+// var statusChangedDate: Date,
+// var statusChangedByAdmin: ReducedUserData,
+// var duplicateIngredient: FoodProductData?,
+// var resultNote: String
+// ) {
 
 class IngredientRequestCreate {
   final String ingredientName;
