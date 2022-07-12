@@ -53,20 +53,41 @@ class _RequestIngredientDialogState extends State<RequestIngredientDialog> {
             future: ingredientRequestsFuture,
             builder: (context, snapshot) => snapshot.hasData
                 ? LimitedBox(
-                    maxHeight: 300,
+                    maxHeight: 200,
                     child: ListView.builder(
                         itemCount: snapshot.data.length,
                         itemBuilder: (context, int i) {
                           var e = snapshot.data[i];
                           return Card(
-                              child: Center(
+                            elevation: 12,
                                   child: SizedBox(
-                                      height: 32,
-                                      child: Center(
-                                          child: Text(e.ingredientName +
-                                              " (" +
-                                              timeago.format(e.requestedOn) +
-                                              ")")))));
+                                      height: 34,
+                                      child: Row(
+                                          // alignment: WrapAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            IconButton(
+                                                onPressed: _onClickIngredientRequestEdit,
+                                                splashRadius: 20,
+                                                icon: Icon(Icons.edit)),
+                                            Wrap(
+                                                direction: Axis.vertical,
+                                                children: [
+                                                  Text(e.ingredientName),
+                                                  Text(
+                                                    timeago
+                                                        .format(e.requestedOn),
+                                                    style: TextStyle(
+                                                        fontSize: 10,
+                                                        color: Colors.grey),
+                                                  )
+                                                ]),
+                                            IconButton(
+                                                onPressed: _onClickIngredientRequestStatus,
+                                                splashRadius: 20,
+                                                icon: Icon(Icons.timer))
+                                          ])));
                         }))
                 : getProgressWidget()),
         TextField(
@@ -134,7 +155,7 @@ class _RequestIngredientDialogState extends State<RequestIngredientDialog> {
     FocusScope.of(context).unfocus();
     setState(() {
       this.ingredientName = _nameController.value.text;
-    //  this.ingredientNote = _noteController.value.text;
+      //  this.ingredientNote = _noteController.value.text;
       this.ingredientNote = "";
     });
     if (this.ingredientRequests.length >= 10) {
@@ -202,6 +223,13 @@ class _RequestIngredientDialogState extends State<RequestIngredientDialog> {
     //   });
     //   return;
     // });
+  }
+
+  _onClickIngredientRequestEdit (){
+    print("ir edit clicked");
+  }
+  _onClickIngredientRequestStatus (){
+    print("ir status clicked");
   }
 
   _cancelPublishRequest() {
