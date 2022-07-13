@@ -86,7 +86,7 @@ class _RequestIngredientDialogState extends State<RequestIngredientDialog> {
                                             IconButton(
                                                 onPressed: _onClickIngredientRequestStatus,
                                                 splashRadius: 20,
-                                                icon: Icon(Icons.timer))
+                                                icon: _getIconForStatus(e))
                                           ])));
                         }))
                 : getProgressWidget()),
@@ -149,6 +149,15 @@ class _RequestIngredientDialogState extends State<RequestIngredientDialog> {
             child: CircularProgressIndicator(
           strokeWidth: 2,
         )));
+  }
+
+  Widget _getIconForStatus(IngredientRequest request){
+    if(request.requestResult==null)
+      return Icon(Icons.timer, color: Colors.amber,);
+    if(request.requestResult.ingredientRequestStatus == IngredientRequestStatus.APPROVED)
+      return Icon(Icons.check, color: Colors.green,);
+    else
+      return Icon(Icons.close, color: Colors.red,);
   }
 
   _sendAddIngredientRequest() {
