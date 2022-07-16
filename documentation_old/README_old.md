@@ -30,12 +30,12 @@ Here a white icon with transparent background should be used (AndroidManifest.xm
 Here a colored icon with transparent background should be used (main.dart)
 ```dart
 NotificationDetails(
-android: AndroidNotificationDetails(
-channel.id,
-channel.name,
-channelDescription: channel.description,
-//      one that already exists in example app.
-icon: '@mipmap/ic_launcher' 
+    android: AndroidNotificationDetails(
+    channel.id,
+    channel.name,
+    channelDescription: channel.description,
+    //      one that already exists in example app.
+    icon: '@mipmap/ic_launcher' 
 ),
 ```
 
