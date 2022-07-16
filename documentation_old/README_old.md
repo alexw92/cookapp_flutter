@@ -2,21 +2,21 @@
 # Owner : Awesome CEO Alex
 [flutter-fire](https://firebase.flutter.dev/docs/auth/overview)
 
-##Run in web:
-use
+## Run in web:
+use this
 ```bash
 flutter run -d chrome --web-port 5000 . 
 ``` 
 when adding new oauth origins in google. It takes some time to update (minutes). 
 The port is important. Localhost:5000 is currently configured as Google's oauth accepted URL.
 
-##Generate Android/IOS icons
+## Generate Android/IOS icons
 
 ```flutter pub run flutter_launcher_icons:main```
 They dont look so good using this. Try another approach to generate the icons manually
 using this [Android Asset Studio](https://romannurik.github.io/AndroidAssetStudio/index.html)
 
-##Icons for notifications appearing in background and notification bar
+## Icons for notifications appearing in background and notification bar
 
 Here a white icon with transparent background should be used (AndroidManifest.xml)
 ```xml
@@ -25,7 +25,7 @@ Here a white icon with transparent background should be used (AndroidManifest.xm
         android:resource="@mipmap/ic_launcher" />
 ```
 
-##Icons for notifications appearing in foreground
+## Icons for notifications appearing in foreground
 
 Here a colored icon with transparent background should be used (main.dart)
 ```dart
