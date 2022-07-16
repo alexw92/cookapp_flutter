@@ -87,7 +87,7 @@ and [Flutter TFlite module](https://pub.dev/packages/tflite_flutter)
 ![sample](https://cloud.google.com/vision/automl/object-detection/docs/images/index_test_image.png)
 
 
-# UI Ideas
+# UI Ideas (old app, not used any longer)
 Most notes are written directly in the image
 ## The current login page
 This page is currently displayed on app start when no user is logged in.
