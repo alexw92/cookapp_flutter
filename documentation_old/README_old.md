@@ -39,14 +39,14 @@ NotificationDetails(
 ),
 ```
 
-**Build release**
+## Build release
 
 This will also fix some annoying issues occurring in debug build like laggy scrolling in lists
 ```
 flutter run --release
 ```
 
-**Firebase Sha-Certificate**
+## Firebase Sha-Certificate
 
 Happens if google-services.json is not up-to-date with Sha-Hash:
 
@@ -58,7 +58,7 @@ Todo:
 ```
 Copy Sha1-Key to Firebase and then download new google-services.json and provide it in the app.
 
-**Cors Config on Firebase Bucket to load imgs from flutter web while Testing:**
+## Cors Config on Firebase Bucket to load imgs from flutter web while Testing:
 
 ```
 (cookable-flutter)$ touch cors.js
