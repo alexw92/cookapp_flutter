@@ -12,6 +12,8 @@ The port is important. Localhost:5000 is currently configured as Google's oauth 
 
 **Generate Android/IOS icons**
 ```flutter pub run flutter_launcher_icons:main```
+They dont look so good using this. Try another approach to generate the icons manually
+using this [Android Asset Studio](https://romannurik.github.io/AndroidAssetStudio/index.html)
 
 **Build release**
 This will also fix some annoying issues occurring in debug build like laggy scrolling in lists
