@@ -104,6 +104,7 @@ void main() async {
             AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
+    //await FirebaseMessaging.instance.
     /// Update the iOS foreground notification presentation options to allow
     /// heads up notifications.
     await FirebaseMessaging.instance
@@ -169,6 +170,7 @@ class _CookableFlutterState extends State<CookableFlutter> {
       }
     });
 
+    // I think this is for Foreground messages received when app is open
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print(message);
       if (message != null) {
@@ -194,7 +196,7 @@ class _CookableFlutterState extends State<CookableFlutter> {
               channelDescription: channel.description,
               // TODO add a proper drawable resource to android, for now using
               //      one that already exists in example app.
-              icon: 'launch_background',
+              icon: '@mipmap/ic_launcher' // Todo replace with appropriate icon
             ),
           ),
         );
