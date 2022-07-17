@@ -2,6 +2,10 @@
 # Owner : Awesome CEO Alex
 [flutter-fire](https://firebase.flutter.dev/docs/auth/overview)
 
+## Currently in work
+* use [this](https://pub.dev/packages/skeletons) for skeleton loading ui which provides a better User Experience
+
+
 ## Run in web:
 use this
 ```bash
