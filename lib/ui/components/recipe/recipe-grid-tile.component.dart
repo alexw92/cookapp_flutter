@@ -35,6 +35,8 @@ class _RecipeGridTileComponentState extends State<RecipeGridTileComponent> {
   Recipe recipe;
   String apiToken;
   RecipeService recipeService = RecipeService();
+  double chipTextFontSize = 26;
+  double chipIconFontSize = 22;
 
   _RecipeGridTileComponentState({this.recipe, this.apiToken});
 
@@ -144,16 +146,48 @@ class _RecipeGridTileComponentState extends State<RecipeGridTileComponent> {
                                                     alignment:
                                                         WrapAlignment.start,
                                                     children: [
-                                                      Container(
-                                                          child: Text(
-                                                        Utility
-                                                            .getUnicodeIconForDiet(
+                                                      Chip(
+                                                        // materialTapTargetSize:
+                                                        // MaterialTapTargetSize
+                                                        //     .shrinkWrap,
+                                                        avatar: Text(
+                                                            Utility
+                                                                .getUnicodeIconForDiet(
                                                                 context,
                                                                 recipe.diet),
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 44.0),
-                                                      )),
+                                                            style: TextStyle(
+                                                                fontSize: chipIconFontSize)),
+                                                        label: Text(
+                                                          Utility
+                                                              .getTranslatedDiet(
+                                                              context,
+                                                              recipe.diet),
+                                                          style: TextStyle(
+                                                              color: Colors.black,
+                                                              fontWeight:
+                                                              FontWeight.bold,
+                                                              fontSize: chipTextFontSize),
+                                                        ),
+                                                        backgroundColor:
+                                                        Colors.white,
+                                                        elevation: 6.0,
+                                                        shadowColor:
+                                                        Colors.grey[60],
+                                                        // padding: EdgeInsets.all(8.0),
+                                                      ),
+                                                    //   Container(
+                                                    //       child: Text(
+                                                    //     Utility
+                                                    //         .getUnicodeIconForDiet(
+                                                    //             context,
+                                                    //             recipe.diet)+' '+Utility
+                                                    // .getTranslatedDiet(
+                                                    // context,
+                                                    // recipe.diet),
+                                                    //     style: TextStyle(
+                                                    //         color: Colors.black,
+                                                    //         fontSize: 30.0),
+                                                    //   )),
                                                       getHighProteinChipIfNeeded(),
                                                       getHighCarbChipIfNeeded(),
                                                     ])),
@@ -188,29 +222,29 @@ class _RecipeGridTileComponentState extends State<RecipeGridTileComponent> {
                                                 size: 24,
                                               );
                                       },
-                                      countBuilder: (int count, bool isLiked,
-                                          String text) {
-                                        var color =
-                                            isLiked ? Colors.red : Colors.white;
-                                        Widget result;
-                                        if (count == 0) {
-                                          result = Text(
-                                            "0",
-                                            style: TextStyle(
-                                                color: color,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 12),
-                                          );
-                                        } else
-                                          result = Text(
-                                            text,
-                                            style: TextStyle(
-                                                color: color,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 12),
-                                          );
-                                        return result;
-                                      },
+                                      // countBuilder: (int count, bool isLiked,
+                                      //     String text) {
+                                      //   var color =
+                                      //       isLiked ? Colors.red : Colors.white;
+                                      //   Widget result;
+                                      //   if (count == 0) {
+                                      //     result = Text(
+                                      //       "0",
+                                      //       style: TextStyle(
+                                      //           color: color,
+                                      //           fontWeight: FontWeight.bold,
+                                      //           fontSize: 12),
+                                      //     );
+                                      //   } else
+                                      //     result = Text(
+                                      //       text,
+                                      //       style: TextStyle(
+                                      //           color: color,
+                                      //           fontWeight: FontWeight.bold,
+                                      //           fontSize: 12),
+                                      //     );
+                                      //   return result;
+                                      // },
                                     )),
                                 SizedBox(
                                   width: 5,
@@ -263,26 +297,73 @@ class _RecipeGridTileComponentState extends State<RecipeGridTileComponent> {
     return !isLiked;
   }
 
+  // Widget getHighProteinChipIfNeeded() {
+  //   return (recipe.nutrients.isHighProteinRecipe)
+  //       ? Text(
+  //           Utility.getUnicodeIconForNutritionDiet(
+  //               context, NutritionDiet.HIGH_PROTEIN),
+  //           style: TextStyle(
+  //               color: Colors.black,
+  //               fontWeight: FontWeight.bold,
+  //               fontSize: 44.0),
+  //         )
+  //       : Container();
+  // }
+  //
+  // Widget getHighCarbChipIfNeeded() {
+  //   return (recipe.nutrients.isHighCarbRecipe)
+  //       ? Text(
+  //           Utility.getUnicodeIconForNutritionDiet(
+  //               context, NutritionDiet.HIGH_CARBS),
+  //           style: TextStyle(color: Colors.black, fontSize: 44.0),
+  //         )
+  //       : Container();
+  // }
+
   Widget getHighProteinChipIfNeeded() {
     return (recipe.nutrients.isHighProteinRecipe)
-        ? Text(
-            Utility.getUnicodeIconForNutritionDiet(
-                context, NutritionDiet.HIGH_PROTEIN),
+        ? Container(
+        child: Chip(
+          avatar: Text(
+              Utility.getUnicodeIconForNutritionDiet(
+                  context, NutritionDiet.HIGH_PROTEIN),
+              style: TextStyle(fontSize: chipIconFontSize)),
+          label: Text(
+            AppLocalizations.of(context).highProtein,
             style: TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
-                fontSize: 44.0),
-          )
+                fontSize: chipTextFontSize),
+          ),
+          backgroundColor: Colors.white,
+          elevation: 6.0,
+          shadowColor: Colors.grey[60],
+          //  padding: EdgeInsets.all(8.0),
+        ))
         : Container();
   }
 
   Widget getHighCarbChipIfNeeded() {
     return (recipe.nutrients.isHighCarbRecipe)
-        ? Text(
-            Utility.getUnicodeIconForNutritionDiet(
-                context, NutritionDiet.HIGH_CARBS),
-            style: TextStyle(color: Colors.black, fontSize: 44.0),
-          )
+        ? Container(
+        child: Chip(
+          //  labelPadding: EdgeInsets.all(4.0),
+          avatar: Text(
+              Utility.getUnicodeIconForNutritionDiet(
+                  context, NutritionDiet.HIGH_CARBS),
+              style: TextStyle(fontSize: chipIconFontSize)),
+          label: Text(
+            AppLocalizations.of(context).highCarb,
+            style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: chipTextFontSize),
+          ),
+          backgroundColor: Colors.white,
+          elevation: 6.0,
+          shadowColor: Colors.grey[60],
+          //  padding: EdgeInsets.all(8.0),
+        ))
         : Container();
   }
 

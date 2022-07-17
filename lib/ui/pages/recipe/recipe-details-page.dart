@@ -249,26 +249,26 @@ class _RecipesDetailsPageState extends State<RecipesDetailsPage>
                                       size: 40,
                                     );
                             },
-                            countBuilder:
-                                (int count, bool isLiked, String text) {
-                              var color = Colors.white;
-                              Widget result;
-                              if (count == 0) {
-                                result = Text(
-                                  "0",
-                                  style: TextStyle(
-                                      color: color,
-                                      fontWeight: FontWeight.bold),
-                                );
-                              } else
-                                result = Text(
-                                  text,
-                                  style: TextStyle(
-                                      color: color,
-                                      fontWeight: FontWeight.bold),
-                                );
-                              return result;
-                            },
+                            // countBuilder:
+                            //     (int count, bool isLiked, String text) {
+                            //   var color = Colors.white;
+                            //   Widget result;
+                            //   if (count == 0) {
+                            //     result = Text(
+                            //       "0",
+                            //       style: TextStyle(
+                            //           color: color,
+                            //           fontWeight: FontWeight.bold),
+                            //     );
+                            //   } else
+                            //     result = Text(
+                            //       text,
+                            //       style: TextStyle(
+                            //           color: color,
+                            //           fontWeight: FontWeight.bold),
+                            //     );
+                            //   return result;
+                            // },
                           )
                         ]))
                   ]),

@@ -139,32 +139,32 @@ class _RecipeTileComponentState extends State<RecipeTileComponent> {
                                                       size: 40,
                                                     );
                                             },
-                                            countBuilder: (int count,
-                                                bool isLiked, String text) {
-                                              var color = isLiked
-                                                  ? Colors.red
-                                                  : Colors.white;
-                                              Widget result;
-                                              if (count == 0) {
-                                                result = Text(
-                                                  "0",
-                                                  style: TextStyle(
-                                                      color: color,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 18),
-                                                );
-                                              } else
-                                                result = Text(
-                                                  text,
-                                                  style: TextStyle(
-                                                      color: color,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 18),
-                                                );
-                                              return result;
-                                            },
+                                            // countBuilder: (int count,
+                                            //     bool isLiked, String text) {
+                                            //   var color = isLiked
+                                            //       ? Colors.red
+                                            //       : Colors.white;
+                                            //   Widget result;
+                                            //   if (count == 0) {
+                                            //     result = Text(
+                                            //       "0",
+                                            //       style: TextStyle(
+                                            //           color: color,
+                                            //           fontWeight:
+                                            //               FontWeight.bold,
+                                            //           fontSize: 18),
+                                            //     );
+                                            //   } else
+                                            //     result = Text(
+                                            //       text,
+                                            //       style: TextStyle(
+                                            //           color: color,
+                                            //           fontWeight:
+                                            //               FontWeight.bold,
+                                            //           fontSize: 18),
+                                            //     );
+                                            //   return result;
+                                            // },
                                           )),
                                       SizedBox(
                                         width: 5,
