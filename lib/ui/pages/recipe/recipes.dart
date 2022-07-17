@@ -168,11 +168,13 @@ class _RecipesComponentState extends State<RecipesComponent> {
               )
             ],
           ),
-          body: Center(
-              child: CircularProgressIndicator(
-            value: null,
-            backgroundColor: Colors.teal,
-          )));
+          body: Container(
+              color: Colors.black87,
+              child: Center(
+                  child: CircularProgressIndicator(
+                value: null,
+                backgroundColor: Colors.teal,
+              ))));
     else if (!error)
       return Scaffold(
           appBar: AppBar(
@@ -398,26 +400,28 @@ class _RecipesComponentState extends State<RecipesComponent> {
               )
             ],
           ),
-          body: Center(
-              child: Container(
-            height: 100,
-            child: Card(
-                elevation: 10,
-                // height: 400,
-                child: Column(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                      child:
-                          Text(AppLocalizations.of(context).somethingWentWrong),
-                    ),
-                    ElevatedButton(
-                        onPressed: refreshTriggered,
-                        child: Text(AppLocalizations.of(context).tryAgain,
-                            style: TextStyle(color: Colors.white)))
-                  ],
-                )),
-          )));
+          body: Container(
+              color: Colors.black87,
+              child: Center(
+                  child: Container(
+                height: 100,
+                child: Card(
+                    elevation: 10,
+                    // height: 400,
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                          child: Text(
+                              AppLocalizations.of(context).somethingWentWrong),
+                        ),
+                        ElevatedButton(
+                            onPressed: refreshTriggered,
+                            child: Text(AppLocalizations.of(context).tryAgain,
+                                style: TextStyle(color: Colors.white)))
+                      ],
+                    )),
+              ))));
   }
 
   reloadRecipes() {
