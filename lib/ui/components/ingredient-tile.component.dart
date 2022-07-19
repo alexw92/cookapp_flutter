@@ -205,11 +205,15 @@ class _IngredientEditTileComponentState
         color: Colors.transparent,
         child: Column(children: [
           InkWell(
-            child: CircleAvatar(
-              backgroundImage: CachedNetworkImageProvider(ingredient.imgSrc,
-                  imageRenderMethodForWeb: ImageRenderMethodForWeb.HttpGet),
-              // backgroundColor: Colors.transparent,
-              radius: radius,
+            child: Material(
+              borderRadius: BorderRadius.circular(44),
+              elevation: 6,
+              child: CircleAvatar(
+                backgroundImage: CachedNetworkImageProvider(ingredient.imgSrc,
+                    imageRenderMethodForWeb: ImageRenderMethodForWeb.HttpGet),
+                backgroundColor: Colors.teal,
+                radius: radius,
+              ),
             ),
             onTap: widget.onTap,
           ),
@@ -218,7 +222,7 @@ class _IngredientEditTileComponentState
                 "\n" +
                 Utility.getFormattedAmountForIngredient(ingredient),
             textAlign: TextAlign.center,
-            style: TextStyle(color: textColor),
+            style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
           ),
         ]));
   }
