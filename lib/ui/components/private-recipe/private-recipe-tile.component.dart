@@ -176,6 +176,7 @@ class _PrivateRecipeTileComponentState
                                 MaterialStateProperty.all(Colors.white)),
                         child: const Icon(
                           Icons.camera_alt,
+                          color: Colors.teal,
                         ),
                         onPressed: () => showModalBottomSheet<void>(
                           context: context,
@@ -210,6 +211,7 @@ class _PrivateRecipeTileComponentState
                                                   primary: Colors.white,
                                                   shape: CircleBorder(),
                                                   padding: EdgeInsets.all(14),
+                                                  elevation: 6
                                                 ),
                                                 onPressed: () {
                                                   _editPrivateRecipeImg(
@@ -218,7 +220,7 @@ class _PrivateRecipeTileComponentState
                                                 child: const Icon(
                                                   Icons.camera_alt,
                                                   size: 26,
-                                                  color: Colors.green,
+                                                  color: Colors.teal,
                                                 )),
                                             SizedBox(
                                               height: 10,
@@ -238,6 +240,7 @@ class _PrivateRecipeTileComponentState
                                                 style: ElevatedButton.styleFrom(
                                                     primary: Colors.white,
                                                     shape: CircleBorder(),
+                                                    elevation: 6,
                                                     padding:
                                                         EdgeInsets.all(14)),
                                                 onPressed: () {
@@ -246,8 +249,8 @@ class _PrivateRecipeTileComponentState
                                                 },
                                                 child: const Icon(
                                                   Icons.image,
+                                                  color: Colors.teal,
                                                   size: 26,
-                                                  color: Colors.green,
                                                 )),
                                             SizedBox(
                                               height: 10,
@@ -265,7 +268,7 @@ class _PrivateRecipeTileComponentState
                       ),
                       ElevatedButton(
                         onPressed: () => {_openEditRecipeScreen(privateRecipe)},
-                        child: Icon(Icons.edit),
+                        child: Icon(Icons.edit, color: Colors.teal,),
                         style: ButtonStyle(
                           shape: MaterialStateProperty.all(CircleBorder()),
                           padding:
