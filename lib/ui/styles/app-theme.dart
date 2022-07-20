@@ -6,6 +6,12 @@ class MyAppTheme {
         brightness: Brightness.light,
         primaryColor: Colors.teal,
         scaffoldBackgroundColor: Colors.white,
+        primaryColorLight: Colors.teal,
+        primaryColorDark: Colors.teal,
+      checkboxTheme: CheckboxThemeData(
+        checkColor: MaterialStateProperty.all(Colors.white),
+        fillColor: MaterialStateProperty.all(Colors.teal),
+      ),
         appBarTheme: AppBarTheme(
             iconTheme: IconThemeData(color: Colors.white),
             backgroundColor: Colors.teal),
