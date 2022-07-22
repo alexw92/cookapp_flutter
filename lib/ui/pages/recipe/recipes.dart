@@ -307,7 +307,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
                                     userFoodUpdatedCallback: reloadRecipes,
                                     likesUpdated: () =>
                                         reloadRecipe(recipeList[i].id, i),
-                                    bannerColor: _getRecipeBannerColor(i, recipeList[i].missingUserFoodProducts),
+                                    bannerColor: _getRecipeBannerColor(i, recipeList[i].missingUserFoodProducts.length),
                                   )
                                 : RecipeTileComponent(
                                     key: ValueKey(recipeList[i].id),
@@ -316,7 +316,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
                                     userFoodUpdatedCallback: reloadRecipes,
                                     likesUpdated: () =>
                                         reloadRecipe(recipeList[i].id, i),
-                                    bannerColor: _getRecipeBannerColor(i, recipeList[i].missingUserFoodProducts),
+                                    bannerColor: _getRecipeBannerColor(i, recipeList[i].missingUserFoodProducts.length),
                                   );
                           }))
                       : Center(
