@@ -39,7 +39,8 @@ class _PrivateRecipesComponentState extends State<PrivateRecipesComponent>
   List recipeBannerColors = Constants.badgeColors;
 
   Color _getRecipeBannerColor(int i) {
-    return this.recipeBannerColors[i % this.recipeBannerColors.length];
+    // return this.recipeBannerColors[i % this.recipeBannerColors.length];
+    return Colors.green;
   }
 
   void loadRecipes({reload = false}) async {

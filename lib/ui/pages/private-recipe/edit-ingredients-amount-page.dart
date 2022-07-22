@@ -35,6 +35,13 @@ class _EditIngredientsAmountPageState extends State<EditIngredientsAmountPage> {
 
   void initState() {
     super.initState();
+    privateRecipe.ingredients.sort( (a,b)  {
+      if(a.amount == 0 )
+        return -1;
+      else if (b.amount == 0)
+        return 1;
+      else return 0;
+    });
     ingredients = privateRecipe.ingredients;
     for (int i = 0; i < ingredients.length; i++) {
       _formKeys.add(GlobalKey<FormState>());

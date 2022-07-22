@@ -343,7 +343,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                   icon: const Icon(
                                     Icons.edit,
                                     color: Colors.teal,
+                                    size: 28,
                                   ),
+                                  padding: EdgeInsets.only(top: 10),
                                   onPressed: () => openChangeNameDialog(),
                                 )
                               ]),

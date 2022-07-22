@@ -34,7 +34,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
 
   Color _getRecipeBannerColor(int i, int missingFoodProducts) {
     // return this.recipeBannerColors[i % this.recipeBannerColors.length];
-    return Colors.tealAccent;
+    return Colors.green;
   }
 
   void loadRecipes({reload = false, itemsInStockChanged = false}) async {

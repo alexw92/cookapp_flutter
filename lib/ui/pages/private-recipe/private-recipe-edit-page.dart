@@ -104,7 +104,9 @@ class _RecipeEditPageState extends State<RecipeEditPage> {
                     icon: const Icon(
                       Icons.edit,
                       color: Colors.teal,
+                      size: 28,
                     ),
+                    padding: EdgeInsets.only(top: 14),
                     onPressed: () => openChangeNameDialog(),
                   )
                 ]),
