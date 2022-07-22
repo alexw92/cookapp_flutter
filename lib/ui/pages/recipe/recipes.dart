@@ -32,8 +32,9 @@ class _RecipesComponentState extends State<RecipesComponent> {
   int numbActiveFilters = 0;
   int recipesPerRow = 2;
 
-  Color _getRecipeBannerColor(int i) {
-    return this.recipeBannerColors[i % this.recipeBannerColors.length];
+  Color _getRecipeBannerColor(int i, int missingFoodProducts) {
+    // return this.recipeBannerColors[i % this.recipeBannerColors.length];
+    return Colors.tealAccent;
   }
 
   void loadRecipes({reload = false, itemsInStockChanged = false}) async {
@@ -306,7 +307,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
                                     userFoodUpdatedCallback: reloadRecipes,
                                     likesUpdated: () =>
                                         reloadRecipe(recipeList[i].id, i),
-                                    bannerColor: _getRecipeBannerColor(i),
+                                    bannerColor: _getRecipeBannerColor(i, recipeList[i].missingUserFoodProducts),
                                   )
                                 : RecipeTileComponent(
                                     key: ValueKey(recipeList[i].id),
@@ -315,7 +316,7 @@ class _RecipesComponentState extends State<RecipesComponent> {
                                     userFoodUpdatedCallback: reloadRecipes,
                                     likesUpdated: () =>
                                         reloadRecipe(recipeList[i].id, i),
-                                    bannerColor: _getRecipeBannerColor(i),
+                                    bannerColor: _getRecipeBannerColor(i, recipeList[i].missingUserFoodProducts),
                                   );
                           }))
                       : Center(
